@@ -1,10 +1,12 @@
-# Practica Mates
+# Practica Asignaturas
 
-Web para que mis hijos practiquen matemáticas:
-- 6 años (1º primaria): sumas y restas.
-- 11 años (6º primaria): sumas, restas, multiplicaciones, divisiones y problemas de su nivel.
+Web para que mis hijos practiquen distintas asignaturas (no solo mates):
+- **6 años (1º primaria)**: sumas, restas y horas.
+- **11 años (6º primaria)**: elige primero la asignatura y luego el modo dentro de ella.
+  - **Matemáticas**: aritmética (sumas/restas/multiplicaciones/divisiones) y problemas de su nivel.
+  - **Inglés**: vocabulario (deberes reales del cole, con más asignaturas/modos pendientes de añadir).
 
-Cada uno elige su perfil al entrar y eso determina el nivel/operaciones. Al terminar la sesión (botón "Finalizar") se muestra un reporte con los puntos conseguidos; no se guarda histórico entre sesiones.
+Cada uno elige su perfil al entrar y eso determina el nivel/contenido. Al terminar la sesión (botón "Finalizar") se muestra un reporte con los puntos conseguidos; no se guarda histórico entre sesiones.
 
 ## Estructura
 
@@ -56,8 +58,8 @@ npm run test:e2e                  # arranca backend+frontend solos si no están 
 ## Construir y probar el contenedor
 
 ```
-docker build -t practica-mates .
-docker run --rm -p 3000:3000 practica-mates
+docker build -t practica-asignaturas .
+docker run --rm -p 3000:3000 practica-asignaturas
 ```
 
 Abrir http://localhost:3000
@@ -71,7 +73,7 @@ make help    # ver todos los comandos disponibles
 
 ## Despliegue en Railway
 
-El servicio de Railway (`practica-mates`) no construye desde el `Dockerfile` directamente: despliega la imagen ya construida en `ghcr.io/iestebanvi/practica-mates:latest`. El flujo de release es:
+El servicio de Railway (`practica-asignaturas`) no construye desde el `Dockerfile` directamente: despliega la imagen ya construida en `ghcr.io/iestebanvi/practica-asignaturas:latest`. El flujo de release es:
 
 ```
 make railway-release   # build multi-arch (amd64+arm64) + push a GHCR + redeploy en Railway

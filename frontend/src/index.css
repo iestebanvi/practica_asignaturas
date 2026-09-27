@@ -23,6 +23,8 @@
   --color-horas-sombra: #ad1457;
   --color-vocabulario: #3949ab;
   --color-vocabulario-sombra: #1a237e;
+  --color-ingles: #ef5350;
+  --color-ingles-sombra: #c62828;
 }
 
 html {
@@ -135,6 +137,16 @@ button:active {
 .modo-vocabulario {
   background: var(--color-vocabulario);
   --sombra: var(--color-vocabulario-sombra);
+}
+
+.asignatura-matematicas {
+  background: var(--color-mayor);
+  --sombra: var(--color-mayor-sombra);
+}
+
+.asignatura-ingles {
+  background: var(--color-ingles);
+  --sombra: var(--color-ingles-sombra);
 }
 
 /* Perfil Peque: solo sabe leer en mayúscula, y una letra más grande le va mejor */

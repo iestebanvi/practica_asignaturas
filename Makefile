@@ -2,7 +2,7 @@
         docker-build docker-run docker-stop \
         railway-build railway-deploy railway-release railway-smoke
 
-GHCR_IMAGE := ghcr.io/iestebanvi/practica-mates
+GHCR_IMAGE := ghcr.io/iestebanvi/practica-asignaturas
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*##"}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -26,13 +26,13 @@ test-e2e: ## Tests end-to-end (Playwright)
 ## ── Docker (local) ───────────────────────────────────────────────────────────
 
 docker-build: ## Construir la imagen Docker en local
-	docker build -t practica-mates:dev .
+	docker build -t practica-asignaturas:dev .
 
 docker-run: docker-build ## Construir y ejecutar el contenedor en local (puerto 3000)
-	docker run --rm -p 3000:3000 --name practica-mates practica-mates:dev
+	docker run --rm -p 3000:3000 --name practica-asignaturas practica-asignaturas:dev
 
 docker-stop: ## Parar el contenedor local
-	docker stop practica-mates
+	docker stop practica-asignaturas
 
 ## ── Railway (producción) ──────────────────────────────────────────────────────
 

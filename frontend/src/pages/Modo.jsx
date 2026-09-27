@@ -1,13 +1,14 @@
-import { PERFILES, MODOS_POR_PERFIL } from '../logic/perfiles.js'
+import { PERFILES, MODOS_PEQUE, ASIGNATURAS_MAYOR } from '../logic/perfiles.js'
 
-export default function Modo({ perfilId, onSeleccionarModo, onVolver }) {
-  const perfil = PERFILES[perfilId]
-  const modos = MODOS_POR_PERFIL[perfilId]
+export default function Modo({ perfilId, asignatura, onSeleccionarModo, onVolver }) {
   const esPeque = perfilId === 'pequeno'
+  const asignaturaActual = esPeque ? null : ASIGNATURAS_MAYOR[asignatura]
+  const modos = esPeque ? MODOS_PEQUE : asignaturaActual.modos
+  const titulo = esPeque ? PERFILES.pequeno.nombre : asignaturaActual.nombre
 
   return (
     <div className={`pantalla modo${esPeque ? ' peque' : ''}`}>
-      <h1>{perfil.nombre}</h1>
+      <h1>{titulo}</h1>
       <p>¿Qué quieres practicar?</p>
       <div className="perfiles">
         {Object.values(modos).map((modo) => (

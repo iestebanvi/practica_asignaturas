@@ -43,18 +43,21 @@ function puntosEsperados(enunciado) {
 async function entrarEnAritmetica(page) {
   await page.goto('/')
   await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Matemáticas' }).click()
   await page.getByRole('button', { name: 'Aritmética' }).click()
 }
 
 async function entrarEnProblemas(page) {
   await page.goto('/')
   await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Matemáticas' }).click()
   await page.getByRole('button', { name: 'Problemas' }).click()
 }
 
 async function entrarEnVocabulario(page) {
   await page.goto('/')
   await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Inglés' }).click()
   await page.getByRole('button', { name: 'Vocabulario' }).click()
 }
 
@@ -150,10 +153,16 @@ test.describe('Practica Mates', () => {
     await expect(input).toBeFocused()
   })
 
-  test('la pantalla de modo permite volver atrás', async ({ page }) => {
+  test('las pantallas de asignatura y de modo permiten volver atrás', async ({ page }) => {
     await page.goto('/')
     await page.getByRole('button', { name: /Mayor/ }).click()
+    await expect(page.getByRole('button', { name: 'Matemáticas' })).toBeVisible()
+
+    await page.getByRole('button', { name: 'Matemáticas' }).click()
     await expect(page.getByRole('button', { name: 'Aritmética' })).toBeVisible()
+
+    await page.getByRole('button', { name: '← Volver' }).click()
+    await expect(page.getByRole('button', { name: 'Matemáticas' })).toBeVisible()
 
     await page.getByRole('button', { name: '← Volver' }).click()
     await expect(page.getByRole('button', { name: /Peque/ })).toBeVisible()

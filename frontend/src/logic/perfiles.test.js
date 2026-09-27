@@ -1,17 +1,14 @@
 import { describe, it, expect } from 'vitest'
-import { MODOS_MAYOR, MODOS_PEQUE } from './perfiles.js'
+import { ASIGNATURAS_MAYOR, MODOS_PEQUE, obtenerModo } from './perfiles.js'
 
-describe('MODOS_MAYOR', () => {
-  it('el modo aritmética no incluye problemas', () => {
-    expect(MODOS_MAYOR.aritmetica.operaciones).not.toContain('problema')
+describe('ASIGNATURAS_MAYOR', () => {
+  it('Matemáticas incluye aritmética (sin problemas) y problemas por separado', () => {
+    expect(ASIGNATURAS_MAYOR.matematicas.modos.aritmetica.operaciones).not.toContain('problema')
+    expect(ASIGNATURAS_MAYOR.matematicas.modos.problemas.operaciones).toEqual(['problema'])
   })
 
-  it('el modo problemas solo contiene el tipo problema', () => {
-    expect(MODOS_MAYOR.problemas.operaciones).toEqual(['problema'])
-  })
-
-  it('el modo vocabulario solo contiene el tipo vocabulario', () => {
-    expect(MODOS_MAYOR.vocabulario.operaciones).toEqual(['vocabulario'])
+  it('Inglés incluye el modo vocabulario', () => {
+    expect(ASIGNATURAS_MAYOR.ingles.modos.vocabulario.operaciones).toEqual(['vocabulario'])
   })
 })
 
@@ -26,5 +23,25 @@ describe('MODOS_PEQUE', () => {
 
   it('el modo horas solo contiene el tipo hora', () => {
     expect(MODOS_PEQUE.horas.operaciones).toEqual(['hora'])
+  })
+})
+
+describe('obtenerModo', () => {
+  it('para "mayor" busca dentro de la asignatura indicada', () => {
+    expect(obtenerModo('mayor', 'matematicas', 'aritmetica')).toBe(
+      ASIGNATURAS_MAYOR.matematicas.modos.aritmetica,
+    )
+    expect(obtenerModo('mayor', 'ingles', 'vocabulario')).toBe(
+      ASIGNATURAS_MAYOR.ingles.modos.vocabulario,
+    )
+  })
+
+  it('para "mayor" devuelve null si la asignatura o el modo no existen', () => {
+    expect(obtenerModo('mayor', 'ciencias', 'x')).toBeNull()
+    expect(obtenerModo('mayor', 'matematicas', 'geometria')).toBeNull()
+  })
+
+  it('para "pequeno" busca directamente en MODOS_PEQUE, ignorando la asignatura', () => {
+    expect(obtenerModo('pequeno', null, 'sumas')).toBe(MODOS_PEQUE.sumas)
   })
 })

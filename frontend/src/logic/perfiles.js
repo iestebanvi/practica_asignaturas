@@ -13,27 +13,7 @@ export const PERFILES = {
   },
 }
 
-// El perfil "mayor" elige, en una pantalla aparte, entre practicar solo
-// aritmética o solo problemas de enunciado (no se mezclan entre sí).
-export const MODOS_MAYOR = {
-  aritmetica: {
-    id: 'aritmetica',
-    nombre: 'Aritmética',
-    operaciones: ['suma', 'resta', 'multiplicacion', 'division'],
-  },
-  problemas: {
-    id: 'problemas',
-    nombre: 'Problemas',
-    operaciones: ['problema'],
-  },
-  vocabulario: {
-    id: 'vocabulario',
-    nombre: 'Vocabulario',
-    operaciones: ['vocabulario'],
-  },
-}
-
-// El perfil "pequeño" también elige entre sumas o restas por separado:
+// El perfil "pequeño" elige entre sumas, restas u horas por separado:
 // todavía no domina bien la resta, así que no conviene mezclarlas.
 export const MODOS_PEQUE = {
   sumas: {
@@ -53,7 +33,41 @@ export const MODOS_PEQUE = {
   },
 }
 
-export const MODOS_POR_PERFIL = {
-  pequeno: MODOS_PEQUE,
-  mayor: MODOS_MAYOR,
+// El perfil "mayor" elige primero la asignatura y luego el modo dentro de
+// ella (p.ej. Matemáticas -> Aritmética/Problemas, Inglés -> Vocabulario).
+export const ASIGNATURAS_MAYOR = {
+  matematicas: {
+    id: 'matematicas',
+    nombre: 'Matemáticas',
+    modos: {
+      aritmetica: {
+        id: 'aritmetica',
+        nombre: 'Aritmética',
+        operaciones: ['suma', 'resta', 'multiplicacion', 'division'],
+      },
+      problemas: {
+        id: 'problemas',
+        nombre: 'Problemas',
+        operaciones: ['problema'],
+      },
+    },
+  },
+  ingles: {
+    id: 'ingles',
+    nombre: 'Inglés',
+    modos: {
+      vocabulario: {
+        id: 'vocabulario',
+        nombre: 'Vocabulario',
+        operaciones: ['vocabulario'],
+      },
+    },
+  },
+}
+
+export function obtenerModo(perfilId, asignaturaId, modoId) {
+  if (perfilId === 'mayor') {
+    return ASIGNATURAS_MAYOR[asignaturaId]?.modos?.[modoId] ?? null
+  }
+  return MODOS_PEQUE[modoId] ?? null
 }

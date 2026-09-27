@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { generarEjercicioParaPerfil, comprobarRespuesta } from '../logic/ejercicios.js'
-import { PERFILES, MODOS_POR_PERFIL } from '../logic/perfiles.js'
+import { PERFILES, ASIGNATURAS_MAYOR, obtenerModo } from '../logic/perfiles.js'
 import Reloj from '../components/Reloj.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
@@ -15,13 +15,18 @@ function elegirCelebracion() {
   return CELEBRACIONES[Math.floor(Math.random() * CELEBRACIONES.length)]
 }
 
-export default function Practica({ perfilId, modo, onFinalizar }) {
+export default function Practica({ perfilId, asignatura, modo, onFinalizar }) {
   const perfilBase = PERFILES[perfilId]
   const esPeque = perfilId === 'pequeno'
-  const modoActual = MODOS_POR_PERFIL[perfilId]?.[modo] ?? null
+  const modoActual = obtenerModo(perfilId, asignatura, modo)
   const operaciones = modoActual ? modoActual.operaciones : perfilBase.operaciones
   const nivel = perfilBase.nivel
-  const nombreMostrado = modoActual ? `${perfilBase.nombre} · ${modoActual.nombre}` : perfilBase.nombre
+  const asignaturaActual = perfilId === 'mayor' ? ASIGNATURAS_MAYOR[asignatura] : null
+  const nombreMostrado = asignaturaActual
+    ? `${asignaturaActual.nombre} · ${modoActual.nombre}`
+    : modoActual
+      ? `${perfilBase.nombre} · ${modoActual.nombre}`
+      : perfilBase.nombre
   const tipoBanco = operaciones.find((op) => op in ENDPOINTS_BANCO)
   const necesitaBanco = Boolean(tipoBanco)
   const clasePantalla = `pantalla practica${esPeque ? ' peque' : ''}`

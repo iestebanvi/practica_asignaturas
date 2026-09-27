@@ -7,7 +7,7 @@ import {
   generarEjercicioDesdeBanco,
   generarEjercicioParaPerfil,
 } from './ejercicios.js'
-import { PERFILES, MODOS_MAYOR } from './perfiles.js'
+import { PERFILES, ASIGNATURAS_MAYOR } from './perfiles.js'
 
 describe('generarEjercicio', () => {
   it('genera un ejercicio del tipo pedido', () => {
@@ -103,7 +103,7 @@ describe('generarEjercicioParaPerfil', () => {
       { ingles: 'DINNER', catalan: 'sopar' },
       { ingles: 'STREET', catalan: 'carrer' },
     ]
-    const ej = generarEjercicioParaPerfil(MODOS_MAYOR.vocabulario, banco)
+    const ej = generarEjercicioParaPerfil(ASIGNATURAS_MAYOR.ingles.modos.vocabulario, banco)
     expect(ej.tipo).toBe('vocabulario')
     expect(banco.some((p) => p.ingles === ej.enunciado && p.catalan === ej.respuesta)).toBe(true)
   })
