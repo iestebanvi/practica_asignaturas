@@ -11,14 +11,31 @@ describe('generarSuma', () => {
     }
   })
 
-  it('respeta el rango máximo del nivel', () => {
+  it('en nivel medio/difícil respeta el rango máximo del nivel', () => {
     for (let i = 0; i < 100; i++) {
-      const ej = generarSuma('facil')
+      const ej = generarSuma('medio')
       const [a, b] = ej.enunciado.split(' + ').map(Number)
       expect(a).toBeGreaterThanOrEqual(0)
-      expect(a).toBeLessThanOrEqual(10)
+      expect(a).toBeLessThanOrEqual(20)
       expect(b).toBeGreaterThanOrEqual(0)
-      expect(b).toBeLessThanOrEqual(10)
+      expect(b).toBeLessThanOrEqual(20)
+    }
+  })
+
+  it('en nivel fácil (Peque) el resultado nunca supera 12', () => {
+    for (let i = 0; i < 100; i++) {
+      const ej = generarSuma('facil')
+      expect(ej.respuesta).toBeGreaterThanOrEqual(1)
+      expect(ej.respuesta).toBeLessThanOrEqual(12)
+    }
+  })
+
+  it('en nivel fácil (Peque) el número más grande va siempre en primera posición', () => {
+    for (let i = 0; i < 100; i++) {
+      const ej = generarSuma('facil')
+      const [primero, segundo] = ej.enunciado.split(' + ').map(Number)
+      expect(primero).toBeGreaterThanOrEqual(segundo)
+      expect(primero + segundo).toBe(ej.respuesta)
     }
   })
 })
