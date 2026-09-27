@@ -5,6 +5,7 @@ import { generarMultiplicacion } from './multiplicaciones.js'
 import { generarDivision } from './divisiones.js'
 import { generarHora } from './horas.js'
 import { generarVocabulario } from './vocabulario.js'
+import { generarGramatica } from './gramatica.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -16,7 +17,7 @@ const GENERADORES = {
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
 // en vez de como número (input numérico).
-const TIPOS_RESPUESTA_TEXTO = ['hora', 'vocabulario']
+const TIPOS_RESPUESTA_TEXTO = ['hora', 'vocabulario', 'gramatica']
 
 export function generarEjercicio(operacion, nivel = 'facil') {
   const generador = GENERADORES[operacion]
@@ -40,12 +41,14 @@ export function comprobarRespuesta(ejercicio, respuestaUsuario) {
 
 const PUNTOS_PROBLEMA = 20
 
-// Algunos tipos ('problema', 'vocabulario') no se generan: se eligen de un
-// banco curado que llega del backend. Si el banco aún no ha cargado, se
-// descarta esa opción para no bloquear el juego.
+// Algunos tipos ('problema', 'vocabulario', 'gramatica') no se generan: se
+// eligen de un banco curado que llega del backend. Si el banco aún no ha
+// cargado (o todavía no tiene contenido), se descarta esa opción para no
+// bloquear el juego.
 const GENERADORES_DESDE_BANCO = {
   problema: generarEjercicioDesdeBanco,
   vocabulario: generarVocabulario,
+  gramatica: generarGramatica,
 }
 
 export function elegirTipoOperacion(operaciones, banco = []) {

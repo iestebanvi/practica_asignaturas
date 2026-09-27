@@ -61,6 +61,11 @@ export const ASIGNATURAS_MAYOR = {
         nombre: 'Vocabulario',
         operaciones: ['vocabulario'],
       },
+      gramatica: {
+        id: 'gramatica',
+        nombre: 'Gramática',
+        operaciones: ['gramatica'],
+      },
     },
   },
 }

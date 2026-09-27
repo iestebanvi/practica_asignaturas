@@ -107,6 +107,19 @@ describe('generarEjercicioParaPerfil', () => {
     expect(ej.tipo).toBe('vocabulario')
     expect(banco.some((p) => p.ingles === ej.enunciado && p.catalan === ej.respuesta)).toBe(true)
   })
+
+  it('genera gramática a partir del banco de ejercicios', () => {
+    const banco = [
+      {
+        enunciado: 'Yesterday I ___ to the park.',
+        opciones: ['go', 'went', 'gone', 'going'],
+        respuesta: 'went',
+      },
+    ]
+    const ej = generarEjercicioParaPerfil(ASIGNATURAS_MAYOR.ingles.modos.gramatica, banco)
+    expect(ej.tipo).toBe('gramatica')
+    expect(ej.respuesta).toBe('went')
+  })
 })
 
 describe('comprobarRespuesta', () => {

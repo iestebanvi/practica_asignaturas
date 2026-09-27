@@ -5,17 +5,19 @@ import Reloj from '../components/Reloj.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
 const TIPOS_SIN_ENUNCIADO = ['problema', 'hora']
-const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario']
+const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica']
+const TIPOS_ENUNCIADO_TEXTO = ['vocabulario', 'gramatica']
 const ENDPOINTS_BANCO = {
   problema: '/api/problemas',
   vocabulario: '/api/vocabulario',
+  gramatica: '/api/gramatica',
 }
 
 function elegirCelebracion() {
   return CELEBRACIONES[Math.floor(Math.random() * CELEBRACIONES.length)]
 }
 
-export default function Practica({ perfilId, asignatura, modo, onFinalizar }) {
+export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVolver }) {
   const perfilBase = PERFILES[perfilId]
   const esPeque = perfilId === 'pequeno'
   const modoActual = obtenerModo(perfilId, asignatura, modo)
@@ -63,7 +65,7 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar }) {
   }, [])
 
   useEffect(() => {
-    if (bancoListo && ejercicio === null) {
+    if (bancoListo && banco.length > 0 && ejercicio === null) {
       setEjercicio(generarEjercicioParaPerfil({ operaciones, nivel }, banco))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,6 +120,24 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar }) {
       <div className={clasePantalla}>
         <p>No se han podido cargar los datos.</p>
         <button onClick={cargarBanco}>Reintentar</button>
+        {onVolver && (
+          <button className="finalizar" onClick={onVolver}>
+            ← Volver
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  if (necesitaBanco && bancoListo && banco.length === 0) {
+    return (
+      <div className={clasePantalla}>
+        <p>Todavía no hay ejercicios de {modoActual.nombre.toLowerCase()}. ¡Vuelve pronto!</p>
+        {onVolver && (
+          <button className="finalizar" onClick={onVolver}>
+            ← Volver
+          </button>
+        )}
       </div>
     )
   }
@@ -132,7 +152,8 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar }) {
 
   const esProblema = ejercicio.tipo === 'problema'
   const esHora = ejercicio.tipo === 'hora'
-  const esVocabulario = ejercicio.tipo === 'vocabulario'
+  const esOpcionMultiple = TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)
+  const esEnunciadoTexto = TIPOS_ENUNCIADO_TEXTO.includes(ejercicio.tipo)
   const sinEnunciado = TIPOS_SIN_ENUNCIADO.includes(ultimoIntento?.tipo)
 
   return (
@@ -155,9 +176,9 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar }) {
       )}
 
       {esHora && <Reloj hora={ejercicio.hora} minuto={ejercicio.minuto} />}
-      {esVocabulario && <p className="enunciado enunciado-vocabulario">{ejercicio.enunciado}</p>}
+      {esEnunciadoTexto && <p className="enunciado enunciado-texto">{ejercicio.enunciado}</p>}
 
-      {esHora || esVocabulario ? (
+      {esOpcionMultiple ? (
         <div className="opciones">
           {ejercicio.opciones.map((opcion) => (
             <button key={opcion} onClick={() => procesarRespuesta(opcion)} disabled={feedback !== null}>

@@ -25,6 +25,8 @@
   --color-vocabulario-sombra: #1a237e;
   --color-ingles: #ef5350;
   --color-ingles-sombra: #c62828;
+  --color-gramatica: #fb8c00;
+  --color-gramatica-sombra: #e65100;
 }
 
 html {
@@ -137,6 +139,11 @@ button:active {
 .modo-vocabulario {
   background: var(--color-vocabulario);
   --sombra: var(--color-vocabulario-sombra);
+}
+
+.modo-gramatica {
+  background: var(--color-gramatica);
+  --sombra: var(--color-gramatica-sombra);
 }
 
 .asignatura-matematicas {
@@ -334,7 +341,7 @@ button:active {
   line-height: 1.5;
 }
 
-.enunciado-vocabulario {
+.enunciado-texto {
   font-size: 2.1rem;
   line-height: 1.3;
 }

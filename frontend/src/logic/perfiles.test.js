@@ -7,8 +7,9 @@ describe('ASIGNATURAS_MAYOR', () => {
     expect(ASIGNATURAS_MAYOR.matematicas.modos.problemas.operaciones).toEqual(['problema'])
   })
 
-  it('Inglés incluye el modo vocabulario', () => {
+  it('Inglés incluye los modos vocabulario y gramática', () => {
     expect(ASIGNATURAS_MAYOR.ingles.modos.vocabulario.operaciones).toEqual(['vocabulario'])
+    expect(ASIGNATURAS_MAYOR.ingles.modos.gramatica.operaciones).toEqual(['gramatica'])
   })
 })
 

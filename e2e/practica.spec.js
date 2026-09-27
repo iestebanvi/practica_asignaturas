@@ -61,6 +61,13 @@ async function entrarEnVocabulario(page) {
   await page.getByRole('button', { name: 'Vocabulario' }).click()
 }
 
+async function entrarEnGramatica(page) {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Inglés' }).click()
+  await page.getByRole('button', { name: 'Gramática' }).click()
+}
+
 async function entrarEnPeque(page, modoNombre) {
   await page.goto('/')
   await page.getByRole('button', { name: /Peque/ }).click()
@@ -273,5 +280,15 @@ test.describe('Practica Asignaturas', () => {
     await expect(page.locator('.anterior')).toHaveText(
       `Anterior: ${palabra} = ${correcta} ✗ (pusiste ${incorrecta})`,
     )
+  })
+
+  test('modo Gramática: sin contenido todavía, muestra un aviso en vez de romperse', async ({ page }) => {
+    await entrarEnGramatica(page)
+
+    await expect(page.getByText('Todavía no hay ejercicios de gramática')).toBeVisible()
+    await expect(page.locator('.enunciado')).toHaveCount(0)
+
+    await page.getByRole('button', { name: '← Volver' }).click()
+    await expect(page.getByRole('button', { name: 'Vocabulario' })).toBeVisible()
   })
 })

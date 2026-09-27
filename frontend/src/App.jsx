@@ -45,6 +45,10 @@ function App() {
     setPantalla('asignatura')
   }
 
+  function volverAModo() {
+    setPantalla('modo')
+  }
+
   return (
     <div className="app">
       {pantalla === 'home' && <Home onSeleccionarPerfil={seleccionarPerfil} />}
@@ -65,6 +69,7 @@ function App() {
           asignatura={asignatura}
           modo={modo}
           onFinalizar={finalizarSesion}
+          onVolver={perfilId === 'mayor' ? volverAModo : volverAlInicio}
         />
       )}
       {pantalla === 'resumen' && (
