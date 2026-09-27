@@ -11,6 +11,9 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': apiProxyTarget
       }
+    },
+    test: {
+      environment: 'jsdom'
     }
   }
 })

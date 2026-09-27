@@ -291,4 +291,49 @@ test.describe('Practica Asignaturas', () => {
     await page.getByRole('button', { name: '← Volver' }).click()
     await expect(page.getByRole('button', { name: 'Vocabulario' })).toBeVisible()
   })
+
+  test('un fallo de vocabulario se guarda en "Para repasar"', async ({ page }) => {
+    await entrarEnVocabulario(page)
+
+    const palabra = await page.locator('.enunciado').innerText()
+    const correcta = traduccionesVocabulario.get(palabra)
+    const opciones = await page.locator('.opciones button').allInnerTexts()
+    const incorrecta = opciones.find((o) => o !== correcta)
+
+    await page.getByRole('button', { name: incorrecta, exact: true }).click()
+    await expect(page.locator('.feedback.incorrecto')).toBeVisible()
+
+    await page.getByRole('button', { name: 'Finalizar' }).click()
+    await page.getByRole('button', { name: /Para repasar/ }).click()
+
+    await expect(page.locator('.lista-repasar li')).toHaveCount(1)
+    await expect(page.locator('.repasar-enunciado')).toHaveText(palabra)
+    await expect(page.locator('.repasar-respuesta')).toHaveText(correcta)
+    await expect(page.locator('.repasar-veces')).toHaveText('×1')
+  })
+
+  test('"Para repasar" es accesible desde la pantalla de modo, y "Vaciar lista" borra los fallos', async ({
+    page,
+  }) => {
+    await entrarEnVocabulario(page)
+
+    const palabra = await page.locator('.enunciado').innerText()
+    const correcta = traduccionesVocabulario.get(palabra)
+    const opciones = await page.locator('.opciones button').allInnerTexts()
+    const incorrecta = opciones.find((o) => o !== correcta)
+    await page.getByRole('button', { name: incorrecta, exact: true }).click()
+    await expect(page.locator('.feedback.incorrecto')).toBeVisible()
+
+    await page.getByRole('button', { name: 'Finalizar' }).click()
+    await page.getByRole('button', { name: 'Elegir otro perfil' }).click()
+
+    // Desde la pantalla de modo (sin jugar) también se accede a "Para repasar"
+    await page.getByRole('button', { name: /Mayor/ }).click()
+    await page.getByRole('button', { name: 'Inglés' }).click()
+    await page.getByRole('button', { name: /Para repasar/ }).click()
+    await expect(page.locator('.lista-repasar li')).toHaveCount(1)
+
+    await page.getByRole('button', { name: 'Vaciar lista' }).click()
+    await expect(page.getByText('¡Todavía no has fallado nada!')).toBeVisible()
+  })
 })

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { generarEjercicioParaPerfil, comprobarRespuesta } from '../logic/ejercicios.js'
 import { PERFILES, ASIGNATURAS_MAYOR, obtenerModo } from '../logic/perfiles.js'
+import { registrarFallo } from '../logic/fallos.js'
 import Reloj from '../components/Reloj.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
@@ -95,6 +96,9 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
     } else {
       setFallos((f) => f + 1)
       setFeedback('incorrecto')
+      if (TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)) {
+        registrarFallo(perfilId, ejercicio)
+      }
     }
 
     setTimeout(() => {

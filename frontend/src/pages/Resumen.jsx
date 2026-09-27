@@ -5,7 +5,7 @@ function mensajeMotivador(puntos) {
   return '¡Increíble! 🏆'
 }
 
-export default function Resumen({ resumen, perfilId, onVolver }) {
+export default function Resumen({ resumen, perfilId, onVolver, onVerRepasar }) {
   const { puntos, aciertos, fallos } = resumen
   const esPeque = perfilId === 'pequeno'
 
@@ -18,6 +18,9 @@ export default function Resumen({ resumen, perfilId, onVolver }) {
       </p>
       <p className="mensaje">{mensajeMotivador(puntos)}</p>
       <button onClick={onVolver}>Elegir otro perfil</button>
+      <button className="finalizar" onClick={onVerRepasar}>
+        📖 Para repasar
+      </button>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { PERFILES, MODOS_PEQUE, ASIGNATURAS_MAYOR } from '../logic/perfiles.js'
 
-export default function Modo({ perfilId, asignatura, onSeleccionarModo, onVolver }) {
+export default function Modo({ perfilId, asignatura, onSeleccionarModo, onVolver, onVerRepasar }) {
   const esPeque = perfilId === 'pequeno'
   const asignaturaActual = esPeque ? null : ASIGNATURAS_MAYOR[asignatura]
   const modos = esPeque ? MODOS_PEQUE : asignaturaActual.modos
@@ -21,6 +21,9 @@ export default function Modo({ perfilId, asignatura, onSeleccionarModo, onVolver
           </button>
         ))}
       </div>
+      <button className="finalizar" onClick={onVerRepasar}>
+        📖 Para repasar
+      </button>
       <button className="finalizar" onClick={onVolver}>
         ← Volver
       </button>

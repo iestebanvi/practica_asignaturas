@@ -4,6 +4,7 @@ import Asignatura from './pages/Asignatura.jsx'
 import Modo from './pages/Modo.jsx'
 import Practica from './pages/Practica.jsx'
 import Resumen from './pages/Resumen.jsx'
+import ParaRepasar from './pages/ParaRepasar.jsx'
 
 function App() {
   const [pantalla, setPantalla] = useState('home')
@@ -49,6 +50,10 @@ function App() {
     setPantalla('modo')
   }
 
+  function verRepasar() {
+    setPantalla('repasar')
+  }
+
   return (
     <div className="app">
       {pantalla === 'home' && <Home onSeleccionarPerfil={seleccionarPerfil} />}
@@ -61,6 +66,7 @@ function App() {
           asignatura={asignatura}
           onSeleccionarModo={seleccionarModo}
           onVolver={perfilId === 'mayor' ? volverAAsignatura : volverAlInicio}
+          onVerRepasar={verRepasar}
         />
       )}
       {pantalla === 'practica' && (
@@ -73,8 +79,14 @@ function App() {
         />
       )}
       {pantalla === 'resumen' && (
-        <Resumen resumen={resumen} perfilId={perfilId} onVolver={volverAlInicio} />
+        <Resumen
+          resumen={resumen}
+          perfilId={perfilId}
+          onVolver={volverAlInicio}
+          onVerRepasar={verRepasar}
+        />
       )}
+      {pantalla === 'repasar' && <ParaRepasar perfilId={perfilId} onVolver={volverAlInicio} />}
     </div>
   )
 }
