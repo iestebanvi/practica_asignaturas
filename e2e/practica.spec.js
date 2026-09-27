@@ -73,7 +73,7 @@ async function leerHoraCorrecta(page) {
   return `${hora}:${minuto.padStart(2, '0')}`
 }
 
-test.describe('Practica Mates', () => {
+test.describe('Practica Asignaturas', () => {
   test('Peque se muestra todo en mayúsculas; Mayor no', async ({ page }) => {
     await entrarEnPeque(page, 'Sumas')
     await expect(page.locator('.pantalla')).toHaveCSS('text-transform', 'uppercase')
