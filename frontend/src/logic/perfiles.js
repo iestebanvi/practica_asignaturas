@@ -45,6 +45,16 @@ export const ASIGNATURAS_MAYOR = {
         nombre: 'Aritmética',
         operaciones: ['suma', 'resta', 'multiplicacion', 'division'],
       },
+      sumasRestas: {
+        id: 'sumas-restas',
+        nombre: 'Sumas y restas',
+        operaciones: ['suma', 'resta'],
+      },
+      multiplicacionesDivisiones: {
+        id: 'multiplicaciones-divisiones',
+        nombre: 'Multiplicaciones y divisiones',
+        operaciones: ['multiplicacion', 'division'],
+      },
       problemas: {
         id: 'problemas',
         nombre: 'Problemas',
@@ -61,6 +71,11 @@ export const ASIGNATURAS_MAYOR = {
         nombre: 'Vocabulario',
         operaciones: ['vocabulario'],
       },
+      vocabularioEscrito: {
+        id: 'vocabulario-escrito',
+        nombre: 'Vocabulario escrito',
+        operaciones: ['vocabulario-escrito'],
+      },
       gramatica: {
         id: 'gramatica',
         nombre: 'Gramática',
@@ -70,9 +85,11 @@ export const ASIGNATURAS_MAYOR = {
   },
 }
 
+// Busca por el campo "id" (no por la clave del objeto): así da igual cómo se
+// nombren las claves internas (p.ej. "sumasRestas" con id "sumas-restas"),
+// evita que un desajuste entre clave e id deje la pantalla en blanco.
 export function obtenerModo(perfilId, asignaturaId, modoId) {
-  if (perfilId === 'mayor') {
-    return ASIGNATURAS_MAYOR[asignaturaId]?.modos?.[modoId] ?? null
-  }
-  return MODOS_PEQUE[modoId] ?? null
+  const modos = perfilId === 'mayor' ? ASIGNATURAS_MAYOR[asignaturaId]?.modos : MODOS_PEQUE
+  if (!modos) return null
+  return Object.values(modos).find((modo) => modo.id === modoId) ?? null
 }

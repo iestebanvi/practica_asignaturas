@@ -2,15 +2,19 @@ import { useEffect, useRef, useState } from 'react'
 import { generarEjercicioParaPerfil, comprobarRespuesta } from '../logic/ejercicios.js'
 import { PERFILES, ASIGNATURAS_MAYOR, obtenerModo } from '../logic/perfiles.js'
 import { registrarFallo } from '../logic/fallos.js'
+import { pronunciar } from '../logic/audio.js'
 import Reloj from '../components/Reloj.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
 const TIPOS_SIN_ENUNCIADO = ['problema', 'hora']
 const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica']
-const TIPOS_ENUNCIADO_TEXTO = ['vocabulario', 'gramatica']
+const TIPOS_ESCRITOS = ['vocabulario-escrito']
+const TIPOS_ENUNCIADO_TEXTO = ['vocabulario', 'gramatica', 'vocabulario-escrito']
+const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 const ENDPOINTS_BANCO = {
   problema: '/api/problemas',
   vocabulario: '/api/vocabulario',
+  'vocabulario-escrito': '/api/vocabulario',
   gramatica: '/api/gramatica',
 }
 
@@ -96,7 +100,7 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
     } else {
       setFallos((f) => f + 1)
       setFeedback('incorrecto')
-      if (TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)) {
+      if (TIPOS_CON_REGISTRO_FALLOS.includes(ejercicio.tipo)) {
         registrarFallo(perfilId, ejercicio)
       }
     }
@@ -157,8 +161,13 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
   const esProblema = ejercicio.tipo === 'problema'
   const esHora = ejercicio.tipo === 'hora'
   const esOpcionMultiple = TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)
+  const esEscrito = TIPOS_ESCRITOS.includes(ejercicio.tipo)
   const esEnunciadoTexto = TIPOS_ENUNCIADO_TEXTO.includes(ejercicio.tipo)
   const sinEnunciado = TIPOS_SIN_ENUNCIADO.includes(ultimoIntento?.tipo)
+  // El audio solo suena cuando el inglés ya es visible: siempre en el enunciado
+  // mostrado, o tras responder (para no chivar la respuesta en modo escrito).
+  const puedeEscucharAhora =
+    ejercicio.ingles && (ejercicio.enunciado === ejercicio.ingles || feedback !== null)
 
   return (
     <div className={clasePantalla}>
@@ -182,6 +191,18 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
       {esHora && <Reloj hora={ejercicio.hora} minuto={ejercicio.minuto} />}
       {esEnunciadoTexto && <p className="enunciado enunciado-texto">{ejercicio.enunciado}</p>}
 
+      {puedeEscucharAhora && (
+        <button type="button" className="boton-audio" onClick={() => pronunciar(ejercicio.ingles)}>
+          🔊 Escuchar
+        </button>
+      )}
+
+      {esEscrito && (
+        <p className="instruccion">
+          Escribe la palabra en {ejercicio.direccion === 'ingles' ? 'inglés' : 'catalán'}:
+        </p>
+      )}
+
       {esOpcionMultiple ? (
         <div className="opciones">
           {ejercicio.opciones.map((opcion) => (
@@ -190,6 +211,24 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
             </button>
           ))}
         </div>
+      ) : esEscrito ? (
+        <form onSubmit={comprobar} className="ejercicio">
+          <input
+            ref={inputRef}
+            type="text"
+            autoComplete="off"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck="false"
+            className={feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''}
+            value={respuesta}
+            onChange={(e) => setRespuesta(e.target.value)}
+            disabled={feedback !== null}
+          />
+          <button type="submit" disabled={feedback !== null}>
+            Comprobar
+          </button>
+        </form>
       ) : (
         <form onSubmit={comprobar} className="ejercicio">
           <p className={`enunciado${esProblema ? ' enunciado-problema' : ''}`}>

@@ -58,7 +58,29 @@ async function entrarEnVocabulario(page) {
   await page.goto('/')
   await page.getByRole('button', { name: /Mayor/ }).click()
   await page.getByRole('button', { name: 'Inglés' }).click()
-  await page.getByRole('button', { name: 'Vocabulario' }).click()
+  // exact:true porque también existe el botón "Vocabulario escrito"
+  await page.getByRole('button', { name: 'Vocabulario', exact: true }).click()
+}
+
+async function entrarEnVocabularioEscrito(page) {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Inglés' }).click()
+  await page.getByRole('button', { name: 'Vocabulario escrito' }).click()
+}
+
+async function entrarEnSumasRestas(page) {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Matemáticas' }).click()
+  await page.getByRole('button', { name: 'Sumas y restas' }).click()
+}
+
+async function entrarEnMultiplicacionesDivisiones(page) {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Matemáticas' }).click()
+  await page.getByRole('button', { name: 'Multiplicaciones y divisiones' }).click()
 }
 
 async function entrarEnGramatica(page) {
@@ -289,7 +311,7 @@ test.describe('Practica Asignaturas', () => {
     await expect(page.locator('.enunciado')).toHaveCount(0)
 
     await page.getByRole('button', { name: '← Volver' }).click()
-    await expect(page.getByRole('button', { name: 'Vocabulario' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Vocabulario', exact: true })).toBeVisible()
   })
 
   test('un fallo de vocabulario se guarda en "Para repasar"', async ({ page }) => {
@@ -335,5 +357,79 @@ test.describe('Practica Asignaturas', () => {
 
     await page.getByRole('button', { name: 'Vaciar lista' }).click()
     await expect(page.getByText('¡Todavía no has fallado nada!')).toBeVisible()
+  })
+
+  test('Matemáticas - Sumas y restas: nunca genera multiplicaciones ni divisiones', async ({ page }) => {
+    await entrarEnSumasRestas(page)
+    const enunciado = await page.locator('.enunciado').innerText()
+    expect(enunciado).toMatch(/[+-]/)
+    expect(enunciado).not.toMatch(/[×÷]/)
+  })
+
+  test('Matemáticas - Multiplicaciones y divisiones: nunca genera sumas ni restas', async ({ page }) => {
+    await entrarEnMultiplicacionesDivisiones(page)
+    const enunciado = await page.locator('.enunciado').innerText()
+    expect(enunciado).toMatch(/[×÷]/)
+    expect(enunciado).not.toMatch(/[+-]/)
+  })
+
+  test('Vocabulario (selección): el botón de audio está disponible junto a la palabra en inglés', async ({
+    page,
+  }) => {
+    await entrarEnVocabulario(page)
+    await expect(page.locator('.boton-audio')).toBeVisible()
+  })
+
+  test('Vocabulario: el botón de audio no rompe la página al pulsarlo', async ({ page }) => {
+    const erroresConsola = []
+    page.on('pageerror', (e) => erroresConsola.push(e.message))
+
+    await entrarEnVocabulario(page)
+    await page.locator('.boton-audio').click()
+    await page.waitForTimeout(200)
+
+    expect(erroresConsola).toEqual([])
+  })
+
+  test('Vocabulario escrito: pide a veces inglés y a veces catalán, y acepta mayúsculas/minúsculas distintas', async ({
+    page,
+  }) => {
+    await entrarEnVocabularioEscrito(page)
+
+    const instruccion = await page.locator('.instruccion').innerText()
+    const pideIngles = instruccion.includes('inglés')
+    const enunciado = await page.locator('.enunciado').innerText()
+
+    const primeraAlternativa = (texto) => texto.split(',')[0].trim()
+    const entrada = pideIngles
+      ? bancoVocabulario.find((p) => p.catalan === enunciado)
+      : bancoVocabulario.find((p) => p.ingles === enunciado)
+    const respuesta = pideIngles
+      ? primeraAlternativa(entrada.ingles).toLowerCase()
+      : primeraAlternativa(entrada.catalan).toUpperCase()
+
+    // Antes de responder, el audio solo debe estar si el inglés ya es visible
+    // (es decir, si NO toca escribirlo)
+    await expect(page.locator('.boton-audio')).toHaveCount(pideIngles ? 0 : 1)
+
+    await page.locator('input[type="text"]').fill(respuesta)
+    await page.getByRole('button', { name: 'Comprobar' }).click()
+
+    await expect(page.locator('.feedback.correcto')).toBeVisible()
+    await expect(page.locator('.puntos')).toHaveText('⭐ 15')
+    // Tras responder, el audio ya está disponible siempre (el inglés queda revelado)
+    await expect(page.locator('.boton-audio')).toBeVisible()
+  })
+
+  test('Vocabulario escrito: un fallo también se guarda en "Para repasar"', async ({ page }) => {
+    await entrarEnVocabularioEscrito(page)
+
+    await page.locator('input[type="text"]').fill('xxxxxxxx')
+    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await expect(page.locator('.feedback.incorrecto')).toBeVisible()
+
+    await page.getByRole('button', { name: 'Finalizar' }).click()
+    await page.getByRole('button', { name: /Para repasar/ }).click()
+    await expect(page.locator('.lista-repasar li')).toHaveCount(1)
   })
 })

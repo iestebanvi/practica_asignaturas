@@ -27,6 +27,12 @@
   --color-ingles-sombra: #c62828;
   --color-gramatica: #fb8c00;
   --color-gramatica-sombra: #e65100;
+  --color-vocabulario-escrito: #00897b;
+  --color-vocabulario-escrito-sombra: #00695c;
+  --color-sumas-restas: #00acc1;
+  --color-sumas-restas-sombra: #00838f;
+  --color-mult-div: #5e35b1;
+  --color-mult-div-sombra: #311b92;
 }
 
 html {
@@ -144,6 +150,21 @@ button:active {
 .modo-gramatica {
   background: var(--color-gramatica);
   --sombra: var(--color-gramatica-sombra);
+}
+
+.modo-vocabulario-escrito {
+  background: var(--color-vocabulario-escrito);
+  --sombra: var(--color-vocabulario-escrito-sombra);
+}
+
+.modo-sumas-restas {
+  background: var(--color-sumas-restas);
+  --sombra: var(--color-sumas-restas-sombra);
+}
+
+.modo-multiplicaciones-divisiones {
+  background: var(--color-mult-div);
+  --sombra: var(--color-mult-div-sombra);
 }
 
 .asignatura-matematicas {
@@ -344,6 +365,20 @@ button:active {
 .enunciado-texto {
   font-size: 2.1rem;
   line-height: 1.3;
+}
+
+.boton-audio {
+  background: var(--color-mayor);
+  --sombra: var(--color-mayor-sombra);
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.instruccion {
+  font-size: 0.95rem;
+  color: #757575;
+  margin: 0 0 0.75rem;
 }
 
 .ejercicio input {

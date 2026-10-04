@@ -120,6 +120,13 @@ describe('generarEjercicioParaPerfil', () => {
     expect(ej.tipo).toBe('gramatica')
     expect(ej.respuesta).toBe('went')
   })
+
+  it('genera vocabulario escrito a partir del banco de palabras', () => {
+    const banco = [{ ingles: 'BREAKFAST', catalan: 'esmorzar' }]
+    const ej = generarEjercicioParaPerfil(ASIGNATURAS_MAYOR.ingles.modos.vocabularioEscrito, banco)
+    expect(ej.tipo).toBe('vocabulario-escrito')
+    expect(ej.ingles).toBe('BREAKFAST')
+  })
 })
 
 describe('comprobarRespuesta', () => {
@@ -145,5 +152,19 @@ describe('comprobarRespuesta', () => {
     const ejercicioVocab = { tipo: 'vocabulario', enunciado: 'BREAKFAST', respuesta: 'esmorzar' }
     expect(comprobarRespuesta(ejercicioVocab, 'esmorzar')).toBe(true)
     expect(comprobarRespuesta(ejercicioVocab, 'dinar')).toBe(false)
+  })
+
+  it('para el tipo "vocabulario-escrito" compara de forma tolerante (sin acentos, mayúsculas...)', () => {
+    const ejercicioEscrito = {
+      tipo: 'vocabulario-escrito',
+      enunciado: 'esmorzar',
+      respuesta: 'BREAKFAST',
+    }
+    expect(comprobarRespuesta(ejercicioEscrito, 'breakfast')).toBe(true)
+    expect(comprobarRespuesta(ejercicioEscrito, 'Breakfast')).toBe(true)
+    expect(comprobarRespuesta(ejercicioEscrito, 'lunch')).toBe(false)
+
+    const ejercicioConTo = { tipo: 'vocabulario-escrito', enunciado: 'ser o estar', respuesta: 'BE (TO)' }
+    expect(comprobarRespuesta(ejercicioConTo, 'be')).toBe(true)
   })
 })

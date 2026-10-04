@@ -1,10 +1,10 @@
-import { randomInt } from './common.js'
+import { randomInt, respuestaCoincide } from './common.js'
 import { generarSuma } from './sumas.js'
 import { generarResta } from './restas.js'
 import { generarMultiplicacion } from './multiplicaciones.js'
 import { generarDivision } from './divisiones.js'
 import { generarHora } from './horas.js'
-import { generarVocabulario } from './vocabulario.js'
+import { generarVocabulario, generarVocabularioEscrito } from './vocabulario.js'
 import { generarGramatica } from './gramatica.js'
 
 const GENERADORES = {
@@ -33,6 +33,9 @@ export function generarEjercicioAleatorio(operaciones, nivel = 'facil') {
 }
 
 export function comprobarRespuesta(ejercicio, respuestaUsuario) {
+  if (ejercicio.tipo === 'vocabulario-escrito') {
+    return respuestaCoincide(ejercicio.respuesta, respuestaUsuario)
+  }
   if (TIPOS_RESPUESTA_TEXTO.includes(ejercicio.tipo)) {
     return respuestaUsuario === ejercicio.respuesta
   }
@@ -48,6 +51,7 @@ const PUNTOS_PROBLEMA = 20
 const GENERADORES_DESDE_BANCO = {
   problema: generarEjercicioDesdeBanco,
   vocabulario: generarVocabulario,
+  'vocabulario-escrito': generarVocabularioEscrito,
   gramatica: generarGramatica,
 }
 
