@@ -373,27 +373,30 @@ test.describe('Practica Asignaturas', () => {
     expect(enunciado).not.toMatch(/[+-]/)
   })
 
-  test('Vocabulario (selección): el botón de audio está disponible junto a la palabra en inglés', async ({
+  test('Vocabulario (selección): al responder se pronuncia automáticamente la palabra en inglés', async ({
     page,
   }) => {
-    await entrarEnVocabulario(page)
-    await expect(page.locator('.boton-audio')).toBeVisible()
-  })
-
-  test('Vocabulario: el botón de audio no rompe la página al pulsarlo', async ({ page }) => {
-    const erroresConsola = []
-    page.on('pageerror', (e) => erroresConsola.push(e.message))
+    await page.addInitScript(() => {
+      window.__vozDicha = []
+      window.speechSynthesis.speak = (utterance) => window.__vozDicha.push(utterance.text)
+    })
 
     await entrarEnVocabulario(page)
-    await page.locator('.boton-audio').click()
-    await page.waitForTimeout(200)
+    const ingles = await page.locator('.enunciado').innerText()
 
-    expect(erroresConsola).toEqual([])
+    await page.locator('.opciones button').first().click()
+
+    expect(await page.evaluate(() => window.__vozDicha)).toEqual([ingles])
   })
 
-  test('Vocabulario escrito: pide a veces inglés y a veces catalán, y acepta mayúsculas/minúsculas distintas', async ({
+  test('Vocabulario escrito: pide a veces inglés y a veces catalán, acepta mayúsculas/minúsculas distintas y pronuncia el inglés al responder', async ({
     page,
   }) => {
+    await page.addInitScript(() => {
+      window.__vozDicha = []
+      window.speechSynthesis.speak = (utterance) => window.__vozDicha.push(utterance.text)
+    })
+
     await entrarEnVocabularioEscrito(page)
 
     const instruccion = await page.locator('.instruccion').innerText()
@@ -408,17 +411,14 @@ test.describe('Practica Asignaturas', () => {
       ? primeraAlternativa(entrada.ingles).toLowerCase()
       : primeraAlternativa(entrada.catalan).toUpperCase()
 
-    // Antes de responder, el audio solo debe estar si el inglés ya es visible
-    // (es decir, si NO toca escribirlo)
-    await expect(page.locator('.boton-audio')).toHaveCount(pideIngles ? 0 : 1)
-
     await page.locator('input[type="text"]').fill(respuesta)
     await page.getByRole('button', { name: 'Comprobar' }).click()
 
     await expect(page.locator('.feedback.correcto')).toBeVisible()
     await expect(page.locator('.puntos')).toHaveText('⭐ 15')
-    // Tras responder, el audio ya está disponible siempre (el inglés queda revelado)
-    await expect(page.locator('.boton-audio')).toBeVisible()
+    // El audio se dispara solo al responder (nunca antes, nunca con un botón
+    // aparte) y siempre dice el inglés, aunque esta vez tocara escribir catalán
+    expect(await page.evaluate(() => window.__vozDicha)).toEqual([entrada.ingles])
   })
 
   test('Vocabulario escrito: un fallo también se guarda en "Para repasar"', async ({ page }) => {

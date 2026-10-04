@@ -92,6 +92,8 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
       esCorrecta,
     })
 
+    if (ejercicio.ingles) pronunciar(ejercicio.ingles)
+
     if (esCorrecta) {
       setPuntos((p) => p + ejercicio.puntos)
       setAciertos((a) => a + 1)
@@ -164,10 +166,6 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
   const esEscrito = TIPOS_ESCRITOS.includes(ejercicio.tipo)
   const esEnunciadoTexto = TIPOS_ENUNCIADO_TEXTO.includes(ejercicio.tipo)
   const sinEnunciado = TIPOS_SIN_ENUNCIADO.includes(ultimoIntento?.tipo)
-  // El audio solo suena cuando el inglés ya es visible: siempre en el enunciado
-  // mostrado, o tras responder (para no chivar la respuesta en modo escrito).
-  const puedeEscucharAhora =
-    ejercicio.ingles && (ejercicio.enunciado === ejercicio.ingles || feedback !== null)
 
   return (
     <div className={clasePantalla}>
@@ -190,12 +188,6 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
 
       {esHora && <Reloj hora={ejercicio.hora} minuto={ejercicio.minuto} />}
       {esEnunciadoTexto && <p className="enunciado enunciado-texto">{ejercicio.enunciado}</p>}
-
-      {puedeEscucharAhora && (
-        <button type="button" className="boton-audio" onClick={() => pronunciar(ejercicio.ingles)}>
-          🔊 Escuchar
-        </button>
-      )}
 
       {esEscrito && (
         <p className="instruccion">
