@@ -11,6 +11,13 @@ const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica']
 const TIPOS_ESCRITOS = ['vocabulario-escrito']
 const TIPOS_ENUNCIADO_TEXTO = ['vocabulario', 'gramatica', 'vocabulario-escrito']
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
+// Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
+// "=" (operación exacta).
+const TIPOS_SIMBOLO_APROXIMADO = ['estimacion']
+
+function simboloCierre(tipo) {
+  return TIPOS_SIMBOLO_APROXIMADO.includes(tipo) ? '≈' : '='
+}
 const ENDPOINTS_BANCO = {
   problema: '/api/problemas',
   vocabulario: '/api/vocabulario',
@@ -179,10 +186,10 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
           {ultimoIntento.esCorrecta
             ? sinEnunciado
               ? 'Anterior: ✓ correcto'
-              : `Anterior: ${ultimoIntento.enunciado} = ${ultimoIntento.respuestaCorrecta} ✓`
+              : `Anterior: ${ultimoIntento.enunciado} ${simboloCierre(ultimoIntento.tipo)} ${ultimoIntento.respuestaCorrecta} ✓`
             : sinEnunciado
               ? `Anterior: ✗ tu respuesta (${ultimoIntento.respuestaDada}) — la correcta era ${ultimoIntento.respuestaCorrecta}`
-              : `Anterior: ${ultimoIntento.enunciado} = ${ultimoIntento.respuestaCorrecta} ✗ (pusiste ${ultimoIntento.respuestaDada})`}
+              : `Anterior: ${ultimoIntento.enunciado} ${simboloCierre(ultimoIntento.tipo)} ${ultimoIntento.respuestaCorrecta} ✗ (pusiste ${ultimoIntento.respuestaDada})`}
         </p>
       )}
 
@@ -225,7 +232,7 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
         <form onSubmit={comprobar} className="ejercicio">
           <p className={`enunciado${esProblema ? ' enunciado-problema' : ''}`}>
             {ejercicio.enunciado}
-            {!esProblema && ' ='}
+            {!esProblema && ` ${simboloCierre(ejercicio.tipo)}`}
           </p>
           <input
             ref={inputRef}

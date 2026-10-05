@@ -6,6 +6,8 @@ import { generarDivision } from './divisiones.js'
 import { generarHora } from './horas.js'
 import { generarVocabulario, generarVocabularioEscrito } from './vocabulario.js'
 import { generarGramatica } from './gramatica.js'
+import { generarSucesion } from './sucesiones.js'
+import { generarEstimacion } from './estimaciones.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -13,6 +15,8 @@ const GENERADORES = {
   multiplicacion: generarMultiplicacion,
   division: generarDivision,
   hora: generarHora,
+  sucesion: generarSucesion,
+  estimacion: generarEstimacion,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),

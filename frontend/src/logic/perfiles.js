@@ -60,6 +60,16 @@ export const ASIGNATURAS_MAYOR = {
         nombre: 'Problemas',
         operaciones: ['problema'],
       },
+      sucesiones: {
+        id: 'sucesiones',
+        nombre: 'Sucesiones',
+        operaciones: ['sucesion'],
+      },
+      estimaciones: {
+        id: 'estimaciones',
+        nombre: 'Estimaciones',
+        operaciones: ['estimacion'],
+      },
     },
   },
   ingles: {
