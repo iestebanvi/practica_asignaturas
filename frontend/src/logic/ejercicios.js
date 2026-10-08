@@ -8,6 +8,7 @@ import { generarVocabulario, generarVocabularioEscrito } from './vocabulario.js'
 import { generarGramatica } from './gramatica.js'
 import { generarSucesion } from './sucesiones.js'
 import { generarEstimacion } from './estimaciones.js'
+import { generarMedi } from './medi.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -21,7 +22,7 @@ const GENERADORES = {
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
 // en vez de como número (input numérico).
-const TIPOS_RESPUESTA_TEXTO = ['hora', 'vocabulario', 'gramatica']
+const TIPOS_RESPUESTA_TEXTO = ['hora', 'vocabulario', 'gramatica', 'medi-pregunta', 'medi-imatge']
 
 export function generarEjercicio(operacion, nivel = 'facil') {
   const generador = GENERADORES[operacion]
@@ -57,6 +58,7 @@ const GENERADORES_DESDE_BANCO = {
   vocabulario: generarVocabulario,
   'vocabulario-escrito': generarVocabularioEscrito,
   gramatica: generarGramatica,
+  'medi-pregunta': generarMedi,
 }
 
 export function elegirTipoOperacion(operaciones, banco = []) {

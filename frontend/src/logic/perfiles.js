@@ -93,6 +93,21 @@ export const ASIGNATURAS_MAYOR = {
       },
     },
   },
+  medi: {
+    id: 'medi',
+    nombre: 'Medi',
+    modos: {
+      canvisRelleu: {
+        id: 'canvis-relleu',
+        nombre: 'Canvis en el relleu',
+        // Un único generador ('medi-pregunta'): internamente decide si la
+        // pregunta es de texto o de imagen (ver PROBABILIDAD_IMAGEN en
+        // medi.js), para que la de imagen no salga tan a menudo como una
+        // operación aparte con el mismo peso saldría.
+        operaciones: ['medi-pregunta'],
+      },
+    },
+  },
 }
 
 // Busca por el campo "id" (no por la clave del objeto): así da igual cómo se

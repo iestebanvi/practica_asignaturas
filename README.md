@@ -91,3 +91,7 @@ URL de producción: https://practica-jungfrau.up.railway.app
 > Railway puede regenerar el dominio `.up.railway.app` en algún momento (ya ha pasado una vez sin motivo aparente). Si `make railway-smoke` da error, comprueba la URL actual en el dashboard de Railway o con `railway status --json` y actualiza este README — `railway-smoke` ya la resuelve solo, no hace falta tocar el Makefile.
 
 No requiere base de datos ni variables de entorno adicionales: Railway inyecta `PORT` y el servidor ya lo respeta. El paquete de GHCR es público, así que Railway no necesita ninguna credencial de registro para poder descargarlo.
+
+## Créditos
+
+- `frontend/public/diagrames/volcan.svg`: adaptado de ["Stratovolcano cross-section"](https://commons.wikimedia.org/wiki/File:Stratovolcano_cross-section.svg) de Woudloper (Wikimedia Commons), licencia CC BY-SA 3.0 / GFDL. Se le ha quitado la capa de etiquetas (A-H) del original para poder usarlo en las preguntas de "¿cómo se llama esta parte?" de la asignatura Medi.

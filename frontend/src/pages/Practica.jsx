@@ -4,12 +4,14 @@ import { PERFILES, ASIGNATURAS_MAYOR, obtenerModo } from '../logic/perfiles.js'
 import { registrarFallo } from '../logic/fallos.js'
 import { pronunciar } from '../logic/audio.js'
 import Reloj from '../components/Reloj.jsx'
+import Volcan from '../components/Volcan.jsx'
+import Riu from '../components/Riu.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
 const TIPOS_SIN_ENUNCIADO = ['problema', 'hora']
-const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica']
+const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica', 'medi-pregunta', 'medi-imatge']
 const TIPOS_ESCRITOS = ['vocabulario-escrito']
-const TIPOS_ENUNCIADO_TEXTO = ['vocabulario', 'gramatica', 'vocabulario-escrito']
+const TIPOS_ENUNCIADO_TEXTO = ['vocabulario', 'gramatica', 'vocabulario-escrito', 'medi-pregunta', 'medi-imatge']
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
 // "=" (operación exacta).
@@ -23,6 +25,7 @@ const ENDPOINTS_BANCO = {
   vocabulario: '/api/vocabulario',
   'vocabulario-escrito': '/api/vocabulario',
   gramatica: '/api/gramatica',
+  'medi-pregunta': '/api/medi',
 }
 
 function elegirCelebracion() {
@@ -169,6 +172,7 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
 
   const esProblema = ejercicio.tipo === 'problema'
   const esHora = ejercicio.tipo === 'hora'
+  const esMediImagen = ejercicio.tipo === 'medi-imatge'
   const esOpcionMultiple = TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)
   const esEscrito = TIPOS_ESCRITOS.includes(ejercicio.tipo)
   const esEnunciadoTexto = TIPOS_ENUNCIADO_TEXTO.includes(ejercicio.tipo)
@@ -194,6 +198,13 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
       )}
 
       {esHora && <Reloj hora={ejercicio.hora} minuto={ejercicio.minuto} />}
+      {esMediImagen && ejercicio.diagrama === 'volcan' && (
+        <>
+          <Volcan parteDestacada={ejercicio.parteId} />
+          <p className="credit-imatge">Imatge: Woudloper, Wikimedia Commons (CC BY-SA 3.0)</p>
+        </>
+      )}
+      {esMediImagen && ejercicio.diagrama === 'riu' && <Riu parteDestacada={ejercicio.parteId} />}
       {esEnunciadoTexto && <p className="enunciado enunciado-texto">{ejercicio.enunciado}</p>}
 
       {esEscrito && (

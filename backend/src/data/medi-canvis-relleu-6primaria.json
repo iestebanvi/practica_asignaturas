@@ -1,0 +1,372 @@
+[
+  {
+    "id": 1,
+    "enunciado": "Quina capa de la Terra és la gran massa rocosa compacta i arrodonida?",
+    "opciones": ["Geosfera", "Hidrosfera", "Atmosfera", "Astenosfera"],
+    "respuesta": "Geosfera"
+  },
+  {
+    "id": 2,
+    "enunciado": "Quina capa de la Terra està formada per l'aigua líquida (mars, oceans, llacs i rius)?",
+    "opciones": ["Hidrosfera", "Geosfera", "Atmosfera", "Astenosfera"],
+    "respuesta": "Hidrosfera"
+  },
+  {
+    "id": 3,
+    "enunciado": "Quina capa de la Terra és la capa de gasos que l'envolta?",
+    "opciones": ["Atmosfera", "Hidrosfera", "Geosfera", "Litosfera"],
+    "respuesta": "Atmosfera"
+  },
+  {
+    "id": 4,
+    "enunciado": "Aproximadament, quants quilòmetres de diàmetre té la geosfera?",
+    "opciones": ["13.000 km", "4 km", "5.000 km", "100 km"],
+    "respuesta": "13.000 km"
+  },
+  {
+    "id": 5,
+    "enunciado": "De què estan formades les roques?",
+    "opciones": ["De minerals", "De magma", "De lava", "De sòl"],
+    "respuesta": "De minerals"
+  },
+  {
+    "id": 6,
+    "enunciado": "Quins tres minerals formen el granit?",
+    "opciones": [
+      "Quars, feldspat i mica",
+      "Calcita, quars i lava",
+      "Magma, feldspat i sorra",
+      "Mica, calcita i granit"
+    ],
+    "respuesta": "Quars, feldspat i mica"
+  },
+  {
+    "id": 7,
+    "enunciado": "Quina roca està formada per un sol mineral, la calcita?",
+    "opciones": ["La calcària", "El granit", "El magma", "La lava"],
+    "respuesta": "La calcària"
+  },
+  {
+    "id": 8,
+    "enunciado": "Aproximadament, a quina temperatura arriba el centre de la Terra?",
+    "opciones": ["5.000 ºC", "500 ºC", "13.000 ºC", "100 ºC"],
+    "respuesta": "5.000 ºC"
+  },
+  {
+    "id": 9,
+    "enunciado": "Com s'anomenen les roques foses que hi ha a l'interior de la Terra?",
+    "opciones": ["Magma", "Lava", "Mica", "Granit"],
+    "respuesta": "Magma"
+  },
+  {
+    "id": 10,
+    "enunciado": "Com s'anomena el magma quan surt a l'exterior en una erupció?",
+    "opciones": ["Lava", "Magma", "Cendra", "Roca"],
+    "respuesta": "Lava"
+  },
+  {
+    "id": 11,
+    "enunciado": "Quins agents geològics procedeixen de l'interior de la Terra?",
+    "opciones": [
+      "Els agents geològics interns",
+      "Els agents geològics externs",
+      "L'aigua i el vent",
+      "Els éssers vius"
+    ],
+    "respuesta": "Els agents geològics interns"
+  },
+  {
+    "id": 12,
+    "enunciado": "Quins agents geològics tenen el seu origen en l'energia del Sol?",
+    "opciones": [
+      "Els agents geològics externs",
+      "Els agents geològics interns",
+      "El magma",
+      "La geosfera"
+    ],
+    "respuesta": "Els agents geològics externs"
+  },
+  {
+    "id": 13,
+    "enunciado": "Quina és la fase en què es trenquen o alteren les roques per la pluja o el vent?",
+    "opciones": ["Meteorització", "Erosió", "Transport", "Sedimentació"],
+    "respuesta": "Meteorització"
+  },
+  {
+    "id": 14,
+    "enunciado": "Quina fase es produeix quan els fragments de roca són arrossegats per l'aigua o el vent?",
+    "opciones": ["Erosió", "Meteorització", "Transport", "Sedimentació"],
+    "respuesta": "Erosió"
+  },
+  {
+    "id": 15,
+    "enunciado": "Quina fase consisteix a dipositar els materials que l'aigua, el vent o el gel han arrossegat?",
+    "opciones": ["Sedimentació", "Erosió", "Transport", "Meteorització"],
+    "respuesta": "Sedimentació"
+  },
+  {
+    "id": 16,
+    "enunciado": "Quin és el principal agent geològic extern?",
+    "opciones": ["L'aigua", "El vent", "La temperatura", "Els éssers vius"],
+    "respuesta": "L'aigua"
+  },
+  {
+    "id": 17,
+    "enunciado": "Com es diu el tram d'un riu on l'aigua baixa de forma ràpida i violenta?",
+    "opciones": ["Curs alt", "Curs mitjà", "Curs baix", "Desembocadura"],
+    "respuesta": "Curs alt"
+  },
+  {
+    "id": 18,
+    "enunciado": "Com es diu el tram final d'un riu, on el terreny és molt pla i l'aigua circula lentament?",
+    "opciones": ["Curs baix", "Curs alt", "Curs mitjà", "Naixement"],
+    "respuesta": "Curs baix"
+  },
+  {
+    "id": 19,
+    "enunciado": "Com s'anomena el fenomen que provoca el vent quan s'emporta la capa de sòl d'un terreny?",
+    "opciones": ["La desertització", "La sedimentació", "L'erupció volcànica", "El terratrèmol"],
+    "respuesta": "La desertització"
+  },
+  {
+    "id": 20,
+    "enunciado": "Què els passa a les roques quan les temperatures pugen?",
+    "opciones": ["Es dilaten", "Es contrauen", "Es gelen", "Es fonen"],
+    "respuesta": "Es dilaten"
+  },
+  {
+    "id": 21,
+    "enunciado": "Què provoca que l'aigua gelada dins les esquerdes acabi trencant les roques?",
+    "opciones": [
+      "Augmenta de volum en gelar-se",
+      "Disminueix de volum",
+      "S'evapora",
+      "Es converteix en vapor"
+    ],
+    "respuesta": "Augmenta de volum en gelar-se"
+  },
+  {
+    "id": 22,
+    "enunciado": "Quins éssers vius erosionen la roca mentre, alhora, hi formen una fina capa de sòl?",
+    "opciones": ["Els líquens", "Els peixos", "Els ocells", "Els núvols"],
+    "respuesta": "Els líquens"
+  },
+  {
+    "id": 23,
+    "enunciado": "Quines activitats humanes contribueixen a erosionar el terreny?",
+    "opciones": [
+      "Llaurar els camps, construir carreteres i excavar túnels",
+      "Només navegar per internet",
+      "Només dormir",
+      "Només llegir llibres"
+    ],
+    "respuesta": "Llaurar els camps, construir carreteres i excavar túnels"
+  },
+  {
+    "id": 24,
+    "enunciado": "Què són les plaques tectòniques (litosfèriques)?",
+    "opciones": [
+      "Les parts en què està dividida la part externa de la Terra",
+      "Els minerals del granit",
+      "Les capes de l'atmosfera",
+      "Els tipus de volcans"
+    ],
+    "respuesta": "Les parts en què està dividida la part externa de la Terra"
+  },
+  {
+    "id": 25,
+    "enunciado": "Què passa a les zones convergents, on les plaques xoquen?",
+    "opciones": [
+      "Es formen serralades i es poden produir erupcions volcàniques",
+      "Les plaques se separen",
+      "Res, les plaques no es mouen",
+      "Es forma una dorsal oceànica"
+    ],
+    "respuesta": "Es formen serralades i es poden produir erupcions volcàniques"
+  },
+  {
+    "id": 26,
+    "enunciado": "Què passa a les zones divergents, on les plaques se separen?",
+    "opciones": [
+      "Surt magma del mantell i es formen dorsals oceàniques",
+      "Es formen grans serralades per xoc",
+      "Les plaques llisquen lateralment",
+      "No passa res"
+    ],
+    "respuesta": "Surt magma del mantell i es formen dorsals oceàniques"
+  },
+  {
+    "id": 27,
+    "enunciado": "Què passa a les zones transformadores?",
+    "opciones": [
+      "Una placa llisca lateralment contra l'altra i es poden produir terratrèmols",
+      "Es formen volcans sempre",
+      "Les plaques s'enfonsen una sota l'altra",
+      "Es formen dorsals oceàniques"
+    ],
+    "respuesta": "Una placa llisca lateralment contra l'altra i es poden produir terratrèmols"
+  },
+  {
+    "id": 28,
+    "enunciado": "Quines serralades s'han format pel xoc de plaques tectòniques?",
+    "opciones": [
+      "L'Himàlaia, els Andes i els Pirineus",
+      "Els Alps, el Teide i el Vesuvi",
+      "Les illes Canàries",
+      "Les illes Balears"
+    ],
+    "respuesta": "L'Himàlaia, els Andes i els Pirineus"
+  },
+  {
+    "id": 29,
+    "enunciado": "On es localitzen principalment els volcans?",
+    "opciones": [
+      "A les vores de les plaques litosfèriques",
+      "Només als oceans",
+      "Només als deserts",
+      "Al centre dels continents"
+    ],
+    "respuesta": "A les vores de les plaques litosfèriques"
+  },
+  {
+    "id": 30,
+    "enunciado": "Què és un terratrèmol o sisme?",
+    "opciones": [
+      "Una sacsejada brusca de l'escorça terrestre",
+      "Una erupció de lava",
+      "Un canvi de temperatura",
+      "Un tipus de roca"
+    ],
+    "respuesta": "Una sacsejada brusca de l'escorça terrestre"
+  },
+  {
+    "id": 31,
+    "enunciado": "Amb quin aparell es detecten els terratrèmols?",
+    "opciones": ["El sismògraf", "El termòmetre", "El baròmetre", "El telescopi"],
+    "respuesta": "El sismògraf"
+  },
+  {
+    "id": 32,
+    "enunciado": "Com s'anomena el punt de l'interior de la Terra on es produeix el trencament de les roques en un terratrèmol?",
+    "opciones": ["El focus", "L'epicentre", "El cràter", "La dorsal"],
+    "respuesta": "El focus"
+  },
+  {
+    "id": 33,
+    "enunciado": "Com s'anomena el punt de la superfície situat just damunt del focus d'un terratrèmol?",
+    "opciones": ["L'epicentre", "El focus", "El cràter", "La falla"],
+    "respuesta": "L'epicentre"
+  },
+  {
+    "id": 34,
+    "enunciado": "Com es diu el punt on neix un riu, a la muntanya?",
+    "opciones": ["Naixement", "Desembocadura", "Delta", "Curs baix"],
+    "respuesta": "Naixement"
+  },
+  {
+    "id": 35,
+    "enunciado": "Com es diu el punt on un riu desemboca al mar?",
+    "opciones": ["Desembocadura", "Naixement", "Curs alt", "Afluent"],
+    "respuesta": "Desembocadura"
+  },
+  {
+    "id": 36,
+    "enunciado": "Com es diuen les corbes que forma un riu al seu curs baix?",
+    "opciones": ["Meandres", "Cascades", "Afluents", "Embassaments"],
+    "respuesta": "Meandres"
+  },
+  {
+    "id": 37,
+    "enunciado": "Com es diu un riu petit que desemboca en un altre de més gran?",
+    "opciones": ["Afluent", "Naixement", "Delta", "Meandre"],
+    "respuesta": "Afluent"
+  },
+  {
+    "id": 38,
+    "enunciado": "Com es diu la construcció que reté l'aigua d'un riu i forma un llac artificial?",
+    "opciones": ["Embassament", "Delta", "Dorsal", "Falla"],
+    "respuesta": "Embassament"
+  },
+  {
+    "id": 39,
+    "enunciado": "Com es diu l'acumulació de sediments que un riu forma a la desembocadura?",
+    "opciones": ["Delta", "Meandre", "Embassament", "Cràter"],
+    "respuesta": "Delta"
+  },
+  {
+    "id": 40,
+    "enunciado": "En quin tram d'un riu dominen alhora l'erosió, el transport i la sedimentació?",
+    "opciones": ["Curs mitjà", "Curs alt", "Curs baix", "Naixement"],
+    "respuesta": "Curs mitjà"
+  },
+  {
+    "id": 41,
+    "enunciado": "Com es diuen les roques que el vent erosiona més per la base que per la part superior?",
+    "opciones": [
+      "Roques en forma de bolet",
+      "Roques esfèriques",
+      "Roques planes",
+      "Estalactites"
+    ],
+    "respuesta": "Roques en forma de bolet"
+  },
+  {
+    "id": 42,
+    "enunciado": "De què depèn la intensitat de l'erosió, a més dels agents geològics externs?",
+    "opciones": [
+      "De la duresa dels materials",
+      "Del color de les roques",
+      "De la mida dels núvols",
+      "Del nombre d'animals"
+    ],
+    "respuesta": "De la duresa dels materials"
+  },
+  {
+    "id": 43,
+    "enunciado": "Com s'anomenen els replecs que es formen a les roques quan xoquen les plaques?",
+    "opciones": ["Plecs", "Falles", "Dorsals", "Rifts"],
+    "respuesta": "Plecs"
+  },
+  {
+    "id": 44,
+    "enunciado": "Com s'anomenen les roques que es trenquen (en lloc de rebregar-se) pel xoc de plaques?",
+    "opciones": ["Falles", "Plecs", "Dorsals", "Cràters"],
+    "respuesta": "Falles"
+  },
+  {
+    "id": 45,
+    "enunciado": "Com es diu la serralada submarina que es forma quan les plaques se separen sota l'oceà?",
+    "opciones": ["Dorsal oceànica", "Falla", "Con volcànic", "Delta"],
+    "respuesta": "Dorsal oceànica"
+  },
+  {
+    "id": 46,
+    "enunciado": "Com s'anomenen els volcans que es formen allà on dues plaques convergeixen?",
+    "opciones": ["Arc volcànic", "Dorsal oceànica", "Rift en vall", "Falla"],
+    "respuesta": "Arc volcànic"
+  },
+  {
+    "id": 47,
+    "enunciado": "Com s'anomena la vall que es forma quan dues plaques divergeixen dins d'un continent?",
+    "opciones": ["Rift en vall", "Arc volcànic", "Delta", "Con volcànic"],
+    "respuesta": "Rift en vall"
+  },
+  {
+    "id": 48,
+    "enunciado": "Com s'anomena l'orifici de sortida d'un volcà, on s'acumulen la lava i els materials expel·lits?",
+    "opciones": ["Cràter", "Xemeneia volcànica", "Con volcànic", "Magma"],
+    "respuesta": "Cràter"
+  },
+  {
+    "id": 49,
+    "enunciado": "Com s'anomena el conducte pel qual puja el magma des de l'interior fins al cràter d'un volcà?",
+    "opciones": ["Xemeneia volcànica", "Cràter", "Con volcànic", "Falla"],
+    "respuesta": "Xemeneia volcànica"
+  },
+  {
+    "id": 50,
+    "enunciado": "Com es diuen les vibracions que es propaguen des del focus d'un terratrèmol en totes direccions?",
+    "opciones": ["Ones sísmiques", "Dorsals", "Falles", "Plecs"],
+    "respuesta": "Ones sísmiques"
+  }
+]
