@@ -1,0 +1,74 @@
+VOCABULARY UNITS 1-2-3 (6th Grade) — PALABRAS NUEVAS PARA INGLÉS · VOCABULARIO
+================================================================================
+
+Transcrito el 2026-10-26 de 4 fotos de la hoja "Vocabulary Units 1-2-3".
+La hoja tiene 157 entradas: 124 ya están en el banco actual
+(backend/src/data/vocabulario-ingles-6primaria.json, 125 palabras) y
+32 son nuevas. Esas 32 son las de esta lista.
+
+Formato: INGLÉS <TAB> CATALÀ (tal cual figura en la hoja).
+
+
+PALABRAS NUEVAS (32)
+--------------------------------------------------------------------------------
+ABOUT	sobre
+AGO	fa
+ANSWER (TO)	contestar
+BELIEVE (TO)	creure
+BORED	avorrit/da
+BORING	avorrit/da
+BRIGHT	brillant
+CLOUDS	núvols
+COUNTRYSIDE	camp
+DARK	fosc/a
+DEEP	profund/a
+DREAM (TO)	somniar
+FOLD (TO)	doblegar
+KEEP (TO)	mantenir
+LAST	passat/da, últim/a
+LIKE	agradar/ COM
+NEXT TO	al costat
+NICE	bo/bona
+OFTEN	sovint
+OPPOSITE	contrari
+REACH (TO)	atançar
+SHAPE	forma
+SHOW (TO)	mostrar
+SURE	segur/a
+THERE ARE	hi ha (plural)
+THERE IS A	hi ha (singular)
+THERE WAS A	hi havia (singular)
+THERE WERE	hi havia (plural)
+UPON	sobre
+WIDE	ample/a
+WORRIED	preocupat/da
+YESTERDAY	ahir
+
+
+A REVISAR ANTES DE AÑADIRLAS
+--------------------------------------------------------------------------------
+1. Dos parejas con la MISMA traducción en catalán:
+     ABOUT y UPON   -> "sobre"
+     BORED y BORING -> "avorrit/da"
+   En el modo "Vocabulario escrito" (catalán -> inglés) solo se acepta UNA de
+   las dos como correcta, así que la otra se marcaría mal. Si quieres evitarlo
+   se puede dejar una sola de cada pareja o matizar la traducción.
+
+2. Traducciones con "/" (avorrit/da, fosc/a, profund/a, segur/a, ample/a,
+   preocupat/da, passat/da, bo/bona, agradar/ COM): igual que las que ya hay en
+   el banco, solo saldrán en "Vocabulario" (selección), no en el escrito.
+
+3. La hoja trae traducciones más completas que el banco actual en 3 palabras
+   que YA existen (no son nuevas, solo por si quieres actualizarlas):
+     FROM   banco: "des de"            hoja: "de, des de"
+     THAT   banco: "alló, aquell/a"    hoja: "alló, aquell/a, QUE"
+     TIRED  banco: "cansat"            hoja: "cansat/da"
+
+
+NO INCLUIDAS
+--------------------------------------------------------------------------------
+- WHY? BECAUSE ("Per què? Perquè...")  La hoja las junta en una sola línea, pero
+  en el banco ya existen por separado: WHY? = "per què?" y BECAUSE = "perquè".
+- Una fila de la sección S cuyo inglés tapa el agujero de la hoja (parece
+  "SAME") y que en la hoja NO tiene traducción al catalán. Sin traducción no se
+  puede añadir; si quieres incluirla dime la traducción (p. ej. "igual, mateix").

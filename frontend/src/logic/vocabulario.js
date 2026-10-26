@@ -36,10 +36,15 @@ export function generarVocabularioEscrito(bancoVocabulario) {
   const palabra = banco[randomInt(0, banco.length - 1)]
   const haciaIngles = Math.random() < 0.5
 
+  // Si varias palabras inglesas comparten la misma traducción (p.ej. ABOUT y
+  // UPON -> "sobre"), al pedir el inglés se aceptan todas (respuestaCoincide
+  // admite alternativas separadas por comas).
+  const inglesValidos = banco.filter((p) => p.catalan === palabra.catalan).map((p) => p.ingles)
+
   return {
     tipo: 'vocabulario-escrito',
     enunciado: haciaIngles ? palabra.catalan : palabra.ingles,
-    respuesta: haciaIngles ? palabra.ingles : palabra.catalan,
+    respuesta: haciaIngles ? inglesValidos.join(', ') : palabra.catalan,
     direccion: haciaIngles ? 'ingles' : 'catalan',
     ingles: palabra.ingles,
     puntos: PUNTOS_VOCABULARIO_ESCRITO,

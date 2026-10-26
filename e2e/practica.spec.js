@@ -404,9 +404,12 @@ test.describe('Practica Asignaturas', () => {
     const enunciado = await page.locator('.enunciado').innerText()
 
     const primeraAlternativa = (texto) => texto.split(',')[0].trim()
-    const entrada = pideIngles
-      ? bancoVocabulario.find((p) => p.catalan === enunciado)
-      : bancoVocabulario.find((p) => p.ingles === enunciado)
+    // Varias palabras inglesas pueden compartir traducción (p.ej. ABOUT y UPON
+    // -> "sobre"): al escribir el inglés vale cualquiera de ellas.
+    const entradas = pideIngles
+      ? bancoVocabulario.filter((p) => p.catalan === enunciado)
+      : bancoVocabulario.filter((p) => p.ingles === enunciado)
+    const entrada = entradas[0]
     const respuesta = pideIngles
       ? primeraAlternativa(entrada.ingles).toLowerCase()
       : primeraAlternativa(entrada.catalan).toUpperCase()
@@ -418,7 +421,9 @@ test.describe('Practica Asignaturas', () => {
     await expect(page.locator('.puntos')).toHaveText('⭐ 15')
     // El audio se dispara solo al responder (nunca antes, nunca con un botón
     // aparte) y siempre dice el inglés, aunque esta vez tocara escribir catalán
-    expect(await page.evaluate(() => window.__vozDicha)).toEqual([entrada.ingles])
+    const voz = await page.evaluate(() => window.__vozDicha)
+    expect(voz).toHaveLength(1)
+    expect(entradas.map((e) => e.ingles)).toContain(voz[0])
   })
 
   test('Vocabulario escrito: un fallo también se guarda en "Para repasar"', async ({ page }) => {

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { generarVocabulario, generarVocabularioEscrito } from './vocabulario.js'
+import { respuestaCoincide } from './common.js'
 
 const bancoDePrueba = [
   { id: 1, ingles: 'BREAKFAST', catalan: 'esmorzar' },
@@ -76,6 +77,23 @@ describe('generarVocabularioEscrito', () => {
         expect(ej.respuesta).toBe(palabra.catalan)
       }
     }
+  })
+
+  it('si dos palabras inglesas comparten traducción, al escribir el inglés se aceptan las dos', () => {
+    const bancoConRepetidas = [
+      { id: 1, ingles: 'ABOUT', catalan: 'sobre' },
+      { id: 2, ingles: 'UPON', catalan: 'sobre' },
+    ]
+    let vistas = 0
+    for (let i = 0; i < 100; i++) {
+      const ej = generarVocabularioEscrito(bancoConRepetidas)
+      if (ej.direccion !== 'ingles') continue
+      vistas++
+      expect(respuestaCoincide(ej.respuesta, 'about')).toBe(true)
+      expect(respuestaCoincide(ej.respuesta, 'UPON')).toBe(true)
+      expect(respuestaCoincide(ej.respuesta, 'under')).toBe(false)
+    }
+    expect(vistas).toBeGreaterThan(0)
   })
 
   it('excluye del banco las palabras con "/" (abreviaturas de género/plural)', () => {
