@@ -83,6 +83,25 @@ async function entrarEnMultiplicacionesDivisiones(page) {
   await page.getByRole('button', { name: 'Multiplicaciones y divisiones' }).click()
 }
 
+async function entrarEnPerimetrosAreas(page) {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Matemáticas' }).click()
+  await page.getByRole('button', { name: 'Perímetres i àrees' }).click()
+}
+
+// El aria-label de la figura lleva las medidas ("Rectangle de 8 cm de base i
+// 3 cm d'altura"): con eso y el enunciado se calcula la respuesta correcta.
+function respuestaDeFigura(aria, enunciado) {
+  const n = (aria.match(/\d+/g) ?? []).map(Number)
+  const esArea = enunciado.startsWith('Àrea')
+  if (aria.startsWith('Quadrat')) return esArea ? n[0] * n[0] : 4 * n[0]
+  if (aria.startsWith('Rectangle')) return esArea ? n[0] * n[1] : 2 * (n[0] + n[1])
+  if (aria.startsWith('Triangle de costats')) return n[0] + n[1] + n[2]
+  if (aria.startsWith('Triangle')) return (n[0] * n[1]) / 2
+  return n[0] * n[1] // paral·lelogram (solo área)
+}
+
 async function entrarEnGramatica(page) {
   await page.goto('/')
   await page.getByRole('button', { name: /Mayor/ }).click()
@@ -371,6 +390,43 @@ test.describe('Practica Asignaturas', () => {
     const enunciado = await page.locator('.enunciado').innerText()
     expect(enunciado).toMatch(/[×÷]/)
     expect(enunciado).not.toMatch(/[+-]/)
+  })
+
+  test('Matemáticas - Perímetres i àrees: dibuja la figura con sus medidas y da por buena la respuesta correcta', async ({
+    page,
+  }) => {
+    await entrarEnPerimetrosAreas(page)
+
+    // 1 de cada 3 ejercicios es de "¿perímetre o àrea?" (sin figura): se salta
+    for (let i = 0; i < 30; i++) {
+      if ((await page.locator('.figura-geometria').count()) > 0) break
+      await page.locator('.opciones button').first().click()
+      await page.waitForTimeout(1000)
+    }
+
+    const aria = await page.locator('.figura-geometria').getAttribute('aria-label')
+    const enunciado = await page.locator('.enunciado').innerText()
+    expect(enunciado).toMatch(/^(Perímetre|Àrea) del (quadrat|rectangle|triangle|paral·lelogram) \(cm²?\)/)
+
+    await page.locator('input[type="number"]').fill(String(respuestaDeFigura(aria, enunciado)))
+    await page.getByRole('button', { name: 'Comprobar' }).click()
+
+    await expect(page.locator('.feedback.correcto')).toBeVisible()
+    await expect(page.locator('.puntos')).toHaveText('⭐ 15')
+  })
+
+  test('Matemáticas - Perímetres i àrees: "¿perímetre o àrea?" ofrece dos opciones', async ({ page }) => {
+    await entrarEnPerimetrosAreas(page)
+
+    for (let i = 0; i < 30; i++) {
+      if ((await page.locator('.figura-geometria').count()) === 0) break
+      await page.locator('input[type="number"]').fill('1')
+      await page.getByRole('button', { name: 'Comprobar' }).click()
+      await page.waitForTimeout(1000)
+    }
+
+    const opciones = await page.locator('.opciones button').allInnerTexts()
+    expect(opciones.sort()).toEqual(['Perímetre', 'Àrea'])
   })
 
   test('Vocabulario (selección): al responder se pronuncia automáticamente la palabra en inglés', async ({

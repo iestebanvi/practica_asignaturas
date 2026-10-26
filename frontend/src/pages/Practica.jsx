@@ -6,12 +6,20 @@ import { pronunciar } from '../logic/audio.js'
 import Reloj from '../components/Reloj.jsx'
 import Volcan from '../components/Volcan.jsx'
 import Riu from '../components/Riu.jsx'
+import Figura from '../components/Figura.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
 const TIPOS_SIN_ENUNCIADO = ['problema', 'hora']
-const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica', 'medi-pregunta', 'medi-imatge']
+const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica', 'medi-pregunta', 'medi-imatge', 'perimetre-area']
 const TIPOS_ESCRITOS = ['vocabulario-escrito']
-const TIPOS_ENUNCIADO_TEXTO = ['vocabulario', 'gramatica', 'vocabulario-escrito', 'medi-pregunta', 'medi-imatge']
+const TIPOS_ENUNCIADO_TEXTO = [
+  'vocabulario',
+  'gramatica',
+  'vocabulario-escrito',
+  'medi-pregunta',
+  'medi-imatge',
+  'perimetre-area',
+]
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
 // "=" (operación exacta).
@@ -205,6 +213,7 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
         </>
       )}
       {esMediImagen && ejercicio.diagrama === 'riu' && <Riu parteDestacada={ejercicio.parteId} />}
+      {ejercicio.figura && <Figura figura={ejercicio.figura} />}
       {esEnunciadoTexto && <p className="enunciado enunciado-texto">{ejercicio.enunciado}</p>}
 
       {esEscrito && (
@@ -241,7 +250,7 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
         </form>
       ) : (
         <form onSubmit={comprobar} className="ejercicio">
-          <p className={`enunciado${esProblema ? ' enunciado-problema' : ''}`}>
+          <p className={`enunciado${esProblema ? ' enunciado-problema' : ''}${ejercicio.figura ? ' enunciado-figura' : ''}`}>
             {ejercicio.enunciado}
             {!esProblema && ` ${simboloCierre(ejercicio.tipo)}`}
           </p>

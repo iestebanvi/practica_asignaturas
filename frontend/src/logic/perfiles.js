@@ -70,6 +70,11 @@ export const ASIGNATURAS_MAYOR = {
         nombre: 'Estimaciones',
         operaciones: ['estimacion'],
       },
+      perimetrosAreas: {
+        id: 'perimetros-areas',
+        nombre: 'Perímetres i àrees',
+        operaciones: ['perimetre', 'area', 'perimetre-area'],
+      },
     },
   },
   ingles: {
