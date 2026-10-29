@@ -10,6 +10,7 @@ import { generarSucesion } from './sucesiones.js'
 import { generarEstimacion } from './estimaciones.js'
 import { generarMedi } from './medi.js'
 import { generarPerimetre, generarArea, generarPerimetreArea } from './geometria.js'
+import { generarThereBe, respuestaThereBeCorrecta } from './thereBe.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -22,6 +23,7 @@ const GENERADORES = {
   perimetre: generarPerimetre,
   area: generarArea,
   'perimetre-area': generarPerimetreArea,
+  'there-be': generarThereBe,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -44,6 +46,9 @@ export function generarEjercicioAleatorio(operaciones, nivel = 'facil') {
 export function comprobarRespuesta(ejercicio, respuestaUsuario) {
   if (ejercicio.tipo === 'vocabulario-escrito') {
     return respuestaCoincide(ejercicio.respuesta, respuestaUsuario)
+  }
+  if (ejercicio.tipo === 'there-be') {
+    return respuestaThereBeCorrecta(ejercicio, respuestaUsuario)
   }
   if (TIPOS_RESPUESTA_TEXTO.includes(ejercicio.tipo)) {
     return respuestaUsuario === ejercicio.respuesta

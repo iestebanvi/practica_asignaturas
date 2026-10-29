@@ -39,6 +39,8 @@
   --color-canvis-relleu-sombra: #bf360c;
   --color-perimetros-areas: #43a047;
   --color-perimetros-areas-sombra: #1b5e20;
+  --color-there-be: #5e35b1;
+  --color-there-be-sombra: #3f2380;
 }
 
 html {
@@ -191,6 +193,11 @@ button:active {
 .modo-canvis-relleu {
   background: var(--color-canvis-relleu);
   --sombra: var(--color-canvis-relleu-sombra);
+}
+
+.modo-there-be {
+  background: var(--color-there-be);
+  --sombra: var(--color-there-be-sombra);
 }
 
 .modo-perimetros-areas {

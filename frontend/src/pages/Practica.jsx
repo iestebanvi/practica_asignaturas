@@ -11,11 +11,12 @@ import Figura from '../components/Figura.jsx'
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
 const TIPOS_SIN_ENUNCIADO = ['problema', 'hora']
 const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica', 'medi-pregunta', 'medi-imatge', 'perimetre-area']
-const TIPOS_ESCRITOS = ['vocabulario-escrito']
+const TIPOS_ESCRITOS = ['vocabulario-escrito', 'there-be']
 const TIPOS_ENUNCIADO_TEXTO = [
   'vocabulario',
   'gramatica',
   'vocabulario-escrito',
+  'there-be',
   'medi-pregunta',
   'medi-imatge',
   'perimetre-area',
@@ -218,7 +219,8 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
 
       {esEscrito && (
         <p className="instruccion">
-          Escribe la palabra en {ejercicio.direccion === 'ingles' ? 'inglés' : 'catalán'}:
+          {ejercicio.instruccion ??
+            `Escribe la palabra en ${ejercicio.direccion === 'ingles' ? 'inglés' : 'catalán'}:`}
         </p>
       )}
 

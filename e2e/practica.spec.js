@@ -69,6 +69,13 @@ async function entrarEnVocabularioEscrito(page) {
   await page.getByRole('button', { name: 'Vocabulario escrito' }).click()
 }
 
+async function entrarEnThereBe(page) {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Inglés' }).click()
+  await page.getByRole('button', { name: /There is/ }).click()
+}
+
 async function entrarEnSumasRestas(page) {
   await page.goto('/')
   await page.getByRole('button', { name: /Mayor/ }).click()
@@ -492,5 +499,24 @@ test.describe('Practica Asignaturas', () => {
     await page.getByRole('button', { name: 'Finalizar' }).click()
     await page.getByRole('button', { name: /Para repasar/ }).click()
     await expect(page.locator('.lista-repasar li')).toHaveCount(1)
+  })
+
+  test('There is / are: un fallo muestra la respuesta correcta y se guarda en "Para repasar"', async ({
+    page,
+  }) => {
+    await entrarEnThereBe(page)
+    await expect(page.locator('.instruccion')).toBeVisible()
+    await expect(page.locator('.enunciado')).toContainText(/\S/)
+
+    await page.locator('input[type="text"]').fill('xxxxxxxx')
+    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await expect(page.locator('.feedback.incorrecto')).toBeVisible()
+    const correcta = (await page.locator('.feedback.incorrecto').innerText()).replace('Casi... la respuesta era ', '')
+
+    await expect(page.locator('.anterior.incorrecto')).toBeVisible()
+    await page.getByRole('button', { name: 'Finalizar' }).click()
+    await page.getByRole('button', { name: /Para repasar/ }).click()
+    await expect(page.locator('.lista-repasar li')).toHaveCount(1)
+    await expect(page.locator('.repasar-respuesta')).toHaveText(correcta)
   })
 })

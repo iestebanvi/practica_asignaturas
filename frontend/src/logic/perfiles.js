@@ -96,6 +96,11 @@ export const ASIGNATURAS_MAYOR = {
         nombre: 'Gramática',
         operaciones: ['gramatica'],
       },
+      thereBe: {
+        id: 'there-be',
+        nombre: 'There is / are · was / were',
+        operaciones: ['there-be'],
+      },
     },
   },
   medi: {
