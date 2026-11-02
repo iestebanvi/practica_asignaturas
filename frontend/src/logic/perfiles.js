@@ -73,7 +73,22 @@ export const ASIGNATURAS_MAYOR = {
       perimetrosAreas: {
         id: 'perimetros-areas',
         nombre: 'Perímetres i àrees',
-        operaciones: ['perimetre', 'area', 'perimetre-area'],
+        operaciones: ['perimetre', 'area', 'perimetre-area', 'costat-quadrat'],
+      },
+      potencies: {
+        id: 'potencies',
+        nombre: 'Potències',
+        operaciones: [
+          'potencia-calcul',
+          'potencia-combinada',
+          'potencia-expressio',
+          'potencia-base10',
+          'potencia-imatge',
+          'potencia-consecutiva',
+          'potencia-serie',
+          'potencia-comparar',
+          'potencia-descomposicio',
+        ],
       },
     },
   },

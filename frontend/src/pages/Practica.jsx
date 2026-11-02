@@ -9,8 +9,19 @@ import Riu from '../components/Riu.jsx'
 import Figura from '../components/Figura.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
-const TIPOS_SIN_ENUNCIADO = ['problema', 'hora']
-const TIPOS_OPCION_MULTIPLE = ['hora', 'vocabulario', 'gramatica', 'medi-pregunta', 'medi-imatge', 'perimetre-area']
+const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat']
+const TIPOS_OPCION_MULTIPLE = [
+  'hora',
+  'vocabulario',
+  'gramatica',
+  'medi-pregunta',
+  'medi-imatge',
+  'perimetre-area',
+  'potencia-expressio',
+  'potencia-base10',
+  'potencia-imatge',
+  'potencia-comparar',
+]
 const TIPOS_ESCRITOS = ['vocabulario-escrito', 'there-be']
 const TIPOS_ENUNCIADO_TEXTO = [
   'vocabulario',
@@ -20,13 +31,20 @@ const TIPOS_ENUNCIADO_TEXTO = [
   'medi-pregunta',
   'medi-imatge',
   'perimetre-area',
+  'potencia-expressio',
+  'potencia-base10',
+  'potencia-imatge',
+  'potencia-comparar',
 ]
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
 // "=" (operación exacta).
 const TIPOS_SIMBOLO_APROXIMADO = ['estimacion']
+// Enunciados que ya son una pregunta completa: no llevan "=" al final.
+const TIPOS_SIN_SIMBOLO = ['costat-quadrat']
 
 function simboloCierre(tipo) {
+  if (TIPOS_SIN_SIMBOLO.includes(tipo)) return ''
   return TIPOS_SIMBOLO_APROXIMADO.includes(tipo) ? '≈' : '='
 }
 const ENDPOINTS_BANCO = {
@@ -179,7 +197,7 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
     )
   }
 
-  const esProblema = ejercicio.tipo === 'problema'
+  const esProblema = ['problema', 'costat-quadrat'].includes(ejercicio.tipo)
   const esHora = ejercicio.tipo === 'hora'
   const esMediImagen = ejercicio.tipo === 'medi-imatge'
   const esOpcionMultiple = TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)

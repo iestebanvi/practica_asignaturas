@@ -35,7 +35,7 @@ function rectangleAleatori() {
 }
 
 export function generarPerimetre() {
-  const forma = elegir(['quadrat', 'rectangle', 'triangle-costats'])
+  const forma = elegir(['quadrat', 'rectangle', 'triangle-costats', 'triangle-equilater', 'hexagon'])
   let nom
   let medidas
   let respuesta
@@ -48,6 +48,14 @@ export function generarPerimetre() {
     nom = 'rectangle'
     medidas = rectangleAleatori()
     respuesta = 2 * (medidas.base + medidas.altura)
+  } else if (forma === 'triangle-equilater') {
+    nom = 'triangle equilàter'
+    medidas = { costat: randomInt(2, 12) }
+    respuesta = 3 * medidas.costat
+  } else if (forma === 'hexagon') {
+    nom = 'hexàgon regular'
+    medidas = { costat: randomInt(2, 10) }
+    respuesta = 6 * medidas.costat
   } else {
     nom = 'triangle'
     medidas = triangleValid()
@@ -64,7 +72,7 @@ export function generarPerimetre() {
 }
 
 export function generarArea() {
-  const forma = elegir(['quadrat', 'rectangle', 'triangle-altura', 'paralelogram'])
+  const forma = elegir(['quadrat', 'rectangle', 'triangle-altura', 'paralelogram', 'hexagon-apotema'])
   let nom
   let medidas
   let respuesta
@@ -87,6 +95,14 @@ export function generarArea() {
     const dx = randomInt(Math.ceil(base * 0.25), Math.floor(base * 0.45))
     medidas = { base, altura, dx, costat: costatInclinat(dx, altura) }
     respuesta = (base * altura) / 2
+  } else if (forma === 'hexagon-apotema') {
+    nom = 'hexàgon regular'
+    // Àrea = perímetre x apotema / 2 = 3 x costat x apotema (sempre entera).
+    // L'apotema real és ~0,87 x costat; s'arrodoneix perquè sigui un enter.
+    const costat = randomInt(4, 10)
+    const apotema = Math.round(costat * 0.866)
+    medidas = { costat, apotema }
+    respuesta = 3 * costat * apotema
   } else {
     nom = 'paral·lelogram'
     const base = randomInt(5, 12)
@@ -101,6 +117,29 @@ export function generarArea() {
     enunciado: `Àrea del ${nom} (cm²)`,
     figura: { forma, medidas },
     respuesta,
+    puntos: PUNTOS_CALCUL,
+  }
+}
+
+const CONTEXTOS_QUADRAT = [
+  { nom: 'menjador', unitat: 'paret' },
+  { nom: 'pati', unitat: 'costat' },
+  { nom: 'jardí', unitat: 'costat' },
+  { nom: 'habitació', unitat: 'paret' },
+  { nom: 'tauler de joc', unitat: 'costat' },
+  { nom: 'hort', unitat: 'costat' },
+]
+
+// "Un menjador quadrat té 64 m² d'àrea. Quant fa cada paret?": es llegeix el
+// costat a partir de l'àrea (arrel quadrada d'un quadrat perfecte).
+export function generarCostatQuadrat() {
+  const costat = randomInt(2, 15)
+  const { nom, unitat } = elegir(CONTEXTOS_QUADRAT)
+  const metres = nom === 'tauler de joc' ? 'cm' : 'm'
+  return {
+    tipo: 'costat-quadrat',
+    enunciado: `Un ${nom} quadrat té ${costat * costat} ${metres}² d'àrea. Quants ${metres} fa cada ${unitat}?`,
+    respuesta: costat,
     puntos: PUNTOS_CALCUL,
   }
 }

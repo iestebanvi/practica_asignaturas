@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { generarPerimetre, generarArea, generarPerimetreArea, SITUACIONS } from './geometria.js'
+import { generarPerimetre, generarArea, generarPerimetreArea, generarCostatQuadrat, SITUACIONS } from './geometria.js'
 
 const VECES = 300
 
@@ -18,6 +18,12 @@ describe('generarPerimetre', () => {
         expect(respuesta).toBe(2 * (m.base + m.altura))
         expect(m.altura).toBeLessThan(m.base)
         expect(enunciado).toBe('Perímetre del rectangle (cm)')
+      } else if (figura.forma === 'triangle-equilater') {
+        expect(respuesta).toBe(3 * m.costat)
+        expect(enunciado).toBe('Perímetre del triangle equilàter (cm)')
+      } else if (figura.forma === 'hexagon') {
+        expect(respuesta).toBe(6 * m.costat)
+        expect(enunciado).toBe('Perímetre del hexàgon regular (cm)')
       } else {
         expect(figura.forma).toBe('triangle-costats')
         expect(respuesta).toBe(m.a + m.b + m.c)
@@ -37,10 +43,10 @@ describe('generarPerimetre', () => {
     }
   })
 
-  it('genera las tres figuras', () => {
+  it('genera las cinco figuras', () => {
     const formas = new Set()
     for (let i = 0; i < VECES; i++) formas.add(generarPerimetre().figura.forma)
-    expect(formas).toEqual(new Set(['quadrat', 'rectangle', 'triangle-costats']))
+    expect(formas).toEqual(new Set(['quadrat', 'rectangle', 'triangle-costats', 'triangle-equilater', 'hexagon']))
   })
 })
 
@@ -60,6 +66,9 @@ describe('generarArea', () => {
       } else if (figura.forma === 'triangle-altura') {
         expect((m.base * m.altura) % 2).toBe(0)
         expect(respuesta).toBe((m.base * m.altura) / 2)
+      } else if (figura.forma === 'hexagon-apotema') {
+        expect(respuesta).toBe(3 * m.costat * m.apotema)
+        expect(m.apotema).toBeLessThan(m.costat)
       } else {
         expect(figura.forma).toBe('paralelogram')
         expect(respuesta).toBe(m.base * m.altura)
@@ -90,14 +99,14 @@ describe('generarArea', () => {
     }
   })
 
-  it('genera las cuatro figuras y el enunciado nombra la figura con las unidades', () => {
+  it('genera las cinco figuras y el enunciado nombra la figura con las unidades', () => {
     const formas = new Set()
     for (let i = 0; i < VECES; i++) {
       const { figura, enunciado } = generarArea()
       formas.add(figura.forma)
-      expect(enunciado).toMatch(/^Àrea del (quadrat|rectangle|triangle|paral·lelogram) \(cm²\)$/)
+      expect(enunciado).toMatch(/^Àrea del (quadrat|rectangle|triangle|paral·lelogram|hexàgon regular) \(cm²\)$/)
     }
-    expect(formas).toEqual(new Set(['quadrat', 'rectangle', 'triangle-altura', 'paralelogram']))
+    expect(formas).toEqual(new Set(['quadrat', 'rectangle', 'triangle-altura', 'paralelogram', 'hexagon-apotema']))
   })
 })
 
@@ -119,5 +128,19 @@ describe('generarPerimetreArea', () => {
     expect(arees.length).toBeGreaterThanOrEqual(5)
     expect(perimetres.length + arees.length).toBe(SITUACIONS.length)
     expect(new Set(SITUACIONS.map((s) => s.text)).size).toBe(SITUACIONS.length)
+  })
+})
+
+describe('generarCostatQuadrat', () => {
+  it('el área es un cuadrado perfecto y la respuesta es su raíz', () => {
+    for (let i = 0; i < VECES; i++) {
+      const { tipo, enunciado, respuesta, puntos } = generarCostatQuadrat()
+      const area = Number(enunciado.match(/té (\d+) (m|cm)²/)[1])
+      expect(tipo).toBe('costat-quadrat')
+      expect(puntos).toBe(15)
+      expect(Number.isInteger(respuesta)).toBe(true)
+      expect(respuesta * respuesta).toBe(area)
+      expect(enunciado).toMatch(/^Un .+ quadrat té \d+ (m|cm)² d'àrea\. Quants (m|cm) fa cada (paret|costat)\?$/)
+    }
   })
 })

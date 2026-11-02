@@ -39,6 +39,8 @@
   --color-canvis-relleu-sombra: #bf360c;
   --color-perimetros-areas: #43a047;
   --color-perimetros-areas-sombra: #1b5e20;
+  --color-potencies: #00838f;
+  --color-potencies-sombra: #005662;
   --color-there-be: #5e35b1;
   --color-there-be-sombra: #3f2380;
 }
@@ -195,6 +197,11 @@ button:active {
   --sombra: var(--color-canvis-relleu-sombra);
 }
 
+.modo-potencies {
+  background: var(--color-potencies);
+  --sombra: var(--color-potencies-sombra);
+}
+
 .modo-there-be {
   background: var(--color-there-be);
   --sombra: var(--color-there-be-sombra);
@@ -329,6 +336,28 @@ button:active {
   stroke: #2b2b2b;
   stroke-width: 3;
   stroke-linejoin: round;
+}
+
+.figura-cel {
+  fill: #26a69a;
+}
+
+.figura-cub-esq {
+  fill: #f9a825;
+  stroke: #fff8e1;
+  stroke-width: 1.2;
+}
+
+.figura-cub-dre {
+  fill: #f57f17;
+  stroke: #fff8e1;
+  stroke-width: 1.2;
+}
+
+.figura-cub-dalt {
+  fill: #ffca28;
+  stroke: #fff8e1;
+  stroke-width: 1.2;
 }
 
 .figura-altura {

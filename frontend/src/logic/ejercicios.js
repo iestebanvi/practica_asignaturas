@@ -9,7 +9,18 @@ import { generarGramatica } from './gramatica.js'
 import { generarSucesion } from './sucesiones.js'
 import { generarEstimacion } from './estimaciones.js'
 import { generarMedi } from './medi.js'
-import { generarPerimetre, generarArea, generarPerimetreArea } from './geometria.js'
+import { generarPerimetre, generarArea, generarPerimetreArea, generarCostatQuadrat } from './geometria.js'
+import {
+  generarPotenciaCalcul,
+  generarPotenciaCombinada,
+  generarPotenciaExpressio,
+  generarPotenciaBaseDeu,
+  generarPotenciaImatge,
+  generarPotenciaConsecutiva,
+  generarPotenciaSerie,
+  generarPotenciaComparar,
+  generarPotenciaDescomposicio,
+} from './potencies.js'
 import { generarThereBe, respuestaThereBeCorrecta } from './thereBe.js'
 
 const GENERADORES = {
@@ -23,12 +34,33 @@ const GENERADORES = {
   perimetre: generarPerimetre,
   area: generarArea,
   'perimetre-area': generarPerimetreArea,
+  'costat-quadrat': generarCostatQuadrat,
   'there-be': generarThereBe,
+  'potencia-calcul': generarPotenciaCalcul,
+  'potencia-combinada': generarPotenciaCombinada,
+  'potencia-expressio': generarPotenciaExpressio,
+  'potencia-base10': generarPotenciaBaseDeu,
+  'potencia-imatge': generarPotenciaImatge,
+  'potencia-consecutiva': generarPotenciaConsecutiva,
+  'potencia-serie': generarPotenciaSerie,
+  'potencia-comparar': generarPotenciaComparar,
+  'potencia-descomposicio': generarPotenciaDescomposicio,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
 // en vez de como número (input numérico).
-const TIPOS_RESPUESTA_TEXTO = ['hora', 'vocabulario', 'gramatica', 'medi-pregunta', 'medi-imatge', 'perimetre-area']
+const TIPOS_RESPUESTA_TEXTO = [
+  'hora',
+  'vocabulario',
+  'gramatica',
+  'medi-pregunta',
+  'medi-imatge',
+  'perimetre-area',
+  'potencia-expressio',
+  'potencia-base10',
+  'potencia-imatge',
+  'potencia-comparar',
+]
 
 export function generarEjercicio(operacion, nivel = 'facil') {
   const generador = GENERADORES[operacion]

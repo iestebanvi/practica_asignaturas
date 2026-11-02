@@ -76,6 +76,13 @@ async function entrarEnThereBe(page) {
   await page.getByRole('button', { name: /There is/ }).click()
 }
 
+async function entrarEnPotencies(page) {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Mayor/ }).click()
+  await page.getByRole('button', { name: 'Matemáticas' }).click()
+  await page.getByRole('button', { name: 'Potències' }).click()
+}
+
 async function entrarEnSumasRestas(page) {
   await page.goto('/')
   await page.getByRole('button', { name: /Mayor/ }).click()
@@ -104,9 +111,21 @@ function respuestaDeFigura(aria, enunciado) {
   const esArea = enunciado.startsWith('Àrea')
   if (aria.startsWith('Quadrat')) return esArea ? n[0] * n[0] : 4 * n[0]
   if (aria.startsWith('Rectangle')) return esArea ? n[0] * n[1] : 2 * (n[0] + n[1])
+  if (aria.startsWith('Triangle equilàter')) return 3 * n[0]
+  if (aria.startsWith('Hexàgon')) return esArea ? 3 * n[0] * n[1] : 6 * n[0]
   if (aria.startsWith('Triangle de costats')) return n[0] + n[1] + n[2]
   if (aria.startsWith('Triangle')) return (n[0] * n[1]) / 2
   return n[0] * n[1] // paral·lelogram (solo área)
+}
+
+// Contesta (casi seguro mal) el ejercicio que haya en pantalla, sea de opciones o numérico
+async function responderCualquierCosa(page) {
+  if ((await page.locator('.opciones button').count()) > 0) {
+    await page.locator('.opciones button').first().click()
+  } else {
+    await page.locator('input[type="number"]').fill('0')
+    await page.getByRole('button', { name: 'Comprobar' }).click()
+  }
 }
 
 async function entrarEnGramatica(page) {
@@ -404,16 +423,16 @@ test.describe('Practica Asignaturas', () => {
   }) => {
     await entrarEnPerimetrosAreas(page)
 
-    // 1 de cada 3 ejercicios es de "¿perímetre o àrea?" (sin figura): se salta
-    for (let i = 0; i < 30; i++) {
+    // Los ejercicios sin figura ("¿perímetre o àrea?" y el del costat del quadrat) se saltan
+    for (let i = 0; i < 40; i++) {
       if ((await page.locator('.figura-geometria').count()) > 0) break
-      await page.locator('.opciones button').first().click()
+      await responderCualquierCosa(page)
       await page.waitForTimeout(1000)
     }
 
     const aria = await page.locator('.figura-geometria').getAttribute('aria-label')
     const enunciado = await page.locator('.enunciado').innerText()
-    expect(enunciado).toMatch(/^(Perímetre|Àrea) del (quadrat|rectangle|triangle|paral·lelogram) \(cm²?\)/)
+    expect(enunciado).toMatch(/^(Perímetre|Àrea) del (quadrat|rectangle|triangle|paral·lelogram|triangle equilàter|hexàgon regular) \(cm²?\)/)
 
     await page.locator('input[type="number"]').fill(String(respuestaDeFigura(aria, enunciado)))
     await page.getByRole('button', { name: 'Comprobar' }).click()
@@ -425,10 +444,9 @@ test.describe('Practica Asignaturas', () => {
   test('Matemáticas - Perímetres i àrees: "¿perímetre o àrea?" ofrece dos opciones', async ({ page }) => {
     await entrarEnPerimetrosAreas(page)
 
-    for (let i = 0; i < 30; i++) {
-      if ((await page.locator('.figura-geometria').count()) === 0) break
-      await page.locator('input[type="number"]').fill('1')
-      await page.getByRole('button', { name: 'Comprobar' }).click()
+    for (let i = 0; i < 40; i++) {
+      if ((await page.locator('.opciones button').count()) > 0) break
+      await responderCualquierCosa(page)
       await page.waitForTimeout(1000)
     }
 
@@ -518,5 +536,46 @@ test.describe('Practica Asignaturas', () => {
     await page.getByRole('button', { name: /Para repasar/ }).click()
     await expect(page.locator('.lista-repasar li')).toHaveCount(1)
     await expect(page.locator('.repasar-respuesta')).toHaveText(correcta)
+  })
+
+  test('Potències: muestra un ejercicio y un fallo se guarda o se cuenta, sin romper la pantalla', async ({ page }) => {
+    await entrarEnPotencies(page)
+    await expect(page.locator('.enunciado').first()).toContainText(/\S/)
+
+    for (let i = 0; i < 4; i++) {
+      const opciones = page.locator('.opciones button')
+      if (await opciones.count()) {
+        await opciones.first().click()
+      } else {
+        await page.locator('input[type="number"]').fill('-1')
+        await page.getByRole('button', { name: 'Comprobar' }).click()
+      }
+      await expect(page.locator('.feedback.incorrecto, .feedback.correcto')).toBeVisible()
+      await expect(page.locator('.feedback')).toHaveCount(0)
+    }
+    await expect(page.locator('.anterior')).toBeVisible()
+  })
+
+  test('Perímetres i àrees: acepta la respuesta correcta del problema del costat del quadrat', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: /Mayor/ }).click()
+    await page.getByRole('button', { name: 'Matemáticas' }).click()
+    await page.getByRole('button', { name: /Perímetres/ }).click()
+    for (let i = 0; i < 40; i++) {
+      const texto = await page.locator('.enunciado').first().innerText()
+      const m = texto.match(/té (\d+) (?:m|cm)²/)
+      if (m) {
+        await page.locator('input[type="number"]').fill(String(Math.sqrt(Number(m[1]))))
+        await page.getByRole('button', { name: 'Comprobar' }).click()
+        await expect(page.locator('.feedback.correcto')).toBeVisible()
+        return
+      }
+      if (await page.locator('.opciones button').count()) await page.locator('.opciones button').first().click()
+      else {
+        await page.locator('input[type="number"]').fill('0')
+        await page.getByRole('button', { name: 'Comprobar' }).click()
+      }
+      await expect(page.locator('.feedback')).toHaveCount(0)
+    }
   })
 })

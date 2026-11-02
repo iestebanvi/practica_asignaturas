@@ -109,6 +109,46 @@ function TriangleAltura({ base, altura, costat, dx }) {
   )
 }
 
+function TriangleEquilater({ costat }) {
+  const base = 130
+  const alt = (base * Math.sqrt(3)) / 2
+  const x0 = (ANCHO - base) / 2
+  const A = { x: x0, y: BASE_Y }
+  const B = { x: x0 + base, y: BASE_Y }
+  const C = { x: x0 + base / 2, y: BASE_Y - alt }
+  return (
+    <>
+      <polygon points={`${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}`} className="figura-forma" />
+      <Medida x={ANCHO / 2} y={BASE_Y + 16}>{cm(costat)}</Medida>
+    </>
+  )
+}
+
+function Hexagon({ costat, apotema }) {
+  const R = 58
+  const cx = ANCHO / 2
+  const cy = 70
+  const punts = Array.from({ length: 6 }, (_, i) => {
+    const angle = (Math.PI / 3) * i
+    return { x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle) }
+  })
+  const centro = { x: cx, y: cy }
+  const baix = etiquetaLado(punts[1], punts[2], centro, 14)
+  return (
+    <>
+      <polygon points={punts.map((p) => `${p.x},${p.y}`).join(' ')} className="figura-forma" />
+      <Medida x={baix.x} y={baix.y}>{cm(costat)}</Medida>
+      {apotema !== undefined && (
+        <>
+          <line x1={cx} y1={cy} x2={cx} y2={cy + R * 0.866} className="figura-altura" />
+          <AnguloRecto x={cx} y={cy + R * 0.866} />
+          <Medida x={cx + 6} y={cy + R * 0.45} anchor="start">{cm(apotema)}</Medida>
+        </>
+      )}
+    </>
+  )
+}
+
 function Paralelogram({ base, altura, costat, dx }) {
   const escala = Math.min(150 / (base + dx), 100 / altura)
   const anchoTotal = (base + dx) * escala
@@ -135,6 +175,58 @@ function Paralelogram({ base, altura, costat, dx }) {
   )
 }
 
+// Cuadrícula n x n (potencia al cuadrado)
+function Quadricula({ n }) {
+  const cel = Math.min(18, 130 / n)
+  const costat = n * cel
+  const x0 = (ANCHO - costat) / 2
+  const y0 = (ALTO - costat) / 2
+  return (
+    <>
+      {Array.from({ length: n * n }, (_, i) => (
+        <rect
+          key={i}
+          x={x0 + (i % n) * cel + 1}
+          y={y0 + Math.floor(i / n) * cel + 1}
+          width={cel - 2}
+          height={cel - 2}
+          rx="2"
+          className="figura-cel"
+        />
+      ))}
+    </>
+  )
+}
+
+// Cubo n x n x n visto en perspectiva isométrica (potencia al cubo)
+function Cub({ n }) {
+  const s = Math.min(150 / (2 * n), 220 / (1.732 * n))
+  const esq = { x: -0.866 * s, y: -0.5 * s }
+  const dre = { x: 0.866 * s, y: -0.5 * s }
+  const amunt = { x: 0, y: -s }
+  const B = { x: ANCHO / 2, y: ALTO / 2 + n * s }
+  const T = { x: B.x, y: B.y - n * s }
+  const cares = []
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const punts = (o, a, b) => {
+        const p0 = { x: o.x + i * a.x + j * b.x, y: o.y + i * a.y + j * b.y }
+        return [p0, { x: p0.x + a.x, y: p0.y + a.y }, { x: p0.x + a.x + b.x, y: p0.y + a.y + b.y }, { x: p0.x + b.x, y: p0.y + b.y }]
+      }
+      cares.push({ clau: `e${i}-${j}`, classe: 'figura-cub-esq', punts: punts(B, esq, amunt) })
+      cares.push({ clau: `d${i}-${j}`, classe: 'figura-cub-dre', punts: punts(B, dre, amunt) })
+      cares.push({ clau: `t${i}-${j}`, classe: 'figura-cub-dalt', punts: punts(T, esq, dre) })
+    }
+  }
+  return (
+    <>
+      {cares.map(({ clau, classe, punts }) => (
+        <polygon key={clau} points={punts.map((p) => `${p.x},${p.y}`).join(' ')} className={classe} />
+      ))}
+    </>
+  )
+}
+
 function descripcion({ forma, medidas }) {
   switch (forma) {
     case 'quadrat':
@@ -143,6 +235,16 @@ function descripcion({ forma, medidas }) {
       return `Rectangle de ${cm(medidas.base)} de base i ${cm(medidas.altura)} d'altura`
     case 'triangle-costats':
       return `Triangle de costats ${cm(medidas.a)}, ${cm(medidas.b)} i ${cm(medidas.c)}`
+    case 'quadricula':
+      return `Quadrícula de ${medidas.n} per ${medidas.n} quadrats`
+    case 'cub':
+      return `Cub fet de ${medidas.n} per ${medidas.n} per ${medidas.n} cubets`
+    case 'hexagon-apotema':
+      return `Hexàgon regular de ${cm(medidas.costat)} de costat i ${cm(medidas.apotema)} d'apotema`
+    case 'triangle-equilater':
+      return `Triangle equilàter de ${cm(medidas.costat)} de costat`
+    case 'hexagon':
+      return `Hexàgon regular de ${cm(medidas.costat)} de costat`
     case 'triangle-altura':
       return `Triangle de ${cm(medidas.base)} de base i ${cm(medidas.altura)} d'altura`
     default:
@@ -162,6 +264,10 @@ export default function Figura({ figura }) {
       {forma === 'quadrat' && <Quadrat {...medidas} />}
       {forma === 'rectangle' && <Rectangle {...medidas} />}
       {forma === 'triangle-costats' && <TriangleCostats {...medidas} />}
+      {forma === 'quadricula' && <Quadricula {...medidas} />}
+      {forma === 'cub' && <Cub {...medidas} />}
+      {forma === 'triangle-equilater' && <TriangleEquilater {...medidas} />}
+      {(forma === 'hexagon' || forma === 'hexagon-apotema') && <Hexagon {...medidas} />}
       {forma === 'triangle-altura' && <TriangleAltura {...medidas} />}
       {forma === 'paralelogram' && <Paralelogram {...medidas} />}
     </svg>
