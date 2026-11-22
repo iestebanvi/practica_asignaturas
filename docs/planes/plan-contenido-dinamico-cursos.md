@@ -238,8 +238,8 @@ Acordado el 2026-11-22. Cada subfase se despliega por separado.
 |---|---|---|
 | **5a** | e2e en su propio esquema (`e2e`) para que los editores no escriban en la BD real. Consola de solo lectura: árbol lateral curso → asignatura → modo y bancos (incluido lo inactivo), ficha de modo y de banco | ✅ hecha |
 | **5b** | Editar preguntas de un banco (formulario según formato, validaciones), añadir, activar/desactivar, borrar con confirmación | ✅ hecha |
-| **5c** | Importar preguntas pegando texto/CSV con vista previa de errores; exportar banco a CSV y copia completa en JSON | siguiente |
-| **5d** | Cursos y asignaturas: crear/editar (nombre, icono, color, nivel, config), activo, orden | pendiente |
+| **5c** | Importar preguntas pegando texto/CSV con vista previa de errores; exportar banco a CSV y copia completa en JSON | ✅ hecha |
+| **5d** | Cursos y asignaturas: crear/editar (nombre, icono, color, nivel, config), activo, orden | siguiente |
 | **5e** | Modos y bancos: crear/editar modos (tipos de ejercicio, banco), crear bancos | pendiente |
 | **5f** | Vista previa: "Prova aquest mode" aunque esté inactivo | pendiente |
 
@@ -262,3 +262,10 @@ Creados inactivos y sin asignaturas (en la BD y en `contenido.json`), entre 1r y
 - **Validación** (`backend/src/validacion/preguntas.js`): enunciado y respuesta no vacíos (máx. 1000/300); numérica = número (coma o punto, se guarda con punto); opción múltiple = 2–6 opciones sin vacías ni repetidas y la correcta entre ellas. Las nuevas van al final del banco.
 - **Consola**: buscador (sin acentos), "+ Afegeix pregunta", y por fila Edita / Activa-Desactiva / Esborra (confirmación en la fila). Formulario según formato; en opción múltiple la correcta se marca con un círculo. Aviso si una traducción lleva "/" (no saldrá en "Vocabulari escrit"). Los contadores del menú se actualizan al guardar.
 - **e2e**: el esquema `e2e` tiene 3 bancos de prueba propios (`e2e-traduccio`, `e2e-numerica`, `e2e-opcions`) sin modo asociado; los tests de edición trabajan solo con ellos y en serie, para no interferir con los de alumnos.
+
+### 5c ✅ hecha (2026-11-22)
+- **Formato** (una pregunta por línea, separador `;` o tabulador; comillas de CSV respetadas; cabecera y BOM ignorados): traducció `anglès;català`; numèrica `enunciat;resposta` (la respuesta es el último campo); opció múltiple `enunciat;correcta;incorrecta…`.
+- **Importar** (`POST /api/admin/bancs/:id/importa` con `{ texto, importar?, inactivas? }`): sin `importar` devuelve la vista previa (ok / error con el mensaje de la validación de 5b / repetida, comparando enunciados sin mayúsculas ni acentos, también dentro del propio texto). Con `importar` guarda solo las correctas en una transacción, al final del banco, opcionalmente inactivas. Máx. 1000 líneas; JSON hasta 1 MB.
+- **Exportar**: `GET /api/admin/bancs/:id/csv` (mismo formato, con cabecera y BOM; en opción múltiple la correcta primero; incluye inactivas; ida y vuelta comprobada en tests) y `GET /api/admin/export` (copia completa, formato de `contenido.json`).
+- **Consola**: botones "Importa" y "Descarrega CSV" en la ficha de banco (panel con texto o fichero, "Revisa", "Importa N preguntes"; si cambia el texto hay que revisar de nuevo) y "Descarrega còpia completa (JSON)" en el resumen.
+- **e2e**: banco de prueba propio `e2e-importar` (separado de los de edición, que corren en paralelo).

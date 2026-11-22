@@ -33,6 +33,13 @@ export const BANCOS_E2E = [
     formato: 'opcio_multiple',
     preguntas: [{ orden: 1, enunciado: 'There ___ a castle.', opciones: ['is', 'are'], respuesta: 'is' }],
   },
+  {
+    // Solo para los tests de importar/exportar (en paralelo con los de edición).
+    slug: 'e2e-importar',
+    nombre: 'E2E importar',
+    formato: 'opcio_multiple',
+    preguntas: [{ orden: 1, enunciado: 'There ___ a castle.', opciones: ['is', 'are'], respuesta: 'is' }],
+  },
 ]
 
 if (ESQUEMA === 'public') {

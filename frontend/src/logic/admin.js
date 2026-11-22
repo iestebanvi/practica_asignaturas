@@ -73,3 +73,20 @@ export function actualizarPregunta(id, cambios) {
 export function borrarPregunta(id) {
   return peticion(`/api/admin/preguntes/${encodeURIComponent(id)}`, { method: 'DELETE' })
 }
+
+// Importar preguntas pegadas o de un fichero. Sin "importar" solo devuelve la
+// vista previa: { lineas: [{ numero, texto, estado, datos, errores }], resumen }.
+export function revisarImportacion(bancoId, texto) {
+  return peticion(`/api/admin/bancs/${encodeURIComponent(bancoId)}/importa`, json('POST', { texto }))
+}
+
+export function importarPreguntas(bancoId, texto, { inactivas = false } = {}) {
+  return peticion(
+    `/api/admin/bancs/${encodeURIComponent(bancoId)}/importa`,
+    json('POST', { texto, importar: true, inactivas }),
+  )
+}
+
+// Descargas (enlaces normales: la cookie de sesión viaja sola).
+export const urlCsvBanco = (bancoId) => `/api/admin/bancs/${encodeURIComponent(bancoId)}/csv`
+export const URL_COPIA_COMPLETA = '/api/admin/export'

@@ -1223,3 +1223,72 @@ button:active,
 .accions-fila > * + * {
   margin-left: 0.35rem;
 }
+
+/* Importar preguntas (consola) */
+.panel-importar {
+  background: #f5f9ff;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.panel-importar h3,
+.panel-importar p {
+  margin: 0;
+}
+
+.exemple-importar {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px dashed #b0bec5;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+}
+
+.camp-bloc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 700;
+}
+
+.camp-bloc textarea {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.9rem;
+  font-weight: 400;
+  padding: 0.5rem 0.7rem;
+  border-radius: 10px;
+  border: 2px solid #cfd8dc;
+}
+
+.camp-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.importacio-error td {
+  background: #fbe9e7;
+}
+
+.importacio-repetida td {
+  background: #fff8e1;
+}
+
+.avis-ok {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  background: #e8f5e9;
+  color: var(--color-correcto-sombra);
+  font-weight: 700;
+}
+
+.boto-enllac {
+  display: inline-block;
+}

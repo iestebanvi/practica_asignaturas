@@ -65,7 +65,7 @@ test.describe('Consola del professorat', () => {
 
     test('muestra el resumen y el árbol de cursos, asignaturas, modos y bancos', async ({ page }) => {
       await entrar(page)
-      await expect(page.getByText(/6 cursos · 16 modes · 7 bancs · 273 preguntes/)).toBeVisible()
+      await expect(page.getByText(/6 cursos · 16 modes · 8 bancs · 274 preguntes/)).toBeVisible()
       const arbre = page.getByRole('navigation', { name: 'Contingut' })
       await expect(arbre.getByRole('heading', { name: /6è de primària/ })).toBeVisible()
       await expect(arbre.getByRole('heading', { name: /Anglès/ })).toBeVisible()
@@ -226,6 +226,92 @@ test.describe('Consola del professorat', () => {
       await expect(fitxa.locator('tbody tr')).toContainText('BREAKFAST')
       await fitxa.getByLabel('Cerca…').fill('zzzz')
       await expect(fitxa.getByText('Cap pregunta coincideix amb la cerca.')).toBeVisible()
+    })
+  })
+
+  test.describe('importar y exportar (sobre el banco de prueba E2E importar)', () => {
+    test.describe.configure({ mode: 'serial' })
+
+    async function abrirBanco(page, nombre) {
+      await page.goto('/profesorat')
+      await page.getByLabel('Contrasenya').fill(PASSWORD)
+      await page.getByRole('button', { name: 'Entra' }).click()
+      await page.getByRole('navigation', { name: 'Contingut' }).getByRole('link', { name: new RegExp(nombre) }).click()
+      await expect(page.locator('.consola-fitxa').getByRole('heading', { name: nombre })).toBeVisible()
+      return page.locator('.consola-fitxa')
+    }
+
+    test('pegar → revisar (correctas, errores y repetidas) → importar como inactivas', async ({ page, request }) => {
+      const fitxa = await abrirBanco(page, 'E2E importar')
+      const menu = page.getByRole('navigation', { name: 'Contingut' }).getByRole('link', { name: /E2E importar/ })
+      await expect(menu).toContainText('1/1')
+
+      await fitxa.getByRole('button', { name: 'Importa', exact: true }).click()
+      const panel = fitxa.getByRole('region', { name: 'Importa preguntes' })
+      await panel.getByLabel('Text a importar').fill(
+        [
+          'enunciat;correcta;incorrecta;incorrecta',
+          'There ___ two dogs.;are;is;was',
+          'there ___ a castle.;is;are',
+          'Només dos camps;sí',
+          'There ___ lots of trees.;are;is',
+        ].join('\n'),
+      )
+      await panel.getByRole('button', { name: 'Revisa' }).click()
+      await expect(panel.getByText('2 correctes · 1 amb errors · 1 repetides')).toBeVisible()
+      await expect(panel.locator('tbody tr')).toHaveCount(4)
+      await expect(panel.locator('tr.importacio-error')).toContainText('almenys 3 camps')
+      await expect(panel.locator('tr.importacio-repetida')).toContainText('ja hi és')
+
+      // Si se cambia el texto, hay que volver a revisar
+      await panel.getByLabel('Text a importar').press('End')
+      await panel.getByLabel('Text a importar').press('Space')
+      await expect(panel.getByText('torna a revisar-lo')).toBeVisible()
+      await expect(panel.getByRole('button', { name: /^Importa \d/ })).toHaveCount(0)
+      await panel.getByRole('button', { name: 'Revisa' }).click()
+
+      await panel.getByLabel('Importa-les com a inactives').check()
+      await panel.getByRole('button', { name: 'Importa 2 preguntes' }).click()
+      await expect(fitxa.getByRole('status')).toHaveText('S’han importat 2 preguntes.')
+      await expect(fitxa.getByRole('region', { name: 'Importa preguntes' })).toHaveCount(0)
+      await expect(fitxa.locator('tbody tr', { hasText: 'There ___ two dogs.' })).toContainText('inactiva')
+      await expect(menu).toContainText('1/3')
+
+      const { preguntas } = await (await request.get('/api/bancos/e2e-importar/preguntas')).json()
+      expect(preguntas.map((p) => p.enunciado)).toEqual(['There ___ a castle.'])
+    })
+
+    test('importar desde un fichero', async ({ page }) => {
+      const fitxa = await abrirBanco(page, 'E2E importar')
+      await fitxa.getByRole('button', { name: 'Importa', exact: true }).click()
+      const panel = fitxa.getByRole('region', { name: 'Importa preguntes' })
+      await panel.getByLabel('O tria un fitxer').setInputFiles({
+        name: 'preguntes.csv',
+        mimeType: 'text/csv',
+        buffer: Buffer.from('\uFEFFThere ___ a river.;was;were;is\r\n', 'utf-8'),
+      })
+      await expect(panel.getByLabel('Text a importar')).toHaveValue(/There ___ a river\./)
+      await panel.getByRole('button', { name: 'Revisa' }).click()
+      await panel.getByRole('button', { name: 'Importa 1 pregunta' }).click()
+      await expect(fitxa.locator('tbody tr', { hasText: 'There ___ a river.' })).toContainText('was · were · is')
+    })
+
+    test('descargar el CSV del banco y la copia completa en JSON', async ({ page }) => {
+      const fitxa = await abrirBanco(page, 'E2E importar')
+      const [csv] = await Promise.all([page.waitForEvent('download'), fitxa.getByRole('link', { name: 'Descarrega CSV' }).click()])
+      expect(csv.suggestedFilename()).toBe('e2e-importar.csv')
+      const contenidoCsv = (await import('node:fs')).readFileSync(await csv.path(), 'utf-8')
+      expect(contenidoCsv).toContain('enunciat;correcta;incorrecta;incorrecta')
+      expect(contenidoCsv).toContain('There ___ a river.;was;were;is')
+
+      await page.goto('/profesorat/consola')
+      const [json] = await Promise.all([
+        page.waitForEvent('download'),
+        page.getByRole('link', { name: 'Descarrega còpia completa (JSON)' }).click(),
+      ])
+      expect(json.suggestedFilename()).toMatch(/^contingut-\d{4}-\d{2}-\d{2}\.json$/)
+      const copia = JSON.parse((await import('node:fs')).readFileSync(await json.path(), 'utf-8'))
+      expect(copia.cursos.map((c) => c.id)).toContain('6-primaria')
     })
   })
 })

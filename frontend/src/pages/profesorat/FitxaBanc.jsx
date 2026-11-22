@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { obtenerBancoAdmin, crearPregunta, actualizarPregunta, borrarPregunta } from '../../logic/admin.js'
+import { obtenerBancoAdmin, crearPregunta, actualizarPregunta, borrarPregunta, urlCsvBanco } from '../../logic/admin.js'
 import { NOMBRES_FORMATOS } from '../../logic/tiposEjercicio.js'
 import { normalizarTexto } from '../../logic/common.js'
 import { T } from '../../textos.js'
 import FormPregunta from './FormPregunta.jsx'
+import PanelImportar from './PanelImportar.jsx'
 
 // Ficha de un banco con todas sus preguntas (también las inactivas, en gris):
 // buscar, añadir, editar, activar/desactivar y borrar (con confirmación).
@@ -16,6 +17,8 @@ export default function FitxaBanc({ onCanvi }) {
   const [editant, setEditant] = useState(null) // id de la pregunta, o 'nova'
   const [confirmant, setConfirmant] = useState(null) // id pendiente de borrar
   const [errorAccio, setErrorAccio] = useState(null)
+  const [important, setImportant] = useState(false)
+  const [avis, setAvis] = useState(null)
 
   useEffect(() => {
     let vigente = true
@@ -23,6 +26,8 @@ export default function FitxaBanc({ onCanvi }) {
     setEditant(null)
     setConfirmant(null)
     setCerca('')
+    setImportant(false)
+    setAvis(null)
     obtenerBancoAdmin(id)
       .then((banco) => vigente && setEstado({ estado: 'ok', banco }))
       .catch((err) => vigente && setEstado({ estado: errorAEstado(err, 'banc_no_trobat') }))
@@ -61,6 +66,15 @@ export default function FitxaBanc({ onCanvi }) {
       if (err.codigo === 'sessio_requerida') return setEstado({ estado: 'sense-sessio' })
       setErrorAccio(T.errorDesar)
     }
+  }
+
+  // Tras importar, se vuelve a pedir el banco entero (pueden ser muchas).
+  async function importat(n) {
+    setImportant(false)
+    setAvis(T.importades(n))
+    const banco = await obtenerBancoAdmin(id)
+    setEstado({ estado: 'ok', banco })
+    onCanvi?.()
   }
 
   async function desaNova(datos) {
@@ -123,7 +137,23 @@ export default function FitxaBanc({ onCanvi }) {
         {editant !== 'nova' && (
           <button onClick={() => setEditant('nova')}>{T.afegeixPregunta}</button>
         )}
+        {!important && (
+          <button className="boto-secundari" onClick={() => { setImportant(true); setAvis(null) }}>
+            {T.importa}
+          </button>
+        )}
+        <a className="boto-enllac boto-secundari" href={urlCsvBanco(banco.id)} download>
+          {T.descarregaCsv}
+        </a>
       </div>
+
+      {avis && (
+        <p className="avis-ok" role="status">
+          {avis}
+        </p>
+      )}
+
+      {important && <PanelImportar banco={banco} onImportat={importat} onTanca={() => setImportant(false)} />}
 
       {editant === 'nova' && (
         <div className="pregunta-nova">

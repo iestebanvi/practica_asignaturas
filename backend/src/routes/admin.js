@@ -5,6 +5,9 @@ import { crearSesion, obtenerSesion, borrarSesion, DURACION_SESION_MS } from '..
 import { bloqueoRestante, registrarFallo, registrarAcierto } from '../auth/limitador.js'
 import { obtenerContenidoAdmin, obtenerBancoAdmin } from '../db/admin.js'
 import { crearPregunta, actualizarPregunta, borrarPregunta } from '../db/preguntas.js'
+import { importarPreguntas, bancoACsv } from '../db/importar.js'
+import { exportarContenido } from '../db/exportar.js'
+import { pool } from '../db/cliente.js'
 
 export const COOKIE_SESION = 'sessio_professorat'
 
@@ -122,6 +125,41 @@ router.patch(
   asyncHandler(async (req, res) => {
     const id = idDe(req)
     responderPregunta(res, id && (await actualizarPregunta(id, req.body)), 200, 'pregunta_no_trobada')
+  }),
+)
+
+// Importar preguntas: { texto, importar?, inactivas? }. Sin "importar"
+// devuelve solo la vista previa (nada se guarda).
+router.post(
+  '/bancs/:id/importa',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    const { texto, importar, inactivas } = req.body ?? {}
+    if (typeof texto !== 'string') return res.status(400).json({ error: 'text_requerit' })
+    const resultado = id && (await importarPreguntas(id, texto, { importar: importar === true, inactivas: inactivas === true }))
+    if (!resultado) return res.status(404).json({ error: 'banc_no_trobat' })
+    if (resultado.error) return res.status(400).json(resultado)
+    res.json(resultado)
+  }),
+)
+
+router.get(
+  '/bancs/:id/csv',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    const resultado = id && (await bancoACsv(id))
+    if (!resultado) return res.status(404).json({ error: 'banc_no_trobat' })
+    res.attachment(`${resultado.slug}.csv`).type('text/csv; charset=utf-8').send(resultado.csv)
+  }),
+)
+
+// Copia completa del contenido (mismo formato que backend/datos/contenido.json).
+router.get(
+  '/export',
+  asyncHandler(async (req, res) => {
+    const fecha = new Date().toISOString().slice(0, 10)
+    res.attachment(`contingut-${fecha}.json`).type('application/json')
+    res.send(JSON.stringify(await exportarContenido(pool), null, 2) + '\n')
   }),
 )
 

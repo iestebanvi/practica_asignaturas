@@ -297,4 +297,110 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
       expect(rows[0].banco_id).toBe(idBanco)
     })
   })
+
+  describe('importar y exportar (solo con sesión)', () => {
+    let cookie
+    const pedir = async (metodo, ruta, body, conCookie = true) => {
+      const headers = { 'Content-Type': 'application/json', ...(conCookie ? { Cookie: cookie } : {}) }
+      return fetch(base + ruta, { method: metodo, headers, body: body && JSON.stringify(body) })
+    }
+    const idDeBanco = async (slug) =>
+      (await pool.query('SELECT id::int FROM bancos WHERE slug = $1', [slug])).rows[0].id
+    const contar = async (id) =>
+      (await pool.query('SELECT count(*)::int AS n FROM preguntas WHERE banco_id = $1', [id])).rows[0].n
+
+    beforeAll(async () => {
+      reiniciarLimitador()
+      cookie = cookieDe(await login(PASSWORD))
+    })
+
+    it('sin sesión no se puede importar ni descargar', async () => {
+      expect((await pedir('POST', '/api/admin/bancs/1/importa', { texto: 'A;b' }, false)).status).toBe(401)
+      expect((await pedir('GET', '/api/admin/bancs/1/csv', null, false)).status).toBe(401)
+      expect((await pedir('GET', '/api/admin/export', null, false)).status).toBe(401)
+    })
+
+    it('revisar no guarda nada y devuelve el estado de cada línea', async () => {
+      const id = await idDeBanco('vocabulari-angles-6')
+      const antes = await contar(id)
+      const res = await pedir('POST', `/api/admin/bancs/${id}/importa`, { texto: 'PIG;porc\nBREAKFAST;esmorzar\nSOLO' })
+      const body = await res.json()
+      expect(res.status).toBe(200)
+      expect(body.resumen).toEqual({ ok: 1, error: 1, repetida: 1 })
+      expect(body.lineas.map((l) => l.estado)).toEqual(['ok', 'repetida', 'error'])
+      expect(body.importadas).toBe(0)
+      expect(await contar(id)).toBe(antes)
+    })
+
+    it('importar guarda solo las correctas, al final del banco; con "inactivas" quedan ocultas a los alumnos', async () => {
+      const id = await idDeBanco('vocabulari-angles-6')
+      const antes = await contar(id)
+      const res = await pedir('POST', `/api/admin/bancs/${id}/importa`, {
+        texto: 'COW;vaca\nHORSE;cavall\nmal format\nBREAKFAST;esmorzar',
+        importar: true,
+        inactivas: true,
+      })
+      const body = await res.json()
+      expect(body.importadas).toBe(2)
+      expect(await contar(id)).toBe(antes + 2)
+      const { rows } = await pool.query(
+        "SELECT enunciado, activo, orden FROM preguntas WHERE banco_id = $1 AND enunciado IN ('COW', 'HORSE') ORDER BY orden",
+        [id],
+      )
+      expect(rows.map((r) => [r.enunciado, r.activo])).toEqual([['COW', false], ['HORSE', false]])
+      expect(rows[1].orden).toBe(rows[0].orden + 1)
+      const publicas = await (await fetch(`${base}/api/bancos/vocabulari-angles-6/preguntas`)).json()
+      expect(publicas.preguntas.map((p) => p.enunciado)).not.toContain('COW')
+    })
+
+    it('más de 1000 líneas: 400 y no guarda nada', async () => {
+      const id = await idDeBanco('vocabulari-angles-6')
+      const antes = await contar(id)
+      const texto = Array.from({ length: 1001 }, (_, i) => `WORD${i};paraula${i}`).join('\n')
+      const res = await pedir('POST', `/api/admin/bancs/${id}/importa`, { texto, importar: true })
+      expect(res.status).toBe(400)
+      expect((await res.json()).error).toBe('massa_linies')
+      expect(await contar(id)).toBe(antes)
+    })
+
+    it('el CSV de un banco se puede volver a importar tal cual (ida y vuelta): todo sale repetido', async () => {
+      for (const slug of ['medi-canvis-relleu-6', 'problemes-6', 'vocabulari-angles-6']) {
+        const id = await idDeBanco(slug)
+        const res = await pedir('GET', `/api/admin/bancs/${id}/csv`)
+        expect(res.status).toBe(200)
+        expect(res.headers.get('content-type')).toMatch(/text\/csv/)
+        expect(res.headers.get('content-disposition')).toMatch(new RegExp(`${slug}\\.csv`))
+        // BOM UTF-8 (EF BB BF) para que Excel lea bien los acentos. Se mira en
+        // los bytes: res.text() lo quita al decodificar.
+        const bytes = new Uint8Array(await res.arrayBuffer())
+        expect([...bytes.slice(0, 3)]).toEqual([0xef, 0xbb, 0xbf])
+        const csv = new TextDecoder().decode(bytes)
+
+        const revisio = await (await pedir('POST', `/api/admin/bancs/${id}/importa`, { texto: csv })).json()
+        expect(revisio.resumen).toEqual({ ok: 0, error: 0, repetida: await contar(id) })
+      }
+    })
+
+    it('en el CSV de opción múltiple la correcta va primero', async () => {
+      const id = await idDeBanco('medi-canvis-relleu-6')
+      const csv = await (await pedir('GET', `/api/admin/bancs/${id}/csv`)).text()
+      const [cabecera, primera] = csv.replace('\uFEFF', '').split('\r\n')
+      expect(cabecera).toBe('enunciat;correcta;incorrecta;incorrecta')
+      expect(primera).toBe('Quina capa de la Terra és la gran massa rocosa compacta i arrodonida?;Geosfera;Hidrosfera;Atmosfera;Astenosfera')
+    })
+
+    it('la copia completa tiene el formato de contenido.json', async () => {
+      const res = await pedir('GET', '/api/admin/export')
+      expect(res.status).toBe(200)
+      expect(res.headers.get('content-disposition')).toMatch(/contingut-\d{4}-\d{2}-\d{2}\.json/)
+      const copia = await res.json()
+      expect(copia.cursos.map((c) => c.id)).toContain('6-primaria')
+      expect(copia.bancos.find((b) => b.slug === 'problemes-6').preguntas.length).toBeGreaterThanOrEqual(62)
+    })
+
+    it('importar en un banco inexistente: 404; sin texto: 400', async () => {
+      expect((await pedir('POST', '/api/admin/bancs/999999/importa', { texto: 'A;b' })).status).toBe(404)
+      expect((await pedir('POST', '/api/admin/bancs/1/importa', {})).status).toBe(400)
+    })
+  })
 })

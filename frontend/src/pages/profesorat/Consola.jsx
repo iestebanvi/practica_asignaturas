@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Pagina from '../../components/Pagina.jsx'
-import { comprobarSesion, cerrarSesion, obtenerContenidoAdmin } from '../../logic/admin.js'
+import { comprobarSesion, cerrarSesion, obtenerContenidoAdmin, URL_COPIA_COMPLETA } from '../../logic/admin.js'
 import { T } from '../../textos.js'
 import ArbreConsola from './ArbreConsola.jsx'
 import FitxaMode from './FitxaMode.jsx'
@@ -102,7 +102,12 @@ function ResumConsola({ contenido }) {
         {T.resumConsola(contenido.cursos.length, modos.length, contenido.bancos.length, preguntas)}
       </p>
       <p>{T.triaAlMenu}</p>
-      <p className="consola-avis">{T.consolaProperament}</p>
+      <p>
+        <a className="boto-enllac boto-secundari" href={URL_COPIA_COMPLETA} download>
+          {T.copiaCompleta}
+        </a>
+      </p>
+      <p className="camp-ajuda">{T.copiaAjuda}</p>
     </div>
   )
 }

@@ -16,7 +16,8 @@ export function crearApp() {
   // Railway pone un proxy delante: así req.ip es la IP real del visitante
   // (la usa el límite de intentos del login), no la del proxy.
   app.set('trust proxy', 1)
-  app.use(express.json())
+  // 1 MB: una importación de hasta 1000 preguntas largas cabe de sobra.
+  app.use(express.json({ limit: '1mb' }))
 
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok' })
