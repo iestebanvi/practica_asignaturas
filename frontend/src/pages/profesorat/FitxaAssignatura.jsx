@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { actualizarEstructura, borrarEstructura, moverEstructura } from '../../logic/admin.js'
+import { actualizarEstructura, borrarEstructura, moverEstructura, crearModo } from '../../logic/admin.js'
 import { T } from '../../textos.js'
 import FormEstructura from './FormEstructura.jsx'
 import AccionsElement from './AccionsElement.jsx'
+import FormModo from './FormModo.jsx'
 
 const RUTA = '/profesorat/consola'
 
@@ -10,6 +12,7 @@ const RUTA = '/profesorat/consola'
 export default function FitxaAssignatura({ contenido, onCanvi }) {
   const navigate = useNavigate()
   const id = Number(useParams().id)
+  const [creantMode, setCreantMode] = useState(false)
   const curso = contenido.cursos.find((c) => c.asignaturas.some((a) => a.id === id))
   if (!curso) return <p>{T.assignaturaNoTrobada}</p>
   const i = curso.asignaturas.findIndex((a) => a.id === id)
@@ -25,6 +28,12 @@ export default function FitxaAssignatura({ contenido, onCanvi }) {
   async function mou(direccio) {
     await moverEstructura('asignatura', asignatura.id, direccio)
     await onCanvi()
+  }
+
+  async function creaMode(datos) {
+    const nuevo = await crearModo(asignatura.id, datos)
+    await onCanvi()
+    navigate(`${RUTA}/mode/${nuevo.id}`)
   }
 
   async function esborra() {
@@ -77,6 +86,14 @@ export default function FitxaAssignatura({ contenido, onCanvi }) {
             </li>
           ))}
         </ul>
+      )}
+      {creantMode ? (
+        <div className="pregunta-nova">
+          <h3>{T.nouModeTitol}</h3>
+          <FormModo creando bancos={contenido.bancos} onDesa={creaMode} onCancela={() => setCreantMode(false)} />
+        </div>
+      ) : (
+        <button onClick={() => setCreantMode(true)}>{T.nouMode}</button>
       )}
     </article>
   )

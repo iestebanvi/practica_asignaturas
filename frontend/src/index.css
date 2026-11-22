@@ -1131,6 +1131,10 @@ button:active,
   max-width: 720px;
 }
 
+.form-estructura {
+  max-width: 900px;
+}
+
 .form-pregunta label {
   display: flex;
   flex-direction: column;
@@ -1376,4 +1380,62 @@ button:active,
 
 .arbre-consola > .boto-enllac {
   margin-bottom: 0.5rem;
+}
+
+/* Formulario de modo y nombre de banco (consola) */
+/* .form-pregunta .camp-tipus: tiene que ganar a ".form-pregunta fieldset" (columna) */
+.form-pregunta .camp-tipus {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 0.75rem 1.5rem;
+}
+
+.form-pregunta .camp-tipus > .camp-ajuda,
+.form-pregunta .camp-tipus > legend {
+  grid-column: 1 / -1;
+}
+
+.grup-tipus {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.grup-tipus-nom {
+  margin: 0;
+  font-weight: 700;
+  color: #616161;
+}
+
+.form-pregunta select {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.5rem 0.7rem;
+  border-radius: 10px;
+  border: 2px solid #cfd8dc;
+}
+
+.form-nom-banc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.form-nom-banc label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 700;
+}
+
+.form-nom-banc input {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 10px;
+  border: 2px solid #cfd8dc;
+  min-width: min(100%, 320px);
 }

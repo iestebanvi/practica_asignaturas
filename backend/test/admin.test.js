@@ -513,4 +513,115 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
       expect((await pedir('DELETE', `/api/admin/cursos/${curso.id}`)).status).toBe(404)
     })
   })
+
+  describe('modos y bancos (solo con sesión)', () => {
+    let cookie, asignaturaId
+    const pedir = async (metodo, ruta, body, conCookie = true) => {
+      const headers = { 'Content-Type': 'application/json', ...(conCookie ? { Cookie: cookie } : {}) }
+      const res = await fetch(base + ruta, { method: metodo, headers, body: body && JSON.stringify(body) })
+      return { status: res.status, body: res.status === 204 ? null : await res.json() }
+    }
+    const idDeBanco = async (slug) => (await pool.query('SELECT id::int FROM bancos WHERE slug = $1', [slug])).rows[0].id
+
+    beforeAll(async () => {
+      reiniciarLimitador()
+      cookie = cookieDe(await login(PASSWORD))
+      // Curso y asignatura activos propios para jugar los modos como alumno
+      const { body: curso } = await pedir('POST', '/api/admin/cursos', { nombre: 'Modes', slug: 'modes', activo: true })
+      const { body: asig } = await pedir('POST', `/api/admin/cursos/${curso.id}/assignatures`, { nombre: 'Prova', slug: 'prova', activo: true })
+      asignaturaId = asig.id
+    })
+
+    it('sin sesión no se puede tocar ni modos ni bancos', async () => {
+      expect((await pedir('POST', `/api/admin/assignatures/${asignaturaId}/modes`, {}, false)).status).toBe(401)
+      expect((await pedir('PATCH', '/api/admin/modes/1', {}, false)).status).toBe(401)
+      expect((await pedir('POST', '/api/admin/bancs', {}, false)).status).toBe(401)
+      expect((await pedir('DELETE', '/api/admin/bancs/1', null, false)).status).toBe(401)
+    })
+
+    it('crear un modo de ejercicios generados: aparece en el árbol público al activarlo', async () => {
+      const { status, body } = await pedir('POST', `/api/admin/assignatures/${asignaturaId}/modes`, {
+        nombre: 'Sumes i restes', slug: 'sumes-restes', color: '#00acc1', operaciones: ['suma', 'resta'],
+      })
+      expect(status).toBe(201)
+      expect(body).toMatchObject({ asignaturaId, slug: 'sumes-restes', operaciones: ['suma', 'resta'], bancoId: null, activo: false, sombra: '#007887' })
+
+      const arbol = async () => (await (await fetch(`${base}/api/cursos/modes`)).json()).asignaturas[0].modos
+      expect(await arbol()).toEqual([])
+      await pedir('PATCH', `/api/admin/modes/${body.id}`, { activo: true })
+      expect((await arbol()).map((m) => [m.id, m.operaciones, m.banco])).toEqual([['sumes-restes', ['suma', 'resta'], null]])
+    })
+
+    it('modo de banco: banco obligatorio, existente y de formato compatible', async () => {
+      const ruta = `/api/admin/assignatures/${asignaturaId}/modes`
+      const datos = { nombre: 'Vocabulari', slug: 'vocabulari', operaciones: ['vocabulario'] }
+      expect((await pedir('POST', ruta, datos)).body.camps.bancoId).toMatch(/Tria/)
+      expect((await pedir('POST', ruta, { ...datos, bancoId: 999999 })).body.camps.bancoId).toMatch(/no existeix/)
+      const incompatible = await pedir('POST', ruta, { ...datos, bancoId: await idDeBanco('problemes-6') })
+      expect(incompatible.body.camps.bancoId).toMatch(/format/)
+
+      const ok = await pedir('POST', ruta, { ...datos, bancoId: await idDeBanco('vocabulari-angles-6') })
+      expect(ok.status).toBe(201)
+      expect(ok.body.bancoId).toBe(await idDeBanco('vocabulari-angles-6'))
+    })
+
+    it('editar: cambiar a tipos generados quita el banco; el slug no cambia; validación del modo entero', async () => {
+      const { body: modo } = await pedir('POST', `/api/admin/assignatures/${asignaturaId}/modes`, {
+        nombre: 'Problemes', slug: 'problemes', operaciones: ['problema'], bancoId: await idDeBanco('problemes-6'),
+      })
+      const { body } = await pedir('PATCH', `/api/admin/modes/${modo.id}`, { operaciones: ['multiplicacion'], slug: 'altre' })
+      expect(body).toMatchObject({ operaciones: ['multiplicacion'], bancoId: null, slug: 'problemes' })
+      const mal = await pedir('PATCH', `/api/admin/modes/${modo.id}`, { operaciones: ['gramatica'] })
+      expect(mal.status).toBe(400)
+      expect(mal.body.camps.bancoId).toBeTruthy()
+    })
+
+    it('slug repetido en la misma asignatura: 400', async () => {
+      const r = await pedir('POST', `/api/admin/assignatures/${asignaturaId}/modes`, { nombre: 'X', slug: 'sumes-restes', operaciones: ['suma'] })
+      expect(r.body.camps.slug).toMatch(/Ja hi ha/)
+    })
+
+    it('mover y borrar modos; borrar no toca el banco ni sus preguntas', async () => {
+      const ruta = `/api/admin/assignatures/${asignaturaId}/modes`
+      const { body: a } = await pedir('POST', ruta, { nombre: 'A', slug: 'a', operaciones: ['suma'] })
+      const { body: b } = await pedir('POST', ruta, { nombre: 'B', slug: 'b', operaciones: ['vocabulario'], bancoId: await idDeBanco('vocabulari-angles-6') })
+      const orden = async () =>
+        (await pool.query('SELECT slug FROM modos WHERE asignatura_id = $1 ORDER BY orden, id', [asignaturaId])).rows.map((r) => r.slug)
+      await pedir('POST', `/api/admin/modes/${b.id}/mou`, { direccio: 'amunt' })
+      const despues = await orden()
+      expect(despues.indexOf('b')).toBe(despues.indexOf('a') - 1)
+
+      const preguntasAntes = (await pool.query('SELECT count(*)::int AS n FROM preguntas WHERE banco_id = $1', [b.bancoId])).rows[0].n
+      expect((await pedir('DELETE', `/api/admin/modes/${b.id}`)).status).toBe(204)
+      expect((await pedir('DELETE', `/api/admin/modes/${b.id}`)).status).toBe(404)
+      const preguntasDespues = (await pool.query('SELECT count(*)::int AS n FROM preguntas WHERE banco_id = $1', [b.bancoId])).rows[0].n
+      expect(preguntasDespues).toBe(preguntasAntes)
+      expect((await pedir('DELETE', `/api/admin/modes/${a.id}`)).status).toBe(204)
+    })
+
+    it('bancos: crear (vacío), renombrar, y borrar solo si está vacío y sin uso', async () => {
+      const { status, body: banco } = await pedir('POST', '/api/admin/bancs', { nombre: 'Música', slug: 'musica', formato: 'opcio_multiple' })
+      expect(status).toBe(201)
+      expect(banco).toMatchObject({ slug: 'musica', formato: 'opcio_multiple' })
+      expect((await pedir('POST', '/api/admin/bancs', { nombre: 'Altre', slug: 'musica', formato: 'traduccio' })).body.camps.slug).toMatch(/Ja hi ha/)
+
+      const renombrado = await pedir('PATCH', `/api/admin/bancs/${banco.id}`, { nombre: 'Música (2n)', formato: 'traduccio' })
+      expect(renombrado.body).toMatchObject({ nombre: 'Música (2n)', formato: 'opcio_multiple' })
+
+      // Usado por un modo: no se puede borrar
+      const { body: modo } = await pedir('POST', `/api/admin/assignatures/${asignaturaId}/modes`, {
+        nombre: 'Música', slug: 'musica', operaciones: ['gramatica'], bancoId: banco.id,
+      })
+      expect((await pedir('DELETE', `/api/admin/bancs/${banco.id}`)).status).toBe(409)
+      await pedir('DELETE', `/api/admin/modes/${modo.id}`)
+
+      // Con preguntas: tampoco
+      const { body: pregunta } = await pedir('POST', `/api/admin/bancs/${banco.id}/preguntes`, { enunciado: 'Do?', opciones: ['Do', 'Re'], respuesta: 'Do' })
+      expect((await pedir('DELETE', `/api/admin/bancs/${banco.id}`)).status).toBe(409)
+      await pedir('DELETE', `/api/admin/preguntes/${pregunta.id}`)
+
+      expect((await pedir('DELETE', `/api/admin/bancs/${banco.id}`)).status).toBe(204)
+      expect((await pedir('GET', `/api/admin/bancs/${banco.id}`)).status).toBe(404)
+    })
+  })
 })

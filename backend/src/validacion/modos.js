@@ -1,0 +1,61 @@
+import { TIPOS_EJERCICIO } from '../catalogo/tiposEjercicio.js'
+import { validarEstructura } from './estructura.js'
+
+export const FORMATOS = ['numerica', 'traduccio', 'opcio_multiple']
+
+// Modo completo (al crear, o lo guardado + los cambios al editar). Nombre,
+// slug, color y activo se validan como en cursos/asignaturas; además los tipos
+// de ejercicio. Devuelve { valores, formatoBanco } (formatoBanco: el formato
+// de banco que exigen los tipos elegidos, o null) o { errores }.
+export function validarModo(datos, { creando = false } = {}) {
+  const base = validarEstructura('modo', datos, { creando })
+  const errores = { ...(base.errores ?? {}) }
+  const valores = { ...(base.valores ?? {}) }
+
+  const operaciones = datos.operaciones
+  let formatoBanco = null
+  if (!Array.isArray(operaciones) || operaciones.length === 0) {
+    errores.operaciones = "Tria almenys un tipus d'exercici."
+  } else if (operaciones.some((op) => typeof op !== 'string' || !(op in TIPOS_EJERCICIO))) {
+    errores.operaciones = "Hi ha algun tipus d'exercici que no existeix."
+  } else {
+    const formatos = [...new Set(operaciones.map((op) => TIPOS_EJERCICIO[op]).filter(Boolean))]
+    if (formatos.length > 1) {
+      errores.operaciones =
+        "No es poden barrejar tipus que fan servir bancs de formats diferents (cada mode té un sol banc)."
+    } else {
+      valores.operaciones = [...new Set(operaciones)]
+      formatoBanco = formatos[0] ?? null
+    }
+  }
+
+  if (formatoBanco) {
+    if (!Number.isInteger(datos.bancoId)) errores.bancoId = 'Tria el banc de preguntes.'
+    else valores.bancoId = datos.bancoId
+  } else {
+    // Sin tipos de banco, el modo no usa ningún banco.
+    valores.bancoId = null
+  }
+
+  return Object.keys(errores).length ? { errores } : { valores, formatoBanco }
+}
+
+export function validarBanco(datos, { creando = false } = {}) {
+  const errores = {}
+  const valores = {}
+  const nombre = typeof datos.nombre === 'string' ? datos.nombre.trim() : ''
+  if (creando || datos.nombre !== undefined) {
+    if (!nombre) errores.nombre = 'El nom no pot estar buit.'
+    else if (nombre.length > 80) errores.nombre = 'Màxim 80 caràcters.'
+    else valores.nombre = nombre
+  }
+  if (creando) {
+    const slug = typeof datos.slug === 'string' ? datos.slug.trim() : ''
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
+      errores.slug = "L'identificador només pot tenir minúscules sense accents, números i guions."
+    } else valores.slug = slug
+    if (!FORMATOS.includes(datos.formato)) errores.formato = 'Tria el format.'
+    else valores.formato = datos.formato
+  }
+  return Object.keys(errores).length ? { errores } : { valores }
+}

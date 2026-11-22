@@ -19,6 +19,12 @@ const TABLAS = {
     columnas: 'id::int, curso_id::int AS "cursoId", slug, nombre, icono, color, sombra, activo',
     editables: ['nombre', 'icono', 'color', 'sombra', 'activo'],
   },
+  // Los modos solo usan "mover" de aquí (crear/editar/borrar: db/modos.js).
+  modo: {
+    tabla: 'modos',
+    padre: 'asignatura_id',
+    columnas: 'id::int, asignatura_id::int AS "asignaturaId", slug, nombre, color, sombra, operaciones, banco_id::int AS "bancoId", activo',
+  },
 }
 
 const valorSql = (campo, valor) => (campo === 'config' ? JSON.stringify(valor) : valor)

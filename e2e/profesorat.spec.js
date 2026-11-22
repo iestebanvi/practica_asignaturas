@@ -65,8 +65,8 @@ test.describe('Consola del professorat', () => {
 
     test('muestra el resumen y el árbol de cursos, asignaturas, modos y bancos', async ({ page }) => {
       await entrar(page)
-      // El número de cursos varía: los tests de la 5d crean cursos en paralelo
-      await expect(page.getByText(/\d+ cursos · 16 modes · 8 bancs · 274 preguntes/)).toBeVisible()
+      // Los números varían: otros tests crean cursos, modos y bancos en paralelo
+      await expect(page.getByText(/\d+ cursos · \d+ modes · \d+ bancs · \d+ preguntes/)).toBeVisible()
       const arbre = page.getByRole('navigation', { name: 'Contingut' })
       await expect(arbre.getByRole('heading', { name: /6è de primària/ })).toBeVisible()
       await expect(arbre.getByRole('heading', { name: /Anglès/ })).toBeVisible()
@@ -108,7 +108,7 @@ test.describe('Consola del professorat', () => {
       const potencies = page.getByRole('navigation', { name: 'Contingut' }).getByRole('link', { name: /Potències/ })
       await expect(potencies).toContainText('inactiu')
       await potencies.click()
-      await expect(page.locator('.consola-fitxa').getByText('inactiu')).toBeVisible()
+      await expect(page.locator('.consola-fitxa').getByLabel('Actiu (visible per als alumnes)')).not.toBeChecked()
       // Un modo inactivo no ofrece el enlace a la web (los alumnos no lo ven)
       await expect(page.getByRole('link', { name: 'Obre a la web ↗' })).toHaveCount(0)
     })
@@ -150,7 +150,7 @@ test.describe('Consola del professorat', () => {
       await fitxa.getByLabel('Paraula en anglès').fill('CAT')
       await expect(fitxa.getByText(/no sortirà a «Vocabulari escrit»/)).toHaveCount(0)
       await fitxa.getByLabel('Traducció al català').fill('gat, moix')
-      await fitxa.getByRole('button', { name: 'Desa', exact: true }).click()
+      await fitxa.locator('.form-pregunta').getByRole('button', { name: 'Desa', exact: true }).click()
 
       await expect(fila(fitxa, 'CAT')).toContainText('gat, moix')
       await expect(menu).toContainText('3/3')
@@ -162,11 +162,11 @@ test.describe('Consola del professorat', () => {
       await fitxa.getByRole('button', { name: '+ Afegeix pregunta' }).click()
       await fitxa.getByLabel('Enunciat del problema').fill('La meitat de 7?')
       await fitxa.getByLabel('Resposta (número)').fill('tres i mig')
-      await fitxa.getByRole('button', { name: 'Desa', exact: true }).click()
+      await fitxa.locator('.form-pregunta').getByRole('button', { name: 'Desa', exact: true }).click()
       await expect(fitxa.getByRole('alert')).toHaveText('La resposta ha de ser un número.')
 
       await fitxa.getByLabel('Resposta (número)').fill('3,5')
-      await fitxa.getByRole('button', { name: 'Desa', exact: true }).click()
+      await fitxa.locator('.form-pregunta').getByRole('button', { name: 'Desa', exact: true }).click()
       await expect(fila(fitxa, 'La meitat de 7?')).toContainText('3.5')
     })
 
@@ -176,7 +176,7 @@ test.describe('Consola del professorat', () => {
       await fitxa.getByRole('button', { name: '+ opció' }).click()
       await fitxa.getByLabel('Opció 3', { exact: true }).fill('were')
       await fitxa.getByLabel('L’opció 3 és la correcta').check()
-      await fitxa.getByRole('button', { name: 'Desa', exact: true }).click()
+      await fitxa.locator('.form-pregunta').getByRole('button', { name: 'Desa', exact: true }).click()
 
       await expect(fila(fitxa, 'There ___ a castle.')).toContainText('is · are · were')
       const [pregunta] = await publicas(request, 'e2e-opcions')
@@ -185,7 +185,7 @@ test.describe('Consola del professorat', () => {
       // Opciones repetidas: error del servidor, no se guarda
       await fila(fitxa, 'There ___ a castle.').getByRole('button', { name: 'Edita' }).click()
       await fitxa.getByLabel('Opció 2', { exact: true }).fill('is')
-      await fitxa.getByRole('button', { name: 'Desa', exact: true }).click()
+      await fitxa.locator('.form-pregunta').getByRole('button', { name: 'Desa', exact: true }).click()
       await expect(fitxa.getByRole('alert')).toHaveText('Hi ha opcions repetides.')
       await fitxa.getByRole('button', { name: 'Cancel·la' }).click()
       await expect(fila(fitxa, 'There ___ a castle.')).toContainText('is · are · were')
@@ -364,7 +364,7 @@ test.describe('Consola del professorat', () => {
       const fitxa = await entrar(page)
       await menu(page).getByRole('link', { name: /Prova E2E/ }).click()
       await fitxa.getByLabel('Actiu (visible per als alumnes)').check()
-      await fitxa.getByRole('button', { name: 'Desa', exact: true }).click()
+      await fitxa.locator('.form-pregunta').getByRole('button', { name: 'Desa', exact: true }).click()
       await expect(fitxa.getByRole('status')).toHaveText('Desat.')
       await expect(fitxa.getByText(/no té cap assignatura activa/)).toBeVisible()
 
@@ -429,6 +429,116 @@ test.describe('Consola del professorat', () => {
       await expect(fitxa.getByRole('link', { name: /Matemàtiques/ })).toContainText('Matemàtiques')
       await expect(fitxa.getByText('8 modes')).toBeVisible()
       await expect(fitxa.getByRole('button', { name: 'Esborra el curs' })).toBeDisabled()
+    })
+  })
+
+  test.describe('modos y bancos: montar un tema completo y jugarlo como alumno', () => {
+    test.describe.configure({ mode: 'serial' })
+
+    async function entrar(page) {
+      await page.goto('/profesorat')
+      await page.getByLabel('Contrasenya').fill(PASSWORD)
+      await page.getByRole('button', { name: 'Entra' }).click()
+      await expect(page.getByRole('navigation', { name: 'Contingut' })).toBeVisible()
+      return page.locator('.consola-fitxa')
+    }
+    const menu = (page) => page.getByRole('navigation', { name: 'Contingut' })
+
+    test('preparar: curso y asignatura activos de prueba', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: '+ Nou curs' }).click()
+      await fitxa.getByLabel('Nom').fill('Jocs E2E')
+      await fitxa.getByLabel('Actiu (visible per als alumnes)').check()
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+      await fitxa.getByRole('button', { name: '+ Nova assignatura' }).click()
+      await fitxa.getByLabel('Nom').last().fill('Repàs')
+      await fitxa.getByLabel('Actiu (visible per als alumnes)').last().check()
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+      await expect(page).toHaveURL(/\/assignatura\/\d+$/)
+    })
+
+    test('modo de ejercicios generados: se crea, se activa y un alumno lo juega', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: /Repàs/ }).click()
+      await fitxa.getByRole('button', { name: '+ Nou mode' }).click()
+      await fitxa.getByLabel('Nom').last().fill('Només sumes')
+      await expect(fitxa.getByLabel('Adreça (part de la URL)')).toHaveValue('nomes-sumes')
+      await fitxa.getByRole('checkbox', { name: 'Sumes', exact: true }).check()
+      // Sin tipos de banco no se pide banco
+      await expect(fitxa.getByLabel('Banc de preguntes')).toHaveCount(0)
+      await fitxa.getByLabel('Actiu (visible per als alumnes)').last().check()
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+      await expect(page).toHaveURL(/\/mode\/\d+$/)
+      await expect(fitxa.getByText('/jocs-e2e/repas/nomes-sumes')).toBeVisible()
+
+      await page.goto('/jocs-e2e/repas/nomes-sumes')
+      await expect(page.locator('.enunciado')).toContainText('+')
+    })
+
+    test('mezclar tipos de bancos de formatos distintos avisa, y el servidor lo rechaza', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: 'Només sumes' }).click()
+      await fitxa.getByRole('checkbox', { name: 'Problemes (del banc)' }).check()
+      await fitxa.getByRole('checkbox', { name: 'Gramàtica (del banc)' }).check()
+      await expect(fitxa.getByText(/formats diferents/)).toBeVisible()
+      await fitxa.locator('.form-pregunta').getByRole('button', { name: 'Desa', exact: true }).click()
+      await expect(fitxa.getByRole('alert')).toContainText('barrejar')
+    })
+
+    test('banco nuevo → pregunta → modo que lo usa (solo se ofrecen bancos compatibles) → lo juega un alumno', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: '+ Nou banc' }).click()
+      await fitxa.getByLabel('Nom').fill('Colors E2E')
+      await expect(fitxa.getByLabel('Identificador')).toHaveValue('colors-e2e')
+      await fitxa.getByRole('radio', { name: 'Traducció (anglès → català)' }).check()
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+      await expect(fitxa.getByRole('heading', { name: 'Colors E2E' })).toBeVisible()
+      await expect(fitxa.getByText('0 actives de 0')).toBeVisible()
+
+      await fitxa.getByRole('button', { name: '+ Afegeix pregunta' }).click()
+      await fitxa.getByLabel('Paraula en anglès').fill('RED')
+      await fitxa.getByLabel('Traducció al català').fill('vermell')
+      await fitxa.locator('.form-pregunta').getByRole('button', { name: 'Desa', exact: true }).click()
+      await expect(fitxa.locator('tbody tr', { hasText: 'RED' })).toBeVisible()
+
+      await menu(page).getByRole('link', { name: /Repàs/ }).click()
+      await fitxa.getByRole('button', { name: '+ Nou mode' }).click()
+      await fitxa.getByLabel('Nom').last().fill('Colors')
+      await fitxa.getByRole('checkbox', { name: 'Vocabulari, triar (del banc)' }).check()
+      const select = fitxa.getByLabel('Banc de preguntes')
+      const opciones = await select.locator('option').allInnerTexts()
+      expect(opciones.some((o) => o.startsWith('Colors E2E'))).toBe(true)
+      expect(opciones.some((o) => o.startsWith('Problemes'))).toBe(false)
+      await select.selectOption({ label: 'Colors E2E (1 actives de 1)' })
+      await fitxa.getByLabel('Actiu (visible per als alumnes)').last().check()
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+      await expect(page).toHaveURL(/\/mode\/\d+$/)
+
+      await page.goto('/jocs-e2e/repas/colors')
+      await expect(page.locator('.enunciado')).toHaveText('RED')
+      await page.getByRole('button', { name: 'vermell' }).click()
+      await expect(page.locator('.feedback.correcto')).toBeVisible()
+    })
+
+    test('un banco en uso no se puede borrar; reordenar y borrar modos no toca el banco', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: /Colors E2E/ }).click()
+      await expect(fitxa.getByRole('button', { name: 'Esborra el banc' })).toBeDisabled()
+
+      await menu(page).getByRole('link', { name: 'Colors', exact: true }).click()
+      await fitxa.getByRole('button', { name: '↑ Puja' }).click()
+      await expect(fitxa.getByRole('button', { name: '↑ Puja' })).toBeDisabled()
+      await fitxa.getByRole('button', { name: 'Esborra el mode' }).click()
+      await fitxa.getByRole('button', { name: 'Sí, esborra' }).click()
+      await expect(page).toHaveURL(/\/assignatura\/\d+$/)
+
+      await menu(page).getByRole('link', { name: /Colors E2E/ }).click()
+      await expect(fitxa.getByText('1 actives de 1')).toBeVisible()
+      // Renombrar el banco
+      await fitxa.getByLabel('Nom').first().fill('Colors E2E (bis)')
+      await fitxa.locator('.form-nom-banc').getByRole('button', { name: 'Desa' }).click()
+      await expect(fitxa.getByRole('heading', { name: 'Colors E2E (bis)' })).toBeVisible()
+      await expect(menu(page).getByRole('link', { name: /Colors E2E \(bis\)/ })).toBeVisible()
     })
   })
 })

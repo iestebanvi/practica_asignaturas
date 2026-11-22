@@ -1,18 +1,31 @@
 import { useEffect, useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
-import { obtenerBancoAdmin, crearPregunta, actualizarPregunta, borrarPregunta, urlCsvBanco } from '../../logic/admin.js'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import {
+  obtenerBancoAdmin,
+  crearPregunta,
+  actualizarPregunta,
+  borrarPregunta,
+  urlCsvBanco,
+  actualizarEstructura,
+  borrarEstructura,
+} from '../../logic/admin.js'
 import { NOMBRES_FORMATOS } from '../../logic/tiposEjercicio.js'
 import { normalizarTexto } from '../../logic/common.js'
 import { T } from '../../textos.js'
 import FormPregunta from './FormPregunta.jsx'
 import PanelImportar from './PanelImportar.jsx'
+import AccionsElement from './AccionsElement.jsx'
 
 // Ficha de un banco con todas sus preguntas (también las inactivas, en gris):
 // buscar, añadir, editar, activar/desactivar y borrar (con confirmación).
 // onCanvi avisa a la consola para que actualice los contadores del menú.
 export default function FitxaBanc({ onCanvi }) {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [estado, setEstado] = useState({ estado: 'carregant' })
+  const [nomBanc, setNomBanc] = useState('')
+  const [errorNom, setErrorNom] = useState(null)
+  const [nomDesat, setNomDesat] = useState(false)
   const [cerca, setCerca] = useState('')
   const [editant, setEditant] = useState(null) // id de la pregunta, o 'nova'
   const [confirmant, setConfirmant] = useState(null) // id pendiente de borrar
@@ -29,7 +42,13 @@ export default function FitxaBanc({ onCanvi }) {
     setImportant(false)
     setAvis(null)
     obtenerBancoAdmin(id)
-      .then((banco) => vigente && setEstado({ estado: 'ok', banco }))
+      .then((banco) => {
+        if (!vigente) return
+        setEstado({ estado: 'ok', banco })
+        setNomBanc(banco.nombre)
+        setNomDesat(false)
+        setErrorNom(null)
+      })
       .catch((err) => vigente && setEstado({ estado: errorAEstado(err, 'banc_no_trobat') }))
     return () => {
       vigente = false
@@ -68,6 +87,25 @@ export default function FitxaBanc({ onCanvi }) {
     }
   }
 
+  async function desaNom(evento) {
+    evento.preventDefault()
+    setErrorNom(null)
+    try {
+      const guardado = await actualizarEstructura('banco', banco.id, { nombre: nomBanc })
+      setEstado((e) => ({ ...e, banco: { ...e.banco, nombre: guardado.nombre } }))
+      setNomDesat(true)
+      onCanvi?.()
+    } catch (err) {
+      setErrorNom(err.codigo === 'validacio' ? Object.values(err.datos.camps).join(' ') : T.errorDesar)
+    }
+  }
+
+  async function esborraBanc() {
+    await borrarEstructura('banco', banco.id)
+    await onCanvi?.()
+    navigate('/profesorat/consola', { replace: true })
+  }
+
   // Tras importar, se vuelve a pedir el banco entero (pueden ser muchas).
   async function importat(n) {
     setImportant(false)
@@ -104,7 +142,31 @@ export default function FitxaBanc({ onCanvi }) {
 
   return (
     <article className="fitxa">
-      <h2>{banco.nombre}</h2>
+      <div className="fitxa-capcalera">
+        <h2>{banco.nombre}</h2>
+        <AccionsElement
+          nombre={banco.nombre}
+          primero
+          ultimo
+          vacio={banco.preguntas.length === 0 && banco.modos.length === 0}
+          textoEsborra={T.esborraBanc}
+          textoNoBuit={T.noBuitBanc}
+          onMou={() => {}}
+          onEsborra={esborraBanc}
+          senseOrdre
+        />
+      </div>
+      <form className="form-nom-banc" onSubmit={desaNom}>
+        <label>
+          {T.campNom}
+          <input value={nomBanc} onChange={(e) => { setNomBanc(e.target.value); setNomDesat(false) }} />
+        </label>
+        <button type="submit" className="boto-petit" disabled={nomBanc === banco.nombre}>
+          {T.desa}
+        </button>
+        {nomDesat && <span className="avis-desat" role="status">{T.desat}</span>}
+        {errorNom && <p className="camp-error" role="alert">{errorNom}</p>}
+      </form>
       <dl className="fitxa-dades">
         <dt>{T.formatBanc}</dt>
         <dd>{NOMBRES_FORMATOS[banco.formato] ?? banco.formato}</dd>

@@ -240,8 +240,8 @@ Acordado el 2026-11-22. Cada subfase se despliega por separado.
 | **5b** | Editar preguntas de un banco (formulario según formato, validaciones), añadir, activar/desactivar, borrar con confirmación | ✅ hecha |
 | **5c** | Importar preguntas pegando texto/CSV con vista previa de errores; exportar banco a CSV y copia completa en JSON | ✅ hecha |
 | **5d** | Cursos y asignaturas: crear/editar (nombre, icono, color, nivel, config), activo, orden | ✅ hecha |
-| **5e** | Modos y bancos: crear/editar modos (tipos de ejercicio, banco), crear bancos | siguiente |
-| **5f** | Vista previa: "Prova aquest mode" aunque esté inactivo | pendiente |
+| **5e** | Modos y bancos: crear/editar modos (tipos de ejercicio, banco), crear bancos | ✅ hecha |
+| **5f** | Vista previa: "Prova aquest mode" aunque esté inactivo | siguiente |
 
 **Decisiones:**
 1. Las preguntas se pueden borrar (con confirmación). Cursos, asignaturas, modos y bancos solo se borran si están vacíos; si no, se desactivan.
@@ -275,3 +275,10 @@ Creados inactivos y sin asignaturas (en la BD y en `contenido.json`), entre 1r y
 - **Validación** (`backend/src/validacion/estructura.js`): nombre (máx. 60), slug solo al crear (formato URL, único en su nivel —UNIQUE de la BD— y no reservado: `profesorat`/`api`/`assets` para cursos, `repassar` para asignaturas), icono (emoji, opcional), color `#rrggbb` con la **sombra calculada** (30 % más oscura), nivel `facil|medio|dificil`, config `{ majuscules, celebracio }`. Lo nuevo se crea **inactivo** y al final.
 - **Consola**: "+ Nou curs" en el menú; nombres de curso y asignatura enlazan a su ficha editable (con ↑ Puja / ↓ Baixa / Esborra —deshabilitado y explicado si no está vacío—, aviso si está activo sin hijos activos, enlace a la web si es visible) y "+ Nova assignatura" en la ficha de curso. La web de alumnos muestra "Encara no hi ha exercicis en aquesta assignatura." si una asignatura no tiene modos.
 - **e2e**: crean y borran su propio curso de prueba (`prova-e2e`); el resumen de la consola no fija el número de cursos (varía en paralelo).
+
+### 5e ✅ hecha (2026-11-22)
+- **Catálogo de tipos en el servidor** (`backend/src/catalogo/tiposEjercicio.js`: tipo → formato de banco o null). Copia de la lista del frontend; `frontend/src/logic/tiposEjercicio.test.js` falla si dejan de coincidir (al añadir un generador nuevo hay que añadirlo en los dos sitios).
+- **Modos** (`POST /api/admin/assignatures/:id/modes`, `PATCH|DELETE /api/admin/modes/:id`, `POST …/mou`): al menos un tipo, todos conocidos; si hay tipos de banco, banco obligatorio, existente y del formato que piden; no se mezclan tipos de formatos distintos; sin tipos de banco se guarda sin banco. El PATCH valida el modo entero (combinado con lo guardado). Borrar un modo no toca su banco.
+- **Bancos** (`POST /api/admin/bancs`, `PATCH|DELETE /api/admin/bancs/:id`): formato y slug fijos al crear; solo se renombra; borrar solo sin preguntas y sin modos (409).
+- **Consola**: "+ Nou mode" en la ficha de asignatura; ficha de modo editable (casillas agrupadas por tema, desplegable solo con bancos compatibles, aviso al mezclar formatos, Puja/Baixa/Esborra); "+ Nou banc" en el menú; en la ficha de banco, renombrar y borrar.
+- **Nivel de los generadores**: sigue siendo por curso; la configuración fina por modo (antigua fase 6) queda pendiente de si hace falta.

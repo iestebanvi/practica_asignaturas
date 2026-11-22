@@ -8,6 +8,7 @@ import { crearPregunta, actualizarPregunta, borrarPregunta } from '../db/pregunt
 import { importarPreguntas, bancoACsv } from '../db/importar.js'
 import { exportarContenido } from '../db/exportar.js'
 import * as estructura from '../db/estructura.js'
+import { crearModo, actualizarModo, borrarModo, crearBanco, actualizarBanco, borrarBanco } from '../db/modos.js'
 import { pool } from '../db/cliente.js'
 
 export const COOKIE_SESION = 'sessio_professorat'
@@ -168,6 +169,65 @@ for (const [ruta, tipo, noTrobat] of [
     }),
   )
 }
+
+// Modos: crear dentro de una asignatura, editar (parcial), mover y borrar.
+router.post(
+  '/assignatures/:id/modes',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    responderEstructura(res, id && (await crearModo(id, req.body ?? {})), 201, 'assignatura_no_trobada')
+  }),
+)
+
+router.patch(
+  '/modes/:id',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    responderEstructura(res, id && (await actualizarModo(id, req.body ?? {})), 200, 'mode_no_trobat')
+  }),
+)
+
+router.delete(
+  '/modes/:id',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    responderEstructura(res, id && (await borrarModo(id)), 204, 'mode_no_trobat')
+  }),
+)
+
+router.post(
+  '/modes/:id/mou',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    const direccion = req.body?.direccio
+    if (!['amunt', 'avall'].includes(direccion)) return res.status(400).json({ error: 'direccio_no_valida' })
+    responderEstructura(res, id && (await estructura.mover('modo', id, direccion)), 200, 'mode_no_trobat')
+  }),
+)
+
+// Bancos: crear (formato fijo), renombrar y borrar (solo vacío y sin uso).
+router.post(
+  '/bancs',
+  asyncHandler(async (req, res) => {
+    responderEstructura(res, await crearBanco(req.body ?? {}), 201, 'banc_no_trobat')
+  }),
+)
+
+router.patch(
+  '/bancs/:id',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    responderEstructura(res, id && (await actualizarBanco(id, req.body ?? {})), 200, 'banc_no_trobat')
+  }),
+)
+
+router.delete(
+  '/bancs/:id',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    responderEstructura(res, id && (await borrarBanco(id)), 204, 'banc_no_trobat')
+  }),
+)
 
 router.post(
   '/cursos',

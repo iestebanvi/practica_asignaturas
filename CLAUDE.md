@@ -17,7 +17,8 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 - **5b hecha** (2026-11-22): editar preguntas desde la consola. Cursos 2n–5è creados (inactivos, sin contenido).
 - **5c hecha** (2026-11-22): importar preguntas (texto/CSV con vista previa) y exportar (CSV por banco, copia completa JSON).
 - **5d hecha** (2026-11-22): crear/editar/ordenar/borrar cursos y asignaturas desde la consola.
-- Siguiente: **5e** (modos y bancos). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
+- **5e hecha** (2026-11-22): crear/editar/ordenar/borrar modos; crear/renombrar/borrar bancos. Ya se puede montar un tema completo desde la consola.
+- Siguiente: **5f** (vista previa de modos inactivos). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
 
 ## Mapa de temas
 
@@ -62,7 +63,9 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Crear/editar/borrar preguntas y su validación | `backend/src/db/preguntas.js` + `backend/src/validacion/preguntas.js` |
 | Cursos y asignaturas: validación, slugs reservados, sombra, orden | `backend/src/validacion/estructura.js` + `backend/src/db/estructura.js`; fichas en `frontend/src/pages/profesorat/FitxaCurs.jsx` y `FitxaAssignatura.jsx` |
 | Importar/exportar preguntas (formato `;`, CSV) | `backend/src/validacion/importar.js` + `backend/src/db/importar.js`; panel en `frontend/src/pages/profesorat/PanelImportar.jsx` |
-| Nombres legibles de tipos de ejercicio y formatos | `frontend/src/logic/tiposEjercicio.js` |
+| Nombres legibles de tipos de ejercicio, formatos y grupos del formulario | `frontend/src/logic/tiposEjercicio.js` |
+| Catálogo de tipos para validar en el servidor (¡sincronizado con el frontend por test!) | `backend/src/catalogo/tiposEjercicio.js` |
+| Modos y bancos: validación y operaciones | `backend/src/validacion/modos.js` + `backend/src/db/modos.js`; `frontend/src/pages/profesorat/FormModo.jsx`, `NouBanc.jsx` |
 | Entorno de los e2e (esquema `e2e`, puertos 3199/5199, contraseña de prueba) | `e2e/entorno.js` + `playwright.config.js` + `backend/scripts/preparar-e2e.js` |
 | Tests de la API | `backend/test/*.test.js` (esquema `test`, en serie; helper `preparar.js`) |
 

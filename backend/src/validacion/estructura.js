@@ -12,6 +12,7 @@ const MAX_ICONO = 8
 export const SLUGS_RESERVADOS = {
   curso: ['profesorat', 'api', 'assets'],
   asignatura: ['repassar'],
+  modo: [],
 }
 
 // Sombra de los botones: el mismo color un 30 % más oscuro.
@@ -22,7 +23,8 @@ export function calcularSombra(color) {
 
 const texto = (v) => (typeof v === 'string' ? v.trim() : v)
 
-// tipo: 'curso' | 'asignatura'. creando: el slug solo se acepta al crear.
+// tipo: 'curso' | 'asignatura' | 'modo'. creando: el slug solo se acepta al crear.
+// (De los modos, aquí solo se validan los campos comunes; ver validacion/modos.js.)
 // Solo valida los campos presentes (sirve para cambios parciales) salvo los
 // obligatorios al crear. Devuelve { valores } o { errores }.
 export function validarEstructura(tipo, datos, { creando = false } = {}) {

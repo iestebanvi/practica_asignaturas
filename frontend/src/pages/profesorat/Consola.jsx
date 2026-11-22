@@ -8,6 +8,7 @@ import FitxaMode from './FitxaMode.jsx'
 import FitxaBanc from './FitxaBanc.jsx'
 import FitxaCurs, { NouCurs } from './FitxaCurs.jsx'
 import FitxaAssignatura from './FitxaAssignatura.jsx'
+import NouBanc from './NouBanc.jsx'
 
 // Consola del profesorado: comprueba la sesión, carga todo el contenido
 // (también lo inactivo) y lo muestra con el árbol a la izquierda y la ficha
@@ -89,7 +90,8 @@ export default function Consola() {
                   path="assignatura/:id"
                   element={<FitxaAssignatura contenido={estado.contenido} onCanvi={refrescar} />}
                 />
-                <Route path="mode/:id" element={<FitxaMode contenido={estado.contenido} />} />
+                <Route path="mode/:id" element={<FitxaMode contenido={estado.contenido} onCanvi={refrescar} />} />
+                <Route path="banc/nou" element={<NouBanc onCanvi={refrescar} />} />
                 <Route path="banc/:id" element={<FitxaBanc onCanvi={refrescar} />} />
                 <Route path="*" element={<Navigate to="/profesorat/consola" replace />} />
               </Routes>

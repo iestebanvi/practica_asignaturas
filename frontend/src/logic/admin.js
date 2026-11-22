@@ -93,7 +93,7 @@ export const URL_COPIA_COMPLETA = '/api/admin/export'
 
 // Cursos ("cursos") y asignaturas ("assignatures"): crear, editar, mover
 // ('amunt' | 'avall') y borrar (solo si están vacíos: si no, ErrorAdmin('no_buit')).
-const RUTA_ESTRUCTURA = { curso: 'cursos', asignatura: 'assignatures' }
+const RUTA_ESTRUCTURA = { curso: 'cursos', asignatura: 'assignatures', modo: 'modes', banco: 'bancs' }
 
 export function crearCurso(datos) {
   return peticion('/api/admin/cursos', json('POST', datos))
@@ -124,4 +124,12 @@ export function proponerSlug(nombre) {
     .replace(/·/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
+}
+
+export function crearModo(asignaturaId, datos) {
+  return peticion(`/api/admin/assignatures/${encodeURIComponent(asignaturaId)}/modes`, json('POST', datos))
+}
+
+export function crearBanco(datos) {
+  return peticion('/api/admin/bancs', json('POST', datos))
 }

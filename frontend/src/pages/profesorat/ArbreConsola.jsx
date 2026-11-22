@@ -46,6 +46,9 @@ export default function ArbreConsola({ contenido }) {
 
       <section>
         <h2>🗂️ {T.bancs}</h2>
+        <Link to={`${RUTA}/banc/nou`} className="boto-enllac boto-petit">
+          {T.nouBanc}
+        </Link>
         <ul>
           {contenido.bancos.map((banco) => (
             <li key={banco.id}>
