@@ -6,12 +6,14 @@ Web para que alumnos de primaria practiquen por curso, sin identificarse. La int
 
 Al terminar la partida (botón "Finalitza") se muestra un resumen con los puntos. "Per repassar" guarda los fallos en el navegador (`localStorage`), por curso.
 
-El árbol de cursos vive de momento en `frontend/src/logic/cursos.js`; el plan para pasarlo a una base de datos editable desde una consola del profesorado está en `docs/planes/plan-contenido-dinamico-cursos.md` (índice de la documentación en `CLAUDE.md`).
+El contenido (cursos, asignaturas, modos y bancos de preguntas) está en una base de datos **Supabase** (Postgres) y lo sirve la API. El frontend todavía usa su copia en `frontend/src/logic/cursos.js` hasta la fase 3. El plan para hacerlo todo editable desde una consola del profesorado está en `docs/planes/plan-contenido-dinamico-cursos.md` (índice de la documentación en `CLAUDE.md`).
 
 ## Estructura
 
 ```
 backend/    Express: sirve el build de React y expone la API (/api/...)
+            src/db/      cliente, migraciones SQL (se aplican solas al arrancar), consultas
+            scripts/     migrar y seed (solo en local)
 frontend/   React + Vite (con tests unitarios de la lógica en src/logic/*.test.js)
 e2e/        Tests end-to-end con Playwright (flujo completo en el navegador)
 Dockerfile  Build multi-stage: compila el frontend y lo sirve desde el backend en un único contenedor
@@ -22,7 +24,7 @@ Dockerfile  Build multi-stage: compila el frontend y lo sirve desde el backend e
 Los puertos de desarrollo son **3100** (backend) y **5180** (frontend), a propósito fuera de los habituales 3000/5173. Cada carpeta tiene un `.env.example`; cópialo a `.env` (o ajusta los puertos ahí si los necesitas libres):
 
 ```
-cp backend/.env.example backend/.env      # PORT=3100 (o el que prefieras)
+cp backend/.env.example backend/.env      # PORT=3100 y DATABASE_URL de Supabase (Session pooler)
 cp frontend/.env.example frontend/.env    # VITE_API_PROXY_TARGET debe apuntar al PORT del backend; VITE_PORT cambia el del frontend
 ```
 
@@ -33,6 +35,8 @@ npm install --prefix backend
 npm install --prefix frontend
 npm run dev         # backend en http://localhost:3100 + frontend en http://localhost:5180
 ```
+
+**Base de datos:** dev y producción comparten el mismo proyecto Supabase (el plan gratuito solo permite 2 proyectos). Las migraciones se aplican solas al arrancar el backend; `make seed` carga el contenido inicial del código y solo crea lo que falta (no pisa ediciones). Sin `DATABASE_URL` el backend no arranca.
 
 También puedes arrancarlos por separado en dos terminales si lo prefieres:
 ```
@@ -46,6 +50,11 @@ Lógica de ejercicios (unitarios, Vitest):
 ```
 cd frontend
 npm test
+```
+
+API contra Supabase (Vitest), en un esquema `test` que se borra y se recrea en cada ejecución, así que nunca toca los datos reales:
+```
+make test-backend
 ```
 
 Flujo completo en el navegador (end-to-end, Playwright):
@@ -90,7 +99,7 @@ URL de producción: https://practica-jungfrau.up.railway.app
 
 > Railway puede regenerar el dominio `.up.railway.app` en algún momento (ya ha pasado una vez sin motivo aparente). Si `make railway-smoke` da error, comprueba la URL actual en el dashboard de Railway o con `railway status --json` y actualiza este README — `railway-smoke` ya la resuelve solo, no hace falta tocar el Makefile.
 
-No requiere base de datos ni variables de entorno adicionales: Railway inyecta `PORT` y el servidor ya lo respeta. El paquete de GHCR es público, así que Railway no necesita ninguna credencial de registro para poder descargarlo.
+Necesita la variable `DATABASE_URL` (la misma cadena del Session pooler de Supabase) configurada en el servicio de Railway; `PORT` la inyecta Railway. El paquete de GHCR es público, así que Railway no necesita ninguna credencial de registro para poder descargarlo.
 
 ## Créditos
 

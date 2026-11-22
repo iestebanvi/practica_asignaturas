@@ -10,8 +10,9 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 ## Estado del proyecto
 
 - **Plan vigente**: `docs/planes/plan-contenido-dinamico-cursos.md` → apartado 6 (tabla de fases) y apartado 9 (decisiones).
-- Fases 0 y 1 **hechas** (2026-11-22, sin commit todavía): `CLAUDE.md`, pantalla completa, rutas por curso, interfaz en catalán. Datos todavía en código.
-- Siguiente: **fase 2** (Supabase + migraciones + seed + API pública de lectura). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
+- Fases 0 y 1 **hechas y desplegadas** (2026-11-22).
+- Fase 2 **hecha** (2026-11-22): Supabase con migraciones, seed ya cargado en `public`, API de lectura; el frontend aún usa `cursos.js` y los endpoints antiguos (ahora leídos de BD).
+- Siguiente: **fase 3** (el frontend lee el árbol y las preguntas de la API; se retiran `cursos.js`, los JSON y los endpoints antiguos). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
 
 ## Mapa de temas
 
@@ -27,6 +28,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Decisiones confirmadas y pendientes | ídem §9 |
 | Puntuación (àlies + PIN, rècords) | ídem §11 |
 | Detalle de la fase 1 | ídem §12 |
+| Detalle de la fase 2 (tablas, bancos, seed, API, dev=prod) | ídem §13 |
 | Diseño técnico antiguo de BD + PIN (referencia, sustituido) | `docs/planes/plan-base-datos-usuarios.md` |
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |
 | Contenido fuente: temario Medi "Canvis en el relleu" | `docs/medi/canvis-en-el-relleu-temari.txt` |
@@ -39,7 +41,12 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Textos de la interfaz (catalán) | `frontend/src/textos.js` |
 | Rutas | `frontend/src/App.jsx` |
 | Generadores de ejercicios y comprobación | `frontend/src/logic/ejercicios.js` (+ un fichero por tipo) |
-| Bancos de preguntas (hasta la fase 3) | `backend/src/data/*.json`, servidos por `backend/src/routes/` |
+| Esquema de la BD | `backend/src/db/migraciones/*.sql` (runner: `backend/src/db/migrar.js`) |
+| Consultas de lectura (árbol de curso, bancos) | `backend/src/db/contenido.js` |
+| Carga inicial desde el código | `backend/src/db/sembrar.js` + `backend/scripts/datos-iniciales.js` |
+| Rutas de la API | `backend/src/app.js` → `backend/src/routes/` (`legado.js` = endpoints antiguos hasta la fase 3) |
+| Tests de la API | `backend/test/api.test.js` (esquema `test`) |
+| JSON originales de los bancos (fuente del seed, hasta la fase 3) | `backend/src/data/*.json` |
 
 ## Convenciones de los documentos
 

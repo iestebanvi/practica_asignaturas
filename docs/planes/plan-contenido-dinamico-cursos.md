@@ -1,6 +1,6 @@
 # Contenido dinámico en BD + cursos + consola del profesorado + pantalla completa
 
-> **Vigente (2026-11-22).** Fases 0 y 1 implementadas; el resto pendiente. Las decisiones marcadas con ❓ están pendientes de confirmar.
+> **Vigente (2026-11-22).** Fases 0, 1 y 2 implementadas; el resto pendiente. Las decisiones marcadas con ❓ están pendientes de confirmar.
 > Sustituye en parte a `docs/plan-base-datos-usuarios.md`: aquel plan identificaba a cada alumno con nombre + PIN; ahora los alumnos **no se identifican**, así que la parte de usuarios/PIN queda descartada. De aquel plan se reutiliza la parte técnica de la BD (Supabase + `pg` + migraciones propias).
 
 ## 1. Objetivo
@@ -200,3 +200,13 @@ Sin BD todavía: los datos siguen en el código, pero ya con la estructura final
 6. **Tests**: `perfiles.test.js` → `cursos.test.js`; e2e adaptados a las nuevas URLs y textos en catalán.
 
 **Notas de implementación:** los colores de curso/asignatura/modo pasaron de clases CSS a campos `color`/`sombra` en `cursos.js` (se pintan con variables CSS `--fons`/`--sombra`), igual que vendrán de la BD. Slugs en catalán (`matematiques`, `angles`, `sumes-restes`…). Los textos de la interfaz están en `frontend/src/textos.js`; las instrucciones de *there be* y las etiquetas accesibles de los diagramas, traducidas en su propio fichero. Los enunciados del banco de problemas siguen en castellano (es contenido: se editará desde la consola). Se corrigieron 2 tests e2e intermitentes que ya existían antes.
+
+## 13. Detalle de la fase 2 (BD + API de lectura) ✅ hecha
+
+- **Tablas** (`backend/src/db/migraciones/001_inicial.sql`): `cursos`, `asignaturas`, `modos`, `bancos`, `preguntas` (+ `_migrations`). Cambio respecto al §3: las preguntas cuelgan de un **banco**, no de un modo, y cada modo apunta a un banco (`banco_id`). Así varios modos comparten preguntas (Vocabulari y Vocabulari escrit usan el mismo banco). Formatos de banco: `numerica`, `traduccio`, `opcio_multiple`. Los modos guardan `operaciones` (tipos de generador) tal cual estaban en `cursos.js`; la configuración más rica (nivel/parámetros por modo) queda para la fase 6.
+- **RLS activado** en todas las tablas sin políticas: la API REST automática de Supabase no puede leerlas ni escribirlas; el backend conecta como propietario y no le afecta.
+- **Migraciones**: se aplican solas al arrancar (con candado `pg_advisory_lock`); si fallan, el backend no arranca.
+- **Seed** (`make seed`): vuelca `cursos.js` + los JSON. Solo crea lo que falta y no toca un banco que ya tenga preguntas, para no pisar en el futuro lo editado desde la consola. Cargado en producción el 2026-11-22 (2 cursos, 4 asignaturas, 16 modos, 4 bancos, 269 preguntas).
+- **API**: `GET /api/cursos`, `GET /api/cursos/:curso` (árbol), `GET /api/bancos/:banco/preguntas`. Los endpoints antiguos (`/api/problemas`, `/api/vocabulario`, `/api/gramatica`, `/api/medi`) se mantienen leyendo de la BD y devuelven exactamente lo mismo que los JSON (lo comprueba un test); se retiran en la fase 3.
+- **Dev = prod**: el plan gratuito de Supabase permite 2 proyectos (el otro es basquetstats), así que local y Railway usan la misma BD. Los tests usan el esquema `test` (variable `DB_SCHEMA`); a partir de la fase 5, lo que se cree para probar se deja inactivo.
+- **Conexión**: Session pooler (IPv4) con TLS; el `search_path` se fija como parámetro de inicio de cada conexión.

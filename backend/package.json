@@ -5,10 +5,17 @@
   "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "migrate": "node scripts/migrar.js",
+    "seed": "node scripts/seed.js",
+    "test": "vitest run"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.9"
   }
 }
