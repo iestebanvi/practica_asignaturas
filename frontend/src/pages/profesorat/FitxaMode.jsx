@@ -73,6 +73,11 @@ export default function FitxaMode({ contenido, onCanvi }) {
           {T.preguntesActives(banco.preguntasActivas, banco.preguntas)})
         </p>
       )}
+      <p>
+        <a className="boto-enllac boto-petit" href={`/profesorat/prova/${modo.id}`} target="_blank" rel="noreferrer">
+          {T.provaMode}
+        </a>
+      </p>
       <p className="camp-ajuda">{T.ajudaEsborraMode}</p>
 
       <FormModo key={modo.id} inicial={modo} bancos={contenido.bancos} onDesa={desa} />

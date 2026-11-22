@@ -1,6 +1,6 @@
 # Contenido dinámico en BD + cursos + consola del profesorado + pantalla completa
 
-> **Vigente (2026-11-22).** Fases 0 a 4 implementadas; el resto pendiente. Las decisiones marcadas con ❓ están pendientes de confirmar.
+> **Vigente (2026-11-22).** Fases 0 a 5 implementadas; pendientes la 6 (en espera) y la 7. Las decisiones marcadas con ❓ están pendientes de confirmar.
 > Sustituye en parte a `docs/plan-base-datos-usuarios.md`: aquel plan identificaba a cada alumno con nombre + PIN; ahora los alumnos **no se identifican**, así que la parte de usuarios/PIN queda descartada. De aquel plan se reutiliza la parte técnica de la BD (Supabase + `pg` + migraciones propias).
 
 ## 1. Objetivo
@@ -241,7 +241,7 @@ Acordado el 2026-11-22. Cada subfase se despliega por separado.
 | **5c** | Importar preguntas pegando texto/CSV con vista previa de errores; exportar banco a CSV y copia completa en JSON | ✅ hecha |
 | **5d** | Cursos y asignaturas: crear/editar (nombre, icono, color, nivel, config), activo, orden | ✅ hecha |
 | **5e** | Modos y bancos: crear/editar modos (tipos de ejercicio, banco), crear bancos | ✅ hecha |
-| **5f** | Vista previa: "Prova aquest mode" aunque esté inactivo | siguiente |
+| **5f** | Vista previa: "Prova aquest mode" aunque esté inactivo | ✅ hecha |
 
 **Decisiones:**
 1. Las preguntas se pueden borrar (con confirmación). Cursos, asignaturas, modos y bancos solo se borran si están vacíos; si no, se desactivan.
@@ -282,3 +282,8 @@ Creados inactivos y sin asignaturas (en la BD y en `contenido.json`), entre 1r y
 - **Bancos** (`POST /api/admin/bancs`, `PATCH|DELETE /api/admin/bancs/:id`): formato y slug fijos al crear; solo se renombra; borrar solo sin preguntas y sin modos (409).
 - **Consola**: "+ Nou mode" en la ficha de asignatura; ficha de modo editable (casillas agrupadas por tema, desplegable solo con bancos compatibles, aviso al mezclar formatos, Puja/Baixa/Esborra); "+ Nou banc" en el menú; en la ficha de banco, renombrar y borrar.
 - **Nivel de los generadores**: sigue siendo por curso; la configuración fina por modo (antigua fase 6) queda pendiente de si hace falta.
+
+### 5f ✅ hecha (2026-11-22) — fase 5 completa
+- **Ruta** `/profesorat/prova/:modoId` (botón "Prova aquest mode ↗" en la ficha de modo, en otra pestaña): juega el modo aunque él, su asignatura o su curso estén inactivos. Lee de la API de la consola (con sesión; sin ella, al login). Sin cambios en el backend.
+- Por defecto solo las preguntas activas; casilla "Inclou també les preguntes inactives". No apunta fallos en "Per repassar"; su resumen vuelve a la ficha del modo.
+- **Refactor**: `PracticaModo` (en `Practica.jsx`) recibe un `entorno` (`rutaTorna`, `cargarPreguntas`, `registrarFallos`) y una `cabecera` opcional; para los alumnos se comporta igual que antes.

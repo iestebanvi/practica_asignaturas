@@ -169,6 +169,14 @@ export const T = {
   ajudaFormat: 'No es podrà canviar: depèn de quins tipus d’exercici el podran fer servir.',
   esborraBanc: 'Esborra el banc',
   noBuitBanc: 'Només es pot esborrar si no té preguntes i cap mode no el fa servir.',
+  provaMode: 'Prova aquest mode ↗',
+  vistaPrevia: 'Vista prèvia',
+  avisVistaPrevia: (mode, visible) =>
+    `👁 Vista prèvia de «${mode}»` +
+    (visible ? ' · els alumnes ja el poden jugar.' : ' · encara no el veuen els alumnes (inactiu).'),
+  inclouInactives: 'Inclou també les preguntes inactives',
+  ajudaVistaPrevia: 'La vista prèvia no apunta els errors a «Per repassar».',
+  tornaConsola: '← Torna a la consola',
   importa: 'Importa',
   tancaImportacio: 'Tanca la importació',
   descarregaCsv: 'Descarrega CSV',

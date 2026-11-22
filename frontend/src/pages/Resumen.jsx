@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { T } from '../textos.js'
 
-export default function Resumen({ resumen, curso, asignatura, onTornarAJugar }) {
+// rutaAltre: adónde lleva "Tria un altre exercici". rutaRepassar: enlace a
+// "Per repassar" (null en la vista previa, que no apunta fallos).
+export default function Resumen({ resumen, rutaAltre, rutaRepassar, onTornarAJugar }) {
   const { puntos, aciertos, fallos } = resumen
 
   return (
@@ -12,15 +14,17 @@ export default function Resumen({ resumen, curso, asignatura, onTornarAJugar }) 
       <p className="mensaje">{T.missatge(puntos)}</p>
       <div className="resum-botons">
         <button onClick={onTornarAJugar}>{T.tornaAJugar}</button>
-        <Link to={`/${curso.id}/${asignatura.id}`} className="boto-enllac">
+        <Link to={rutaAltre} className="boto-enllac">
           {T.altreExercici}
         </Link>
       </div>
-      <nav className="accions">
-        <Link to={`/${curso.id}/repassar`} className="enllac-secundari">
-          {T.perRepassar}
-        </Link>
-      </nav>
+      {rutaRepassar && (
+        <nav className="accions">
+          <Link to={rutaRepassar} className="enllac-secundari">
+            {T.perRepassar}
+          </Link>
+        </nav>
+      )}
     </div>
   )
 }

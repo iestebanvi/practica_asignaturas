@@ -7,6 +7,7 @@ import ParaRepasar from './pages/ParaRepasar.jsx'
 import NoTrobat from './pages/NoTrobat.jsx'
 import Login from './pages/profesorat/Login.jsx'
 import Consola from './pages/profesorat/Consola.jsx'
+import VistaPrevia from './pages/profesorat/VistaPrevia.jsx'
 
 // Cada pantalla tiene su URL: el botón "atrás" del navegador funciona y se
 // puede guardar en favoritos el curso de cada niño. "repassar" es un segmento
@@ -21,6 +22,7 @@ export default function App() {
           contra "/:cursoId/:asignaturaId/:modoId" en el ranking de rutas. */}
       <Route path="/profesorat" element={<Login />} />
       <Route path="/profesorat/consola/*" element={<Consola />} />
+      <Route path="/profesorat/prova/:modoId" element={<VistaPrevia />} />
       <Route path="/:cursoId" element={<Curso />} />
       <Route path="/:cursoId/repassar" element={<ParaRepasar />} />
       <Route path="/:cursoId/:asignaturaId" element={<Asignatura />} />

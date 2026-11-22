@@ -541,4 +541,85 @@ test.describe('Consola del professorat', () => {
       await expect(menu(page).getByRole('link', { name: /Colors E2E \(bis\)/ })).toBeVisible()
     })
   })
+
+  test.describe('vista previa de un modo inactivo', () => {
+    test.describe.configure({ mode: 'serial' })
+    let modoId
+
+    async function entrar(page) {
+      await page.goto('/profesorat')
+      await page.getByLabel('Contrasenya').fill(PASSWORD)
+      await page.getByRole('button', { name: 'Entra' }).click()
+      await expect(page.getByRole('navigation', { name: 'Contingut' })).toBeVisible()
+    }
+
+    test('preparar (por la API de la consola): curso, asignatura, banco y modo, todo inactivo', async ({ page }) => {
+      await entrar(page)
+      const api = async (ruta, datos) => {
+        const res = await page.request.post(`/api/admin${ruta}`, { data: datos })
+        expect(res.ok()).toBe(true)
+        return res.json()
+      }
+      const curso = await api('/cursos', { nombre: 'Prèvia', slug: 'previa-e2e' })
+      const asig = await api(`/cursos/${curso.id}/assignatures`, { nombre: 'Astres', slug: 'astres' })
+      const banco = await api('/bancs', { nombre: 'Prèvia E2E', slug: 'previa-e2e', formato: 'traduccio' })
+      await api(`/bancs/${banco.id}/preguntes`, { enunciado: 'SUN', respuesta: 'sol' })
+      await api(`/bancs/${banco.id}/importa`, { texto: 'MOON;lluna', importar: true, inactivas: true })
+      const modo = await api(`/assignatures/${asig.id}/modes`, {
+        nombre: 'Astres escrit', slug: 'astres-escrit', operaciones: ['vocabulario-escrito'], bancoId: banco.id,
+      })
+      modoId = modo.id
+    })
+
+    test('los alumnos no lo ven; "Prova aquest mode" lo abre en otra pestaña y se juega', async ({ page, context }) => {
+      await page.goto('/previa-e2e/astres/astres-escrit')
+      await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()
+
+      await entrar(page)
+      await page.goto(`/profesorat/consola/mode/${modoId}`)
+      const [previa] = await Promise.all([
+        context.waitForEvent('page'),
+        page.getByRole('link', { name: 'Prova aquest mode ↗' }).click(),
+      ])
+      await expect(previa).toHaveURL(new RegExp(`/profesorat/prova/${modoId}$`))
+      await expect(previa.getByRole('note')).toContainText('encara no el veuen els alumnes')
+      // Solo la pregunta activa: SUN/sol
+      await expect(previa.locator('.enunciado')).toHaveText(/^(SUN|sol)$/)
+    })
+
+    test('con "Inclou també les preguntes inactives" sale también la inactiva', async ({ page }) => {
+      await entrar(page)
+      await page.goto(`/profesorat/prova/${modoId}`)
+      await page.getByLabel('Inclou també les preguntes inactives').check()
+      const vistos = new Set()
+      for (let i = 0; i < 40 && !vistos.has('MOON'); i++) {
+        const texto = await page.locator('.enunciado').innerText()
+        vistos.add({ lluna: 'MOON', sol: 'SUN' }[texto] ?? texto)
+        await page.locator('input[type="text"]').fill('x')
+        await page.getByRole('button', { name: 'Comprova' }).click()
+        await expect(page.locator('.feedback')).toHaveCount(0)
+      }
+      expect(vistos).toContain('MOON')
+    })
+
+    test('la vista previa no apunta fallos en "Per repassar" y su resumen vuelve a la consola', async ({ page }) => {
+      await entrar(page)
+      await page.goto(`/profesorat/prova/${modoId}`)
+      await page.locator('input[type="text"]').fill('xxxxx')
+      await page.getByRole('button', { name: 'Comprova' }).click()
+      await expect(page.locator('.feedback.incorrecto')).toBeVisible()
+      expect(await page.evaluate(() => localStorage.getItem('practica-asignaturas:fallos'))).toBeNull()
+
+      await page.getByRole('button', { name: 'Finalitza' }).click()
+      await expect(page.locator('.detalle')).toHaveText('Encerts: 0 · Errors: 1')
+      await expect(page.getByRole('link', { name: /Per repassar/ })).toHaveCount(0)
+      await page.getByRole('link', { name: 'Tria un altre exercici' }).click()
+      await expect(page).toHaveURL(new RegExp(`/profesorat/consola/mode/${modoId}$`))
+    })
+
+    test('sin sesión, la vista previa lleva al login', async ({ page }) => {
+      await page.goto(`/profesorat/prova/${modoId}`)
+      await expect(page).toHaveURL(/\/profesorat$/)
+    })
+  })
 })

@@ -76,17 +76,40 @@ export default function Practica() {
         const asignatura = buscarAsignatura(curso, asignaturaId)
         const modo = buscarModo(asignatura, modoId)
         if (!modo) return <NoTrobat />
-        return <PracticaModo key={`${asignatura.id}/${modo.id}`} curso={curso} asignatura={asignatura} modo={modo} />
+        return (
+          <PracticaModo
+            key={`${asignatura.id}/${modo.id}`}
+            curso={curso}
+            asignatura={asignatura}
+            modo={modo}
+            entorno={entornoAlumnes(curso, asignatura)}
+          />
+        )
       }}
     </AmbDades>
   )
 }
 
-function PracticaModo({ curso, asignatura, modo }) {
+// Lo que cambia entre jugar como alumno y la vista previa de la consola:
+//   molles: camino de navegación de la cabecera
+//   rutaTorna: adónde llevan "← Torna" y "Tria un altre exercici"
+//   cargarPreguntas(modo): de dónde salen las preguntas del banco
+//   registrarFallos: si los fallos se apuntan en "Per repassar"
+function entornoAlumnes(curso, asignatura) {
+  return {
+    rutaTorna: `/${curso.id}/${asignatura.id}`,
+    cargarPreguntas: (modo) => obtenerPreguntas(modo.banco),
+    registrarFallos: true,
+  }
+}
+
+// Partida + resumen de un modo. "cabecera" se pinta encima (lo usa la vista
+// previa para su aviso).
+export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesPropias, cabecera = null }) {
   const [resumen, setResumen] = useState(null)
   const [partida, setPartida] = useState(0)
 
-  const molles = [
+  const molles = mollesPropias ?? [
     { nom: T.inici, to: '/' },
     { nom: curso.nombre, to: `/${curso.id}` },
     { nom: asignatura.nombre, to: `/${curso.id}/${asignatura.id}` },
@@ -100,16 +123,22 @@ function PracticaModo({ curso, asignatura, modo }) {
 
   return (
     <Pagina curso={curso} molles={molles} className={resumen ? 'pantalla-resum' : 'pantalla-practica'}>
+      {cabecera}
       {resumen ? (
-        <Resumen resumen={resumen} curso={curso} asignatura={asignatura} onTornarAJugar={tornarAJugar} />
+        <Resumen
+          resumen={resumen}
+          rutaAltre={entorno.rutaTorna}
+          rutaRepassar={entorno.registrarFallos ? `/${curso.id}/repassar` : null}
+          onTornarAJugar={tornarAJugar}
+        />
       ) : (
-        <Partida key={partida} curso={curso} asignatura={asignatura} modo={modo} onFinalizar={setResumen} />
+        <Partida key={partida} curso={curso} modo={modo} entorno={entorno} onFinalizar={setResumen} />
       )}
     </Pagina>
   )
 }
 
-function Partida({ curso, asignatura, modo, onFinalizar }) {
+function Partida({ curso, modo, entorno, onFinalizar }) {
   const operaciones = operacionesConocidas(modo.operaciones)
   const { nivel } = curso
   const ambCelebracio = curso.config.celebracio
@@ -117,7 +146,7 @@ function Partida({ curso, asignatura, modo, onFinalizar }) {
   // Sin ningún tipo que se pueda generar (p.ej. todos desconocidos, o solo de
   // banco y el modo no tiene banco), el modo no puede funcionar.
   const disponible = operaciones.some((op) => necesitaBanco || !usaBanco([op]))
-  const rutaTorna = `/${curso.id}/${asignatura.id}`
+  const { rutaTorna } = entorno
 
   const [banco, setBanco] = useState([])
   const [bancoListo, setBancoListo] = useState(!necesitaBanco)
@@ -136,7 +165,8 @@ function Partida({ curso, asignatura, modo, onFinalizar }) {
 
   function cargarBanco() {
     setBancoError(false)
-    obtenerPreguntas(modo.banco)
+    entorno
+      .cargarPreguntas(modo)
       .then((data) => {
         setBanco(data)
         setBancoListo(true)
@@ -182,7 +212,7 @@ function Partida({ curso, asignatura, modo, onFinalizar }) {
     } else {
       setFallos((f) => f + 1)
       setFeedback('incorrecto')
-      if (TIPOS_CON_REGISTRO_FALLOS.includes(ejercicio.tipo)) {
+      if (entorno.registrarFallos && TIPOS_CON_REGISTRO_FALLOS.includes(ejercicio.tipo)) {
         registrarFallo(curso.id, ejercicio)
       }
     }

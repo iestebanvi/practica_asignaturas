@@ -18,7 +18,8 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 - **5c hecha** (2026-11-22): importar preguntas (texto/CSV con vista previa) y exportar (CSV por banco, copia completa JSON).
 - **5d hecha** (2026-11-22): crear/editar/ordenar/borrar cursos y asignaturas desde la consola.
 - **5e hecha** (2026-11-22): crear/editar/ordenar/borrar modos; crear/renombrar/borrar bancos. Ya se puede montar un tema completo desde la consola.
-- Siguiente: **5f** (vista previa de modos inactivos). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
+- **5f hecha** (2026-11-22): vista previa de un modo aunque esté inactivo. **Fase 5 completa.**
+- Siguiente: **fase 7** (alumnos: àlies + PIN, partidas y rècords). Antes, cerrar los ❓ de puntuación (plan §11). La fase 6 (configuración fina de generadores por modo) queda en espera hasta que haga falta.
 
 ## Mapa de temas
 
@@ -65,6 +66,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Importar/exportar preguntas (formato `;`, CSV) | `backend/src/validacion/importar.js` + `backend/src/db/importar.js`; panel en `frontend/src/pages/profesorat/PanelImportar.jsx` |
 | Nombres legibles de tipos de ejercicio, formatos y grupos del formulario | `frontend/src/logic/tiposEjercicio.js` |
 | Catálogo de tipos para validar en el servidor (¡sincronizado con el frontend por test!) | `backend/src/catalogo/tiposEjercicio.js` |
+| Vista previa de un modo (pantalla de práctica reutilizable con "entorno") | `frontend/src/pages/profesorat/VistaPrevia.jsx` + `PracticaModo` en `frontend/src/pages/Practica.jsx` |
 | Modos y bancos: validación y operaciones | `backend/src/validacion/modos.js` + `backend/src/db/modos.js`; `frontend/src/pages/profesorat/FormModo.jsx`, `NouBanc.jsx` |
 | Entorno de los e2e (esquema `e2e`, puertos 3199/5199, contraseña de prueba) | `e2e/entorno.js` + `playwright.config.js` + `backend/scripts/preparar-e2e.js` |
 | Tests de la API | `backend/test/*.test.js` (esquema `test`, en serie; helper `preparar.js`) |
