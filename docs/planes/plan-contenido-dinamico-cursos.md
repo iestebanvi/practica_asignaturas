@@ -237,8 +237,8 @@ Acordado el 2026-11-22. Cada subfase se despliega por separado.
 | Subfase | Contenido | Estado |
 |---|---|---|
 | **5a** | e2e en su propio esquema (`e2e`) para que los editores no escriban en la BD real. Consola de solo lectura: árbol lateral curso → asignatura → modo y bancos (incluido lo inactivo), ficha de modo y de banco | ✅ hecha |
-| **5b** | Editar preguntas de un banco (formulario según formato, validaciones), añadir, activar/desactivar, borrar con confirmación | siguiente |
-| **5c** | Importar preguntas pegando texto/CSV con vista previa de errores; exportar banco a CSV y copia completa en JSON | pendiente |
+| **5b** | Editar preguntas de un banco (formulario según formato, validaciones), añadir, activar/desactivar, borrar con confirmación | ✅ hecha |
+| **5c** | Importar preguntas pegando texto/CSV con vista previa de errores; exportar banco a CSV y copia completa en JSON | siguiente |
 | **5d** | Cursos y asignaturas: crear/editar (nombre, icono, color, nivel, config), activo, orden | pendiente |
 | **5e** | Modos y bancos: crear/editar modos (tipos de ejercicio, banco), crear bancos | pendiente |
 | **5f** | Vista previa: "Prova aquest mode" aunque esté inactivo | pendiente |
@@ -253,3 +253,12 @@ Acordado el 2026-11-22. Cada subfase se despliega por separado.
 - **e2e aislados**: Playwright arranca su propio backend (puerto 3199, `DB_SCHEMA=e2e`, contraseña de prueba) y frontend (5199); antes, `backend/scripts/preparar-e2e.js` recrea el esquema `e2e` desde `contenido.json` (se niega a tocar `public`). Ya no se reutiliza `npm run dev`.
 - **API**: `GET /api/admin/contingut` (árbol con ids de la BD y lo inactivo + resumen de bancos con preguntas activas/total) y `GET /api/admin/bancs/:id` (todas las preguntas y los modos que usan el banco). Ids como entero (`::int`).
 - **Consola**: árbol lateral (inactivo en gris con etiqueta), resumen, ficha de modo (adreça, estat, color, tipus d'exercici con nombre legible, banc) y ficha de banc (tabla de preguntas). En móvil la ficha va antes que el árbol.
+
+### Cursos 2n–5è (2026-11-22)
+Creados inactivos y sin asignaturas (en la BD y en `contenido.json`), entre 1r y 6è. Un curso activo sin asignaturas muestra "Encara no hi ha assignatures en aquest curs.".
+
+### 5b ✅ hecha (2026-11-22)
+- **API**: `POST /api/admin/bancs/:id/preguntes`, `PATCH /api/admin/preguntes/:id` (parcial; se valida la pregunta entera; solo enunciado/respuesta/opciones/activo), `DELETE /api/admin/preguntes/:id`. Errores de validación: 400 `{ error: 'validacio', camps: { campo: mensaje en catalán } }`.
+- **Validación** (`backend/src/validacion/preguntas.js`): enunciado y respuesta no vacíos (máx. 1000/300); numérica = número (coma o punto, se guarda con punto); opción múltiple = 2–6 opciones sin vacías ni repetidas y la correcta entre ellas. Las nuevas van al final del banco.
+- **Consola**: buscador (sin acentos), "+ Afegeix pregunta", y por fila Edita / Activa-Desactiva / Esborra (confirmación en la fila). Formulario según formato; en opción múltiple la correcta se marca con un círculo. Aviso si una traducción lleva "/" (no saldrá en "Vocabulari escrit"). Los contadores del menú se actualizan al guardar.
+- **e2e**: el esquema `e2e` tiene 3 bancos de prueba propios (`e2e-traduccio`, `e2e-numerica`, `e2e-opcions`) sin modo asociado; los tests de edición trabajan solo con ellos y en serie, para no interferir con los de alumnos.

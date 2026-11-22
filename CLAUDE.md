@@ -14,7 +14,8 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 - Fases 2 y 3 **hechas** (2026-11-22): todo el contenido sale de Supabase vía API; la web ya no tiene datos en el código. Copia del contenido en `backend/datos/contenido.json`.
 - Fase 4 **hecha** (2026-11-22): login de la consola (`/profesorat`) con contraseña compartida `TEACHER_PASSWD`, sesión de 7 días.
 - Fase 5 dividida en 5a–5f (plan §16). **5a hecha** (2026-11-22): consola de solo lectura y e2e aislados en el esquema `e2e`.
-- Siguiente: **5b** (editar preguntas). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
+- **5b hecha** (2026-11-22): editar preguntas desde la consola. Cursos 2n–5è creados (inactivos, sin contenido).
+- Siguiente: **5c** (importar/exportar). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
 
 ## Mapa de temas
 
@@ -56,6 +57,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Autenticación del profesorado | `backend/src/auth/` (contraseña, sesiones, límite de intentos) |
 | Consola del profesorado (frontend) | `frontend/src/pages/profesorat/` + `frontend/src/logic/admin.js` |
 | Lecturas de la consola (incluye lo inactivo) | `backend/src/db/admin.js` |
+| Crear/editar/borrar preguntas y su validación | `backend/src/db/preguntas.js` + `backend/src/validacion/preguntas.js` |
 | Nombres legibles de tipos de ejercicio y formatos | `frontend/src/logic/tiposEjercicio.js` |
 | Entorno de los e2e (esquema `e2e`, puertos 3199/5199, contraseña de prueba) | `e2e/entorno.js` + `playwright.config.js` + `backend/scripts/preparar-e2e.js` |
 | Tests de la API | `backend/test/*.test.js` (esquema `test`, en serie; helper `preparar.js`) |

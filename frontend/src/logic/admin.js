@@ -53,3 +53,23 @@ export function obtenerContenidoAdmin() {
 export function obtenerBancoAdmin(id) {
   return peticion(`/api/admin/bancs/${encodeURIComponent(id)}`)
 }
+
+const json = (metodo, datos) => ({
+  method: metodo,
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(datos),
+})
+
+// Si los datos no son válidos, lanzan ErrorAdmin('validacio') con
+// err.datos.camps = { campo: mensaje }.
+export function crearPregunta(bancoId, datos) {
+  return peticion(`/api/admin/bancs/${encodeURIComponent(bancoId)}/preguntes`, json('POST', datos))
+}
+
+export function actualizarPregunta(id, cambios) {
+  return peticion(`/api/admin/preguntes/${encodeURIComponent(id)}`, json('PATCH', cambios))
+}
+
+export function borrarPregunta(id) {
+  return peticion(`/api/admin/preguntes/${encodeURIComponent(id)}`, { method: 'DELETE' })
+}

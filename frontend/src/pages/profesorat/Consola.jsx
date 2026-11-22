@@ -30,6 +30,17 @@ export default function Consola() {
     carregar()
   }, [carregar])
 
+  // Tras editar algo: vuelve a pedir el contenido (contadores del menú) sin
+  // pasar por "Carregant…".
+  const refrescar = useCallback(async () => {
+    try {
+      const contenido = await obtenerContenidoAdmin()
+      setEstado((e) => (e.estado === 'ok' ? { ...e, contenido } : e))
+    } catch (err) {
+      if (err.codigo === 'sessio_requerida') setEstado({ estado: 'sense-sessio' })
+    }
+  }, [])
+
   // Al elegir algo en el menú, subir: en móvil la ficha queda por encima del
   // árbol y, si no, no se vería el cambio.
   const { pathname } = useLocation()
@@ -71,7 +82,7 @@ export default function Consola() {
               <Routes>
                 <Route index element={<ResumConsola contenido={estado.contenido} />} />
                 <Route path="mode/:id" element={<FitxaMode contenido={estado.contenido} />} />
-                <Route path="banc/:id" element={<FitxaBanc />} />
+                <Route path="banc/:id" element={<FitxaBanc onCanvi={refrescar} />} />
                 <Route path="*" element={<Navigate to="/profesorat/consola" replace />} />
               </Routes>
             </section>

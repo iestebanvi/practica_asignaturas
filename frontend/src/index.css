@@ -1094,3 +1094,132 @@ button:active,
   top: 0;
   background: #fafafa;
 }
+
+/* Edición de preguntas (consola) */
+.barra-banc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cerca {
+  flex: 1 1 220px;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+}
+
+.pregunta-nova,
+.fila-editant td {
+  background: #f1f8e9;
+}
+
+.pregunta-nova {
+  border-radius: 16px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-pregunta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 720px;
+}
+
+.form-pregunta label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 700;
+}
+
+.form-pregunta input:not([type='radio']),
+.form-pregunta textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.5rem 0.7rem;
+  border-radius: 10px;
+  border: 2px solid #cfd8dc;
+}
+
+.form-pregunta fieldset {
+  border: 2px solid #cfd8dc;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-pregunta legend {
+  font-weight: 700;
+}
+
+.opcio-fila {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.opcio-fila input:not([type='radio']) {
+  flex: 1;
+}
+
+.opcio-fila input[type='radio'] {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.form-pregunta fieldset > .boto-petit {
+  align-self: flex-start;
+}
+
+.form-botons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.camp-ajuda,
+.camp-avis,
+.camp-error {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.camp-ajuda {
+  color: var(--color-text-suau);
+}
+
+.camp-avis {
+  color: #e65100;
+}
+
+.camp-error {
+  color: var(--color-incorrecto);
+  font-weight: 700;
+}
+
+.boto-petit {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 0 var(--sombra, var(--color-primari-sombra));
+}
+
+.boto-perill {
+  background: #e57373;
+  --sombra: #c62828;
+}
+
+.accions-fila {
+  white-space: nowrap;
+}
+
+.accions-fila > * + * {
+  margin-left: 0.35rem;
+}

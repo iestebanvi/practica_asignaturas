@@ -202,4 +202,99 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
       expect((await getAdmin('/api/admin/bancs/abc')).status).toBe(404)
     })
   })
+
+  describe('editar preguntas (solo con sesión)', () => {
+    let cookie, idBanco
+    const pedir = async (metodo, ruta, body, conCookie = true) => {
+      const headers = { 'Content-Type': 'application/json', ...(conCookie ? { Cookie: cookie } : {}) }
+      const res = await fetch(base + ruta, { method: metodo, headers, body: body && JSON.stringify(body) })
+      return { status: res.status, body: res.status === 204 ? null : await res.json() }
+    }
+    const idDeBanco = async (slug) =>
+      (await pool.query('SELECT id::int FROM bancos WHERE slug = $1', [slug])).rows[0].id
+    const publicas = async (slug) => (await (await fetch(`${base}/api/bancos/${slug}/preguntas`)).json()).preguntas
+
+    beforeAll(async () => {
+      reiniciarLimitador()
+      cookie = cookieDe(await login(PASSWORD))
+      idBanco = await idDeBanco('vocabulari-angles-6')
+    })
+
+    it('sin sesión no se puede crear, editar ni borrar', async () => {
+      expect((await pedir('POST', `/api/admin/bancs/${idBanco}/preguntes`, { enunciado: 'A', respuesta: 'b' }, false)).status).toBe(401)
+      expect((await pedir('PATCH', '/api/admin/preguntes/1', { activo: false }, false)).status).toBe(401)
+      expect((await pedir('DELETE', '/api/admin/preguntes/1', null, false)).status).toBe(401)
+    })
+
+    it('crear: añade al final del banco y los alumnos la ven enseguida', async () => {
+      const { status, body } = await pedir('POST', `/api/admin/bancs/${idBanco}/preguntes`, { enunciado: ' TREE ', respuesta: 'arbre' })
+      expect(status).toBe(201)
+      expect(body).toMatchObject({ enunciado: 'TREE', respuesta: 'arbre', activo: true, orden: 158 })
+      expect((await publicas('vocabulari-angles-6')).map((p) => p.enunciado)).toContain('TREE')
+    })
+
+    it('crear con errores: 400 con los errores por campo y no guarda nada', async () => {
+      const antes = (await publicas('problemes-6')).length
+      const { status, body } = await pedir('POST', `/api/admin/bancs/${await idDeBanco('problemes-6')}/preguntes`, {
+        enunciado: '',
+        respuesta: 'molts',
+      })
+      expect(status).toBe(400)
+      expect(body.error).toBe('validacio')
+      expect(Object.keys(body.camps).sort()).toEqual(['enunciado', 'respuesta'])
+      expect((await publicas('problemes-6')).length).toBe(antes)
+    })
+
+    it('crear en un banco inexistente: 404', async () => {
+      expect((await pedir('POST', '/api/admin/bancs/999999/preguntes', { enunciado: 'A', respuesta: 'b' })).status).toBe(404)
+    })
+
+    it('editar: cambio parcial, se valida la pregunta entera y se ve en la API pública', async () => {
+      const { body: creada } = await pedir('POST', `/api/admin/bancs/${idBanco}/preguntes`, { enunciado: 'CAT', respuesta: 'gos' })
+      const { status, body } = await pedir('PATCH', `/api/admin/preguntes/${creada.id}`, { respuesta: 'gat, moix' })
+      expect(status).toBe(200)
+      expect(body).toMatchObject({ enunciado: 'CAT', respuesta: 'gat, moix' })
+      expect((await publicas('vocabulari-angles-6')).find((p) => p.enunciado === 'CAT').respuesta).toBe('gat, moix')
+
+      const mal = await pedir('PATCH', `/api/admin/preguntes/${creada.id}`, { enunciado: '' })
+      expect(mal.status).toBe(400)
+      expect(mal.body.camps.enunciado).toBeTruthy()
+    })
+
+    it('opción múltiple: crear y editar exige que la correcta esté entre las opciones', async () => {
+      const id = await idDeBanco('gramatica-angles-6')
+      const { status, body } = await pedir('POST', `/api/admin/bancs/${id}/preguntes`, {
+        enunciado: 'There ___ a castle.', opciones: ['is', 'are', 'were'], respuesta: 'is',
+      })
+      expect(status).toBe(201)
+      expect(body.opciones).toEqual(['is', 'are', 'were'])
+      const mal = await pedir('PATCH', `/api/admin/preguntes/${body.id}`, { opciones: ['are', 'were'] })
+      expect(mal.status).toBe(400)
+      expect(mal.body.camps.respuesta).toMatch(/correcta/)
+    })
+
+    it('desactivar la oculta a los alumnos sin borrarla; reactivar la recupera', async () => {
+      const { body: creada } = await pedir('POST', `/api/admin/bancs/${idBanco}/preguntes`, { enunciado: 'DOG', respuesta: 'gos' })
+      expect((await pedir('PATCH', `/api/admin/preguntes/${creada.id}`, { activo: false })).body.activo).toBe(false)
+      expect((await publicas('vocabulari-angles-6')).map((p) => p.enunciado)).not.toContain('DOG')
+      await pedir('PATCH', `/api/admin/preguntes/${creada.id}`, { activo: true })
+      expect((await publicas('vocabulari-angles-6')).map((p) => p.enunciado)).toContain('DOG')
+    })
+
+    it('borrar: 204, desaparece; borrarla otra vez da 404', async () => {
+      const { body: creada } = await pedir('POST', `/api/admin/bancs/${idBanco}/preguntes`, { enunciado: 'BIRD', respuesta: 'ocell' })
+      expect((await pedir('DELETE', `/api/admin/preguntes/${creada.id}`)).status).toBe(204)
+      expect((await publicas('vocabulari-angles-6')).map((p) => p.enunciado)).not.toContain('BIRD')
+      expect((await pedir('DELETE', `/api/admin/preguntes/${creada.id}`)).status).toBe(404)
+      expect((await pedir('PATCH', `/api/admin/preguntes/${creada.id}`, { activo: true })).status).toBe(404)
+    })
+
+    it('ignora campos que no se pueden editar (como el banco o el orden)', async () => {
+      const { body: creada } = await pedir('POST', `/api/admin/bancs/${idBanco}/preguntes`, { enunciado: 'FISH', respuesta: 'peix' })
+      const { body } = await pedir('PATCH', `/api/admin/preguntes/${creada.id}`, { banco_id: 1, orden: 1, respuesta: 'peix' })
+      expect(body.orden).toBe(creada.orden)
+      const { rows } = await pool.query('SELECT banco_id::int FROM preguntas WHERE id = $1', [creada.id])
+      expect(rows[0].banco_id).toBe(idBanco)
+    })
+  })
 })

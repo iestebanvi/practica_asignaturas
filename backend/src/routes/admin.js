@@ -4,6 +4,7 @@ import { consolaActivada, contrasenyaCorrecta } from '../auth/contrasenya.js'
 import { crearSesion, obtenerSesion, borrarSesion, DURACION_SESION_MS } from '../auth/sesiones.js'
 import { bloqueoRestante, registrarFallo, registrarAcierto } from '../auth/limitador.js'
 import { obtenerContenidoAdmin, obtenerBancoAdmin } from '../db/admin.js'
+import { crearPregunta, actualizarPregunta, borrarPregunta } from '../db/preguntas.js'
 
 export const COOKIE_SESION = 'sessio_professorat'
 
@@ -84,13 +85,52 @@ router.get(
   }),
 )
 
+// Id numérico de la URL, o null si no es válido (se responde 404).
+function idDe(req) {
+  const id = Number(req.params.id)
+  return Number.isInteger(id) && id > 0 ? id : null
+}
+
 router.get(
   '/bancs/:id',
   asyncHandler(async (req, res) => {
-    const id = Number(req.params.id)
-    const banco = Number.isInteger(id) && id > 0 ? await obtenerBancoAdmin(id) : null
+    const id = idDe(req)
+    const banco = id && (await obtenerBancoAdmin(id))
     if (!banco) return res.status(404).json({ error: 'banc_no_trobat' })
     res.json(banco)
+  }),
+)
+
+// Respuesta común de crear/editar: 400 con los errores por campo, 404 si no
+// existe, o la pregunta guardada.
+function responderPregunta(res, resultado, estadoOk, errorNoTrobat) {
+  if (!resultado) return res.status(404).json({ error: errorNoTrobat })
+  if (resultado.errores) return res.status(400).json({ error: 'validacio', camps: resultado.errores })
+  res.status(estadoOk).json(resultado.pregunta)
+}
+
+router.post(
+  '/bancs/:id/preguntes',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    responderPregunta(res, id && (await crearPregunta(id, req.body ?? {})), 201, 'banc_no_trobat')
+  }),
+)
+
+router.patch(
+  '/preguntes/:id',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    responderPregunta(res, id && (await actualizarPregunta(id, req.body)), 200, 'pregunta_no_trobada')
+  }),
+)
+
+router.delete(
+  '/preguntes/:id',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    if (!id || !(await borrarPregunta(id))) return res.status(404).json({ error: 'pregunta_no_trobada' })
+    res.status(204).end()
   }),
 )
 
