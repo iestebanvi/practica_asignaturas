@@ -12,7 +12,8 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 - **Plan vigente**: `docs/planes/plan-contenido-dinamico-cursos.md` → apartado 6 (tabla de fases) y apartado 9 (decisiones).
 - Fases 0 y 1 **hechas y desplegadas** (2026-11-22).
 - Fases 2 y 3 **hechas** (2026-11-22): todo el contenido sale de Supabase vía API; la web ya no tiene datos en el código. Copia del contenido en `backend/datos/contenido.json`.
-- Siguiente: **fase 4** (login del profesorado con contraseña compartida). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
+- Fase 4 **hecha** (2026-11-22): login de la consola (`/profesorat`) con contraseña compartida `TEACHER_PASSWD`, sesión de 7 días.
+- Siguiente: **fase 5** (editores de cursos/asignaturas/modos/preguntas en la consola). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
 
 ## Mapa de temas
 
@@ -30,6 +31,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Detalle de la fase 1 | ídem §12 |
 | Detalle de la fase 2 (tablas, bancos, seed, API, dev=prod) | ídem §13 |
 | Detalle de la fase 3 (frontend sobre la API, caché, copia del contenido) | ídem §14 |
+| Detalle de la fase 4 (login, sesiones, límite de intentos) | ídem §15 |
 | Diseño técnico antiguo de BD + PIN (referencia, sustituido) | `docs/planes/plan-base-datos-usuarios.md` |
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |
 | Contenido fuente: temario Medi "Canvis en el relleu" | `docs/medi/canvis-en-el-relleu-temari.txt` |
@@ -48,8 +50,10 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Consultas de lectura (árbol de curso, bancos) | `backend/src/db/contenido.js` |
 | Copia del contenido (backup en git, fuente de `make seed` y de los tests) | `backend/datos/contenido.json` (`make export-contenido`) |
 | Carga y exportación | `backend/src/db/sembrar.js`, `backend/src/db/exportar.js`, `backend/scripts/` |
-| Rutas de la API | `backend/src/app.js` → `backend/src/routes/` |
-| Tests de la API | `backend/test/api.test.js` (esquema `test`) |
+| Rutas de la API | `backend/src/app.js` → `backend/src/routes/` (`admin.js` = consola, protegida) |
+| Autenticación del profesorado | `backend/src/auth/` (contraseña, sesiones, límite de intentos) |
+| Consola del profesorado (frontend) | `frontend/src/pages/profesorat/` + `frontend/src/logic/admin.js` |
+| Tests de la API | `backend/test/*.test.js` (esquema `test`, en serie; helper `preparar.js`) |
 
 ## Convenciones de los documentos
 

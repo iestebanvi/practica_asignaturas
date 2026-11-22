@@ -1,0 +1,139 @@
+import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest'
+import { prepararEntorno } from './preparar.js'
+import { reiniciarLimitador, MAX_FALLOS } from '../src/auth/limitador.js'
+
+const PASSWORD = 'contrasenya-de-prova' // la de vitest.config.js
+
+describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin', () => {
+  let pool, servidor, base
+
+  beforeAll(async () => {
+    ;({ pool, servidor, base } = await prepararEntorno({ conContenido: false }))
+  })
+
+  afterAll(async () => {
+    servidor?.close()
+    await pool?.end()
+  })
+
+  beforeEach(() => {
+    reiniciarLimitador()
+  })
+
+  const login = (password) =>
+    fetch(`${base}/api/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    })
+
+  // "sessio_professorat=xxx; Path=...; HttpOnly..." -> "sessio_professorat=xxx"
+  const cookieDe = (res) => res.headers.get('set-cookie').split(';')[0]
+
+  const sessio = (cookie) => fetch(`${base}/api/admin/sessio`, { headers: cookie ? { Cookie: cookie } : {} })
+
+  it('con la contraseña correcta crea una sesión de 7 días en una cookie protegida', async () => {
+    const res = await login(PASSWORD)
+    expect(res.status).toBe(200)
+    const cabecera = res.headers.get('set-cookie')
+    expect(cabecera).toMatch(/^sessio_professorat=[\w-]{20,};/)
+    expect(cabecera).toMatch(/HttpOnly/)
+    expect(cabecera).toMatch(/SameSite=Strict/)
+    expect(cabecera).toMatch(/Path=\/api\/admin/)
+    expect(cabecera).toMatch(/Max-Age=604800/)
+
+    const { caducaEn } = await res.json()
+    const dias = (new Date(caducaEn) - Date.now()) / 86_400_000
+    expect(dias).toBeGreaterThan(6.99)
+    expect(dias).toBeLessThanOrEqual(7)
+  })
+
+  it('en la BD solo se guarda el hash del token, nunca el token', async () => {
+    const token = cookieDe(await login(PASSWORD)).split('=')[1]
+    const { rows } = await pool.query('SELECT token_hash FROM sesiones_profesorado')
+    expect(rows.map((r) => r.token_hash)).not.toContain(token)
+    expect(rows.every((r) => /^[0-9a-f]{64}$/.test(r.token_hash))).toBe(true)
+  })
+
+  it('con una contraseña incorrecta (o sin contraseña) da 401 y no crea sesión', async () => {
+    for (const password of ['otra', '', undefined, 12345]) {
+      const res = await login(password)
+      expect(res.status).toBe(401)
+      expect(await res.json()).toEqual({ error: 'contrasenya_incorrecta' })
+      expect(res.headers.get('set-cookie')).toBeNull()
+    }
+  })
+
+  it(`tras ${MAX_FALLOS} fallos bloquea la IP aunque luego acierte (429)`, async () => {
+    for (let i = 0; i < MAX_FALLOS; i++) expect((await login('mal')).status).toBe(401)
+    const res = await login(PASSWORD)
+    expect(res.status).toBe(429)
+    const body = await res.json()
+    expect(body.error).toBe('massa_intents')
+    expect(body.reintentarEnSegons).toBeGreaterThan(14 * 60)
+  })
+
+  it('un acierto reinicia el contador de fallos', async () => {
+    for (let i = 0; i < MAX_FALLOS - 1; i++) await login('mal')
+    expect((await login(PASSWORD)).status).toBe(200)
+    for (let i = 0; i < MAX_FALLOS - 1; i++) expect((await login('mal')).status).toBe(401)
+  })
+
+  it('las rutas protegidas exigen sesión: sin cookie o con una inventada, 401', async () => {
+    expect((await sessio()).status).toBe(401)
+    expect((await sessio('sessio_professorat=inventada')).status).toBe(401)
+    expect((await fetch(`${base}/api/admin/qualsevol-cosa`)).status).toBe(401)
+  })
+
+  it('con la cookie de sesión, /api/admin/sessio responde con la caducidad', async () => {
+    const cookie = cookieDe(await login(PASSWORD))
+    const res = await sessio(cookie)
+    expect(res.status).toBe(200)
+    expect((await res.json()).caducaEn).toBeTruthy()
+  })
+
+  it('tras cerrar sesión la cookie ya no sirve', async () => {
+    const cookie = cookieDe(await login(PASSWORD))
+    const res = await fetch(`${base}/api/admin/logout`, { method: 'POST', headers: { Cookie: cookie } })
+    expect(res.status).toBe(204)
+    expect(res.headers.get('set-cookie')).toMatch(/sessio_professorat=;/)
+    expect((await sessio(cookie)).status).toBe(401)
+  })
+
+  it('una sesión caducada se rechaza', async () => {
+    const cookie = cookieDe(await login(PASSWORD))
+    await pool.query("UPDATE sesiones_profesorado SET caduca_en = now() - interval '1 minute'")
+    expect((await sessio(cookie)).status).toBe(401)
+  })
+
+  it('en producción la cookie solo viaja por HTTPS (Secure)', async () => {
+    const anterior = process.env.NODE_ENV
+    process.env.NODE_ENV = 'production'
+    try {
+      expect((await login(PASSWORD)).headers.get('set-cookie')).toMatch(/Secure/)
+    } finally {
+      process.env.NODE_ENV = anterior
+    }
+  })
+
+  it('sin TEACHER_PASSWD la consola queda desactivada (503) y la web de alumnos sigue funcionando', async () => {
+    const anterior = process.env.TEACHER_PASSWD
+    delete process.env.TEACHER_PASSWD
+    try {
+      const res = await login('')
+      expect(res.status).toBe(503)
+      expect(await res.json()).toEqual({ error: 'consola_desactivada' })
+      expect((await fetch(`${base}/api/health`)).status).toBe(200)
+    } finally {
+      process.env.TEACHER_PASSWD = anterior
+    }
+  })
+
+  it('ningún curso puede usar los slugs reservados "profesorat" ni "api"', async () => {
+    for (const slug of ['profesorat', 'api']) {
+      await expect(pool.query("INSERT INTO cursos (slug, nombre) VALUES ($1, 'X')", [slug])).rejects.toThrow(
+        /cursos_slug_no_reservado/,
+      )
+    }
+  })
+})

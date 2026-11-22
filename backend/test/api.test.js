@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { leerContenido } from '../scripts/contenido.js'
+import { prepararEntorno } from './preparar.js'
 
 // Los tests cargan en el esquema "test" la copia del contenido real
 // (backend/datos/contenido.json).
@@ -10,26 +11,10 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
   let pool, servidor, base, sembrar, ejecutarMigraciones, exportarContenido
 
   beforeAll(async () => {
-    // Imports dinámicos: cliente.js exige DATABASE_URL al cargarse.
-    ;({ pool } = await import('../src/db/cliente.js'))
+    ;({ pool, servidor, base } = await prepararEntorno())
     ;({ ejecutarMigraciones } = await import('../src/db/migrar.js'))
     ;({ sembrar } = await import('../src/db/sembrar.js'))
     ;({ exportarContenido } = await import('../src/db/exportar.js'))
-    const { crearApp } = await import('../src/app.js')
-
-    expect(process.env.DB_SCHEMA).toBe('test')
-    await pool.query('DROP SCHEMA IF EXISTS test CASCADE')
-    await ejecutarMigraciones()
-    const cliente = await pool.connect()
-    try {
-      await sembrar(cliente, contenido)
-    } finally {
-      cliente.release()
-    }
-
-    servidor = crearApp().listen(0)
-    await new Promise((ok) => servidor.once('listening', ok))
-    base = `http://127.0.0.1:${servidor.address().port}`
   })
 
   afterAll(async () => {
@@ -183,7 +168,7 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
     const { rows } = await pool.query(
       "SELECT relname, relrowsecurity FROM pg_class WHERE relnamespace = 'test'::regnamespace AND relkind = 'r'",
     )
-    expect(rows.length).toBeGreaterThanOrEqual(6)
+    expect(rows.length).toBeGreaterThanOrEqual(7)
     for (const r of rows) expect(r.relrowsecurity, r.relname).toBe(true)
   })
 })

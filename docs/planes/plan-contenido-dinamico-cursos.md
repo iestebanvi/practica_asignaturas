@@ -1,6 +1,6 @@
 # Contenido dinámico en BD + cursos + consola del profesorado + pantalla completa
 
-> **Vigente (2026-11-22).** Fases 0 a 3 implementadas; el resto pendiente. Las decisiones marcadas con ❓ están pendientes de confirmar.
+> **Vigente (2026-11-22).** Fases 0 a 4 implementadas; el resto pendiente. Las decisiones marcadas con ❓ están pendientes de confirmar.
 > Sustituye en parte a `docs/plan-base-datos-usuarios.md`: aquel plan identificaba a cada alumno con nombre + PIN; ahora los alumnos **no se identifican**, así que la parte de usuarios/PIN queda descartada. De aquel plan se reutiliza la parte técnica de la BD (Supabase + `pg` + migraciones propias).
 
 ## 1. Objetivo
@@ -219,3 +219,13 @@ Sin BD todavía: los datos siguen en el código, pero ya con la estructura final
 - **Retirado**: datos de `cursos.js` (queda solo con búsquedas), los JSON de `backend/src/data/`, los endpoints `/api/problemas|vocabulario|gramatica|medi` y `legado.js`.
 - **Copia del contenido**: `backend/datos/contenido.json` (`make export-contenido`), fuente de `make seed` y de los tests del backend (que comprueban que sembrar + exportar es un viaje de ida y vuelta exacto). La fuente de verdad es la BD.
 - **e2e**: leen las respuestas correctas de la API y esperan a que el modo haya cargado antes de responder (`irAModo`); nuevos tests de tipo desconocido, API caída con reintento y curso inexistente.
+
+## 15. Detalle de la fase 4 (acceso a la consola) ✅ hecha
+
+- **Contraseña compartida** en la variable `TEACHER_PASSWD` (backend/.env y Railway), comparada en tiempo constante (hashes SHA-256 + `timingSafeEqual`). Sin la variable, `/api/admin/*` responde 503 y la web de alumnos sigue funcionando.
+- **Sesiones** en `sesiones_profesorado` (migración 002): solo el hash SHA-256 del token, caducidad fija de 7 días; las caducadas se limpian en cada login. Cookie `sessio_professorat`: HttpOnly, SameSite=Strict (también protege de CSRF), `Path=/api/admin`, Secure en producción.
+- **Rutas**: `POST /api/admin/login`, `POST /api/admin/logout`, `GET /api/admin/sessio`; todo lo demás bajo `/api/admin` exige sesión (401). Los editores de la fase 5 cuelgan de ahí.
+- **Límite de intentos**: 5 fallos por IP → bloqueo de 15 min (429), en memoria; un acierto reinicia el contador. `trust proxy` activado para usar la IP real tras el proxy de Railway.
+- **Slugs reservados**: la BD impide cursos llamados `profesorat` o `api`.
+- **Frontend**: `/profesorat` (login) y `/profesorat/consola/*` (esqueleto con "Tanca la sessió"); enlace discreto "Professorat" en el pie de inicio. Ojo con el ranking de rutas: `/profesorat/*` perdía contra `/:curso/:asignatura/:modo`, por eso la consola va en `/profesorat/consola/*`.
+- **Tests**: backend con contraseña de prueba propia (`vitest.config.js`); e2e leen `TEACHER_PASSWD` de `backend/.env` solo en local y se saltan contra producción.

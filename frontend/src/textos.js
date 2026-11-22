@@ -49,6 +49,25 @@ export const T = {
     return 'Increïble! 🏆'
   },
 
+  // Consola del professorat
+  professorat: 'Professorat',
+  consola: 'Consola del professorat',
+  contrasenya: 'Contrasenya',
+  entra: 'Entra',
+  entrant: 'Entrant…',
+  tancaSessio: 'Tanca la sessió',
+  errorLogin: {
+    contrasenya_incorrecta: 'La contrasenya no és correcta.',
+    massa_intents: (segons) =>
+      `Massa intents. Torna-ho a provar d'aquí a ${Math.ceil(segons / 60)} minuts.`,
+    consola_desactivada: 'La consola està desactivada (falta configurar la contrasenya al servidor).',
+    xarxa: "No s'ha pogut connectar amb el servidor.",
+    altre: "Hi ha hagut un error. Torna-ho a provar.",
+  },
+  sessioFins: (data) =>
+    `Sessió iniciada fins al ${new Date(data).toLocaleDateString('ca-ES', { day: 'numeric', month: 'long' })}.`,
+  consolaProperament: "Aquí podràs editar cursos, assignatures, modes i preguntes. Els editors arriben a la propera fase.",
+
   // Per repassar
   repassarTitol: 'Per repassar',
   repassarBuit: 'Encara no has fallat res! Continua així 🎉',

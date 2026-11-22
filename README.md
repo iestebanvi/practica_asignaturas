@@ -24,7 +24,7 @@ Dockerfile  Build multi-stage: compila el frontend y lo sirve desde el backend e
 Los puertos de desarrollo son **3100** (backend) y **5180** (frontend), a propósito fuera de los habituales 3000/5173. Cada carpeta tiene un `.env.example`; cópialo a `.env` (o ajusta los puertos ahí si los necesitas libres):
 
 ```
-cp backend/.env.example backend/.env      # PORT=3100 y DATABASE_URL de Supabase (Session pooler)
+cp backend/.env.example backend/.env      # PORT=3100, DATABASE_URL de Supabase (Session pooler) y TEACHER_PASSWD
 cp frontend/.env.example frontend/.env    # VITE_API_PROXY_TARGET debe apuntar al PORT del backend; VITE_PORT cambia el del frontend
 ```
 
@@ -96,7 +96,7 @@ URL de producción: https://practica-jungfrau.up.railway.app
 
 > Railway puede regenerar el dominio `.up.railway.app` en algún momento (ya ha pasado sin motivo aparente). Si `make railway-smoke` da error, comprueba la URL actual en el dashboard de Railway o con `railway status --json`; `railway-smoke` ya la resuelve sola.
 
-Necesita la variable `DATABASE_URL` (la misma cadena del Session pooler de Supabase) configurada en el servicio de Railway; `PORT` la inyecta Railway.
+Variables del servicio en Railway: `DATABASE_URL` (la misma cadena del Session pooler de Supabase) y `TEACHER_PASSWD` (contraseña compartida de la consola del profesorado; sin ella la web funciona pero la consola queda desactivada). `PORT` la inyecta Railway.
 
 ## Créditos
 
