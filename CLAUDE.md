@@ -33,6 +33,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |
 | Contenido fuente: temario Medi "Canvis en el relleu" | `docs/medi/canvis-en-el-relleu-temari.txt` |
 | Cómo arrancar, testear y desplegar | `README.md` y `Makefile` (`make help`) |
+| Despliegue (push a `main` = producción) | `README.md` § Despliegue en Railway + `railway.json` |
 
 ### En el código
 | Tema | Dónde |

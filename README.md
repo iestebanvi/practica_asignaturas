@@ -82,24 +82,21 @@ make help    # ver todos los comandos disponibles
 
 ## Despliegue en Railway
 
-El servicio de Railway (`practica-asignaturas`) no construye desde el `Dockerfile` directamente: despliega la imagen ya construida en `ghcr.io/iestebanvi/practica-asignaturas:latest`. El flujo de release es:
+El servicio de Railway (`practica-asignaturas`) está **conectado al repo de GitHub**: **cada push a `main` despliega**. Railway construye la imagen con el `Dockerfile` según `railway.json` (comprobación de salud en `/api/health`, reinicio si falla, región Ámsterdam, cerca del Supabase de Irlanda).
 
 ```
-make railway-release   # build multi-arch (amd64+arm64) + push a GHCR + redeploy en Railway
-```
-
-También por separado:
-```
-make railway-build     # solo build + push a GHCR
-make railway-deploy    # solo redeploy (usa la imagen :latest ya subida)
+git push               # despliega
 make railway-smoke     # comprobación rápida de /api/health en producción
+make railway-logs      # logs del último despliegue
 ```
+
+> ⚠️ No hay CI: un push a `main` va a producción sin pasar los tests, y las migraciones de BD se aplican al arrancar. Pasa `make test`, `make test-backend` y `make test-e2e` antes de hacer push.
 
 URL de producción: https://practica-jungfrau.up.railway.app
 
-> Railway puede regenerar el dominio `.up.railway.app` en algún momento (ya ha pasado una vez sin motivo aparente). Si `make railway-smoke` da error, comprueba la URL actual en el dashboard de Railway o con `railway status --json` y actualiza este README — `railway-smoke` ya la resuelve solo, no hace falta tocar el Makefile.
+> Railway puede regenerar el dominio `.up.railway.app` en algún momento (ya ha pasado sin motivo aparente). Si `make railway-smoke` da error, comprueba la URL actual en el dashboard de Railway o con `railway status --json`; `railway-smoke` ya la resuelve sola.
 
-Necesita la variable `DATABASE_URL` (la misma cadena del Session pooler de Supabase) configurada en el servicio de Railway; `PORT` la inyecta Railway. El paquete de GHCR es público, así que Railway no necesita ninguna credencial de registro para poder descargarlo.
+Necesita la variable `DATABASE_URL` (la misma cadena del Session pooler de Supabase) configurada en el servicio de Railway; `PORT` la inyecta Railway.
 
 ## Créditos
 
