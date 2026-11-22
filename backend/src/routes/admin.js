@@ -7,6 +7,7 @@ import { obtenerContenidoAdmin, obtenerBancoAdmin } from '../db/admin.js'
 import { crearPregunta, actualizarPregunta, borrarPregunta } from '../db/preguntas.js'
 import { importarPreguntas, bancoACsv } from '../db/importar.js'
 import { exportarContenido } from '../db/exportar.js'
+import * as estructura from '../db/estructura.js'
 import { pool } from '../db/cliente.js'
 
 export const COOKIE_SESION = 'sessio_professorat'
@@ -125,6 +126,61 @@ router.patch(
   asyncHandler(async (req, res) => {
     const id = idDe(req)
     responderPregunta(res, id && (await actualizarPregunta(id, req.body)), 200, 'pregunta_no_trobada')
+  }),
+)
+
+// Cursos y asignaturas: crear, editar (parcial), mover y borrar (solo si
+// están vacíos). Respuestas: 400 con errores por campo, 404, 409 si no está
+// vacío, o la fila guardada.
+function responderEstructura(res, resultado, estadoOk, errorNoTrobat) {
+  if (!resultado) return res.status(404).json({ error: errorNoTrobat })
+  if (resultado.errores) return res.status(400).json({ error: 'validacio', camps: resultado.errores })
+  if (resultado.error === 'no_buit') return res.status(409).json({ error: 'no_buit' })
+  if (estadoOk === 204) return res.status(204).end()
+  res.status(estadoOk).json(resultado.fila)
+}
+
+for (const [ruta, tipo, noTrobat] of [
+  ['cursos', 'curso', 'curs_no_trobat'],
+  ['assignatures', 'asignatura', 'assignatura_no_trobada'],
+]) {
+  router.patch(
+    `/${ruta}/:id`,
+    asyncHandler(async (req, res) => {
+      const id = idDe(req)
+      responderEstructura(res, id && (await estructura.actualizar(tipo, id, req.body)), 200, noTrobat)
+    }),
+  )
+  router.delete(
+    `/${ruta}/:id`,
+    asyncHandler(async (req, res) => {
+      const id = idDe(req)
+      responderEstructura(res, id && (await estructura.borrar(tipo, id)), 204, noTrobat)
+    }),
+  )
+  router.post(
+    `/${ruta}/:id/mou`,
+    asyncHandler(async (req, res) => {
+      const id = idDe(req)
+      const direccion = req.body?.direccio
+      if (!['amunt', 'avall'].includes(direccion)) return res.status(400).json({ error: 'direccio_no_valida' })
+      responderEstructura(res, id && (await estructura.mover(tipo, id, direccion)), 200, noTrobat)
+    }),
+  )
+}
+
+router.post(
+  '/cursos',
+  asyncHandler(async (req, res) => {
+    responderEstructura(res, await estructura.crear('curso', req.body ?? {}), 201, 'curs_no_trobat')
+  }),
+)
+
+router.post(
+  '/cursos/:id/assignatures',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    responderEstructura(res, id && (await estructura.crear('asignatura', req.body ?? {}, id)), 201, 'curs_no_trobat')
   }),
 )
 

@@ -6,6 +6,8 @@ import { T } from '../../textos.js'
 import ArbreConsola from './ArbreConsola.jsx'
 import FitxaMode from './FitxaMode.jsx'
 import FitxaBanc from './FitxaBanc.jsx'
+import FitxaCurs, { NouCurs } from './FitxaCurs.jsx'
+import FitxaAssignatura from './FitxaAssignatura.jsx'
 
 // Consola del profesorado: comprueba la sesión, carga todo el contenido
 // (también lo inactivo) y lo muestra con el árbol a la izquierda y la ficha
@@ -81,6 +83,12 @@ export default function Consola() {
             <section className="consola-fitxa">
               <Routes>
                 <Route index element={<ResumConsola contenido={estado.contenido} />} />
+                <Route path="curs/nou" element={<NouCurs onCanvi={refrescar} />} />
+                <Route path="curs/:id" element={<FitxaCurs contenido={estado.contenido} onCanvi={refrescar} />} />
+                <Route
+                  path="assignatura/:id"
+                  element={<FitxaAssignatura contenido={estado.contenido} onCanvi={refrescar} />}
+                />
                 <Route path="mode/:id" element={<FitxaMode contenido={estado.contenido} />} />
                 <Route path="banc/:id" element={<FitxaBanc onCanvi={refrescar} />} />
                 <Route path="*" element={<Navigate to="/profesorat/consola" replace />} />

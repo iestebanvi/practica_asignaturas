@@ -239,8 +239,8 @@ Acordado el 2026-11-22. Cada subfase se despliega por separado.
 | **5a** | e2e en su propio esquema (`e2e`) para que los editores no escriban en la BD real. Consola de solo lectura: árbol lateral curso → asignatura → modo y bancos (incluido lo inactivo), ficha de modo y de banco | ✅ hecha |
 | **5b** | Editar preguntas de un banco (formulario según formato, validaciones), añadir, activar/desactivar, borrar con confirmación | ✅ hecha |
 | **5c** | Importar preguntas pegando texto/CSV con vista previa de errores; exportar banco a CSV y copia completa en JSON | ✅ hecha |
-| **5d** | Cursos y asignaturas: crear/editar (nombre, icono, color, nivel, config), activo, orden | siguiente |
-| **5e** | Modos y bancos: crear/editar modos (tipos de ejercicio, banco), crear bancos | pendiente |
+| **5d** | Cursos y asignaturas: crear/editar (nombre, icono, color, nivel, config), activo, orden | ✅ hecha |
+| **5e** | Modos y bancos: crear/editar modos (tipos de ejercicio, banco), crear bancos | siguiente |
 | **5f** | Vista previa: "Prova aquest mode" aunque esté inactivo | pendiente |
 
 **Decisiones:**
@@ -269,3 +269,9 @@ Creados inactivos y sin asignaturas (en la BD y en `contenido.json`), entre 1r y
 - **Exportar**: `GET /api/admin/bancs/:id/csv` (mismo formato, con cabecera y BOM; en opción múltiple la correcta primero; incluye inactivas; ida y vuelta comprobada en tests) y `GET /api/admin/export` (copia completa, formato de `contenido.json`).
 - **Consola**: botones "Importa" y "Descarrega CSV" en la ficha de banco (panel con texto o fichero, "Revisa", "Importa N preguntes"; si cambia el texto hay que revisar de nuevo) y "Descarrega còpia completa (JSON)" en el resumen.
 - **e2e**: banco de prueba propio `e2e-importar` (separado de los de edición, que corren en paralelo).
+
+### 5d ✅ hecha (2026-11-22)
+- **API** (con sesión): `POST /api/admin/cursos`, `POST /api/admin/cursos/:id/assignatures`, `PATCH|DELETE /api/admin/cursos/:id` y `/api/admin/assignatures/:id`, `POST …/:id/mou` con `{ direccio: 'amunt' | 'avall' }` (intercambia con el vecino y renumera el orden). Borrar: 409 `no_buit` si tiene hijos.
+- **Validación** (`backend/src/validacion/estructura.js`): nombre (máx. 60), slug solo al crear (formato URL, único en su nivel —UNIQUE de la BD— y no reservado: `profesorat`/`api`/`assets` para cursos, `repassar` para asignaturas), icono (emoji, opcional), color `#rrggbb` con la **sombra calculada** (30 % más oscura), nivel `facil|medio|dificil`, config `{ majuscules, celebracio }`. Lo nuevo se crea **inactivo** y al final.
+- **Consola**: "+ Nou curs" en el menú; nombres de curso y asignatura enlazan a su ficha editable (con ↑ Puja / ↓ Baixa / Esborra —deshabilitado y explicado si no está vacío—, aviso si está activo sin hijos activos, enlace a la web si es visible) y "+ Nova assignatura" en la ficha de curso. La web de alumnos muestra "Encara no hi ha exercicis en aquesta assignatura." si una asignatura no tiene modos.
+- **e2e**: crean y borran su propio curso de prueba (`prova-e2e`); el resumen de la consola no fija el número de cursos (varía en paralelo).

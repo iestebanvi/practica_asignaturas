@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { T } from '../../textos.js'
 
 const RUTA = '/profesorat/consola'
@@ -12,15 +12,22 @@ function Inactiu({ activo }) {
 export default function ArbreConsola({ contenido }) {
   return (
     <nav className="arbre-consola" aria-label="Contingut">
+      <Link to={`${RUTA}/curs/nou`} className="boto-enllac boto-petit">
+        {T.nouCurs}
+      </Link>
       {contenido.cursos.map((curso) => (
         <section key={curso.id} className={curso.activo ? '' : 'es-inactiu'}>
           <h2>
-            {curso.icono} {curso.nombre} <Inactiu activo={curso.activo} />
+            <NavLink to={`${RUTA}/curs/${curso.id}`} end>
+              {curso.icono} {curso.nombre} <Inactiu activo={curso.activo} />
+            </NavLink>
           </h2>
           {curso.asignaturas.map((asig) => (
             <div key={asig.id} className={`arbre-assignatura${asig.activo ? '' : ' es-inactiu'}`}>
               <h3>
-                {asig.icono} {asig.nombre} <Inactiu activo={asig.activo} />
+                <NavLink to={`${RUTA}/assignatura/${asig.id}`}>
+                  {asig.icono} {asig.nombre} <Inactiu activo={asig.activo} />
+                </NavLink>
               </h3>
               <ul>
                 {asig.modos.map((modo) => (

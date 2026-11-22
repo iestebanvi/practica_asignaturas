@@ -403,4 +403,114 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
       expect((await pedir('POST', '/api/admin/bancs/1/importa', {})).status).toBe(400)
     })
   })
+
+  describe('cursos y asignaturas (solo con sesión)', () => {
+    let cookie
+    const pedir = async (metodo, ruta, body, conCookie = true) => {
+      const headers = { 'Content-Type': 'application/json', ...(conCookie ? { Cookie: cookie } : {}) }
+      const res = await fetch(base + ruta, { method: metodo, headers, body: body && JSON.stringify(body) })
+      return { status: res.status, body: res.status === 204 ? null : await res.json() }
+    }
+    const publicos = async () => (await (await fetch(`${base}/api/cursos`)).json()).map((c) => c.id)
+    const ordenCursos = async () =>
+      (await pool.query('SELECT slug FROM cursos ORDER BY orden, id')).rows.map((r) => r.slug)
+
+    beforeAll(async () => {
+      reiniciarLimitador()
+      cookie = cookieDe(await login(PASSWORD))
+    })
+
+    it('sin sesión no se puede crear, editar, mover ni borrar', async () => {
+      expect((await pedir('POST', '/api/admin/cursos', { nombre: 'X', slug: 'x' }, false)).status).toBe(401)
+      expect((await pedir('PATCH', '/api/admin/cursos/1', { activo: true }, false)).status).toBe(401)
+      expect((await pedir('POST', '/api/admin/cursos/1/mou', { direccio: 'amunt' }, false)).status).toBe(401)
+      expect((await pedir('DELETE', '/api/admin/assignatures/1', null, false)).status).toBe(401)
+    })
+
+    it('crear un curso: inactivo, al final, con la sombra calculada; no lo ven los alumnos hasta activarlo', async () => {
+      const { status, body } = await pedir('POST', '/api/admin/cursos', {
+        nombre: 'Prova', slug: 'prova', icono: '🧪', color: '#FF0000', nivel: 'facil', config: { majuscules: true },
+      })
+      expect(status).toBe(201)
+      expect(body).toMatchObject({
+        slug: 'prova', nombre: 'Prova', icono: '🧪', color: '#ff0000', sombra: '#b30000', nivel: 'facil',
+        config: { majuscules: true, celebracio: false }, activo: false,
+      })
+      expect((await ordenCursos()).at(-1)).toBe('prova')
+      expect(await publicos()).not.toContain('prova')
+
+      const activado = await pedir('PATCH', `/api/admin/cursos/${body.id}`, { activo: true, nombre: 'Prova 2' })
+      expect(activado.body).toMatchObject({ activo: true, nombre: 'Prova 2', slug: 'prova' })
+      expect(await publicos()).toContain('prova')
+    })
+
+    it('slug repetido o reservado: 400 en el campo slug', async () => {
+      const repetido = await pedir('POST', '/api/admin/cursos', { nombre: 'Altre 6è', slug: '6-primaria' })
+      expect(repetido.status).toBe(400)
+      expect(repetido.body.camps.slug).toMatch(/Ja hi ha/)
+      const reservado = await pedir('POST', '/api/admin/cursos', { nombre: 'Consola', slug: 'profesorat' })
+      expect(reservado.body.camps.slug).toMatch(/reservat/)
+    })
+
+    it('el slug no cambia aunque se envíe al editar', async () => {
+      const { body: curso } = await pedir('POST', '/api/admin/cursos', { nombre: 'Fix', slug: 'fix' })
+      const { body } = await pedir('PATCH', `/api/admin/cursos/${curso.id}`, { slug: 'canviat', nombre: 'Fix 2' })
+      expect(body.slug).toBe('fix')
+    })
+
+    it('asignaturas: crear dentro de un curso (slug único solo dentro del curso) y editar', async () => {
+      const { body: curso } = await pedir('POST', '/api/admin/cursos', { nombre: 'Amb assignatures', slug: 'amb-assignatures' })
+      const { status, body } = await pedir('POST', `/api/admin/cursos/${curso.id}/assignatures`, {
+        nombre: 'Matemàtiques', slug: 'matematiques', icono: '🔢', color: '#00ff00',
+      })
+      expect(status).toBe(201)
+      expect(body).toMatchObject({ cursoId: curso.id, slug: 'matematiques', activo: false, sombra: '#00b300' })
+
+      // El mismo slug en otro curso (6è ya tiene "matematiques") está permitido; en el mismo, no
+      const repetida = await pedir('POST', `/api/admin/cursos/${curso.id}/assignatures`, { nombre: 'Mates', slug: 'matematiques' })
+      expect(repetida.body.camps.slug).toMatch(/Ja hi ha/)
+
+      const editada = await pedir('PATCH', `/api/admin/assignatures/${body.id}`, { nombre: 'Mates', nivel: 'facil' })
+      expect(editada.body.nombre).toBe('Mates')
+      expect(editada.body).not.toHaveProperty('nivel')
+
+      expect((await pedir('POST', '/api/admin/cursos/999999/assignatures', { nombre: 'X', slug: 'x' })).status).toBe(404)
+    })
+
+    it('mover: intercambia con el vecino; en los extremos no hace nada', async () => {
+      const { rows } = await pool.query("SELECT id::int FROM cursos WHERE slug = '2-primaria'")
+      const id = rows[0].id
+      const antes = await ordenCursos()
+      const i = antes.indexOf('2-primaria')
+
+      await pedir('POST', `/api/admin/cursos/${id}/mou`, { direccio: 'amunt' })
+      const despues = await ordenCursos()
+      expect(despues[i - 1]).toBe('2-primaria')
+      expect(despues[i]).toBe(antes[i - 1])
+
+      await pedir('POST', `/api/admin/cursos/${id}/mou`, { direccio: 'avall' })
+      expect(await ordenCursos()).toEqual(antes)
+
+      const primero = (await pool.query('SELECT id::int FROM cursos ORDER BY orden, id LIMIT 1')).rows[0].id
+      await pedir('POST', `/api/admin/cursos/${primero}/mou`, { direccio: 'amunt' })
+      expect(await ordenCursos()).toEqual(antes)
+      expect((await pedir('POST', `/api/admin/cursos/${id}/mou`, { direccio: 'lateral' })).status).toBe(400)
+    })
+
+    it('borrar solo si está vacío: un curso con asignaturas o una asignatura con modos da 409', async () => {
+      const seis = (await pool.query("SELECT id::int FROM cursos WHERE slug = '6-primaria'")).rows[0].id
+      const res = await pedir('DELETE', `/api/admin/cursos/${seis}`)
+      expect(res.status).toBe(409)
+      expect(res.body.error).toBe('no_buit')
+      const mates = (await pool.query('SELECT id::int FROM asignaturas WHERE curso_id = $1 ORDER BY orden LIMIT 1', [seis])).rows[0].id
+      expect((await pedir('DELETE', `/api/admin/assignatures/${mates}`)).status).toBe(409)
+
+      const { body: curso } = await pedir('POST', '/api/admin/cursos', { nombre: 'Buit', slug: 'buit' })
+      const { body: asig } = await pedir('POST', `/api/admin/cursos/${curso.id}/assignatures`, { nombre: 'A', slug: 'a' })
+      expect((await pedir('DELETE', `/api/admin/cursos/${curso.id}`)).status).toBe(409)
+      expect((await pedir('DELETE', `/api/admin/assignatures/${asig.id}`)).status).toBe(204)
+      expect((await pedir('DELETE', `/api/admin/cursos/${curso.id}`)).status).toBe(204)
+      expect((await pedir('DELETE', `/api/admin/cursos/${curso.id}`)).status).toBe(404)
+    })
+  })
 })

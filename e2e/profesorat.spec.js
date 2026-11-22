@@ -65,7 +65,8 @@ test.describe('Consola del professorat', () => {
 
     test('muestra el resumen y el árbol de cursos, asignaturas, modos y bancos', async ({ page }) => {
       await entrar(page)
-      await expect(page.getByText(/6 cursos · 16 modes · 8 bancs · 274 preguntes/)).toBeVisible()
+      // El número de cursos varía: los tests de la 5d crean cursos en paralelo
+      await expect(page.getByText(/\d+ cursos · 16 modes · 8 bancs · 274 preguntes/)).toBeVisible()
       const arbre = page.getByRole('navigation', { name: 'Contingut' })
       await expect(arbre.getByRole('heading', { name: /6è de primària/ })).toBeVisible()
       await expect(arbre.getByRole('heading', { name: /Anglès/ })).toBeVisible()
@@ -312,6 +313,122 @@ test.describe('Consola del professorat', () => {
       expect(json.suggestedFilename()).toMatch(/^contingut-\d{4}-\d{2}-\d{2}\.json$/)
       const copia = JSON.parse((await import('node:fs')).readFileSync(await json.path(), 'utf-8'))
       expect(copia.cursos.map((c) => c.id)).toContain('6-primaria')
+    })
+  })
+
+  test.describe('cursos y asignaturas (solo cursos de prueba creados aquí)', () => {
+    test.describe.configure({ mode: 'serial' })
+
+    async function entrar(page) {
+      await page.goto('/profesorat')
+      await page.getByLabel('Contrasenya').fill(PASSWORD)
+      await page.getByRole('button', { name: 'Entra' }).click()
+      await expect(page.getByRole('navigation', { name: 'Contingut' })).toBeVisible()
+      return page.locator('.consola-fitxa')
+    }
+    const menu = (page) => page.getByRole('navigation', { name: 'Contingut' })
+
+    test('crear un curso: se propone la adreça, se crea inactivo y los alumnos no lo ven', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: '+ Nou curs' }).click()
+      await fitxa.getByLabel('Nom').fill('Prova E2E')
+      await expect(fitxa.getByLabel('Adreça (part de la URL)')).toHaveValue('prova-e2e')
+      await fitxa.getByLabel('Icona (un emoji)').fill('🧪')
+      await fitxa.getByRole('radio', { name: 'Fàcil' }).check()
+      await fitxa.getByLabel('Tot en majúscules').check()
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+
+      await expect(page).toHaveURL(/\/profesorat\/consola\/curs\/\d+$/)
+      await expect(fitxa.getByRole('heading', { name: '🧪 Prova E2E' })).toBeVisible()
+      await expect(fitxa.getByText('/prova-e2e')).toBeVisible()
+      await expect(menu(page).getByRole('link', { name: /Prova E2E/ })).toContainText('inactiu')
+
+      await page.goto('/')
+      await expect(page.getByRole('link', { name: /6è de primària/ })).toBeVisible()
+      await expect(page.getByRole('link', { name: /Prova E2E/ })).toHaveCount(0)
+    })
+
+    test('una adreça repetida o reservada se rechaza en el propio campo', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: '+ Nou curs' }).click()
+      await fitxa.getByLabel('Nom').fill('Un altre')
+      await fitxa.getByLabel('Adreça (part de la URL)').fill('6-primaria')
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+      await expect(fitxa.getByRole('alert')).toHaveText('Ja hi ha un element amb aquesta adreça.')
+      await fitxa.getByLabel('Adreça (part de la URL)').fill('profesorat')
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+      await expect(fitxa.getByRole('alert')).toContainText('reservat')
+    })
+
+    test('activar el curso: aviso de que no tiene asignaturas, y aparece en el inicio con ese mensaje', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: /Prova E2E/ }).click()
+      await fitxa.getByLabel('Actiu (visible per als alumnes)').check()
+      await fitxa.getByRole('button', { name: 'Desa', exact: true }).click()
+      await expect(fitxa.getByRole('status')).toHaveText('Desat.')
+      await expect(fitxa.getByText(/no té cap assignatura activa/)).toBeVisible()
+
+      await page.goto('/')
+      await page.getByRole('link', { name: /Prova E2E/ }).click()
+      await expect(page.getByText('Encara no hi ha assignatures en aquest curs. Torna aviat!')).toBeVisible()
+      // "Tot en majúscules" se aplica a la web del curso
+      await expect(page.locator('.app')).toHaveClass(/peque/)
+    })
+
+    test('añadir una asignatura activa: aparece en el curso, todavía sin modos', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: /Prova E2E/ }).click()
+      await fitxa.getByRole('button', { name: '+ Nova assignatura' }).click()
+      await fitxa.getByLabel('Nom').last().fill('Música')
+      await expect(fitxa.getByLabel('Adreça (part de la URL)')).toHaveValue('musica')
+      await fitxa.getByLabel('Actiu (visible per als alumnes)').last().check()
+      await fitxa.getByRole('button', { name: 'Crea' }).click()
+
+      await expect(page).toHaveURL(/\/profesorat\/consola\/assignatura\/\d+$/)
+      await expect(fitxa.getByText(/no té cap mode actiu/)).toBeVisible()
+      await expect(fitxa.getByRole('button', { name: 'Esborra l’assignatura' })).toBeEnabled()
+
+      await page.goto('/prova-e2e')
+      await page.getByRole('link', { name: /Música/i }).click()
+      await expect(page.getByText(/Encara no hi ha exercicis en aquesta assignatura/i)).toBeVisible()
+    })
+
+    test('reordenar: "Puja" cambia la posición en el menú; en el primero no se puede subir', async ({ page }) => {
+      const fitxa = await entrar(page)
+      const titulos = () => menu(page).getByRole('heading', { level: 2 }).allInnerTexts()
+      const antes = await titulos()
+      const i = antes.findIndex((t) => t.includes('Prova E2E'))
+      await menu(page).getByRole('link', { name: /Prova E2E/ }).click()
+      await fitxa.getByRole('button', { name: '↑ Puja' }).click()
+      await expect.poll(async () => (await titulos()).findIndex((t) => t.includes('Prova E2E'))).toBe(i - 1)
+
+      await menu(page).getByRole('link', { name: /1r de primària/ }).click()
+      await expect(fitxa.getByRole('button', { name: '↑ Puja' })).toBeDisabled()
+    })
+
+    test('borrar solo si está vacío: primero la asignatura, después el curso', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: /Prova E2E/ }).click()
+      await expect(fitxa.getByRole('button', { name: 'Esborra el curs' })).toBeDisabled()
+      await expect(fitxa.getByText(/primer esborra’n les assignatures/)).toBeVisible()
+
+      await fitxa.getByRole('link', { name: /Música/ }).click()
+      await fitxa.getByRole('button', { name: 'Esborra l’assignatura' }).click()
+      await fitxa.getByRole('button', { name: 'Sí, esborra' }).click()
+      await expect(fitxa.getByRole('heading', { name: '🧪 Prova E2E' })).toBeVisible()
+
+      await fitxa.getByRole('button', { name: 'Esborra el curs' }).click()
+      await fitxa.getByRole('button', { name: 'Sí, esborra' }).click()
+      await expect(page).toHaveURL(/\/profesorat\/consola$/)
+      await expect(menu(page).getByRole('link', { name: /Prova E2E/ })).toHaveCount(0)
+    })
+
+    test('las fichas de 6è muestran sus asignaturas y no dejan borrarlo', async ({ page }) => {
+      const fitxa = await entrar(page)
+      await menu(page).getByRole('link', { name: /6è de primària/ }).click()
+      await expect(fitxa.getByRole('link', { name: /Matemàtiques/ })).toContainText('Matemàtiques')
+      await expect(fitxa.getByText('8 modes')).toBeVisible()
+      await expect(fitxa.getByRole('button', { name: 'Esborra el curs' })).toBeDisabled()
     })
   })
 })

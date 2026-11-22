@@ -26,8 +26,14 @@ export default function Asignatura() {
 
         return (
           <Pagina curso={curso} molles={molles} className="assignatura">
-            <h1>{T.triaMode}</h1>
-            <Targetes items={asignatura.modos} rutaDe={(modo) => `/${curso.id}/${asignatura.id}/${modo.id}`} />
+            {asignatura.modos.length === 0 ? (
+              <p className="practica-avis">{T.assignaturaBuida}</p>
+            ) : (
+              <>
+                <h1>{T.triaMode}</h1>
+                <Targetes items={asignatura.modos} rutaDe={(modo) => `/${curso.id}/${asignatura.id}/${modo.id}`} />
+              </>
+            )}
             <nav className="accions">
               <Link to={`/${curso.id}/repassar`} className="enllac-secundari">
                 {T.perRepassar}

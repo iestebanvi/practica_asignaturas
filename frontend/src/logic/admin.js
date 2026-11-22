@@ -90,3 +90,38 @@ export function importarPreguntas(bancoId, texto, { inactivas = false } = {}) {
 // Descargas (enlaces normales: la cookie de sesión viaja sola).
 export const urlCsvBanco = (bancoId) => `/api/admin/bancs/${encodeURIComponent(bancoId)}/csv`
 export const URL_COPIA_COMPLETA = '/api/admin/export'
+
+// Cursos ("cursos") y asignaturas ("assignatures"): crear, editar, mover
+// ('amunt' | 'avall') y borrar (solo si están vacíos: si no, ErrorAdmin('no_buit')).
+const RUTA_ESTRUCTURA = { curso: 'cursos', asignatura: 'assignatures' }
+
+export function crearCurso(datos) {
+  return peticion('/api/admin/cursos', json('POST', datos))
+}
+
+export function crearAsignatura(cursoId, datos) {
+  return peticion(`/api/admin/cursos/${encodeURIComponent(cursoId)}/assignatures`, json('POST', datos))
+}
+
+export function actualizarEstructura(tipo, id, cambios) {
+  return peticion(`/api/admin/${RUTA_ESTRUCTURA[tipo]}/${encodeURIComponent(id)}`, json('PATCH', cambios))
+}
+
+export function moverEstructura(tipo, id, direccio) {
+  return peticion(`/api/admin/${RUTA_ESTRUCTURA[tipo]}/${encodeURIComponent(id)}/mou`, json('POST', { direccio }))
+}
+
+export function borrarEstructura(tipo, id) {
+  return peticion(`/api/admin/${RUTA_ESTRUCTURA[tipo]}/${encodeURIComponent(id)}`, { method: 'DELETE' })
+}
+
+// Propuesta de slug a partir del nombre: "2n de primària" -> "2n-de-primaria".
+export function proponerSlug(nombre) {
+  return nombre
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/·/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}

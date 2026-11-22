@@ -1292,3 +1292,88 @@ button:active,
 .boto-enllac {
   display: inline-block;
 }
+
+/* Fichas de curso y asignatura (consola) */
+.fitxa-capcalera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.fitxa-capcalera h2 {
+  margin: 0;
+}
+
+.accions-element {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.boto-petit:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.form-estructura {
+  margin: 1rem 0 1.5rem;
+}
+
+.camps-fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.camp-icona {
+  width: 6rem;
+  font-size: 1.3rem;
+}
+
+.camp-color {
+  width: 4rem;
+  height: 2.6rem;
+  padding: 0.15rem;
+}
+
+.camp-radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.camp-radios label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 400;
+}
+
+.form-pregunta .camp-check {
+  flex-direction: row;
+  font-weight: 400;
+}
+
+.avis-desat {
+  align-self: center;
+  color: var(--color-correcto-sombra);
+  font-weight: 700;
+}
+
+.llista-fills {
+  padding-left: 1.2rem;
+}
+
+.arbre-consola h2 a,
+.arbre-consola h3 a {
+  padding: 0.2rem 0.4rem;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.arbre-consola > .boto-enllac {
+  margin-bottom: 0.5rem;
+}
