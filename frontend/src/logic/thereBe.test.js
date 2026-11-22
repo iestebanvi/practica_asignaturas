@@ -51,10 +51,10 @@ describe('generarThereBe', () => {
     }
     expect(instrucciones).toEqual(
       new Set([
-        'Completa el hueco :',
-        'Escribe la frase en pasado:',
-        'Escribe la pregunta:',
-        'Responde con respuesta corta :',
+        'Completa el buit :',
+        'Escriu la frase en passat:',
+        'Escriu la pregunta:',
+        'Respon amb una resposta curta :',
         'Completa la pregunta:',
       ]),
     )

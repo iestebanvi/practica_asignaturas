@@ -1,94 +1,24 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.jsx'
+import Curso from './pages/Curso.jsx'
 import Asignatura from './pages/Asignatura.jsx'
-import Modo from './pages/Modo.jsx'
 import Practica from './pages/Practica.jsx'
-import Resumen from './pages/Resumen.jsx'
 import ParaRepasar from './pages/ParaRepasar.jsx'
+import NoTrobat from './pages/NoTrobat.jsx'
 
-function App() {
-  const [pantalla, setPantalla] = useState('home')
-  const [perfilId, setPerfilId] = useState(null)
-  const [asignatura, setAsignatura] = useState(null)
-  const [modo, setModo] = useState(null)
-  const [resumen, setResumen] = useState(null)
-
-  function seleccionarPerfil(id) {
-    setPerfilId(id)
-    setPantalla(id === 'mayor' ? 'asignatura' : 'modo')
-  }
-
-  function seleccionarAsignatura(asignaturaId) {
-    setAsignatura(asignaturaId)
-    setPantalla('modo')
-  }
-
-  function seleccionarModo(modoId) {
-    setModo(modoId)
-    setPantalla('practica')
-  }
-
-  function finalizarSesion(resultado) {
-    setResumen(resultado)
-    setPantalla('resumen')
-  }
-
-  function volverAlInicio() {
-    setPerfilId(null)
-    setAsignatura(null)
-    setModo(null)
-    setResumen(null)
-    setPantalla('home')
-  }
-
-  function volverAAsignatura() {
-    setModo(null)
-    setPantalla('asignatura')
-  }
-
-  function volverAModo() {
-    setPantalla('modo')
-  }
-
-  function verRepasar() {
-    setPantalla('repasar')
-  }
-
+// Cada pantalla tiene su URL: el botón "atrás" del navegador funciona y se
+// puede guardar en favoritos el curso de cada niño. "repassar" es un segmento
+// fijo, así que tiene prioridad sobre ":asignaturaId" (y ninguna asignatura
+// puede llamarse así; lo comprueba cursos.test.js).
+export default function App() {
   return (
-    <div className="app">
-      {pantalla === 'home' && <Home onSeleccionarPerfil={seleccionarPerfil} />}
-      {pantalla === 'asignatura' && (
-        <Asignatura onSeleccionarAsignatura={seleccionarAsignatura} onVolver={volverAlInicio} />
-      )}
-      {pantalla === 'modo' && (
-        <Modo
-          perfilId={perfilId}
-          asignatura={asignatura}
-          onSeleccionarModo={seleccionarModo}
-          onVolver={perfilId === 'mayor' ? volverAAsignatura : volverAlInicio}
-          onVerRepasar={verRepasar}
-        />
-      )}
-      {pantalla === 'practica' && (
-        <Practica
-          perfilId={perfilId}
-          asignatura={asignatura}
-          modo={modo}
-          onFinalizar={finalizarSesion}
-          onVolver={perfilId === 'mayor' ? volverAModo : volverAlInicio}
-        />
-      )}
-      {pantalla === 'resumen' && (
-        <Resumen
-          resumen={resumen}
-          perfilId={perfilId}
-          onVolver={volverAlInicio}
-          onVerRepasar={verRepasar}
-        />
-      )}
-      {pantalla === 'repasar' && <ParaRepasar perfilId={perfilId} onVolver={volverAlInicio} />}
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/:cursoId" element={<Curso />} />
+      <Route path="/:cursoId/repassar" element={<ParaRepasar />} />
+      <Route path="/:cursoId/:asignaturaId" element={<Asignatura />} />
+      <Route path="/:cursoId/:asignaturaId/:modoId" element={<Practica />} />
+      <Route path="*" element={<NoTrobat />} />
+    </Routes>
   )
 }
-
-export default App

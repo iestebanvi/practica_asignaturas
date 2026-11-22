@@ -1,21 +1,13 @@
-import { PERFILES } from '../logic/perfiles.js'
+import Pagina from '../components/Pagina.jsx'
+import Targetes from '../components/Targetes.jsx'
+import { CURSOS } from '../logic/cursos.js'
+import { T } from '../textos.js'
 
-export default function Home({ onSeleccionarPerfil }) {
+export default function Home() {
   return (
-    <div className="pantalla home">
-      <h1>Practica Asignaturas 📚</h1>
-      <p>¿Quién va a jugar?</p>
-      <div className="perfiles">
-        {Object.values(PERFILES).map((perfil) => (
-          <button
-            key={perfil.id}
-            className={`perfil perfil-${perfil.id}`}
-            onClick={() => onSeleccionarPerfil(perfil.id)}
-          >
-            {perfil.nombre}
-          </button>
-        ))}
-      </div>
-    </div>
+    <Pagina className="home">
+      <h1>{T.triaCurs}</h1>
+      <Targetes items={Object.values(CURSOS)} rutaDe={(curso) => `/${curso.id}`} />
+    </Pagina>
   )
 }

@@ -111,7 +111,7 @@ function tiempoAleatorio() {
   return Math.random() < 0.5 ? 'presente' : 'pasado'
 }
 
-const INSTRUCCION_HUECO = { af: 'Completa el hueco (afirmativa):', neg: 'Completa el hueco (negativa):' }
+const INSTRUCCION_HUECO = { af: 'Completa el buit (afirmativa):', neg: 'Completa el buit (negativa):' }
 
 function huecoThere() {
   const e = especThere()
@@ -129,7 +129,7 @@ function pasadoThere() {
   const e = especThere()
   const tipo = elegir(['af', 'neg'])
   return crear(
-    'Escribe la frase en pasado:',
+    'Escriu la frase en passat:',
     `${thereEnunciado(e, 'presente', tipo)}.`,
     `${there(e, 'pasado', tipo)}.`,
   )
@@ -141,7 +141,7 @@ function preguntaThere() {
   const tipo = Math.random() < 0.7 ? 'af' : 'neg'
   const extras = e.plural && tipo === 'af' ? [`${there(e, tiempo, 'preg', true)}?`] : []
   return crear(
-    'Escribe la pregunta:',
+    'Escriu la pregunta:',
     `${thereEnunciado(e, tiempo, tipo)}.`,
     `${there(e, tiempo, 'preg')}?`,
     extras,
@@ -154,7 +154,7 @@ function cortaThere() {
   const si = Math.random() < 0.5
   const [af, neg] = verbo(tiempo, e.plural)
   return crear(
-    `Responde con respuesta corta (${si ? 'Sí' : 'No'}):`,
+    `Respon amb una resposta curta (${si ? 'Sí' : 'No'}):`,
     `${there(e, tiempo, 'preg')}?`,
     si ? `Yes, there ${af}.` : `No, there ${neg}.`,
   )
@@ -205,7 +205,7 @@ function pasadoPersona() {
   const tipo = elegir(['af', 'neg'])
   const [af, neg] = verbo('pasado', sujeto.plural)
   return crear(
-    'Escribe la frase en pasado:',
+    'Escriu la frase en passat:',
     `${presentePersona(sujeto, tipo, complemento)}.`,
     `${sujeto.may} ${tipo === 'af' ? af : neg} ${complemento.t}.`,
   )
@@ -216,7 +216,7 @@ function preguntaPersona() {
   const tipo = Math.random() < 0.7 ? 'af' : 'neg'
   const [af, neg] = verbo('pasado', sujeto.plural)
   return crear(
-    'Escribe la pregunta:',
+    'Escriu la pregunta:',
     `${sujeto.may} ${tipo === 'af' ? af : neg} ${complemento.t} ${marca}.`,
     `${cap(af)} ${sujeto.min} ${complemento.t} ${marca}?`,
   )
@@ -227,7 +227,7 @@ function cortaPersona() {
   const si = Math.random() < 0.5
   const [af, neg] = verbo('pasado', sujeto.plural)
   return crear(
-    `Responde con respuesta corta (${si ? 'Sí' : 'No'}):`,
+    `Respon amb una resposta curta (${si ? 'Sí' : 'No'}):`,
     `${cap(af)} ${sujeto.min} ${complemento.t} ${marca}?`,
     `${si ? 'Yes' : 'No'}, ${sujeto.pron} ${si ? af : neg}.`,
   )

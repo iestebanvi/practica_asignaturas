@@ -1,12 +1,12 @@
 # Practica Asignaturas
 
-Web para que mis hijos practiquen distintas asignaturas (no solo mates):
-- **6 años (1º primaria)**: sumas, restas y horas.
-- **11 años (6º primaria)**: elige primero la asignatura y luego el modo dentro de ella.
-  - **Matemáticas**: aritmética (sumas/restas/multiplicaciones/divisiones) y problemas de su nivel.
-  - **Inglés**: vocabulario (deberes reales del cole, con más asignaturas/modos pendientes de añadir).
+Web para que alumnos de primaria practiquen por curso, sin identificarse. La interfaz va en catalán y ocupa toda la pantalla. Navegación con URLs: `/<curs>/<assignatura>/<mode>`.
+- **1r de primària** (`/1-primaria`): Matemàtiques → sumes, restes i hores. Interfaz en mayúsculas y celebración al acertar.
+- **6è de primària** (`/6-primaria`): Matemàtiques (aritmètica, problemes, potències, perímetres i àrees…), Anglès (vocabulari, there is/are…) y Medi.
 
-Cada uno elige su perfil al entrar y eso determina el nivel/contenido. Al terminar la sesión (botón "Finalizar") se muestra un reporte con los puntos conseguidos; no se guarda histórico entre sesiones.
+Al terminar la partida (botón "Finalitza") se muestra un resumen con los puntos. "Per repassar" guarda los fallos en el navegador (`localStorage`), por curso.
+
+El árbol de cursos vive de momento en `frontend/src/logic/cursos.js`; el plan para pasarlo a una base de datos editable desde una consola del profesorado está en `docs/planes/plan-contenido-dinamico-cursos.md` (índice de la documentación en `CLAUDE.md`).
 
 ## Estructura
 
@@ -19,11 +19,11 @@ Dockerfile  Build multi-stage: compila el frontend y lo sirve desde el backend e
 
 ## Desarrollo local (sin Docker)
 
-Cada carpeta tiene un `.env.example`; cópialo a `.env` y ajusta los puertos si los necesitas libres (por ejemplo si ya tienes algo corriendo en el 3000):
+Los puertos de desarrollo son **3100** (backend) y **5180** (frontend), a propósito fuera de los habituales 3000/5173. Cada carpeta tiene un `.env.example`; cópialo a `.env` (o ajusta los puertos ahí si los necesitas libres):
 
 ```
-cp backend/.env.example backend/.env      # PORT=3000 (o el que prefieras)
-cp frontend/.env.example frontend/.env    # VITE_API_PROXY_TARGET debe apuntar al PORT del backend
+cp backend/.env.example backend/.env      # PORT=3100 (o el que prefieras)
+cp frontend/.env.example frontend/.env    # VITE_API_PROXY_TARGET debe apuntar al PORT del backend; VITE_PORT cambia el del frontend
 ```
 
 Instala dependencias en las 3 carpetas (raíz, backend y frontend) y arranca ambos servicios con un único comando desde la raíz:
@@ -31,7 +31,7 @@ Instala dependencias en las 3 carpetas (raíz, backend y frontend) y arranca amb
 npm install
 npm install --prefix backend
 npm install --prefix frontend
-npm run dev         # backend en su PORT + frontend en http://localhost:5173
+npm run dev         # backend en http://localhost:3100 + frontend en http://localhost:5180
 ```
 
 También puedes arrancarlos por separado en dos terminales si lo prefieres:
@@ -59,10 +59,10 @@ npm run test:e2e                  # arranca backend+frontend solos si no están 
 
 ```
 docker build -t practica-asignaturas .
-docker run --rm -p 3000:3000 practica-asignaturas
+docker run --rm -p 3100:3000 practica-asignaturas
 ```
 
-Abrir http://localhost:3000
+Abrir http://localhost:3100
 
 ## Makefile
 

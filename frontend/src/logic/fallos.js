@@ -23,18 +23,18 @@ function guardarTodos(todos) {
 }
 
 function etiquetaEjercicio(ejercicio) {
-  return ejercicio.tipo === 'hora' ? `Las ${ejercicio.respuesta}` : ejercicio.enunciado
+  return ejercicio.tipo === 'hora' ? `Les ${ejercicio.respuesta}` : ejercicio.enunciado
 }
 
-export function registrarFallo(perfilId, ejercicio) {
+export function registrarFallo(cursoId, ejercicio) {
   const todos = leerTodos()
-  todos[perfilId] ??= {}
-  todos[perfilId][ejercicio.tipo] ??= {}
+  todos[cursoId] ??= {}
+  todos[cursoId][ejercicio.tipo] ??= {}
 
   const clave = etiquetaEjercicio(ejercicio)
-  const existente = todos[perfilId][ejercicio.tipo][clave]
+  const existente = todos[cursoId][ejercicio.tipo][clave]
 
-  todos[perfilId][ejercicio.tipo][clave] = {
+  todos[cursoId][ejercicio.tipo][clave] = {
     enunciado: clave,
     respuesta: ejercicio.respuesta,
     veces: (existente?.veces ?? 0) + 1,
@@ -44,8 +44,8 @@ export function registrarFallo(perfilId, ejercicio) {
   guardarTodos(todos)
 }
 
-export function obtenerFallos(perfilId) {
-  const porTipo = leerTodos()[perfilId] ?? {}
+export function obtenerFallos(cursoId) {
+  const porTipo = leerTodos()[cursoId] ?? {}
   const lista = []
 
   for (const [tipo, items] of Object.entries(porTipo)) {
@@ -57,8 +57,8 @@ export function obtenerFallos(perfilId) {
   return lista.sort((a, b) => b.veces - a.veces)
 }
 
-export function vaciarFallos(perfilId) {
+export function vaciarFallos(cursoId) {
   const todos = leerTodos()
-  delete todos[perfilId]
+  delete todos[cursoId]
   guardarTodos(todos)
 }

@@ -16,7 +16,7 @@ export default function Riu({ parteDestacada }) {
   const punto = PUNTOS[parteDestacada]
 
   return (
-    <svg viewBox="0 0 240 220" className="diagrama-medi" role="img" aria-label="Dibujo del curso de un río, de la montaña al mar">
+    <svg viewBox="0 0 240 220" className="diagrama-medi" role="img" aria-label="Dibuix del curs d’un riu, de la muntanya al mar">
       {/* Terreny de fons */}
       <path
         d="M 0 62 C 40 52, 90 72, 130 66 C 180 60, 210 76, 240 70 L 240 220 L 0 220 Z"

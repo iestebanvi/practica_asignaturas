@@ -26,7 +26,7 @@ export default function Volcan({ parteDestacada }) {
       viewBox={`0 0 ${IMAGEN_ANCHO} ${ALTO_TOTAL}`}
       className="diagrama-medi"
       role="img"
-      aria-label="Dibujo de un volcán en erupción, en corte"
+      aria-label="Dibuix d’un volcà en erupció, en secció"
     >
       <image href="/diagrames/volcan.svg" x="0" y={MARGEN_SUPERIOR} width={IMAGEN_ANCHO} height={IMAGEN_ALTO} />
 

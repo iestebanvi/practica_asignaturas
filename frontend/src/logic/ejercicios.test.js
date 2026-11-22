@@ -7,7 +7,16 @@ import {
   generarEjercicioDesdeBanco,
   generarEjercicioParaPerfil,
 } from './ejercicios.js'
-import { PERFILES, ASIGNATURAS_MAYOR } from './perfiles.js'
+import { CURSOS } from './cursos.js'
+
+// Mezcla de operaciones generadas + un tipo de banco ('problema'), para probar
+// cómo se combinan. Antes eran los perfiles "pequeno"/"mayor" de perfiles.js.
+const PERFIL_PEQUE = { operaciones: ['suma', 'resta'], nivel: 'facil' }
+const PERFIL_MAYOR = {
+  operaciones: ['suma', 'resta', 'multiplicacion', 'division', 'problema'],
+  nivel: 'medio',
+}
+const MODOS_ANGLES = CURSOS.sise.asignaturas.angles.modos
 
 describe('generarEjercicio', () => {
   it('genera un ejercicio del tipo pedido', () => {
@@ -26,13 +35,13 @@ describe('generarEjercicio', () => {
 describe('generarEjercicioAleatorio', () => {
   it('solo genera operaciones incluidas en la lista dada (perfil pequeño)', () => {
     for (let i = 0; i < 50; i++) {
-      const ej = generarEjercicioAleatorio(PERFILES.pequeno.operaciones)
-      expect(PERFILES.pequeno.operaciones).toContain(ej.tipo)
+      const ej = generarEjercicioAleatorio(PERFIL_PEQUE.operaciones)
+      expect(PERFIL_PEQUE.operaciones).toContain(ej.tipo)
     }
   })
 
   it('puede generar las 4 operaciones aritméticas del perfil mayor', () => {
-    const operacionesAritmeticas = PERFILES.mayor.operaciones.filter((op) => op !== 'problema')
+    const operacionesAritmeticas = PERFIL_MAYOR.operaciones.filter((op) => op !== 'problema')
     const tipos = new Set()
     for (let i = 0; i < 200; i++) {
       tipos.add(generarEjercicioAleatorio(operacionesAritmeticas).tipo)
@@ -44,7 +53,7 @@ describe('generarEjercicioAleatorio', () => {
 describe('elegirTipoOperacion', () => {
   it('excluye "problema" si el banco de problemas está vacío', () => {
     for (let i = 0; i < 50; i++) {
-      expect(elegirTipoOperacion(PERFILES.mayor.operaciones, [])).not.toBe('problema')
+      expect(elegirTipoOperacion(PERFIL_MAYOR.operaciones, [])).not.toBe('problema')
     }
   })
 
@@ -52,7 +61,7 @@ describe('elegirTipoOperacion', () => {
     const banco = [{ enunciado: 'x', respuesta: 1 }]
     const tipos = new Set()
     for (let i = 0; i < 200; i++) {
-      tipos.add(elegirTipoOperacion(PERFILES.mayor.operaciones, banco))
+      tipos.add(elegirTipoOperacion(PERFIL_MAYOR.operaciones, banco))
     }
     expect(tipos).toContain('problema')
   })
@@ -83,7 +92,7 @@ describe('generarEjercicioDesdeBanco', () => {
 describe('generarEjercicioParaPerfil', () => {
   it('nunca genera un problema si el banco está vacío', () => {
     for (let i = 0; i < 50; i++) {
-      expect(generarEjercicioParaPerfil(PERFILES.mayor, []).tipo).not.toBe('problema')
+      expect(generarEjercicioParaPerfil(PERFIL_MAYOR, []).tipo).not.toBe('problema')
     }
   })
 
@@ -91,7 +100,7 @@ describe('generarEjercicioParaPerfil', () => {
     const banco = [{ enunciado: 'Un enunciado de prueba', respuesta: 42 }]
     const tipos = new Set()
     for (let i = 0; i < 200; i++) {
-      tipos.add(generarEjercicioParaPerfil(PERFILES.mayor, banco).tipo)
+      tipos.add(generarEjercicioParaPerfil(PERFIL_MAYOR, banco).tipo)
     }
     expect(tipos).toContain('problema')
   })
@@ -103,7 +112,7 @@ describe('generarEjercicioParaPerfil', () => {
       { ingles: 'DINNER', catalan: 'sopar' },
       { ingles: 'STREET', catalan: 'carrer' },
     ]
-    const ej = generarEjercicioParaPerfil(ASIGNATURAS_MAYOR.ingles.modos.vocabulario, banco)
+    const ej = generarEjercicioParaPerfil(MODOS_ANGLES.vocabulari, banco)
     expect(ej.tipo).toBe('vocabulario')
     expect(banco.some((p) => p.ingles === ej.enunciado && p.catalan === ej.respuesta)).toBe(true)
   })
@@ -116,14 +125,14 @@ describe('generarEjercicioParaPerfil', () => {
         respuesta: 'went',
       },
     ]
-    const ej = generarEjercicioParaPerfil(ASIGNATURAS_MAYOR.ingles.modos.gramatica, banco)
+    const ej = generarEjercicioParaPerfil(MODOS_ANGLES.gramatica, banco)
     expect(ej.tipo).toBe('gramatica')
     expect(ej.respuesta).toBe('went')
   })
 
   it('genera vocabulario escrito a partir del banco de palabras', () => {
     const banco = [{ ingles: 'BREAKFAST', catalan: 'esmorzar' }]
-    const ej = generarEjercicioParaPerfil(ASIGNATURAS_MAYOR.ingles.modos.vocabularioEscrito, banco)
+    const ej = generarEjercicioParaPerfil(MODOS_ANGLES.vocabulariEscrit, banco)
     expect(ej.tipo).toBe('vocabulario-escrito')
     expect(ej.ingles).toBe('BREAKFAST')
   })

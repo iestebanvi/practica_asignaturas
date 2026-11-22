@@ -15,11 +15,11 @@ describe('registrarFallo / obtenerFallos', () => {
     ])
   })
 
-  it('para el tipo "hora" usa "Las <hora>" como enunciado (no tiene uno propio)', () => {
+  it('para el tipo "hora" usa "Les <hora>" como enunciado (no tiene uno propio)', () => {
     registrarFallo('pequeno', { tipo: 'hora', respuesta: '9:15' })
 
     const fallos = obtenerFallos('pequeno')
-    expect(fallos[0].enunciado).toBe('Las 9:15')
+    expect(fallos[0].enunciado).toBe('Les 9:15')
     expect(fallos[0].respuesta).toBe('9:15')
   })
 

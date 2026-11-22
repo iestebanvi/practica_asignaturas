@@ -1,24 +1,37 @@
-import { PERFILES, ASIGNATURAS_MAYOR } from '../logic/perfiles.js'
+import { Link, useParams } from 'react-router-dom'
+import Pagina from '../components/Pagina.jsx'
+import Targetes from '../components/Targetes.jsx'
+import NoTrobat from './NoTrobat.jsx'
+import { obtenerCurso, obtenerAsignatura } from '../logic/cursos.js'
+import { T } from '../textos.js'
 
-export default function Asignatura({ onSeleccionarAsignatura, onVolver }) {
+export default function Asignatura() {
+  const { cursoId, asignaturaId } = useParams()
+  const curso = obtenerCurso(cursoId)
+  const asignatura = obtenerAsignatura(cursoId, asignaturaId)
+  if (!asignatura) return <NoTrobat />
+
+  const molles = [
+    { nom: T.inici, to: '/' },
+    { nom: curso.nombre, to: `/${curso.id}` },
+    { nom: asignatura.nombre },
+  ]
+
   return (
-    <div className="pantalla asignatura">
-      <h1>{PERFILES.mayor.nombre}</h1>
-      <p>¿Qué asignatura quieres practicar?</p>
-      <div className="perfiles">
-        {Object.values(ASIGNATURAS_MAYOR).map((asignatura) => (
-          <button
-            key={asignatura.id}
-            className={`perfil asignatura-${asignatura.id}`}
-            onClick={() => onSeleccionarAsignatura(asignatura.id)}
-          >
-            {asignatura.nombre}
-          </button>
-        ))}
-      </div>
-      <button className="finalizar" onClick={onVolver}>
-        ← Volver
-      </button>
-    </div>
+    <Pagina curso={curso} molles={molles} className="assignatura">
+      <h1>{T.triaMode}</h1>
+      <Targetes
+        items={Object.values(asignatura.modos)}
+        rutaDe={(modo) => `/${curso.id}/${asignatura.id}/${modo.id}`}
+      />
+      <nav className="accions">
+        <Link to={`/${curso.id}/repassar`} className="enllac-secundari">
+          {T.perRepassar}
+        </Link>
+        <Link to={`/${curso.id}`} className="enllac-secundari">
+          {T.torna}
+        </Link>
+      </nav>
+    </Pagina>
   )
 }

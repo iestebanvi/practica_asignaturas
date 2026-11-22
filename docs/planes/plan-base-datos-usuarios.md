@@ -1,6 +1,6 @@
 # Base de datos (Supabase) + usuarios por nombre + PIN en practica_asignaturas
 
-> Plan de implementación, pendiente de ejecutar. Documento de diseño, no refleja el estado actual del código.
+> ⚠️ **Sustituido** por `plan-contenido-dinamico-cursos.md` (2026-11-22). Se conserva como referencia: su parte técnica de BD (Supabase + `pg` + migraciones) y el flujo de àlies + PIN se reutilizan allí, pero ya no aplica tal cual.
 
 ## Contexto
 

@@ -1,26 +1,26 @@
-function mensajeMotivador(puntos) {
-  if (puntos === 0) return 'Sigue practicando, ¡tú puedes! 💪'
-  if (puntos < 50) return '¡Buen intento! 👍'
-  if (puntos < 100) return '¡Muy bien! 🌟'
-  return '¡Increíble! 🏆'
-}
+import { Link } from 'react-router-dom'
+import { T } from '../textos.js'
 
-export default function Resumen({ resumen, perfilId, onVolver, onVerRepasar }) {
+export default function Resumen({ resumen, curso, asignatura, onTornarAJugar }) {
   const { puntos, aciertos, fallos } = resumen
-  const esPeque = perfilId === 'pequeno'
 
   return (
-    <div className={`pantalla resumen${esPeque ? ' peque' : ''}`}>
-      <h1>Resumen de la sesión</h1>
-      <p className="puntos-totales">{puntos} puntos</p>
-      <p className="detalle">
-        Aciertos: {aciertos} · Fallos: {fallos}
-      </p>
-      <p className="mensaje">{mensajeMotivador(puntos)}</p>
-      <button onClick={onVolver}>Elegir otro perfil</button>
-      <button className="finalizar" onClick={onVerRepasar}>
-        📖 Para repasar
-      </button>
+    <div className="resumen">
+      <h1>{T.resum}</h1>
+      <p className="puntos-totales">{T.puntsTotals(puntos)}</p>
+      <p className="detalle">{T.detallResum(aciertos, fallos)}</p>
+      <p className="mensaje">{T.missatge(puntos)}</p>
+      <div className="resum-botons">
+        <button onClick={onTornarAJugar}>{T.tornaAJugar}</button>
+        <Link to={`/${curso.id}/${asignatura.id}`} className="boto-enllac">
+          {T.altreExercici}
+        </Link>
+      </div>
+      <nav className="accions">
+        <Link to={`/${curso.id}/repassar`} className="enllac-secundari">
+          {T.perRepassar}
+        </Link>
+      </nav>
     </div>
   )
 }

@@ -17,7 +17,7 @@ export default function Reloj({ hora, minuto }) {
       viewBox="0 0 200 200"
       className="reloj"
       role="img"
-      aria-label={`Reloj marcando las ${hora} y ${minuto} minutos`}
+      aria-label={`Rellotge que marca les ${hora} i ${minuto} minuts`}
     >
       <circle cx="100" cy="100" r="95" className="reloj-esfera" />
       {NUMEROS.map((numero) => {

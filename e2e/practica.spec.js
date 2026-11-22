@@ -41,67 +41,39 @@ function puntosEsperados(enunciado) {
 }
 
 async function entrarEnAritmetica(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Matemáticas' }).click()
-  await page.getByRole('button', { name: 'Aritmética' }).click()
+  await page.goto('/6-primaria/matematiques/aritmetica')
 }
 
 async function entrarEnProblemas(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Matemáticas' }).click()
-  await page.getByRole('button', { name: 'Problemas' }).click()
+  await page.goto('/6-primaria/matematiques/problemes')
 }
 
 async function entrarEnVocabulario(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Inglés' }).click()
-  // exact:true porque también existe el botón "Vocabulario escrito"
-  await page.getByRole('button', { name: 'Vocabulario', exact: true }).click()
+  await page.goto('/6-primaria/angles/vocabulari')
 }
 
 async function entrarEnVocabularioEscrito(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Inglés' }).click()
-  await page.getByRole('button', { name: 'Vocabulario escrito' }).click()
+  await page.goto('/6-primaria/angles/vocabulari-escrit')
 }
 
 async function entrarEnThereBe(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Inglés' }).click()
-  await page.getByRole('button', { name: /There is/ }).click()
+  await page.goto('/6-primaria/angles/there-be')
 }
 
 async function entrarEnPotencies(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Matemáticas' }).click()
-  await page.getByRole('button', { name: 'Potències' }).click()
+  await page.goto('/6-primaria/matematiques/potencies')
 }
 
 async function entrarEnSumasRestas(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Matemáticas' }).click()
-  await page.getByRole('button', { name: 'Sumas y restas' }).click()
+  await page.goto('/6-primaria/matematiques/sumes-restes')
 }
 
 async function entrarEnMultiplicacionesDivisiones(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Matemáticas' }).click()
-  await page.getByRole('button', { name: 'Multiplicaciones y divisiones' }).click()
+  await page.goto('/6-primaria/matematiques/multiplicacions-divisions')
 }
 
 async function entrarEnPerimetrosAreas(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Matemáticas' }).click()
-  await page.getByRole('button', { name: 'Perímetres i àrees' }).click()
+  await page.goto('/6-primaria/matematiques/perimetres-arees')
 }
 
 // El aria-label de la figura lleva las medidas ("Rectangle de 8 cm de base i
@@ -124,32 +96,28 @@ async function responderCualquierCosa(page) {
     await page.locator('.opciones button').first().click()
   } else {
     await page.locator('input[type="number"]').fill('0')
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
   }
 }
 
 async function entrarEnGramatica(page) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Mayor/ }).click()
-  await page.getByRole('button', { name: 'Inglés' }).click()
-  await page.getByRole('button', { name: 'Gramática' }).click()
+  await page.goto('/6-primaria/angles/gramatica')
 }
 
-async function entrarEnPeque(page, modoNombre) {
-  await page.goto('/')
-  await page.getByRole('button', { name: /Peque/ }).click()
-  await page.getByRole('button', { name: modoNombre }).click()
+// 1r de primària: modoId es el slug de la URL (sumes, restes, hores)
+async function entrarEnPeque(page, modoId) {
+  await page.goto(`/1-primaria/matematiques/${modoId}`)
 }
 
 async function leerHoraCorrecta(page) {
   const aria = await page.locator('.reloj').getAttribute('aria-label')
-  const [, hora, minuto] = aria.match(/las (\d+) y (\d+) minutos/)
+  const [, hora, minuto] = aria.match(/les (\d+) i (\d+) minuts/)
   return `${hora}:${minuto.padStart(2, '0')}`
 }
 
-test.describe('Practica Asignaturas', () => {
-  test('Peque se muestra todo en mayúsculas; Mayor no', async ({ page }) => {
-    await entrarEnPeque(page, 'Sumas')
+test.describe('Practica Assignatures', () => {
+  test('1r se muestra todo en mayúsculas; 6è no', async ({ page }) => {
+    await entrarEnPeque(page, 'sumes')
     await expect(page.locator('.pantalla')).toHaveCSS('text-transform', 'uppercase')
 
     await entrarEnAritmetica(page)
@@ -157,21 +125,21 @@ test.describe('Practica Asignaturas', () => {
   })
 
   test('Peque - Sumas: solo genera sumas', async ({ page }) => {
-    await entrarEnPeque(page, 'Sumas')
+    await entrarEnPeque(page, 'sumes')
     const enunciado = await page.locator('.enunciado').innerText()
     expect(enunciado).toContain('+')
     expect(enunciado).not.toContain('-')
   })
 
   test('Peque - Restas: solo genera restas', async ({ page }) => {
-    await entrarEnPeque(page, 'Restas')
+    await entrarEnPeque(page, 'restes')
     const enunciado = await page.locator('.enunciado').innerText()
     expect(enunciado).toContain('-')
     expect(enunciado).not.toContain('+')
   })
 
   test('Peque - Horas: muestra el reloj y 4 opciones; acertar suma puntos', async ({ page }) => {
-    await entrarEnPeque(page, 'Horas')
+    await entrarEnPeque(page, 'hores')
     await expect(page.locator('.reloj')).toBeVisible()
     await expect(page.locator('.opciones button')).toHaveCount(4)
 
@@ -180,11 +148,11 @@ test.describe('Practica Asignaturas', () => {
 
     await expect(page.locator('.feedback.correcto')).toBeVisible()
     await expect(page.locator('.puntos')).toHaveText('⭐ 10')
-    await expect(page.locator('.anterior')).toHaveText('Anterior: ✓ correcto')
+    await expect(page.locator('.anterior')).toHaveText('Anterior: ✓ correcte')
   })
 
   test('Peque - Horas: fallar muestra la hora correcta en el panel "Anterior"', async ({ page }) => {
-    await entrarEnPeque(page, 'Horas')
+    await entrarEnPeque(page, 'hores')
 
     const correcta = await leerHoraCorrecta(page)
     const opciones = await page.locator('.opciones button').allInnerTexts()
@@ -194,52 +162,96 @@ test.describe('Practica Asignaturas', () => {
 
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
     await expect(page.locator('.anterior')).toHaveText(
-      `Anterior: ✗ tu respuesta (${incorrecta}) — la correcta era ${correcta}`,
+      `Anterior: ✗ la teva resposta (${incorrecta}) — la correcta era ${correcta}`,
     )
   })
 
   test('Peque ve una celebración animada al acertar', async ({ page }) => {
-    await entrarEnPeque(page, 'Sumas')
+    await entrarEnPeque(page, 'sumes')
 
     const enunciado = await page.locator('.enunciado').innerText()
     const [a, , b] = enunciado.replace('=', '').trim().split(' ')
     const respuesta = Number(a) + Number(b)
 
     await page.locator('input[type="number"]').fill(String(respuesta))
-    await page.getByRole('button', { name: 'COMPROBAR' }).click()
+    await page.getByRole('button', { name: 'COMPROVA' }).click()
 
     await expect(page.locator('.celebracion')).toBeVisible()
     await expect(page.locator('.celebracion')).not.toHaveText('')
   })
 
   test('el input recupera el foco automáticamente tras fallar una respuesta (Peque)', async ({ page }) => {
-    await entrarEnPeque(page, 'Sumas')
+    await entrarEnPeque(page, 'sumes')
 
-    const enunciado = page.locator('.enunciado')
     const input = page.locator('input[type="number"]')
-    const textoAnterior = await enunciado.innerText()
 
     await input.fill('999999')
-    await page.getByRole('button', { name: 'COMPROBAR' }).click()
+    await page.getByRole('button', { name: 'COMPROVA' }).click()
 
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
-    await expect(enunciado).not.toHaveText(textoAnterior, { timeout: 3000 })
+    // Se espera a que pase al siguiente ejercicio (desaparece el feedback), no a
+    // que cambie el enunciado: con selección aleatoria puede repetirse.
+    await expect(page.locator('.feedback')).toHaveCount(0, { timeout: 3000 })
     await expect(input).toBeFocused()
   })
 
-  test('las pantallas de asignatura y de modo permiten volver atrás', async ({ page }) => {
+  test('se navega curso → asignatura → modo con tarjetas, y se vuelve con "Torna" y las migas', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /Mayor/ }).click()
-    await expect(page.getByRole('button', { name: 'Matemáticas' })).toBeVisible()
+    await page.getByRole('link', { name: /6è de primària/ }).click()
+    await expect(page).toHaveURL('/6-primaria')
 
-    await page.getByRole('button', { name: 'Matemáticas' }).click()
-    await expect(page.getByRole('button', { name: 'Aritmética' })).toBeVisible()
+    await page.getByRole('link', { name: /Matemàtiques/ }).click()
+    await expect(page).toHaveURL('/6-primaria/matematiques')
 
-    await page.getByRole('button', { name: '← Volver' }).click()
-    await expect(page.getByRole('button', { name: 'Matemáticas' })).toBeVisible()
+    await page.getByRole('link', { name: 'Aritmètica' }).click()
+    await expect(page).toHaveURL('/6-primaria/matematiques/aritmetica')
+    await expect(page.locator('.enunciado')).toBeVisible()
 
-    await page.getByRole('button', { name: '← Volver' }).click()
-    await expect(page.getByRole('button', { name: /Peque/ })).toBeVisible()
+    // Migas: la asignatura es un enlace; el modo actual, no
+    const molles = page.getByRole('navigation', { name: 'Camí de navegació' })
+    await expect(molles.getByText('Aritmètica')).toHaveAttribute('aria-current', 'page')
+    await molles.getByRole('link', { name: 'Matemàtiques' }).click()
+    await expect(page).toHaveURL('/6-primaria/matematiques')
+
+    await page.getByRole('link', { name: '← Torna' }).click()
+    await expect(page).toHaveURL('/6-primaria')
+    await page.getByRole('link', { name: '← Torna' }).click()
+    await expect(page.getByRole('link', { name: /1r de primària/ })).toBeVisible()
+
+    // El botón "atrás" del navegador también funciona
+    await page.goBack()
+    await expect(page).toHaveURL('/6-primaria')
+  })
+
+  test('una URL inexistente muestra "no trobat" con enlace al inicio', async ({ page }) => {
+    await page.goto('/6-primaria/matematiques/no-existeix')
+    await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()
+    await page.getByRole('link', { name: "Torna a l'inici" }).click()
+    await expect(page.getByRole('link', { name: /6è de primària/ })).toBeVisible()
+  })
+
+  test('"Torna a jugar" empieza una partida nueva desde cero', async ({ page }) => {
+    await entrarEnAritmetica(page)
+    await page.locator('input[type="number"]').fill('-99999')
+    await page.getByRole('button', { name: 'Comprova' }).click()
+    await expect(page.locator('.feedback.incorrecto')).toBeVisible()
+
+    await page.getByRole('button', { name: 'Finalitza' }).click()
+    await expect(page.locator('.detalle')).toHaveText('Encerts: 0 · Errors: 1')
+    await page.getByRole('button', { name: 'Torna a jugar' }).click()
+
+    await expect(page.locator('.puntos')).toHaveText('⭐ 0')
+    await expect(page.locator('.comptador-errors')).toHaveText('0')
+    await expect(page.locator('.anterior')).toHaveCount(0)
+  })
+
+  test('la pantalla de práctica ocupa todo el ancho en un escritorio, con el panel al lado', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await entrarEnAritmetica(page)
+    const exercici = await page.locator('.zona-exercici').boundingBox()
+    const panell = await page.locator('.panell').boundingBox()
+    expect(exercici.width).toBeGreaterThan(700)
+    expect(panell.x).toBeGreaterThan(exercici.x + exercici.width - 1)
   })
 
   test('modo Aritmética: nunca genera problemas, y flujo completo hasta el resumen', async ({ page }) => {
@@ -250,14 +262,14 @@ test.describe('Practica Asignaturas', () => {
 
     const input = page.locator('input[type="number"]')
     await input.fill(String(respuestaCorrecta(enunciado)))
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
     await expect(page.locator('.feedback.correcto')).toBeVisible()
 
-    await page.getByRole('button', { name: 'Finalizar' }).click()
+    await page.getByRole('button', { name: 'Finalitza' }).click()
 
     await expect(page.locator('.resumen')).toBeVisible()
-    await expect(page.locator('.puntos-totales')).toHaveText(`${puntosEsperados(enunciado)} puntos`)
-    await expect(page.locator('.detalle')).toHaveText('Aciertos: 1 · Fallos: 0')
+    await expect(page.locator('.puntos-totales')).toHaveText(`${puntosEsperados(enunciado)} punts`)
+    await expect(page.locator('.detalle')).toHaveText('Encerts: 1 · Errors: 0')
   })
 
   test('modo Aritmética: el panel "Anterior" muestra la operación y la solución tras fallar', async ({
@@ -271,15 +283,17 @@ test.describe('Practica Asignaturas', () => {
     const respuestaDada = respuesta + 1000
 
     await page.locator('input[type="number"]').fill(String(respuestaDada))
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
 
     // Tras el auto-avance al siguiente ejercicio, el panel "Anterior" debe seguir visible
-    await expect(page.locator('.enunciado')).not.toHaveText(enunciadoInicial, { timeout: 3000 })
+    // Se espera a que pase al siguiente ejercicio (desaparece el feedback), no a
+    // que cambie el enunciado: con selección aleatoria puede repetirse.
+    await expect(page.locator('.feedback')).toHaveCount(0, { timeout: 3000 })
     const anterior = page.locator('.anterior')
     await expect(anterior).toHaveClass(/incorrecto/)
     await expect(anterior).toHaveText(
-      `Anterior: ${enunciadoSinIgual} = ${respuesta} ✗ (pusiste ${respuestaDada})`,
+      `Anterior: ${enunciadoSinIgual} = ${respuesta} ✗ (has posat ${respuestaDada})`,
     )
   })
 
@@ -293,11 +307,11 @@ test.describe('Practica Asignaturas', () => {
 
     const input = page.locator('input[type="number"]')
     await input.fill(String(respuestaCorrecta(texto)))
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
     await expect(page.locator('.feedback.correcto')).toBeVisible()
 
-    await page.getByRole('button', { name: 'Finalizar' }).click()
-    await expect(page.locator('.puntos-totales')).toHaveText('20 puntos')
+    await page.getByRole('button', { name: 'Finalitza' }).click()
+    await expect(page.locator('.puntos-totales')).toHaveText('20 punts')
   })
 
   test('modo Problemas: el panel "Anterior" es breve y no repite el enunciado', async ({ page }) => {
@@ -307,12 +321,14 @@ test.describe('Practica Asignaturas', () => {
     const respuesta = respuestasProblemas.get(texto)
 
     await page.locator('input[type="number"]').fill('-1')
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
 
-    await expect(page.locator('.enunciado')).not.toHaveText(texto, { timeout: 3000 })
+    // Se espera a que pase al siguiente ejercicio (desaparece el feedback), no a
+    // que cambie el enunciado: con selección aleatoria puede repetirse.
+    await expect(page.locator('.feedback')).toHaveCount(0, { timeout: 3000 })
     await expect(page.locator('.anterior')).toHaveText(
-      `Anterior: ✗ tu respuesta (-1) — la correcta era ${respuesta}`,
+      `Anterior: ✗ la teva resposta (-1) — la correcta era ${respuesta}`,
     )
   })
 
@@ -345,18 +361,18 @@ test.describe('Practica Asignaturas', () => {
 
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
     await expect(page.locator('.anterior')).toHaveText(
-      `Anterior: ${palabra} = ${correcta} ✗ (pusiste ${incorrecta})`,
+      `Anterior: ${palabra} = ${correcta} ✗ (has posat ${incorrecta})`,
     )
   })
 
   test('modo Gramática: sin contenido todavía, muestra un aviso en vez de romperse', async ({ page }) => {
     await entrarEnGramatica(page)
 
-    await expect(page.getByText('Todavía no hay ejercicios de gramática')).toBeVisible()
+    await expect(page.getByText('Encara no hi ha exercicis de gramàtica')).toBeVisible()
     await expect(page.locator('.enunciado')).toHaveCount(0)
 
-    await page.getByRole('button', { name: '← Volver' }).click()
-    await expect(page.getByRole('button', { name: 'Vocabulario', exact: true })).toBeVisible()
+    await page.getByRole('link', { name: '← Torna' }).click()
+    await expect(page.getByRole('link', { name: 'Vocabulari', exact: true })).toBeVisible()
   })
 
   test('un fallo de vocabulario se guarda en "Para repasar"', async ({ page }) => {
@@ -370,8 +386,8 @@ test.describe('Practica Asignaturas', () => {
     await page.getByRole('button', { name: incorrecta, exact: true }).click()
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
 
-    await page.getByRole('button', { name: 'Finalizar' }).click()
-    await page.getByRole('button', { name: /Para repasar/ }).click()
+    await page.getByRole('button', { name: 'Finalitza' }).click()
+    await page.getByRole('link', { name: /Per repassar/ }).click()
 
     await expect(page.locator('.lista-repasar li')).toHaveCount(1)
     await expect(page.locator('.repasar-enunciado')).toHaveText(palabra)
@@ -391,17 +407,16 @@ test.describe('Practica Asignaturas', () => {
     await page.getByRole('button', { name: incorrecta, exact: true }).click()
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
 
-    await page.getByRole('button', { name: 'Finalizar' }).click()
-    await page.getByRole('button', { name: 'Elegir otro perfil' }).click()
+    await page.getByRole('button', { name: 'Finalitza' }).click()
+    await page.getByRole('link', { name: 'Tria un altre exercici' }).click()
 
-    // Desde la pantalla de modo (sin jugar) también se accede a "Para repasar"
-    await page.getByRole('button', { name: /Mayor/ }).click()
-    await page.getByRole('button', { name: 'Inglés' }).click()
-    await page.getByRole('button', { name: /Para repasar/ }).click()
+    // Desde la pantalla de modos (sin jugar) también se accede a "Per repassar"
+    await expect(page).toHaveURL('/6-primaria/angles')
+    await page.getByRole('link', { name: /Per repassar/ }).click()
     await expect(page.locator('.lista-repasar li')).toHaveCount(1)
 
-    await page.getByRole('button', { name: 'Vaciar lista' }).click()
-    await expect(page.getByText('¡Todavía no has fallado nada!')).toBeVisible()
+    await page.getByRole('button', { name: 'Buida la llista' }).click()
+    await expect(page.getByText('Encara no has fallat res!')).toBeVisible()
   })
 
   test('Matemáticas - Sumas y restas: nunca genera multiplicaciones ni divisiones', async ({ page }) => {
@@ -434,11 +449,14 @@ test.describe('Practica Asignaturas', () => {
     const enunciado = await page.locator('.enunciado').innerText()
     expect(enunciado).toMatch(/^(Perímetre|Àrea) del (quadrat|rectangle|triangle|paral·lelogram|triangle equilàter|hexàgon regular) \(cm²?\)/)
 
+    // Los ejercicios saltados con una respuesta al azar a veces se aciertan y
+    // ya suman puntos: se comprueba lo que suma ESTE, no el total.
+    const puntosAntes = Number((await page.locator('.puntos').innerText()).replace('⭐', ''))
     await page.locator('input[type="number"]').fill(String(respuestaDeFigura(aria, enunciado)))
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
 
     await expect(page.locator('.feedback.correcto')).toBeVisible()
-    await expect(page.locator('.puntos')).toHaveText('⭐ 15')
+    await expect(page.locator('.puntos')).toHaveText(`⭐ ${puntosAntes + 15}`)
   })
 
   test('Matemáticas - Perímetres i àrees: "¿perímetre o àrea?" ofrece dos opciones', async ({ page }) => {
@@ -481,7 +499,7 @@ test.describe('Practica Asignaturas', () => {
     await entrarEnVocabularioEscrito(page)
 
     const instruccion = await page.locator('.instruccion').innerText()
-    const pideIngles = instruccion.includes('inglés')
+    const pideIngles = instruccion.includes('anglès')
     const enunciado = await page.locator('.enunciado').innerText()
 
     const primeraAlternativa = (texto) => texto.split(',')[0].trim()
@@ -496,7 +514,7 @@ test.describe('Practica Asignaturas', () => {
       : primeraAlternativa(entrada.catalan).toUpperCase()
 
     await page.locator('input[type="text"]').fill(respuesta)
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
 
     await expect(page.locator('.feedback.correcto')).toBeVisible()
     await expect(page.locator('.puntos')).toHaveText('⭐ 15')
@@ -511,11 +529,11 @@ test.describe('Practica Asignaturas', () => {
     await entrarEnVocabularioEscrito(page)
 
     await page.locator('input[type="text"]').fill('xxxxxxxx')
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
 
-    await page.getByRole('button', { name: 'Finalizar' }).click()
-    await page.getByRole('button', { name: /Para repasar/ }).click()
+    await page.getByRole('button', { name: 'Finalitza' }).click()
+    await page.getByRole('link', { name: /Per repassar/ }).click()
     await expect(page.locator('.lista-repasar li')).toHaveCount(1)
   })
 
@@ -527,13 +545,13 @@ test.describe('Practica Asignaturas', () => {
     await expect(page.locator('.enunciado')).toContainText(/\S/)
 
     await page.locator('input[type="text"]').fill('xxxxxxxx')
-    await page.getByRole('button', { name: 'Comprobar' }).click()
+    await page.getByRole('button', { name: 'Comprova' }).click()
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
-    const correcta = (await page.locator('.feedback.incorrecto').innerText()).replace('Casi... la respuesta era ', '')
+    const correcta = (await page.locator('.feedback.incorrecto').innerText()).replace('Gairebé... la resposta era ', '')
 
     await expect(page.locator('.anterior.incorrecto')).toBeVisible()
-    await page.getByRole('button', { name: 'Finalizar' }).click()
-    await page.getByRole('button', { name: /Para repasar/ }).click()
+    await page.getByRole('button', { name: 'Finalitza' }).click()
+    await page.getByRole('link', { name: /Per repassar/ }).click()
     await expect(page.locator('.lista-repasar li')).toHaveCount(1)
     await expect(page.locator('.repasar-respuesta')).toHaveText(correcta)
   })
@@ -548,7 +566,7 @@ test.describe('Practica Asignaturas', () => {
         await opciones.first().click()
       } else {
         await page.locator('input[type="number"]').fill('-1')
-        await page.getByRole('button', { name: 'Comprobar' }).click()
+        await page.getByRole('button', { name: 'Comprova' }).click()
       }
       await expect(page.locator('.feedback.incorrecto, .feedback.correcto')).toBeVisible()
       await expect(page.locator('.feedback')).toHaveCount(0)
@@ -557,23 +575,20 @@ test.describe('Practica Asignaturas', () => {
   })
 
   test('Perímetres i àrees: acepta la respuesta correcta del problema del costat del quadrat', async ({ page }) => {
-    await page.goto('/')
-    await page.getByRole('button', { name: /Mayor/ }).click()
-    await page.getByRole('button', { name: 'Matemáticas' }).click()
-    await page.getByRole('button', { name: /Perímetres/ }).click()
+    await entrarEnPerimetrosAreas(page)
     for (let i = 0; i < 40; i++) {
       const texto = await page.locator('.enunciado').first().innerText()
       const m = texto.match(/té (\d+) (?:m|cm)²/)
       if (m) {
         await page.locator('input[type="number"]').fill(String(Math.sqrt(Number(m[1]))))
-        await page.getByRole('button', { name: 'Comprobar' }).click()
+        await page.getByRole('button', { name: 'Comprova' }).click()
         await expect(page.locator('.feedback.correcto')).toBeVisible()
         return
       }
       if (await page.locator('.opciones button').count()) await page.locator('.opciones button').first().click()
       else {
         await page.locator('input[type="number"]').fill('0')
-        await page.getByRole('button', { name: 'Comprobar' }).click()
+        await page.getByRole('button', { name: 'Comprova' }).click()
       }
       await expect(page.locator('.feedback')).toHaveCount(0)
     }

@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { generarEjercicioParaPerfil, comprobarRespuesta } from '../logic/ejercicios.js'
-import { PERFILES, ASIGNATURAS_MAYOR, obtenerModo } from '../logic/perfiles.js'
+import { obtenerCurso, obtenerAsignatura, obtenerModo, estiloColor } from '../logic/cursos.js'
 import { registrarFallo } from '../logic/fallos.js'
+import { T } from '../textos.js'
+import Pagina from '../components/Pagina.jsx'
+import Resumen from './Resumen.jsx'
+import NoTrobat from './NoTrobat.jsx'
 import { pronunciar } from '../logic/audio.js'
 import Reloj from '../components/Reloj.jsx'
 import Volcan from '../components/Volcan.jsx'
@@ -59,21 +64,48 @@ function elegirCelebracion() {
   return CELEBRACIONES[Math.floor(Math.random() * CELEBRACIONES.length)]
 }
 
-export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVolver }) {
-  const perfilBase = PERFILES[perfilId]
-  const esPeque = perfilId === 'pequeno'
-  const modoActual = obtenerModo(perfilId, asignatura, modo)
-  const operaciones = modoActual ? modoActual.operaciones : perfilBase.operaciones
-  const nivel = perfilBase.nivel
-  const asignaturaActual = perfilId === 'mayor' ? ASIGNATURAS_MAYOR[asignatura] : null
-  const nombreMostrado = asignaturaActual
-    ? `${asignaturaActual.nombre} · ${modoActual.nombre}`
-    : modoActual
-      ? `${perfilBase.nombre} · ${modoActual.nombre}`
-      : perfilBase.nombre
+// Resuelve curso/asignatura/modo desde la URL y alterna entre la partida y su
+// resumen. "Torna a jugar" cambia la "key" de la partida para empezar de cero.
+export default function Practica() {
+  const { cursoId, asignaturaId, modoId } = useParams()
+  const curso = obtenerCurso(cursoId)
+  const asignatura = obtenerAsignatura(cursoId, asignaturaId)
+  const modo = obtenerModo(cursoId, asignaturaId, modoId)
+  const [resumen, setResumen] = useState(null)
+  const [partida, setPartida] = useState(0)
+
+  if (!modo) return <NoTrobat />
+
+  const molles = [
+    { nom: T.inici, to: '/' },
+    { nom: curso.nombre, to: `/${curso.id}` },
+    { nom: asignatura.nombre, to: `/${curso.id}/${asignatura.id}` },
+    { nom: modo.nombre },
+  ]
+
+  function tornarAJugar() {
+    setResumen(null)
+    setPartida((n) => n + 1)
+  }
+
+  return (
+    <Pagina curso={curso} molles={molles} className={resumen ? 'pantalla-resum' : 'pantalla-practica'}>
+      {resumen ? (
+        <Resumen resumen={resumen} curso={curso} asignatura={asignatura} onTornarAJugar={tornarAJugar} />
+      ) : (
+        <Partida key={partida} curso={curso} asignatura={asignatura} modo={modo} onFinalizar={setResumen} />
+      )}
+    </Pagina>
+  )
+}
+
+function Partida({ curso, asignatura, modo, onFinalizar }) {
+  const { operaciones } = modo
+  const { nivel } = curso
+  const ambCelebracio = curso.config.celebracio
   const tipoBanco = operaciones.find((op) => op in ENDPOINTS_BANCO)
   const necesitaBanco = Boolean(tipoBanco)
-  const clasePantalla = `pantalla practica${esPeque ? ' peque' : ''}`
+  const rutaTorna = `/${curso.id}/${asignatura.id}`
 
   const [banco, setBanco] = useState([])
   const [bancoListo, setBancoListo] = useState(!necesitaBanco)
@@ -135,12 +167,12 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
       setPuntos((p) => p + ejercicio.puntos)
       setAciertos((a) => a + 1)
       setFeedback('correcto')
-      if (esPeque) setCelebracion(elegirCelebracion())
+      if (ambCelebracio) setCelebracion(elegirCelebracion())
     } else {
       setFallos((f) => f + 1)
       setFeedback('incorrecto')
       if (TIPOS_CON_REGISTRO_FALLOS.includes(ejercicio.tipo)) {
-        registrarFallo(perfilId, ejercicio)
+        registrarFallo(curso.id, ejercicio)
       }
     }
 
@@ -162,37 +194,35 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
     onFinalizar({ puntos, aciertos, fallos })
   }
 
+  const enllacTorna = (
+    <Link to={rutaTorna} className="enllac-secundari">
+      {T.torna}
+    </Link>
+  )
+
   if (bancoError) {
     return (
-      <div className={clasePantalla}>
-        <p>No se han podido cargar los datos.</p>
-        <button onClick={cargarBanco}>Reintentar</button>
-        {onVolver && (
-          <button className="finalizar" onClick={onVolver}>
-            ← Volver
-          </button>
-        )}
+      <div className="practica-avis">
+        <p>{T.errorCarrega}</p>
+        <button onClick={cargarBanco}>{T.reintenta}</button>
+        {enllacTorna}
       </div>
     )
   }
 
   if (necesitaBanco && bancoListo && banco.length === 0) {
     return (
-      <div className={clasePantalla}>
-        <p>Todavía no hay ejercicios de {modoActual.nombre.toLowerCase()}. ¡Vuelve pronto!</p>
-        {onVolver && (
-          <button className="finalizar" onClick={onVolver}>
-            ← Volver
-          </button>
-        )}
+      <div className="practica-avis">
+        <p>{T.bancBuit(modo.nombre)}</p>
+        {enllacTorna}
       </div>
     )
   }
 
   if (!ejercicio) {
     return (
-      <div className={clasePantalla}>
-        <p>Cargando…</p>
+      <div className="practica-avis">
+        <p>{T.carregant}</p>
       </div>
     )
   }
@@ -206,104 +236,126 @@ export default function Practica({ perfilId, asignatura, modo, onFinalizar, onVo
   const sinEnunciado = TIPOS_SIN_ENUNCIADO.includes(ultimoIntento?.tipo)
 
   return (
-    <div className={clasePantalla}>
-      <div className="marcador">
-        <span>{nombreMostrado}</span>
-        <span className="puntos">⭐ {puntos}</span>
-      </div>
-
-      {ultimoIntento && (
-        <p className={`anterior ${ultimoIntento.esCorrecta ? 'correcto' : 'incorrecto'}`}>
-          {ultimoIntento.esCorrecta
-            ? sinEnunciado
-              ? 'Anterior: ✓ correcto'
-              : `Anterior: ${ultimoIntento.enunciado} ${simboloCierre(ultimoIntento.tipo)} ${ultimoIntento.respuestaCorrecta} ✓`
-            : sinEnunciado
-              ? `Anterior: ✗ tu respuesta (${ultimoIntento.respuestaDada}) — la correcta era ${ultimoIntento.respuestaCorrecta}`
-              : `Anterior: ${ultimoIntento.enunciado} ${simboloCierre(ultimoIntento.tipo)} ${ultimoIntento.respuestaCorrecta} ✗ (pusiste ${ultimoIntento.respuestaDada})`}
-        </p>
-      )}
-
-      {esHora && <Reloj hora={ejercicio.hora} minuto={ejercicio.minuto} />}
-      {esMediImagen && ejercicio.diagrama === 'volcan' && (
-        <>
-          <Volcan parteDestacada={ejercicio.parteId} />
-          <p className="credit-imatge">Imatge: Woudloper, Wikimedia Commons (CC BY-SA 3.0)</p>
-        </>
-      )}
-      {esMediImagen && ejercicio.diagrama === 'riu' && <Riu parteDestacada={ejercicio.parteId} />}
-      {ejercicio.figura && <Figura figura={ejercicio.figura} />}
-      {esEnunciadoTexto && <p className="enunciado enunciado-texto">{ejercicio.enunciado}</p>}
-
-      {esEscrito && (
-        <p className="instruccion">
-          {ejercicio.instruccion ??
-            `Escribe la palabra en ${ejercicio.direccion === 'ingles' ? 'inglés' : 'catalán'}:`}
-        </p>
-      )}
-
-      {esOpcionMultiple ? (
-        <div className="opciones">
-          {ejercicio.opciones.map((opcion) => (
-            <button key={opcion} onClick={() => procesarRespuesta(opcion)} disabled={feedback !== null}>
-              {opcion}
-            </button>
-          ))}
+    <div className="practica">
+      <aside className="panell">
+        <div className="marcador" style={estiloColor(modo)}>
+          <span className="marcador-mode">{modo.nombre}</span>
+          <span className="puntos">⭐ {puntos}</span>
         </div>
-      ) : esEscrito ? (
-        <form onSubmit={comprobar} className="ejercicio">
-          <input
-            ref={inputRef}
-            type="text"
-            autoComplete="off"
-            autoCapitalize="off"
-            autoCorrect="off"
-            spellCheck="false"
-            className={feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''}
-            value={respuesta}
-            onChange={(e) => setRespuesta(e.target.value)}
-            disabled={feedback !== null}
-          />
-          <button type="submit" disabled={feedback !== null}>
-            Comprobar
-          </button>
-        </form>
-      ) : (
-        <form onSubmit={comprobar} className="ejercicio">
-          <p className={`enunciado${esProblema ? ' enunciado-problema' : ''}${ejercicio.figura ? ' enunciado-figura' : ''}`}>
-            {ejercicio.enunciado}
-            {!esProblema && ` ${simboloCierre(ejercicio.tipo)}`}
-          </p>
-          <input
-            ref={inputRef}
-            type="number"
-            inputMode="numeric"
-            className={feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''}
-            value={respuesta}
-            onChange={(e) => setRespuesta(e.target.value)}
-            disabled={feedback !== null}
-          />
-          <button type="submit" disabled={feedback !== null}>
-            Comprobar
-          </button>
-        </form>
-      )}
+        <dl className="comptadors">
+          <div>
+            <dt>{T.encerts}</dt>
+            <dd className="comptador-encerts">{aciertos}</dd>
+          </div>
+          <div>
+            <dt>{T.errors}</dt>
+            <dd className="comptador-errors">{fallos}</dd>
+          </div>
+        </dl>
 
-      <div className="feedback-hueco">
-        {feedback === 'correcto' && esPeque && (
-          <p className="celebracion" aria-hidden="true">
-            {celebracion}
+        {ultimoIntento && (
+          <p className={`anterior ${ultimoIntento.esCorrecta ? 'correcto' : 'incorrecto'}`}>
+            {ultimoIntento.esCorrecta
+              ? sinEnunciado
+                ? T.anteriorCorrecte
+                : T.anteriorOk(
+                    ultimoIntento.enunciado,
+                    simboloCierre(ultimoIntento.tipo),
+                    ultimoIntento.respuestaCorrecta,
+                  )
+              : sinEnunciado
+                ? T.anteriorIncorrecteBreu(ultimoIntento.respuestaDada, ultimoIntento.respuestaCorrecta)
+                : T.anteriorKo(
+                    ultimoIntento.enunciado,
+                    simboloCierre(ultimoIntento.tipo),
+                    ultimoIntento.respuestaCorrecta,
+                    ultimoIntento.respuestaDada,
+                  )}
           </p>
         )}
-        {feedback === 'correcto' && <p className="feedback correcto">¡Correcto! 🎉</p>}
-        {feedback === 'incorrecto' && (
-          <p className="feedback incorrecto">Casi... la respuesta era {ejercicio.respuesta}</p>
+      </aside>
+
+      <section className="zona-exercici">
+        {esHora && <Reloj hora={ejercicio.hora} minuto={ejercicio.minuto} />}
+        {esMediImagen && ejercicio.diagrama === 'volcan' && (
+          <>
+            <Volcan parteDestacada={ejercicio.parteId} />
+            <p className="credit-imatge">Imatge: Woudloper, Wikimedia Commons (CC BY-SA 3.0)</p>
+          </>
         )}
+        {esMediImagen && ejercicio.diagrama === 'riu' && <Riu parteDestacada={ejercicio.parteId} />}
+        {ejercicio.figura && <Figura figura={ejercicio.figura} />}
+        {esEnunciadoTexto && <p className="enunciado enunciado-texto">{ejercicio.enunciado}</p>}
+
+        {esEscrito && (
+          <p className="instruccion">{ejercicio.instruccion ?? T.escriuParaula(ejercicio.direccion)}</p>
+        )}
+
+        {esOpcionMultiple ? (
+          <div className="opciones">
+            {ejercicio.opciones.map((opcion) => (
+              <button key={opcion} onClick={() => procesarRespuesta(opcion)} disabled={feedback !== null}>
+                {opcion}
+              </button>
+            ))}
+          </div>
+        ) : esEscrito ? (
+          <form onSubmit={comprobar} className="ejercicio">
+            <input
+              ref={inputRef}
+              type="text"
+              autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck="false"
+              className={feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''}
+              value={respuesta}
+              onChange={(e) => setRespuesta(e.target.value)}
+              disabled={feedback !== null}
+            />
+            <button type="submit" disabled={feedback !== null}>
+              {T.comprova}
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={comprobar} className="ejercicio">
+            <p
+              className={`enunciado${esProblema ? ' enunciado-problema' : ''}${ejercicio.figura ? ' enunciado-figura' : ''}`}
+            >
+              {ejercicio.enunciado}
+              {!esProblema && ` ${simboloCierre(ejercicio.tipo)}`}
+            </p>
+            <input
+              ref={inputRef}
+              type="number"
+              inputMode="numeric"
+              className={feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''}
+              value={respuesta}
+              onChange={(e) => setRespuesta(e.target.value)}
+              disabled={feedback !== null}
+            />
+            <button type="submit" disabled={feedback !== null}>
+              {T.comprova}
+            </button>
+          </form>
+        )}
+
+        <div className="feedback-hueco">
+          {feedback === 'correcto' && ambCelebracio && (
+            <p className="celebracion" aria-hidden="true">
+              {celebracion}
+            </p>
+          )}
+          {feedback === 'correcto' && <p className="feedback correcto">{T.correcte}</p>}
+          {feedback === 'incorrecto' && <p className="feedback incorrecto">{T.gairebe(ejercicio.respuesta)}</p>}
+        </div>
+      </section>
+
+      <div className="practica-final">
+        <button className="boto-finalitza" onClick={finalizar}>
+          {T.finalitza}
+        </button>
       </div>
-
-      <button className="finalizar" onClick={finalizar}>
-        Finalizar
-      </button>
     </div>
   )
 }

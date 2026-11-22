@@ -28,8 +28,8 @@ test-e2e: ## Tests end-to-end (Playwright)
 docker-build: ## Construir la imagen Docker en local
 	docker build -t practica-asignaturas:dev .
 
-docker-run: docker-build ## Construir y ejecutar el contenedor en local (puerto 3000)
-	docker run --rm -p 3000:3000 --name practica-asignaturas practica-asignaturas:dev
+docker-run: docker-build ## Construir y ejecutar el contenedor en local (http://localhost:3100)
+	docker run --rm -p 3100:3000 --name practica-asignaturas practica-asignaturas:dev
 
 docker-stop: ## Parar el contenedor local
 	docker stop practica-asignaturas

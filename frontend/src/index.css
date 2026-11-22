@@ -3,46 +3,17 @@
 }
 
 :root {
-  --color-peque: #ff8a65;
-  --color-peque-sombra: #d0530f;
-  --color-mayor: #4fc3f7;
-  --color-mayor-sombra: #0288d1;
+  --color-primari: #4fc3f7;
+  --color-primari-sombra: #0288d1;
   --color-correcto: #66bb6a;
   --color-correcto-sombra: #2e7d32;
   --color-incorrecto: #e64a19;
   --color-puntos: #f9a825;
-  --color-aritmetica: #ab47bc;
-  --color-aritmetica-sombra: #7b1fa2;
-  --color-problemas: #26a69a;
-  --color-problemas-sombra: #00796b;
-  --color-sumas: #ffca28;
-  --color-sumas-sombra: #f57f17;
-  --color-restas: #7e57c2;
-  --color-restas-sombra: #4527a0;
-  --color-horas: #ec407a;
-  --color-horas-sombra: #ad1457;
-  --color-vocabulario: #3949ab;
-  --color-vocabulario-sombra: #1a237e;
-  --color-ingles: #ef5350;
-  --color-ingles-sombra: #c62828;
-  --color-gramatica: #fb8c00;
-  --color-gramatica-sombra: #e65100;
-  --color-vocabulario-escrito: #00897b;
-  --color-vocabulario-escrito-sombra: #00695c;
-  --color-sumas-restas: #00acc1;
-  --color-sumas-restas-sombra: #00838f;
-  --color-mult-div: #5e35b1;
-  --color-mult-div-sombra: #311b92;
-  --color-medi: #8d6e63;
-  --color-medi-sombra: #4e342e;
-  --color-canvis-relleu: #ff7043;
-  --color-canvis-relleu-sombra: #bf360c;
-  --color-perimetros-areas: #43a047;
-  --color-perimetros-areas-sombra: #1b5e20;
-  --color-potencies: #00838f;
-  --color-potencies-sombra: #005662;
-  --color-there-be: #5e35b1;
-  --color-there-be-sombra: #3f2380;
+  --color-text-suau: #757575;
+  --ample-max: 1600px;
+  --radi: 24px;
+  --ombra-panell: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --marge: clamp(1rem, 3vw, 2.5rem);
 }
 
 html {
@@ -56,40 +27,147 @@ body {
   font-family: 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
   background: linear-gradient(135deg, #fef6e4, #e0f7fa);
   color: #2b2b2b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
 }
 
+/* Estructura común (Pagina.jsx): cabecera fija + contenido a todo el ancho */
 .app {
-  width: 100%;
-  max-width: 480px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.capcalera {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 2rem;
+  padding: 0.75rem var(--marge);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.marca {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #2b2b2b;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.molles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.05rem;
+  color: var(--color-text-suau);
+}
+
+.molles > * + *::before {
+  content: '›';
+  margin-right: 0.4rem;
+  color: #bdbdbd;
+}
+
+.molles a {
+  color: var(--color-primari-sombra);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.molles a:hover {
+  text-decoration: underline;
+}
+
+.molles [aria-current='page'] {
+  font-weight: 700;
+  color: #2b2b2b;
 }
 
 .pantalla {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 2rem 1.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  width: 100%;
+  max-width: var(--ample-max);
+  margin: 0 auto;
+  padding: var(--marge);
   text-align: center;
 }
 
 h1 {
-  font-size: 2rem;
-  margin-top: 0;
+  font-size: clamp(1.8rem, 1.2rem + 2vw, 3rem);
+  margin: 0.5rem 0 clamp(1rem, 3vh, 2rem);
 }
 
-/* Home */
-.perfiles {
+/* Rejilla de tarjetas (Targetes.jsx): tantas columnas como quepan */
+.targetes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.targeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: clamp(130px, 20vh, 210px);
+  padding: 1.25rem;
+  border-radius: var(--radi);
+  background: var(--fons, var(--color-primari));
+  color: white;
+  text-decoration: none;
+  font-size: clamp(1.2rem, 1rem + 0.8vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.2;
+  box-shadow: 0 6px 0 var(--sombra, rgba(0, 0, 0, 0.2));
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+
+.targeta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 var(--sombra, rgba(0, 0, 0, 0.2));
+}
+
+.targeta:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--sombra, rgba(0, 0, 0, 0.2));
+}
+
+.targeta:focus-visible,
+button:focus-visible,
+.boto-enllac:focus-visible {
+  outline: 4px solid #2b2b2b;
+  outline-offset: 3px;
+}
+
+.targeta-icona {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3.2rem);
+  line-height: 1;
+}
+
+.accions {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
   justify-content: center;
-  margin-top: 1.5rem;
+  gap: 1rem 2rem;
+  margin-top: clamp(1.5rem, 4vh, 2.5rem);
 }
 
-button {
+.enllac-secundari {
+  color: var(--color-text-suau);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+button,
+.boto-enllac {
   font-family: inherit;
   font-size: 1.1rem;
   font-weight: 700;
@@ -98,118 +176,18 @@ button {
   padding: 1rem 1.5rem;
   cursor: pointer;
   color: white;
-  box-shadow: 0 4px 0 var(--sombra, rgba(0, 0, 0, 0.2));
+  background: var(--fons, var(--color-primari));
+  text-decoration: none;
+  box-shadow: 0 4px 0 var(--sombra, var(--color-primari-sombra));
   transition:
     transform 0.08s ease,
     box-shadow 0.08s ease;
 }
 
-button:active {
+button:active,
+.boto-enllac:active {
   transform: translateY(3px);
-  box-shadow: 0 1px 0 var(--sombra, rgba(0, 0, 0, 0.2));
-}
-
-.perfil {
-  flex: 1 1 160px;
-  padding: 1.5rem 1rem;
-  font-size: 1.3rem;
-}
-
-.perfil-pequeno {
-  background: var(--color-peque);
-  --sombra: var(--color-peque-sombra);
-  text-transform: uppercase;
-  font-size: 1.5rem;
-}
-
-.perfil-mayor {
-  background: var(--color-mayor);
-  --sombra: var(--color-mayor-sombra);
-}
-
-.modo-aritmetica {
-  background: var(--color-aritmetica);
-  --sombra: var(--color-aritmetica-sombra);
-}
-
-.modo-problemas {
-  background: var(--color-problemas);
-  --sombra: var(--color-problemas-sombra);
-}
-
-.modo-sumas {
-  background: var(--color-sumas);
-  --sombra: var(--color-sumas-sombra);
-}
-
-.modo-restas {
-  background: var(--color-restas);
-  --sombra: var(--color-restas-sombra);
-}
-
-.modo-horas {
-  background: var(--color-horas);
-  --sombra: var(--color-horas-sombra);
-}
-
-.modo-vocabulario {
-  background: var(--color-vocabulario);
-  --sombra: var(--color-vocabulario-sombra);
-}
-
-.modo-gramatica {
-  background: var(--color-gramatica);
-  --sombra: var(--color-gramatica-sombra);
-}
-
-.modo-vocabulario-escrito {
-  background: var(--color-vocabulario-escrito);
-  --sombra: var(--color-vocabulario-escrito-sombra);
-}
-
-.modo-sumas-restas {
-  background: var(--color-sumas-restas);
-  --sombra: var(--color-sumas-restas-sombra);
-}
-
-.modo-multiplicaciones-divisiones {
-  background: var(--color-mult-div);
-  --sombra: var(--color-mult-div-sombra);
-}
-
-.asignatura-matematicas {
-  background: var(--color-mayor);
-  --sombra: var(--color-mayor-sombra);
-}
-
-.asignatura-ingles {
-  background: var(--color-ingles);
-  --sombra: var(--color-ingles-sombra);
-}
-
-.asignatura-medi {
-  background: var(--color-medi);
-  --sombra: var(--color-medi-sombra);
-}
-
-.modo-canvis-relleu {
-  background: var(--color-canvis-relleu);
-  --sombra: var(--color-canvis-relleu-sombra);
-}
-
-.modo-potencies {
-  background: var(--color-potencies);
-  --sombra: var(--color-potencies-sombra);
-}
-
-.modo-there-be {
-  background: var(--color-there-be);
-  --sombra: var(--color-there-be-sombra);
-}
-
-.modo-perimetros-areas {
-  background: var(--color-perimetros-areas);
-  --sombra: var(--color-perimetros-areas-sombra);
+  box-shadow: 0 1px 0 var(--sombra, var(--color-primari-sombra));
 }
 
 /* Perfil Peque: solo sabe leer en mayúscula, y una letra más grande le va mejor */
@@ -239,7 +217,7 @@ button:active {
 }
 
 .peque .enunciado {
-  font-size: 3.6rem;
+  font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
 }
 
 .peque .ejercicio input {
@@ -254,10 +232,6 @@ button:active {
   font-size: 1.6rem;
 }
 
-.peque .finalizar {
-  font-size: 1.1rem;
-}
-
 .peque .puntos-totales {
   font-size: 3.6rem;
 }
@@ -270,7 +244,8 @@ button:active {
   font-size: 1.7rem;
 }
 
-.peque.resumen button {
+.peque .resumen button,
+.peque .resumen .boto-enllac {
   font-size: 1.3rem;
 }
 
@@ -280,8 +255,8 @@ button:active {
 
 /* Reloj */
 .reloj {
-  width: 220px;
-  height: 220px;
+  width: clamp(220px, 34vh, 360px);
+  height: clamp(220px, 34vh, 360px);
   margin: 0 auto 1.5rem;
   display: block;
 }
@@ -306,7 +281,7 @@ button:active {
 }
 
 .reloj-minutero {
-  stroke: var(--color-mayor);
+  stroke: var(--color-primari);
   stroke-width: 4;
   stroke-linecap: round;
 }
@@ -318,7 +293,7 @@ button:active {
 /* Diagramas de Medi (Volcan.jsx / Riu.jsx) */
 .diagrama-medi {
   width: 100%;
-  max-width: 320px;
+  max-width: min(100%, 520px);
   margin: 0 auto 1rem;
   display: block;
 }
@@ -326,7 +301,7 @@ button:active {
 /* Figuras de perímetro y área (Figura.jsx) */
 .figura-geometria {
   width: 100%;
-  max-width: 300px;
+  max-width: min(100%, 440px);
   margin: 0 auto 0.75rem;
   display: block;
 }
@@ -457,14 +432,13 @@ button:active {
 .opciones {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
   margin-bottom: 1rem;
 }
 
 .opciones button {
-  background: var(--color-mayor);
-  --sombra: var(--color-mayor-sombra);
-  font-size: 1.3rem;
+  min-height: 4.5rem;
+  font-size: clamp(1.2rem, 1rem + 0.8vw, 1.8rem);
 }
 
 .celebracion {
@@ -490,24 +464,162 @@ button:active {
   }
 }
 
-/* Practica */
+/* Practica: en pantallas anchas, ejercicio a la izquierda y panel con el
+   marcador y "Anterior" a la derecha; en móvil, apilados (panel arriba). */
+.practica {
+  display: grid;
+  gap: clamp(1rem, 2vw, 2rem);
+  grid-template-areas:
+    'panell'
+    'exercici'
+    'final';
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .practica {
+    grid-template-columns: minmax(0, 1fr) clamp(280px, 26vw, 380px);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'exercici panell'
+      'exercici final';
+    align-items: start;
+  }
+
+  .practica-final .boto-finalitza {
+    width: 100%;
+  }
+
+  .zona-exercici {
+    min-height: min(70vh, 680px);
+  }
+}
+
+/* En móvil el panel va arriba: más compacto, para que el ejercicio y
+   "Finalitza" quepan en la pantalla sin hacer scroll. */
+@media (max-width: 899px) {
+  .panell {
+    padding: 0.75rem;
+    gap: 0.6rem;
+  }
+
+  .comptadors > div {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.3rem;
+  }
+
+  .comptadors dd {
+    font-size: 1.3rem;
+  }
+}
+
+.panell,
+.zona-exercici,
+.resumen,
+.practica-avis,
+.no-trobat > p {
+  background: #ffffff;
+  border-radius: var(--radi);
+  box-shadow: var(--ombra-panell);
+}
+
+.panell {
+  grid-area: panell;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  text-align: left;
+}
+
+.zona-exercici {
+  grid-area: exercici;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.25rem, 3vw, 3rem);
+}
+
+:where(.zona-exercici) > * {
+  width: 100%;
+  max-width: 780px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.practica-final {
+  grid-area: final;
+  display: flex;
+  justify-content: center;
+}
+
+.boto-finalitza {
+  background: #9e9e9e;
+  --sombra: #616161;
+}
+
 .marcador {
   display: flex;
   justify-content: space-between;
-  font-size: 1.1rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-left: 8px solid var(--fons, var(--color-primari));
+  border-radius: 12px;
+  background: #fafafa;
+  font-size: 1.2rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
 }
 
 .puntos {
   color: var(--color-puntos);
+  font-size: 1.5rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.comptadors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.comptadors > div {
+  padding: 0.5rem;
+  border-radius: 14px;
+  background: #f5f5f5;
+  text-align: center;
+}
+
+.comptadors dt {
+  font-size: 0.9rem;
+  color: var(--color-text-suau);
+}
+
+.comptadors dd {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.comptador-encerts {
+  color: var(--color-correcto-sombra);
+}
+
+.comptador-errors {
+  color: var(--color-incorrecto);
 }
 
 .anterior {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin: 0 0 1rem;
-  padding: 0.5rem 0.75rem;
+  margin: 0;
+  padding: 0.6rem 0.8rem;
   border-radius: 10px;
   background: #f5f5f5;
   color: #616161;
@@ -524,43 +636,51 @@ button:active {
 }
 
 .enunciado {
-  font-size: 3rem;
+  font-size: clamp(2.4rem, 1.5rem + 3vw, 4.5rem);
   font-weight: 800;
   margin: 0.5rem 0 1.5rem;
 }
 
 .enunciado-problema {
-  font-size: 1.2rem;
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.6rem);
   font-weight: 500;
   text-align: left;
   line-height: 1.5;
 }
 
 .enunciado-texto {
-  font-size: 2.1rem;
+  font-size: clamp(1.7rem, 1.2rem + 1.5vw, 2.8rem);
   line-height: 1.3;
 }
 
 .enunciado-figura {
-  font-size: 1.6rem;
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2.2rem);
   line-height: 1.3;
 }
 
 .instruccion {
-  font-size: 0.95rem;
-  color: #757575;
+  font-size: 1.05rem;
+  color: var(--color-text-suau);
   margin: 0 0 0.75rem;
 }
 
-.ejercicio input {
+.ejercicio input,
+.ejercicio button {
+  display: block;
   width: 100%;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ejercicio input {
   font-family: inherit;
-  font-size: 2rem;
+  font-size: clamp(2rem, 1.5rem + 1.5vw, 2.8rem);
   font-weight: 700;
   text-align: center;
   padding: 0.5rem;
   border-radius: 12px;
-  border: 3px solid var(--color-mayor);
+  border: 3px solid var(--color-primari);
   margin-bottom: 1rem;
   transition:
     border-color 0.15s ease,
@@ -588,7 +708,6 @@ button:active {
 }
 
 .ejercicio button {
-  width: 100%;
   background: var(--color-correcto);
   --sombra: var(--color-correcto-sombra);
 }
@@ -599,7 +718,7 @@ button:active {
 }
 
 .feedback {
-  font-size: 1.3rem;
+  font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.8rem);
   font-weight: 700;
   margin: 0;
   animation: aparecer 0.2s ease-out;
@@ -624,64 +743,58 @@ button:active {
   }
 }
 
-.finalizar {
-  margin-top: 1.5rem;
-  background: transparent;
-  color: #757575;
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-decoration: underline;
-  padding: 0.5rem;
-  box-shadow: none;
+.practica-avis,
+.no-trobat > p {
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+  padding: 2rem 1.5rem;
 }
 
-.finalizar:active {
-  transform: none;
-  box-shadow: none;
+.practica-avis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 /* Resumen */
+.resumen {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
 .puntos-totales {
-  font-size: 3rem;
+  font-size: clamp(3rem, 2rem + 3vw, 4.5rem);
   font-weight: 800;
   color: var(--color-puntos);
   margin: 0.5rem 0;
 }
 
 .detalle {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .mensaje {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   margin: 1.5rem 0;
 }
 
-.resumen button {
-  background: var(--color-mayor);
-  --sombra: var(--color-mayor-sombra);
-  width: 100%;
-}
-
-.resumen button.finalizar {
-  background: transparent;
-  width: auto;
+.resum-botons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
 }
 
 /* Para repasar */
-.subtitulo {
-  font-size: 1rem;
-  color: #757575;
-  margin-top: -0.5rem;
-}
-
 .lista-repasar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: 0.75rem;
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: 1rem 0 1.5rem;
   text-align: left;
-  max-height: 320px;
-  overflow-y: auto;
 }
 
 .lista-repasar li {
@@ -690,8 +803,8 @@ button:active {
   gap: 0.5rem;
   padding: 0.6rem 0.8rem;
   border-radius: 12px;
-  background: #f5f5f5;
-  margin-bottom: 0.5rem;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .repasar-enunciado {
@@ -715,20 +828,8 @@ button:active {
 .boton-vaciar {
   background: #9e9e9e;
   --sombra: #616161;
-  width: 100%;
-  margin-bottom: 0.75rem;
 }
 
 .peque .lista-repasar {
   font-size: 1.15rem;
-}
-
-@media (max-width: 400px) {
-  .enunciado {
-    font-size: 2.2rem;
-  }
-
-  .puntos-totales {
-    font-size: 2.4rem;
-  }
 }

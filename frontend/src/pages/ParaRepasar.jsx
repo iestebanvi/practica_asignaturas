@@ -1,26 +1,33 @@
 import { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import Pagina from '../components/Pagina.jsx'
+import NoTrobat from './NoTrobat.jsx'
 import { obtenerFallos, vaciarFallos } from '../logic/fallos.js'
-import { PERFILES } from '../logic/perfiles.js'
+import { obtenerCurso } from '../logic/cursos.js'
+import { T } from '../textos.js'
 
-export default function ParaRepasar({ perfilId, onVolver }) {
-  const [fallos, setFallos] = useState(() => obtenerFallos(perfilId))
-  const esPeque = perfilId === 'pequeno'
+export default function ParaRepasar() {
+  const { cursoId } = useParams()
+  const curso = obtenerCurso(cursoId)
+  const [fallos, setFallos] = useState(() => (curso ? obtenerFallos(curso.id) : []))
+  if (!curso) return <NoTrobat />
 
   function vaciar() {
-    vaciarFallos(perfilId)
+    vaciarFallos(curso.id)
     setFallos([])
   }
 
+  const molles = [{ nom: T.inici, to: '/' }, { nom: curso.nombre, to: `/${curso.id}` }, { nom: T.repassarTitol }]
+
   return (
-    <div className={`pantalla repasar${esPeque ? ' peque' : ''}`}>
-      <h1>Para repasar</h1>
-      <p className="subtitulo">{PERFILES[perfilId]?.nombre}</p>
+    <Pagina curso={curso} molles={molles} className="repasar">
+      <h1>{T.repassarTitol}</h1>
 
       {fallos.length === 0 ? (
-        <p>¡Todavía no has fallado nada! Sigue así 🎉</p>
+        <p>{T.repassarBuit}</p>
       ) : (
         <>
-          <p>Esto es lo que más te cuesta:</p>
+          <p>{T.repassarIntro}</p>
           <ul className="lista-repasar">
             {fallos.map((f) => (
               <li key={`${f.tipo}-${f.enunciado}`}>
@@ -31,14 +38,16 @@ export default function ParaRepasar({ perfilId, onVolver }) {
             ))}
           </ul>
           <button className="boton-vaciar" onClick={vaciar}>
-            Vaciar lista
+            {T.buidaLlista}
           </button>
         </>
       )}
 
-      <button className="finalizar" onClick={onVolver}>
-        ← Volver
-      </button>
-    </div>
+      <nav className="accions">
+        <Link to={`/${curso.id}`} className="enllac-secundari">
+          {T.torna}
+        </Link>
+      </nav>
+    </Pagina>
   )
 }
