@@ -133,3 +133,21 @@ export function crearModo(asignaturaId, datos) {
 export function crearBanco(datos) {
   return peticion('/api/admin/bancs', json('POST', datos))
 }
+
+// Àlies de los alumnos de un curso (moderación desde la consola).
+export function obtenerAlumnes(cursoId) {
+  return peticion(`/api/admin/cursos/${encodeURIComponent(cursoId)}/alumnes`)
+}
+
+export function renombrarAlumne(id, alies) {
+  return peticion(`/api/admin/alumnes/${encodeURIComponent(id)}`, json('PATCH', { alies }))
+}
+
+// Devuelve { pin }: el nuevo PIN, que solo se ve esta vez.
+export function nuevoPinAlumne(id) {
+  return peticion(`/api/admin/alumnes/${encodeURIComponent(id)}/pin`, { method: 'POST' })
+}
+
+export function borrarAlumne(id) {
+  return peticion(`/api/admin/alumnes/${encodeURIComponent(id)}`, { method: 'DELETE' })
+}

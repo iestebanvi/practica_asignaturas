@@ -19,7 +19,8 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 - **5d hecha** (2026-11-22): crear/editar/ordenar/borrar cursos y asignaturas desde la consola.
 - **5e hecha** (2026-11-22): crear/editar/ordenar/borrar modos; crear/renombrar/borrar bancos. Ya se puede montar un tema completo desde la consola.
 - **5f hecha** (2026-11-22): vista previa de un modo aunque esté inactivo. **Fase 5 completa.**
-- Siguiente: **fase 7** (alumnos: àlies + PIN, partidas y rècords). Antes, cerrar los ❓ de puntuación (plan §11). La fase 6 (configuración fina de generadores por modo) queda en espera hasta que haga falta.
+- Fase 7 dividida en 7a–7d (plan §17). **7a hecha** (2026-11-22): àlies + PIN por curso y moderación en la consola.
+- Siguiente: **7b** (bloques de preguntas). La fase 6 (configuración fina de generadores por modo) queda en espera hasta que haga falta.
 
 ## Mapa de temas
 
@@ -33,7 +34,8 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Rutas del frontend, consola, diseño a pantalla completa | ídem §5 |
 | Fases y orden de trabajo | ídem §6 |
 | Decisiones confirmadas y pendientes | ídem §9 |
-| Puntuación (àlies + PIN, rècords) | ídem §11 |
+| Puntuación: decisiones (bloques, récords por modo, del curso) | ídem §11 |
+| Fase 7: modelo de datos y subfases 7a–7d | ídem §17 |
 | Detalle de la fase 1 | ídem §12 |
 | Detalle de la fase 2 (tablas, bancos, seed, API, dev=prod) | ídem §13 |
 | Detalle de la fase 3 (frontend sobre la API, caché, copia del contenido) | ídem §14 |
@@ -66,6 +68,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Importar/exportar preguntas (formato `;`, CSV) | `backend/src/validacion/importar.js` + `backend/src/db/importar.js`; panel en `frontend/src/pages/profesorat/PanelImportar.jsx` |
 | Nombres legibles de tipos de ejercicio, formatos y grupos del formulario | `frontend/src/logic/tiposEjercicio.js` |
 | Catálogo de tipos para validar en el servidor (¡sincronizado con el frontend por test!) | `backend/src/catalogo/tiposEjercicio.js` |
+| Àlies de alumnos: API pública, PIN, sesiones por curso | `backend/src/routes/alumnes.js` + `backend/src/db/alumnes.js` + `backend/src/validacion/alies.js`; frontend `frontend/src/logic/alumne.js`, `components/AliesCapcalera.jsx`, `components/DialegAlies.jsx`; consola `pages/profesorat/LlistaAlies.jsx` |
 | Vista previa de un modo (pantalla de práctica reutilizable con "entorno") | `frontend/src/pages/profesorat/VistaPrevia.jsx` + `PracticaModo` en `frontend/src/pages/Practica.jsx` |
 | Modos y bancos: validación y operaciones | `backend/src/validacion/modos.js` + `backend/src/db/modos.js`; `frontend/src/pages/profesorat/FormModo.jsx`, `NouBanc.jsx` |
 | Entorno de los e2e (esquema `e2e`, puertos 3199/5199, contraseña de prueba) | `e2e/entorno.js` + `playwright.config.js` + `backend/scripts/preparar-e2e.js` |

@@ -1462,3 +1462,77 @@ button:active,
 .avis-vista-previa p:first-child {
   font-weight: 700;
 }
+
+/* Àlies del alumno (cabecera y diálogo) */
+.alies-capcalera {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.alies-hola {
+  font-weight: 700;
+}
+
+.dialeg-fons {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.dialeg {
+  width: min(100%, 440px);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: var(--radi);
+  background: #ffffff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  text-align: left;
+}
+
+.dialeg h2 {
+  margin-top: 0;
+}
+
+.dialeg form,
+.dialeg > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dialeg input {
+  font-family: inherit;
+  font-size: 1.3rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 12px;
+  border: 3px solid var(--color-primari);
+}
+
+.camp-pin {
+  letter-spacing: 0.5em;
+  text-align: center;
+  max-width: 12rem;
+}
+
+.pin-gran {
+  margin: 0;
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-align: center;
+  color: var(--color-primari-sombra);
+}
+
+.llista-alies {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eeeeee;
+}

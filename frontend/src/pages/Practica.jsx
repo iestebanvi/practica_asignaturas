@@ -105,7 +105,7 @@ function entornoAlumnes(curso, asignatura) {
 
 // Partida + resumen de un modo. "cabecera" se pinta encima (lo usa la vista
 // previa para su aviso).
-export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesPropias, cabecera = null }) {
+export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesPropias, cabecera = null, senseAlies = false }) {
   const [resumen, setResumen] = useState(null)
   const [partida, setPartida] = useState(0)
 
@@ -122,7 +122,12 @@ export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesP
   }
 
   return (
-    <Pagina curso={curso} molles={molles} className={resumen ? 'pantalla-resum' : 'pantalla-practica'}>
+    <Pagina
+      curso={curso}
+      molles={molles}
+      senseAlies={senseAlies}
+      className={resumen ? 'pantalla-resum' : 'pantalla-practica'}
+    >
       {cabecera}
       {resumen ? (
         <Resumen

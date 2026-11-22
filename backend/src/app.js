@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import cursosRouter from './routes/cursos.js'
 import bancosRouter from './routes/bancos.js'
 import adminRouter from './routes/admin.js'
+import alumnesRouter from './routes/alumnes.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const publicDir = path.join(__dirname, '..', 'public')
@@ -26,6 +27,7 @@ export function crearApp() {
   app.use('/api/cursos', cursosRouter)
   app.use('/api/bancos', bancosRouter)
   app.use('/api/admin', adminRouter)
+  app.use('/api/alumnes', alumnesRouter)
 
   app.use('/api', (req, res) => {
     res.status(404).json({ error: 'no_encontrado' })

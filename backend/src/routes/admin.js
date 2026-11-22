@@ -10,6 +10,8 @@ import { exportarContenido } from '../db/exportar.js'
 import * as estructura from '../db/estructura.js'
 import { crearModo, actualizarModo, borrarModo, crearBanco, actualizarBanco, borrarBanco } from '../db/modos.js'
 import { pool } from '../db/cliente.js'
+import { listarAlumnes, renombrarAlumne, nuevoPinAlumne, borrarAlumne } from '../db/alumnes.js'
+import { validarAlies } from '../validacion/alies.js'
 
 export const COOKIE_SESION = 'sessio_professorat'
 
@@ -241,6 +243,51 @@ router.post(
   asyncHandler(async (req, res) => {
     const id = idDe(req)
     responderEstructura(res, id && (await estructura.crear('asignatura', req.body ?? {}, id)), 201, 'curs_no_trobat')
+  }),
+)
+
+// Àlies de los alumnos de un curso: ver, renombrar, PIN nuevo y borrar.
+router.get(
+  '/cursos/:id/alumnes',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    const { rowCount } = id ? await pool.query('SELECT 1 FROM cursos WHERE id = $1', [id]) : { rowCount: 0 }
+    if (!rowCount) return res.status(404).json({ error: 'curs_no_trobat' })
+    res.json(await listarAlumnes(id))
+  }),
+)
+
+router.patch(
+  '/alumnes/:id',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    const { alies, error } = validarAlies(req.body?.alies)
+    if (error) return res.status(400).json({ error: 'validacio', camps: { alies: error } })
+    const resultado = id && (await renombrarAlumne(id, alies))
+    if (!resultado) return res.status(404).json({ error: 'alumne_no_trobat' })
+    if (resultado.repetido) {
+      return res.status(400).json({ error: 'validacio', camps: { alies: 'Ja hi ha un alumne amb aquest àlies en aquest curs.' } })
+    }
+    res.json(resultado.alumne)
+  }),
+)
+
+router.post(
+  '/alumnes/:id/pin',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    const resultado = id && (await nuevoPinAlumne(id))
+    if (!resultado) return res.status(404).json({ error: 'alumne_no_trobat' })
+    res.json(resultado)
+  }),
+)
+
+router.delete(
+  '/alumnes/:id',
+  asyncHandler(async (req, res) => {
+    const id = idDe(req)
+    if (!id || !(await borrarAlumne(id))) return res.status(404).json({ error: 'alumne_no_trobat' })
+    res.status(204).end()
   }),
 )
 

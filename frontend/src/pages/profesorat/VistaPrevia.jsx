@@ -71,6 +71,7 @@ export default function VistaPrevia() {
       modo={modoJoc}
       entorno={entorno}
       cabecera={cabecera}
+      senseAlies
       molles={[
         { nom: T.consola, to: '/profesorat/consola' },
         { nom: modo.nombre, to: rutaFitxa },

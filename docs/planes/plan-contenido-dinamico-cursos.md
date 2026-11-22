@@ -1,6 +1,6 @@
 # Contenido dinámico en BD + cursos + consola del profesorado + pantalla completa
 
-> **Vigente (2026-11-22).** Fases 0 a 5 implementadas; pendientes la 6 (en espera) y la 7. Las decisiones marcadas con ❓ están pendientes de confirmar.
+> **Vigente (2026-11-22).** Fases 0 a 5 implementadas; fase 7 en curso (7a hecha); la 6 en espera. Las decisiones marcadas con ❓ están pendientes de confirmar.
 > Sustituye en parte a `docs/plan-base-datos-usuarios.md`: aquel plan identificaba a cada alumno con nombre + PIN; ahora los alumnos **no se identifican**, así que la parte de usuarios/PIN queda descartada. De aquel plan se reutiliza la parte técnica de la BD (Supabase + `pg` + migraciones propias).
 
 ## 1. Objetivo
@@ -132,7 +132,7 @@ Cada fase es desplegable por sí sola y la web nunca deja de funcionar.
 | **4** | Login del profesorado + sesión + gestión de profesores | Consola protegida (vacía) |
 | **5** | CRUD de cursos/asignaturas/modos/preguntas + vista previa + importación CSV | Los profesores ya pueden editar |
 | **6** | Configuración de modos generados (generadores + nivel + parámetros) | También se configuran los modos de cálculo |
-| **7** | Alumnos: àlies + PIN, partidas, rècords por modo, "Per repassar" en BD; adiós `localStorage` | Puntuación persistente |
+| **7** | Alumnos: àlies + PIN, bloques de preguntas, rècords por modo (personales y del curso), "Per repassar" en BD; adiós `localStorage` (ver §17) | Puntuación persistente |
 
 Hacer la fase 1 antes de la BD da un resultado visible rápido y separa el riesgo "cambio visual" del riesgo "cambio de datos".
 
@@ -183,10 +183,13 @@ Con B, el modelo añadiría `alumnes (id, curs_id, alies, pin_hash, creat_en)`, 
 - **Opción B** (àlies opcional + PIN).
 - **Puntos por partida, sin acumular, por asignatura**: no hay un total que crece jugando; cada partida tiene su puntuación y lo que se guarda/muestra es el **rècord** (mejor partida). Objetivo: que el niño repita para superar su marca, no que sume por volumen.
 
-### Pendiente ❓
-- **Partidas comparables**: hoy el modo es libre (sin número fijo de preguntas), así que quien juega más rato saca más puntos y el rècord premiaría la duración, no el acierto. Propuesta: cuando el alumno está identificado, la partida tiene **un número fijo de preguntas** (p.ej. 10, configurable por modo desde la consola) y el modo libre queda para quien juega sin àlies.
-- **Rècord por asignatura o por modo**: los modos de una asignatura dan puntos distintos (un problema vale 20, una suma 10). Propuesta: guardar el rècord **por modo** y mostrarlos agrupados por asignatura.
-- **Ranking del curso** (los 10 mejores àlies por modo) sí/no.
+### Decidido (2026-11-22, segunda ronda)
+- **Bloques de N preguntas** en vez de partidas de longitud fija: el niño juega libre (como ahora) y las preguntas se cuentan en bloques; cada bloque completo es un resultado y el récord es el **mejor bloque**. Un bloque incompleto (al pulsar "Finalitza") no cuenta. Ejemplo: 70 preguntas → bloques 1-30 y 31-60 cuentan, 61-70 no.
+- **Tamaño del bloque configurable**: por curso (30 por defecto; menos para los pequeños, p.ej. 10 en 1r) y, opcionalmente, por modo (p.ej. Problemes más corto).
+- **Récord en puntos** (motiva más), mostrando también los aciertos ("240 punts · 28/30"). Se acepta que en modos que mezclan tipos de distinto valor el máximo de un bloque varíe un poco.
+- **Récord por modo**, mostrado agrupado por asignatura.
+- **Récords personales + récords del curso** (los mejores àlies de cada modo), activados por defecto con una casilla por curso para desactivarlos, y moderación de àlies en la consola.
+- Ver el diseño por subfases en el §17.
 
 ## 12. Detalle de la fase 1 (diseño de pantallas) ✅ hecha
 
@@ -287,3 +290,35 @@ Creados inactivos y sin asignaturas (en la BD y en `contenido.json`), entre 1r y
 - **Ruta** `/profesorat/prova/:modoId` (botón "Prova aquest mode ↗" en la ficha de modo, en otra pestaña): juega el modo aunque él, su asignatura o su curso estén inactivos. Lee de la API de la consola (con sesión; sin ella, al login). Sin cambios en el backend.
 - Por defecto solo las preguntas activas; casilla "Inclou també les preguntes inactives". No apunta fallos en "Per repassar"; su resumen vuelve a la ficha del modo.
 - **Refactor**: `PracticaModo` (en `Practica.jsx`) recibe un `entorno` (`rutaTorna`, `cargarPreguntas`, `registrarFallos`) y una `cabecera` opcional; para los alumnos se comporta igual que antes.
+
+## 17. Fase 7 (alumnos y récords), dividida en subfases — propuesta
+
+Aprobado el 2026-11-22. Decisiones: àlies **por curso**; bloque por defecto **10 en 1r, 15 en 2n, 30 de 3r a 6è** (configurable); sesión del alumno recordada **1 año** por dispositivo, **una por curso** (dos hermanos de cursos distintos pueden compartir dispositivo sin salir y entrar). Al escribir un àlies que no existe se pregunta antes de crearlo (evita àlies duplicados por errores de escritura).
+
+### Modelo de datos (migración 003)
+- `alumnes` (id, curso_id → cursos, àlies, àlies_normalizado, pin_hash, creado_en, ultimo_acceso), `UNIQUE (curso_id, àlies_normalizado)`: el àlies es único **dentro del curso** (sin mayúsculas ni acentos).
+- `sesiones_alumnes` (token_hash, alumne_id, caduca_en): como las del profesorado, cookie HttpOnly propia; larga (1 año) para no pedir el PIN cada día; botón "Surt" para dispositivos compartidos.
+- `blocs` (id, alumne_id, modo_id, puntos, aciertos, preguntas, creado_en): cada bloque completado. Récord personal = el bloque con más puntos (desempate: más aciertos, después el más antiguo). Récords del curso = el mejor bloque de cada àlies en ese modo, top 10.
+- `fallos_alumnes` (alumne_id, modo/tipo, enunciado, respuesta, veces, ultima): "Per repassar" por àlies.
+- Configuración: `cursos.config.bloc` (30 por defecto) y `cursos.config.recordsCurs` (true por defecto); `modos.bloc` (opcional, sustituye al del curso).
+- Todo con RLS, como el resto.
+
+### Subfases
+| Subfase | Contenido |
+|---|---|
+| **7a** | **Àlies + PIN**: en la cabecera de cada curso "Entra amb el teu àlies" / "Hola, Nil · Surt". Àlies nuevo → el servidor genera un PIN de 4 cifras y lo muestra UNA vez ("apunta'l"); àlies existente → pide el PIN (límite de 5 intentos, como el login de la consola). Consola: sección "Àlies" por curso (ver, renombrar, resetear PIN —muestra el nuevo una vez—, borrar). |
+| **7b** | **Bloques**: tamaño configurable en la ficha de curso y de modo; el marcador muestra "Bloc 2 · 12/30"; al completar un bloque se guarda (si hay àlies) y aparece un aviso breve ("Bloc completat: 240 punts · 28/30 · Nou rècord! 🏆") sin cortar el juego. Sin àlies, se ven los bloques pero no se guarda nada. |
+| **7c** | **Récords**: en la página de cada asignatura, el récord del niño en cada modo (o "encara no hi has jugat"); en cada modo, "Rècords del curs" (top 10 àlies). Casilla por curso para desactivarlos. |
+| **7d** | **"Per repassar" en la BD** por àlies (solo con àlies); se elimina el `localStorage`. |
+
+### Riesgos aceptados
+- **Los resultados de un bloque los calcula el navegador** y se envían al servidor: un niño muy espabilado podría falsearlos con las herramientas del navegador. El servidor valida límites (aciertos ≤ preguntas = tamaño del bloque, puntos ≤ máximo posible). Para niños de primaria y un proyecto así, aceptable.
+- **PIN olvidado**: lo resetea un profesor desde la consola (no hay email).
+- **Àlies inapropiados**: moderación desde la consola; los récords del curso se pueden desactivar por curso.
+
+### 7a ✅ hecha (2026-11-22)
+- **Migración 003**: `alumnes` (àlies único por curso sin mayúsculas ni acentos, `pin_hash` = sal + scrypt) y `sesiones_alumnes` (hash del token, 1 año). RLS.
+- **API pública** `/api/alumnes`: `POST comprova` (¿existe?, sin crear nada), `POST crea` (genera el PIN, que solo sale en esa respuesta, y abre sesión), `POST entra` (àlies + PIN; 5 fallos por àlies → 15 min de bloqueo), `POST surt`, `GET jo?curs=`. Solo cursos activos. **Una cookie por curso** (`alumne_<id>`, `Path=/api/alumnes`, HttpOnly, SameSite=Strict): dos hermanos de cursos distintos comparten dispositivo sin salir y entrar.
+- **Consola** (ficha de curso → "Àlies dels alumnes"): lista con fecha de creación y último acceso; canviar el nom (sin repetir en el curso), PIN nou (se muestra una vez; cierra las sesiones abiertas de ese àlies) y esborrar.
+- **Web**: en la cabecera de cada curso, "👤 Entra amb el teu àlies" (diálogo en pasos: àlies → PIN, o "és un àlies nou, el vols crear?" → PIN grande "apunta'l") o "Hola, Nil! · Surt". El diálogo se pinta en `<body>` con un portal (el `backdrop-filter` de la cabecera encerraba el fondo fijo). La vista previa de la consola no muestra el àlies. Sin àlies se juega igual que antes.
+- El limitador de intentos es ahora una fábrica (`crearLimitador`): uno para el login de la consola (por IP) y otro para los PIN (por curso + àlies).

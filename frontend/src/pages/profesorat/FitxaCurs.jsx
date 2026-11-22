@@ -4,6 +4,7 @@ import { actualizarEstructura, borrarEstructura, moverEstructura, crearAsignatur
 import { T } from '../../textos.js'
 import FormEstructura from './FormEstructura.jsx'
 import AccionsElement from './AccionsElement.jsx'
+import LlistaAlies from './LlistaAlies.jsx'
 
 const RUTA = '/profesorat/consola'
 
@@ -93,6 +94,8 @@ export default function FitxaCurs({ contenido, onCanvi }) {
       ) : (
         <button onClick={() => setCreantAssignatura(true)}>{T.novaAssignatura}</button>
       )}
+
+      <LlistaAlies cursoId={curso.id} />
     </article>
   )
 }
