@@ -14,7 +14,7 @@ import {
   formatar,
 } from './potencies.js'
 import { comprobarRespuesta } from './ejercicios.js'
-import { obtenerModo } from './cursos.js'
+import { operacionesConocidas } from './ejercicios.js'
 
 const VECES = 400
 
@@ -129,10 +129,19 @@ describe('consecutivas y series', () => {
 })
 
 describe('modo Potències', () => {
-  it('existe en Matemáticas con las nueve operaciones', () => {
-    const modo = obtenerModo('6-primaria', 'matematiques', 'potencies')
-    expect(modo.nombre).toBe('Potències')
-    expect(modo.operaciones).toHaveLength(9)
+  it('sus nueve tipos de ejercicio están registrados como generadores', () => {
+    const operaciones = [
+      'potencia-calcul',
+      'potencia-combinada',
+      'potencia-expressio',
+      'potencia-base10',
+      'potencia-imatge',
+      'potencia-consecutiva',
+      'potencia-serie',
+      'potencia-comparar',
+      'potencia-descomposicio',
+    ]
+    expect(operacionesConocidas(operaciones)).toEqual(operaciones)
   })
 })
 

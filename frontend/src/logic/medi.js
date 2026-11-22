@@ -60,7 +60,7 @@ export function generarMediImagen() {
   }
 }
 
-// Preguntas de texto del banco curado (backend/src/data/medi-*.json), mismo
+// Preguntas de texto del banco del modo (en la BD), mismo
 // patrón que generarGramatica: las opciones (incluida la correcta) ya vienen
 // escritas a mano en el banco. Una de cada cuatro veces, en vez de texto,
 // genera una pregunta de imagen (ver PROBABILIDAD_IMAGEN más arriba).

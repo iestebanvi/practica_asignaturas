@@ -6,8 +6,9 @@ import {
   elegirTipoOperacion,
   generarEjercicioDesdeBanco,
   generarEjercicioParaPerfil,
+  operacionesConocidas,
+  usaBanco,
 } from './ejercicios.js'
-import { CURSOS } from './cursos.js'
 
 // Mezcla de operaciones generadas + un tipo de banco ('problema'), para probar
 // cómo se combinan. Antes eran los perfiles "pequeno"/"mayor" de perfiles.js.
@@ -16,7 +17,11 @@ const PERFIL_MAYOR = {
   operaciones: ['suma', 'resta', 'multiplicacion', 'division', 'problema'],
   nivel: 'medio',
 }
-const MODOS_ANGLES = CURSOS.sise.asignaturas.angles.modos
+const MODOS_ANGLES = {
+  vocabulari: { operaciones: ['vocabulario'] },
+  vocabulariEscrit: { operaciones: ['vocabulario-escrito'] },
+  gramatica: { operaciones: ['gramatica'] },
+}
 
 describe('generarEjercicio', () => {
   it('genera un ejercicio del tipo pedido', () => {
@@ -72,7 +77,7 @@ describe('elegirTipoOperacion', () => {
 
   it('también funciona con "vocabulario" como tipo respaldado por banco', () => {
     expect(() => elegirTipoOperacion(['vocabulario'], [])).toThrow()
-    const banco = [{ ingles: 'A', catalan: 'un/a' }]
+    const banco = [{ enunciado: 'A', respuesta: 'un/a' }]
     expect(elegirTipoOperacion(['vocabulario'], banco)).toBe('vocabulario')
   })
 })
@@ -86,6 +91,27 @@ describe('generarEjercicioDesdeBanco', () => {
       respuesta: 42,
       puntos: 20,
     })
+  })
+})
+
+describe('operacionesConocidas / usaBanco', () => {
+  it('descarta los tipos de ejercicio que el código no sabe generar', () => {
+    expect(operacionesConocidas(['suma', 'no-existeix', 'problema'])).toEqual(['suma', 'problema'])
+    expect(operacionesConocidas(['no-existeix'])).toEqual([])
+  })
+
+  it('distingue los tipos que necesitan un banco de preguntas', () => {
+    expect(usaBanco(['suma', 'resta'])).toBe(false)
+    expect(usaBanco(['suma', 'problema'])).toBe(true)
+    expect(usaBanco(['vocabulario-escrito'])).toBe(true)
+  })
+})
+
+describe('generarEjercicioDesdeBanco', () => {
+  it('convierte a número la respuesta, que en la BD se guarda como texto', () => {
+    const ej = generarEjercicioDesdeBanco([{ enunciado: 'Problema', respuesta: '42' }])
+    expect(ej.respuesta).toBe(42)
+    expect(comprobarRespuesta(ej, '42')).toBe(true)
   })
 })
 
@@ -107,14 +133,14 @@ describe('generarEjercicioParaPerfil', () => {
 
   it('genera vocabulario a partir del banco de palabras', () => {
     const banco = [
-      { ingles: 'BREAKFAST', catalan: 'esmorzar' },
-      { ingles: 'LUNCH', catalan: 'dinar' },
-      { ingles: 'DINNER', catalan: 'sopar' },
-      { ingles: 'STREET', catalan: 'carrer' },
+      { enunciado: 'BREAKFAST', respuesta: 'esmorzar' },
+      { enunciado: 'LUNCH', respuesta: 'dinar' },
+      { enunciado: 'DINNER', respuesta: 'sopar' },
+      { enunciado: 'STREET', respuesta: 'carrer' },
     ]
     const ej = generarEjercicioParaPerfil(MODOS_ANGLES.vocabulari, banco)
     expect(ej.tipo).toBe('vocabulario')
-    expect(banco.some((p) => p.ingles === ej.enunciado && p.catalan === ej.respuesta)).toBe(true)
+    expect(banco.some((p) => p.enunciado === ej.enunciado && p.respuesta === ej.respuesta)).toBe(true)
   })
 
   it('genera gramática a partir del banco de ejercicios', () => {
@@ -131,7 +157,7 @@ describe('generarEjercicioParaPerfil', () => {
   })
 
   it('genera vocabulario escrito a partir del banco de palabras', () => {
-    const banco = [{ ingles: 'BREAKFAST', catalan: 'esmorzar' }]
+    const banco = [{ enunciado: 'BREAKFAST', respuesta: 'esmorzar' }]
     const ej = generarEjercicioParaPerfil(MODOS_ANGLES.vocabulariEscrit, banco)
     expect(ej.tipo).toBe('vocabulario-escrito')
     expect(ej.ingles).toBe('BREAKFAST')

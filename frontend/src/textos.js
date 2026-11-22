@@ -21,6 +21,7 @@ export const T = {
   carregant: 'Carregant…',
   errorCarrega: "No s'han pogut carregar les dades.",
   reintenta: 'Torna-ho a provar',
+  modeNoDisponible: 'Aquest mode encara no està disponible.',
   bancBuit: (mode) => `Encara no hi ha exercicis de ${mode.toLowerCase()}. Torna aviat!`,
   correcte: 'Correcte! 🎉',
   gairebe: (resposta) => `Gairebé... la resposta era ${resposta}`,

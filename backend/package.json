@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "migrate": "node scripts/migrar.js",
     "seed": "node scripts/seed.js",
-    "test": "vitest run"
+    "test": "vitest run",
+    "export": "node scripts/exportar.js"
   },
   "dependencies": {
     "dotenv": "^16.4.7",

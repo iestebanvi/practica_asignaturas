@@ -3,7 +3,6 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import cursosRouter from './routes/cursos.js'
 import bancosRouter from './routes/bancos.js'
-import { RUTAS_ANTIGUAS, routerAntiguo } from './routes/legado.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const publicDir = path.join(__dirname, '..', 'public')
@@ -21,9 +20,6 @@ export function crearApp() {
 
   app.use('/api/cursos', cursosRouter)
   app.use('/api/bancos', bancosRouter)
-  for (const [ruta, banco] of Object.entries(RUTAS_ANTIGUAS)) {
-    app.use(ruta, routerAntiguo(banco))
-  }
 
   app.use('/api', (req, res) => {
     res.status(404).json({ error: 'no_encontrado' })

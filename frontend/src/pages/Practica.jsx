@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { generarEjercicioParaPerfil, comprobarRespuesta } from '../logic/ejercicios.js'
-import { obtenerCurso, obtenerAsignatura, obtenerModo, estiloColor } from '../logic/cursos.js'
+import {
+  generarEjercicioParaPerfil,
+  comprobarRespuesta,
+  operacionesConocidas,
+  usaBanco,
+} from '../logic/ejercicios.js'
+import { buscarAsignatura, buscarModo, estiloColor } from '../logic/cursos.js'
+import { obtenerCurso, obtenerPreguntas } from '../logic/api.js'
+import { useApi } from '../hooks/useApi.js'
+import AmbDades from '../components/AmbDades.jsx'
 import { registrarFallo } from '../logic/fallos.js'
 import { T } from '../textos.js'
 import Pagina from '../components/Pagina.jsx'
@@ -52,14 +60,6 @@ function simboloCierre(tipo) {
   if (TIPOS_SIN_SIMBOLO.includes(tipo)) return ''
   return TIPOS_SIMBOLO_APROXIMADO.includes(tipo) ? '≈' : '='
 }
-const ENDPOINTS_BANCO = {
-  problema: '/api/problemas',
-  vocabulario: '/api/vocabulario',
-  'vocabulario-escrito': '/api/vocabulario',
-  gramatica: '/api/gramatica',
-  'medi-pregunta': '/api/medi',
-}
-
 function elegirCelebracion() {
   return CELEBRACIONES[Math.floor(Math.random() * CELEBRACIONES.length)]
 }
@@ -68,13 +68,23 @@ function elegirCelebracion() {
 // resumen. "Torna a jugar" cambia la "key" de la partida para empezar de cero.
 export default function Practica() {
   const { cursoId, asignaturaId, modoId } = useParams()
-  const curso = obtenerCurso(cursoId)
-  const asignatura = obtenerAsignatura(cursoId, asignaturaId)
-  const modo = obtenerModo(cursoId, asignaturaId, modoId)
+  const resultado = useApi(() => obtenerCurso(cursoId), cursoId)
+
+  return (
+    <AmbDades resultado={resultado}>
+      {(curso) => {
+        const asignatura = buscarAsignatura(curso, asignaturaId)
+        const modo = buscarModo(asignatura, modoId)
+        if (!modo) return <NoTrobat />
+        return <PracticaModo key={`${asignatura.id}/${modo.id}`} curso={curso} asignatura={asignatura} modo={modo} />
+      }}
+    </AmbDades>
+  )
+}
+
+function PracticaModo({ curso, asignatura, modo }) {
   const [resumen, setResumen] = useState(null)
   const [partida, setPartida] = useState(0)
-
-  if (!modo) return <NoTrobat />
 
   const molles = [
     { nom: T.inici, to: '/' },
@@ -100,18 +110,20 @@ export default function Practica() {
 }
 
 function Partida({ curso, asignatura, modo, onFinalizar }) {
-  const { operaciones } = modo
+  const operaciones = operacionesConocidas(modo.operaciones)
   const { nivel } = curso
   const ambCelebracio = curso.config.celebracio
-  const tipoBanco = operaciones.find((op) => op in ENDPOINTS_BANCO)
-  const necesitaBanco = Boolean(tipoBanco)
+  const necesitaBanco = usaBanco(operaciones) && Boolean(modo.banco)
+  // Sin ningún tipo que se pueda generar (p.ej. todos desconocidos, o solo de
+  // banco y el modo no tiene banco), el modo no puede funcionar.
+  const disponible = operaciones.some((op) => necesitaBanco || !usaBanco([op]))
   const rutaTorna = `/${curso.id}/${asignatura.id}`
 
   const [banco, setBanco] = useState([])
   const [bancoListo, setBancoListo] = useState(!necesitaBanco)
   const [bancoError, setBancoError] = useState(false)
   const [ejercicio, setEjercicio] = useState(() =>
-    necesitaBanco ? null : generarEjercicioParaPerfil({ operaciones, nivel }, []),
+    necesitaBanco || !disponible ? null : generarEjercicioParaPerfil({ operaciones, nivel }, []),
   )
   const [respuesta, setRespuesta] = useState('')
   const [feedback, setFeedback] = useState(null)
@@ -124,8 +136,7 @@ function Partida({ curso, asignatura, modo, onFinalizar }) {
 
   function cargarBanco() {
     setBancoError(false)
-    fetch(ENDPOINTS_BANCO[tipoBanco])
-      .then((res) => res.json())
+    obtenerPreguntas(modo.banco)
       .then((data) => {
         setBanco(data)
         setBancoListo(true)
@@ -199,6 +210,15 @@ function Partida({ curso, asignatura, modo, onFinalizar }) {
       {T.torna}
     </Link>
   )
+
+  if (!disponible) {
+    return (
+      <div className="practica-avis">
+        <p>{T.modeNoDisponible}</p>
+        {enllacTorna}
+      </div>
+    )
+  }
 
   if (bancoError) {
     return (

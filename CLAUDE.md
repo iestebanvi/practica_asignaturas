@@ -11,8 +11,8 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 
 - **Plan vigente**: `docs/planes/plan-contenido-dinamico-cursos.md` → apartado 6 (tabla de fases) y apartado 9 (decisiones).
 - Fases 0 y 1 **hechas y desplegadas** (2026-11-22).
-- Fase 2 **hecha** (2026-11-22): Supabase con migraciones, seed ya cargado en `public`, API de lectura; el frontend aún usa `cursos.js` y los endpoints antiguos (ahora leídos de BD).
-- Siguiente: **fase 3** (el frontend lee el árbol y las preguntas de la API; se retiran `cursos.js`, los JSON y los endpoints antiguos). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
+- Fases 2 y 3 **hechas** (2026-11-22): todo el contenido sale de Supabase vía API; la web ya no tiene datos en el código. Copia del contenido en `backend/datos/contenido.json`.
+- Siguiente: **fase 4** (login del profesorado con contraseña compartida). Pendiente cerrar los ❓ de puntuación (plan §11) antes de la fase 7.
 
 ## Mapa de temas
 
@@ -29,6 +29,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Puntuación (àlies + PIN, rècords) | ídem §11 |
 | Detalle de la fase 1 | ídem §12 |
 | Detalle de la fase 2 (tablas, bancos, seed, API, dev=prod) | ídem §13 |
+| Detalle de la fase 3 (frontend sobre la API, caché, copia del contenido) | ídem §14 |
 | Diseño técnico antiguo de BD + PIN (referencia, sustituido) | `docs/planes/plan-base-datos-usuarios.md` |
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |
 | Contenido fuente: temario Medi "Canvis en el relleu" | `docs/medi/canvis-en-el-relleu-temari.txt` |
@@ -38,16 +39,17 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 ### En el código
 | Tema | Dónde |
 |---|---|
-| Árbol curso → asignatura → modo (fase 1, en código) | `frontend/src/logic/cursos.js` |
+| Carga de datos de la API (con caché) | `frontend/src/logic/api.js` + `frontend/src/hooks/useApi.js` + `frontend/src/components/AmbDades.jsx` |
+| Búsquedas en el árbol de un curso | `frontend/src/logic/cursos.js` |
 | Textos de la interfaz (catalán) | `frontend/src/textos.js` |
 | Rutas | `frontend/src/App.jsx` |
 | Generadores de ejercicios y comprobación | `frontend/src/logic/ejercicios.js` (+ un fichero por tipo) |
 | Esquema de la BD | `backend/src/db/migraciones/*.sql` (runner: `backend/src/db/migrar.js`) |
 | Consultas de lectura (árbol de curso, bancos) | `backend/src/db/contenido.js` |
-| Carga inicial desde el código | `backend/src/db/sembrar.js` + `backend/scripts/datos-iniciales.js` |
-| Rutas de la API | `backend/src/app.js` → `backend/src/routes/` (`legado.js` = endpoints antiguos hasta la fase 3) |
+| Copia del contenido (backup en git, fuente de `make seed` y de los tests) | `backend/datos/contenido.json` (`make export-contenido`) |
+| Carga y exportación | `backend/src/db/sembrar.js`, `backend/src/db/exportar.js`, `backend/scripts/` |
+| Rutas de la API | `backend/src/app.js` → `backend/src/routes/` |
 | Tests de la API | `backend/test/api.test.js` (esquema `test`) |
-| JSON originales de los bancos (fuente del seed, hasta la fase 3) | `backend/src/data/*.json` |
 
 ## Convenciones de los documentos
 

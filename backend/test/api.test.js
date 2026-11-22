@@ -1,22 +1,20 @@
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { FICHEROS_BANCOS, datosIniciales } from '../scripts/datos-iniciales.js'
-import { RUTAS_ANTIGUAS } from '../src/routes/legado.js'
+import { leerContenido } from '../scripts/contenido.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const leerJson = (fichero) => JSON.parse(readFileSync(path.join(__dirname, '..', 'src', 'data', fichero), 'utf-8'))
+// Los tests cargan en el esquema "test" la copia del contenido real
+// (backend/datos/contenido.json).
+const contenido = leerContenido()
 
 // Sin DATABASE_URL (p.ej. en una máquina sin .env) estos tests se saltan.
 describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', () => {
-  let pool, servidor, base, sembrar, ejecutarMigraciones
+  let pool, servidor, base, sembrar, ejecutarMigraciones, exportarContenido
 
   beforeAll(async () => {
     // Imports dinámicos: cliente.js exige DATABASE_URL al cargarse.
     ;({ pool } = await import('../src/db/cliente.js'))
     ;({ ejecutarMigraciones } = await import('../src/db/migrar.js'))
     ;({ sembrar } = await import('../src/db/sembrar.js'))
+    ;({ exportarContenido } = await import('../src/db/exportar.js'))
     const { crearApp } = await import('../src/app.js')
 
     expect(process.env.DB_SCHEMA).toBe('test')
@@ -24,7 +22,7 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
     await ejecutarMigraciones()
     const cliente = await pool.connect()
     try {
-      await sembrar(cliente, datosIniciales())
+      await sembrar(cliente, contenido)
     } finally {
       cliente.release()
     }
@@ -44,16 +42,8 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
     return { status: res.status, body: await res.json() }
   }
 
-  describe('endpoints antiguos', () => {
-    // Garantía de la fase 2: el frontend recibe EXACTAMENTE lo mismo que
-    // cuando se servían los JSON.
-    for (const [ruta, banco] of Object.entries(RUTAS_ANTIGUAS)) {
-      it(`${ruta} devuelve lo mismo que ${FICHEROS_BANCOS[banco]}`, async () => {
-        const { status, body } = await get(ruta)
-        expect(status).toBe(200)
-        expect(body).toEqual(leerJson(FICHEROS_BANCOS[banco]))
-      })
-    }
+  it('sembrar + exportar es un viaje de ida y vuelta exacto (el export es una copia fiel)', async () => {
+    expect(await exportarContenido(pool)).toEqual(contenido)
   })
 
   describe('/api/cursos', () => {
@@ -69,7 +59,8 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
       expect(body).toMatchObject({ id: '6-primaria', nivel: 'medio', config: { majuscules: false, celebracio: false } })
       expect(body.asignaturas.map((a) => a.id)).toEqual(['matematiques', 'angles', 'medi'])
 
-      const original = datosIniciales().cursos.find((c) => c.id === '6-primaria')
+      const original = contenido.cursos.find((c) => c.id === '6-primaria')
+      expect(original).toBeTruthy()
       for (const [i, asig] of original.asignaturas.entries()) {
         expect(body.asignaturas[i].modos.map((m) => [m.id, m.nombre, m.operaciones])).toEqual(
           asig.modos.map((m) => [m.id, m.nombre, m.operaciones]),
@@ -102,7 +93,8 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
         const arbol = (await get('/api/cursos/6-primaria')).body
         expect(arbol.asignaturas.map((a) => a.id)).not.toContain('medi')
         expect(arbol.asignaturas[0].modos.map((m) => m.id)).not.toContain('potencies')
-        expect((await get('/api/problemas')).body.map((p) => p.id)).not.toContain(1)
+        const problemes = (await get('/api/bancos/problemes-6/preguntas')).body.preguntas
+        expect(problemes.map((p) => p.orden)).not.toContain(1)
         expect((await get('/api/cursos')).body.map((c) => c.id)).toEqual(['6-primaria'])
         expect((await get('/api/cursos/1-primaria')).status).toBe(404)
       } finally {
@@ -115,7 +107,18 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
   })
 
   describe('/api/bancos/:banco/preguntas', () => {
-    it('devuelve formato y preguntas en orden', async () => {
+    it('devuelve las preguntas activas del banco, en orden y tal cual están en la BD', async () => {
+      for (const banco of contenido.bancos) {
+        const { status, body } = await get(`/api/bancos/${banco.slug}/preguntas`)
+        expect(status).toBe(200)
+        expect(body.formato).toBe(banco.formato)
+        expect(body.preguntas.map(({ orden, enunciado, respuesta }) => ({ orden, enunciado, respuesta }))).toEqual(
+          banco.preguntas.filter((p) => p.activo).map(({ orden, enunciado, respuesta }) => ({ orden, enunciado, respuesta })),
+        )
+      }
+    })
+
+    it('devuelve formato y opciones de una pregunta de opción múltiple', async () => {
       const { status, body } = await get('/api/bancos/medi-canvis-relleu-6/preguntas')
       expect(status).toBe(200)
       expect(body.formato).toBe('opcio_multiple')
@@ -128,30 +131,47 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
     })
   })
 
-  it('una ruta /api desconocida da 404 en JSON (no el index.html)', async () => {
-    const { status, body } = await get('/api/no-existeix')
-    expect(status).toBe(404)
-    expect(body.error).toBe('no_encontrado')
+  it('una ruta /api desconocida da 404 en JSON (no el index.html), también las antiguas ya retiradas', async () => {
+    for (const ruta of ['/api/no-existeix', '/api/problemas', '/api/vocabulario']) {
+      const { status, body } = await get(ruta)
+      expect(status).toBe(404)
+      expect(body.error).toBe('no_encontrado')
+    }
+  })
+
+  it('sembrar rechaza un modo que apunta a un banco inexistente', async () => {
+    const roto = structuredClone(contenido)
+    roto.cursos[0].asignaturas[0].modos.push({
+      id: 'modo-roto', nombre: 'Roto', color: '#000', sombra: '#000', operaciones: ['problema'], banco: 'no-existeix',
+    })
+    const cliente = await pool.connect()
+    try {
+      await cliente.query('BEGIN')
+      await expect(sembrar(cliente, roto)).rejects.toThrow(/no-existeix/)
+    } finally {
+      await cliente.query('ROLLBACK')
+      cliente.release()
+    }
   })
 
   it('sembrar y migrar son idempotentes: repetirlos no crea ni duplica nada', async () => {
     expect(await ejecutarMigraciones()).toEqual([])
     const cliente = await pool.connect()
     try {
-      const resumen = await sembrar(cliente, datosIniciales())
+      const resumen = await sembrar(cliente, contenido)
       expect(resumen).toEqual({ cursos: 0, asignaturas: 0, modos: 0, bancos: 0, preguntas: 0 })
     } finally {
       cliente.release()
     }
     const { rows } = await pool.query('SELECT count(*)::int AS n FROM preguntas')
-    expect(rows[0].n).toBe(62 + 157 + 50)
+    expect(rows[0].n).toBe(contenido.bancos.reduce((n, b) => n + b.preguntas.length, 0))
   })
 
   it('sembrar no pisa lo que ya se ha editado', async () => {
     await pool.query("UPDATE modos SET nombre = 'Editat' WHERE slug = 'aritmetica'")
     const cliente = await pool.connect()
     try {
-      await sembrar(cliente, datosIniciales())
+      await sembrar(cliente, contenido)
     } finally {
       cliente.release()
     }

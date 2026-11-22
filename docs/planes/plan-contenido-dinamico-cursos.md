@@ -1,6 +1,6 @@
 # Contenido dinámico en BD + cursos + consola del profesorado + pantalla completa
 
-> **Vigente (2026-11-22).** Fases 0, 1 y 2 implementadas; el resto pendiente. Las decisiones marcadas con ❓ están pendientes de confirmar.
+> **Vigente (2026-11-22).** Fases 0 a 3 implementadas; el resto pendiente. Las decisiones marcadas con ❓ están pendientes de confirmar.
 > Sustituye en parte a `docs/plan-base-datos-usuarios.md`: aquel plan identificaba a cada alumno con nombre + PIN; ahora los alumnos **no se identifican**, así que la parte de usuarios/PIN queda descartada. De aquel plan se reutiliza la parte técnica de la BD (Supabase + `pg` + migraciones propias).
 
 ## 1. Objetivo
@@ -210,3 +210,12 @@ Sin BD todavía: los datos siguen en el código, pero ya con la estructura final
 - **API**: `GET /api/cursos`, `GET /api/cursos/:curso` (árbol), `GET /api/bancos/:banco/preguntas`. Los endpoints antiguos (`/api/problemas`, `/api/vocabulario`, `/api/gramatica`, `/api/medi`) se mantienen leyendo de la BD y devuelven exactamente lo mismo que los JSON (lo comprueba un test); se retiran en la fase 3.
 - **Dev = prod**: el plan gratuito de Supabase permite 2 proyectos (el otro es basquetstats), así que local y Railway usan la misma BD. Los tests usan el esquema `test` (variable `DB_SCHEMA`); a partir de la fase 5, lo que se cree para probar se deja inactivo.
 - **Conexión**: Session pooler (IPv4) con TLS; el `search_path` se fija como parámetro de inicio de cada conexión.
+
+## 14. Detalle de la fase 3 (frontend sobre la API) ✅ hecha
+
+- **Carga**: `frontend/src/logic/api.js` (`obtenerCursos`, `obtenerCurso`, `obtenerPreguntas`) con caché en memoria durante la visita (los errores no se cachean); hook `useApi` + componente `AmbDades` para "Carregant…", error con "Torna-ho a provar" y "no trobat" (404).
+- **Preguntas en forma genérica** (`enunciado`, `respuesta`, `opciones`, `alternativas`): `vocabulario.js` dejó `ingles`/`catalan`; los problemas convierten la respuesta a número. Sin capa de traducción del formato antiguo.
+- **Protección**: los tipos de ejercicio desconocidos de un modo se ignoran (`operacionesConocidas`); si no queda ninguno válido, el modo muestra "Aquest mode encara no està disponible." (importante cuando el árbol lo edite un profesor).
+- **Retirado**: datos de `cursos.js` (queda solo con búsquedas), los JSON de `backend/src/data/`, los endpoints `/api/problemas|vocabulario|gramatica|medi` y `legado.js`.
+- **Copia del contenido**: `backend/datos/contenido.json` (`make export-contenido`), fuente de `make seed` y de los tests del backend (que comprueban que sembrar + exportar es un viaje de ida y vuelta exacto). La fuente de verdad es la BD.
+- **e2e**: leen las respuestas correctas de la API y esperan a que el modo haya cargado antes de responder (`irAModo`); nuevos tests de tipo desconocido, API caída con reintento y curso inexistente.

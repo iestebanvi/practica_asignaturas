@@ -6,7 +6,7 @@ Web para que alumnos de primaria practiquen por curso, sin identificarse. La int
 
 Al terminar la partida (botón "Finalitza") se muestra un resumen con los puntos. "Per repassar" guarda los fallos en el navegador (`localStorage`), por curso.
 
-El contenido (cursos, asignaturas, modos y bancos de preguntas) está en una base de datos **Supabase** (Postgres) y lo sirve la API. El frontend todavía usa su copia en `frontend/src/logic/cursos.js` hasta la fase 3. El plan para hacerlo todo editable desde una consola del profesorado está en `docs/planes/plan-contenido-dinamico-cursos.md` (índice de la documentación en `CLAUDE.md`).
+Todo el contenido (cursos, asignaturas, modos y bancos de preguntas) está en una base de datos **Supabase** (Postgres) y la web lo lee de la API: cambiar algo en la BD se ve al recargar, sin tocar código. `make export-contenido` guarda una copia en `backend/datos/contenido.json` (commitéala de vez en cuando). El plan para hacerlo todo editable desde una consola del profesorado está en `docs/planes/plan-contenido-dinamico-cursos.md` (índice de la documentación en `CLAUDE.md`).
 
 ## Estructura
 
@@ -36,7 +36,7 @@ npm install --prefix frontend
 npm run dev         # backend en http://localhost:3100 + frontend en http://localhost:5180
 ```
 
-**Base de datos:** dev y producción comparten el mismo proyecto Supabase (el plan gratuito solo permite 2 proyectos). Las migraciones se aplican solas al arrancar el backend; `make seed` carga el contenido inicial del código y solo crea lo que falta (no pisa ediciones). Sin `DATABASE_URL` el backend no arranca.
+**Base de datos:** dev y producción comparten el mismo proyecto Supabase (el plan gratuito solo permite 2 proyectos). Las migraciones se aplican solas al arrancar el backend; `make seed` carga `backend/datos/contenido.json` y solo crea lo que falta (no pisa ediciones); `make export-contenido` hace el camino inverso (copia de seguridad). Sin `DATABASE_URL` el backend no arranca.
 
 También puedes arrancarlos por separado en dos terminales si lo prefieres:
 ```

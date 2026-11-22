@@ -1,24 +1,24 @@
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { test, expect } from '@playwright/test'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const bancoProblemas = JSON.parse(
-  readFileSync(
-    path.join(__dirname, '..', 'backend', 'src', 'data', 'problemas-6primaria.json'),
-    'utf-8',
-  ),
-)
-const respuestasProblemas = new Map(bancoProblemas.map((p) => [p.enunciado, p.respuesta]))
+// Las respuestas correctas se leen de la propia API (la BD), igual que la web.
+let respuestasProblemas = new Map()
+let bancoVocabulario = []
+let traduccionesVocabulario = new Map()
 
-const bancoVocabulario = JSON.parse(
-  readFileSync(
-    path.join(__dirname, '..', 'backend', 'src', 'data', 'vocabulario-ingles-6primaria.json'),
-    'utf-8',
-  ),
-)
-const traduccionesVocabulario = new Map(bancoVocabulario.map((p) => [p.ingles, p.catalan]))
+test.beforeAll(async ({ request }) => {
+  const preguntas = async (banco) => (await (await request.get(`/api/bancos/${banco}/preguntas`)).json()).preguntas
+  respuestasProblemas = new Map((await preguntas('problemes-6')).map((p) => [p.enunciado, Number(p.respuesta)]))
+  bancoVocabulario = await preguntas('vocabulari-angles-6')
+  traduccionesVocabulario = new Map(bancoVocabulario.map((p) => [p.enunciado, p.respuesta]))
+})
+
+// Entra en un modo y espera a que esté listo: ahora el árbol del curso y las
+// preguntas llegan de la API, así que hay un "Carregant…" previo durante el
+// cual todavía no hay ejercicio (ni aviso) en pantalla.
+async function irAModo(page, url) {
+  await page.goto(url)
+  await expect(page.locator('.zona-exercici, .practica-avis:not(:has-text("Carregant"))')).toBeVisible()
+}
 
 function respuestaCorrecta(enunciado) {
   if (respuestasProblemas.has(enunciado)) {
@@ -41,39 +41,39 @@ function puntosEsperados(enunciado) {
 }
 
 async function entrarEnAritmetica(page) {
-  await page.goto('/6-primaria/matematiques/aritmetica')
+  await irAModo(page, '/6-primaria/matematiques/aritmetica')
 }
 
 async function entrarEnProblemas(page) {
-  await page.goto('/6-primaria/matematiques/problemes')
+  await irAModo(page, '/6-primaria/matematiques/problemes')
 }
 
 async function entrarEnVocabulario(page) {
-  await page.goto('/6-primaria/angles/vocabulari')
+  await irAModo(page, '/6-primaria/angles/vocabulari')
 }
 
 async function entrarEnVocabularioEscrito(page) {
-  await page.goto('/6-primaria/angles/vocabulari-escrit')
+  await irAModo(page, '/6-primaria/angles/vocabulari-escrit')
 }
 
 async function entrarEnThereBe(page) {
-  await page.goto('/6-primaria/angles/there-be')
+  await irAModo(page, '/6-primaria/angles/there-be')
 }
 
 async function entrarEnPotencies(page) {
-  await page.goto('/6-primaria/matematiques/potencies')
+  await irAModo(page, '/6-primaria/matematiques/potencies')
 }
 
 async function entrarEnSumasRestas(page) {
-  await page.goto('/6-primaria/matematiques/sumes-restes')
+  await irAModo(page, '/6-primaria/matematiques/sumes-restes')
 }
 
 async function entrarEnMultiplicacionesDivisiones(page) {
-  await page.goto('/6-primaria/matematiques/multiplicacions-divisions')
+  await irAModo(page, '/6-primaria/matematiques/multiplicacions-divisions')
 }
 
 async function entrarEnPerimetrosAreas(page) {
-  await page.goto('/6-primaria/matematiques/perimetres-arees')
+  await irAModo(page, '/6-primaria/matematiques/perimetres-arees')
 }
 
 // El aria-label de la figura lleva las medidas ("Rectangle de 8 cm de base i
@@ -101,12 +101,12 @@ async function responderCualquierCosa(page) {
 }
 
 async function entrarEnGramatica(page) {
-  await page.goto('/6-primaria/angles/gramatica')
+  await irAModo(page, '/6-primaria/angles/gramatica')
 }
 
 // 1r de primària: modoId es el slug de la URL (sumes, restes, hores)
 async function entrarEnPeque(page, modoId) {
-  await page.goto(`/1-primaria/matematiques/${modoId}`)
+  await irAModo(page, `/1-primaria/matematiques/${modoId}`)
 }
 
 async function leerHoraCorrecta(page) {
@@ -228,6 +228,36 @@ test.describe('Practica Assignatures', () => {
     await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()
     await page.getByRole('link', { name: "Torna a l'inici" }).click()
     await expect(page.getByRole('link', { name: /6è de primària/ })).toBeVisible()
+  })
+
+  test('un modo con un tipo de ejercicio desconocido avisa en vez de quedarse en blanco', async ({ page }) => {
+    // Simula que en la BD alguien ha puesto un tipo que el código no conoce
+    await page.route('**/api/cursos/6-primaria', async (route) => {
+      const curso = await (await route.fetch()).json()
+      curso.asignaturas[0].modos.push({
+        id: 'mode-raro', nombre: 'Mode raro', color: '#000', sombra: '#000', operaciones: ['no-existeix'], banco: null,
+      })
+      await route.fulfill({ json: curso })
+    })
+    await page.goto('/6-primaria/matematiques/mode-raro')
+    await expect(page.getByText('Aquest mode encara no està disponible.')).toBeVisible()
+    await expect(page.getByRole('link', { name: '← Torna' })).toBeVisible()
+  })
+
+  test('si la API falla, se muestra un error con "Torna-ho a provar", que recupera la página', async ({ page }) => {
+    let fallar = true
+    await page.route('**/api/cursos', (route) => (fallar ? route.fulfill({ status: 500, json: {} }) : route.fallback()))
+    await page.goto('/')
+    await expect(page.getByText("No s'han pogut carregar les dades.")).toBeVisible()
+
+    fallar = false
+    await page.getByRole('button', { name: 'Torna-ho a provar' }).click()
+    await expect(page.getByRole('link', { name: /6è de primària/ })).toBeVisible()
+  })
+
+  test('un curso que no existe muestra "no trobat"', async ({ page }) => {
+    await page.goto('/9-primaria')
+    await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()
   })
 
   test('"Torna a jugar" empieza una partida nueva desde cero', async ({ page }) => {
@@ -506,12 +536,12 @@ test.describe('Practica Assignatures', () => {
     // Varias palabras inglesas pueden compartir traducción (p.ej. ABOUT y UPON
     // -> "sobre"): al escribir el inglés vale cualquiera de ellas.
     const entradas = pideIngles
-      ? bancoVocabulario.filter((p) => p.catalan === enunciado)
-      : bancoVocabulario.filter((p) => p.ingles === enunciado)
+      ? bancoVocabulario.filter((p) => p.respuesta === enunciado)
+      : bancoVocabulario.filter((p) => p.enunciado === enunciado)
     const entrada = entradas[0]
     const respuesta = pideIngles
-      ? primeraAlternativa(entrada.ingles).toLowerCase()
-      : primeraAlternativa(entrada.catalan).toUpperCase()
+      ? primeraAlternativa(entrada.enunciado).toLowerCase()
+      : primeraAlternativa(entrada.respuesta).toUpperCase()
 
     await page.locator('input[type="text"]').fill(respuesta)
     await page.getByRole('button', { name: 'Comprova' }).click()
@@ -522,7 +552,7 @@ test.describe('Practica Assignatures', () => {
     // aparte) y siempre dice el inglés, aunque esta vez tocara escribir catalán
     const voz = await page.evaluate(() => window.__vozDicha)
     expect(voz).toHaveLength(1)
-    expect(entradas.map((e) => e.ingles)).toContain(voz[0])
+    expect(entradas.map((e) => e.enunciado)).toContain(voz[0])
   })
 
   test('Vocabulario escrito: un fallo también se guarda en "Para repasar"', async ({ page }) => {

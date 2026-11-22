@@ -91,7 +91,7 @@ export function comprobarRespuesta(ejercicio, respuestaUsuario) {
 const PUNTOS_PROBLEMA = 20
 
 // Algunos tipos ('problema', 'vocabulario', 'gramatica') no se generan: se
-// eligen de un banco curado que llega del backend. Si el banco aún no ha
+// eligen de un banco de preguntas que llega de la BD (el banco del modo). Si el banco aún no ha
 // cargado (o todavía no tiene contenido), se descarta esa opción para no
 // bloquear el juego.
 const GENERADORES_DESDE_BANCO = {
@@ -100,6 +100,17 @@ const GENERADORES_DESDE_BANCO = {
   'vocabulario-escrito': generarVocabularioEscrito,
   gramatica: generarGramatica,
   'medi-pregunta': generarMedi,
+}
+
+// El árbol de modos llega de la BD (y lo podrá editar un profesor): un tipo
+// de ejercicio que este código no sabe generar se ignora en vez de romper la
+// pantalla.
+export function operacionesConocidas(operaciones) {
+  return operaciones.filter((op) => op in GENERADORES || op in GENERADORES_DESDE_BANCO)
+}
+
+export function usaBanco(operaciones) {
+  return operaciones.some((op) => op in GENERADORES_DESDE_BANCO)
 }
 
 export function elegirTipoOperacion(operaciones, banco = []) {
@@ -117,7 +128,8 @@ export function generarEjercicioDesdeBanco(bancoProblemas) {
   return {
     tipo: 'problema',
     enunciado: problema.enunciado,
-    respuesta: problema.respuesta,
+    // En la BD todas las respuestas son texto; las de problemas son números.
+    respuesta: Number(problema.respuesta),
     puntos: PUNTOS_PROBLEMA,
   }
 }

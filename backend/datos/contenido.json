@@ -1,0 +1,2697 @@
+{
+  "cursos": [
+    {
+      "id": "1-primaria",
+      "nombre": "1r de primària",
+      "icono": "🐣",
+      "color": "#ff8a65",
+      "sombra": "#d0530f",
+      "nivel": "facil",
+      "config": {
+        "celebracio": true,
+        "majuscules": true
+      },
+      "activo": true,
+      "asignaturas": [
+        {
+          "id": "matematiques",
+          "nombre": "Matemàtiques",
+          "icono": "🔢",
+          "color": "#4fc3f7",
+          "sombra": "#0288d1",
+          "activo": true,
+          "modos": [
+            {
+              "id": "sumes",
+              "nombre": "Sumes",
+              "color": "#ffca28",
+              "sombra": "#f57f17",
+              "operaciones": [
+                "suma"
+              ],
+              "banco": null,
+              "activo": true
+            },
+            {
+              "id": "restes",
+              "nombre": "Restes",
+              "color": "#7e57c2",
+              "sombra": "#4527a0",
+              "operaciones": [
+                "resta"
+              ],
+              "banco": null,
+              "activo": true
+            },
+            {
+              "id": "hores",
+              "nombre": "Hores",
+              "color": "#ec407a",
+              "sombra": "#ad1457",
+              "operaciones": [
+                "hora"
+              ],
+              "banco": null,
+              "activo": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6-primaria",
+      "nombre": "6è de primària",
+      "icono": "🚀",
+      "color": "#4fc3f7",
+      "sombra": "#0288d1",
+      "nivel": "medio",
+      "config": {
+        "celebracio": false,
+        "majuscules": false
+      },
+      "activo": true,
+      "asignaturas": [
+        {
+          "id": "matematiques",
+          "nombre": "Matemàtiques",
+          "icono": "🔢",
+          "color": "#4fc3f7",
+          "sombra": "#0288d1",
+          "activo": true,
+          "modos": [
+            {
+              "id": "aritmetica",
+              "nombre": "Aritmètica",
+              "color": "#ab47bc",
+              "sombra": "#7b1fa2",
+              "operaciones": [
+                "suma",
+                "resta",
+                "multiplicacion",
+                "division"
+              ],
+              "banco": null,
+              "activo": true
+            },
+            {
+              "id": "sumes-restes",
+              "nombre": "Sumes i restes",
+              "color": "#00acc1",
+              "sombra": "#00838f",
+              "operaciones": [
+                "suma",
+                "resta"
+              ],
+              "banco": null,
+              "activo": true
+            },
+            {
+              "id": "multiplicacions-divisions",
+              "nombre": "Multiplicacions i divisions",
+              "color": "#5e35b1",
+              "sombra": "#311b92",
+              "operaciones": [
+                "multiplicacion",
+                "division"
+              ],
+              "banco": null,
+              "activo": true
+            },
+            {
+              "id": "problemes",
+              "nombre": "Problemes",
+              "color": "#26a69a",
+              "sombra": "#00796b",
+              "operaciones": [
+                "problema"
+              ],
+              "banco": "problemes-6",
+              "activo": true
+            },
+            {
+              "id": "successions",
+              "nombre": "Successions",
+              "color": "#ef6c00",
+              "sombra": "#bf360c",
+              "operaciones": [
+                "sucesion"
+              ],
+              "banco": null,
+              "activo": true
+            },
+            {
+              "id": "estimacions",
+              "nombre": "Estimacions",
+              "color": "#6d4c41",
+              "sombra": "#3e2723",
+              "operaciones": [
+                "estimacion"
+              ],
+              "banco": null,
+              "activo": true
+            },
+            {
+              "id": "perimetres-arees",
+              "nombre": "Perímetres i àrees",
+              "color": "#43a047",
+              "sombra": "#1b5e20",
+              "operaciones": [
+                "perimetre",
+                "area",
+                "perimetre-area",
+                "costat-quadrat"
+              ],
+              "banco": null,
+              "activo": true
+            },
+            {
+              "id": "potencies",
+              "nombre": "Potències",
+              "color": "#00838f",
+              "sombra": "#005662",
+              "operaciones": [
+                "potencia-calcul",
+                "potencia-combinada",
+                "potencia-expressio",
+                "potencia-base10",
+                "potencia-imatge",
+                "potencia-consecutiva",
+                "potencia-serie",
+                "potencia-comparar",
+                "potencia-descomposicio"
+              ],
+              "banco": null,
+              "activo": true
+            }
+          ]
+        },
+        {
+          "id": "angles",
+          "nombre": "Anglès",
+          "icono": "🇬🇧",
+          "color": "#ef5350",
+          "sombra": "#c62828",
+          "activo": true,
+          "modos": [
+            {
+              "id": "vocabulari",
+              "nombre": "Vocabulari",
+              "color": "#3949ab",
+              "sombra": "#1a237e",
+              "operaciones": [
+                "vocabulario"
+              ],
+              "banco": "vocabulari-angles-6",
+              "activo": true
+            },
+            {
+              "id": "vocabulari-escrit",
+              "nombre": "Vocabulari escrit",
+              "color": "#00897b",
+              "sombra": "#00695c",
+              "operaciones": [
+                "vocabulario-escrito"
+              ],
+              "banco": "vocabulari-angles-6",
+              "activo": true
+            },
+            {
+              "id": "gramatica",
+              "nombre": "Gramàtica",
+              "color": "#fb8c00",
+              "sombra": "#e65100",
+              "operaciones": [
+                "gramatica"
+              ],
+              "banco": "gramatica-angles-6",
+              "activo": true
+            },
+            {
+              "id": "there-be",
+              "nombre": "There is / are · was / were",
+              "color": "#5e35b1",
+              "sombra": "#3f2380",
+              "operaciones": [
+                "there-be"
+              ],
+              "banco": null,
+              "activo": true
+            }
+          ]
+        },
+        {
+          "id": "medi",
+          "nombre": "Medi",
+          "icono": "🌋",
+          "color": "#8d6e63",
+          "sombra": "#4e342e",
+          "activo": true,
+          "modos": [
+            {
+              "id": "canvis-relleu",
+              "nombre": "Canvis en el relleu",
+              "color": "#ff7043",
+              "sombra": "#bf360c",
+              "operaciones": [
+                "medi-pregunta"
+              ],
+              "banco": "medi-canvis-relleu-6",
+              "activo": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "bancos": [
+    {
+      "slug": "gramatica-angles-6",
+      "nombre": "Gramàtica anglès (6è)",
+      "formato": "opcio_multiple",
+      "preguntas": []
+    },
+    {
+      "slug": "medi-canvis-relleu-6",
+      "nombre": "Medi: canvis en el relleu (6è)",
+      "formato": "opcio_multiple",
+      "preguntas": [
+        {
+          "orden": 1,
+          "enunciado": "Quina capa de la Terra és la gran massa rocosa compacta i arrodonida?",
+          "respuesta": "Geosfera",
+          "opciones": [
+            "Geosfera",
+            "Hidrosfera",
+            "Atmosfera",
+            "Astenosfera"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 2,
+          "enunciado": "Quina capa de la Terra està formada per l'aigua líquida (mars, oceans, llacs i rius)?",
+          "respuesta": "Hidrosfera",
+          "opciones": [
+            "Hidrosfera",
+            "Geosfera",
+            "Atmosfera",
+            "Astenosfera"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 3,
+          "enunciado": "Quina capa de la Terra és la capa de gasos que l'envolta?",
+          "respuesta": "Atmosfera",
+          "opciones": [
+            "Atmosfera",
+            "Hidrosfera",
+            "Geosfera",
+            "Litosfera"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 4,
+          "enunciado": "Aproximadament, quants quilòmetres de diàmetre té la geosfera?",
+          "respuesta": "13.000 km",
+          "opciones": [
+            "13.000 km",
+            "4 km",
+            "5.000 km",
+            "100 km"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 5,
+          "enunciado": "De què estan formades les roques?",
+          "respuesta": "De minerals",
+          "opciones": [
+            "De minerals",
+            "De magma",
+            "De lava",
+            "De sòl"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 6,
+          "enunciado": "Quins tres minerals formen el granit?",
+          "respuesta": "Quars, feldspat i mica",
+          "opciones": [
+            "Quars, feldspat i mica",
+            "Calcita, quars i lava",
+            "Magma, feldspat i sorra",
+            "Mica, calcita i granit"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 7,
+          "enunciado": "Quina roca està formada per un sol mineral, la calcita?",
+          "respuesta": "La calcària",
+          "opciones": [
+            "La calcària",
+            "El granit",
+            "El magma",
+            "La lava"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 8,
+          "enunciado": "Aproximadament, a quina temperatura arriba el centre de la Terra?",
+          "respuesta": "5.000 ºC",
+          "opciones": [
+            "5.000 ºC",
+            "500 ºC",
+            "13.000 ºC",
+            "100 ºC"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 9,
+          "enunciado": "Com s'anomenen les roques foses que hi ha a l'interior de la Terra?",
+          "respuesta": "Magma",
+          "opciones": [
+            "Magma",
+            "Lava",
+            "Mica",
+            "Granit"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 10,
+          "enunciado": "Com s'anomena el magma quan surt a l'exterior en una erupció?",
+          "respuesta": "Lava",
+          "opciones": [
+            "Lava",
+            "Magma",
+            "Cendra",
+            "Roca"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 11,
+          "enunciado": "Quins agents geològics procedeixen de l'interior de la Terra?",
+          "respuesta": "Els agents geològics interns",
+          "opciones": [
+            "Els agents geològics interns",
+            "Els agents geològics externs",
+            "L'aigua i el vent",
+            "Els éssers vius"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 12,
+          "enunciado": "Quins agents geològics tenen el seu origen en l'energia del Sol?",
+          "respuesta": "Els agents geològics externs",
+          "opciones": [
+            "Els agents geològics externs",
+            "Els agents geològics interns",
+            "El magma",
+            "La geosfera"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 13,
+          "enunciado": "Quina és la fase en què es trenquen o alteren les roques per la pluja o el vent?",
+          "respuesta": "Meteorització",
+          "opciones": [
+            "Meteorització",
+            "Erosió",
+            "Transport",
+            "Sedimentació"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 14,
+          "enunciado": "Quina fase es produeix quan els fragments de roca són arrossegats per l'aigua o el vent?",
+          "respuesta": "Erosió",
+          "opciones": [
+            "Erosió",
+            "Meteorització",
+            "Transport",
+            "Sedimentació"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 15,
+          "enunciado": "Quina fase consisteix a dipositar els materials que l'aigua, el vent o el gel han arrossegat?",
+          "respuesta": "Sedimentació",
+          "opciones": [
+            "Sedimentació",
+            "Erosió",
+            "Transport",
+            "Meteorització"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 16,
+          "enunciado": "Quin és el principal agent geològic extern?",
+          "respuesta": "L'aigua",
+          "opciones": [
+            "L'aigua",
+            "El vent",
+            "La temperatura",
+            "Els éssers vius"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 17,
+          "enunciado": "Com es diu el tram d'un riu on l'aigua baixa de forma ràpida i violenta?",
+          "respuesta": "Curs alt",
+          "opciones": [
+            "Curs alt",
+            "Curs mitjà",
+            "Curs baix",
+            "Desembocadura"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 18,
+          "enunciado": "Com es diu el tram final d'un riu, on el terreny és molt pla i l'aigua circula lentament?",
+          "respuesta": "Curs baix",
+          "opciones": [
+            "Curs baix",
+            "Curs alt",
+            "Curs mitjà",
+            "Naixement"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 19,
+          "enunciado": "Com s'anomena el fenomen que provoca el vent quan s'emporta la capa de sòl d'un terreny?",
+          "respuesta": "La desertització",
+          "opciones": [
+            "La desertització",
+            "La sedimentació",
+            "L'erupció volcànica",
+            "El terratrèmol"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 20,
+          "enunciado": "Què els passa a les roques quan les temperatures pugen?",
+          "respuesta": "Es dilaten",
+          "opciones": [
+            "Es dilaten",
+            "Es contrauen",
+            "Es gelen",
+            "Es fonen"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 21,
+          "enunciado": "Què provoca que l'aigua gelada dins les esquerdes acabi trencant les roques?",
+          "respuesta": "Augmenta de volum en gelar-se",
+          "opciones": [
+            "Augmenta de volum en gelar-se",
+            "Disminueix de volum",
+            "S'evapora",
+            "Es converteix en vapor"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 22,
+          "enunciado": "Quins éssers vius erosionen la roca mentre, alhora, hi formen una fina capa de sòl?",
+          "respuesta": "Els líquens",
+          "opciones": [
+            "Els líquens",
+            "Els peixos",
+            "Els ocells",
+            "Els núvols"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 23,
+          "enunciado": "Quines activitats humanes contribueixen a erosionar el terreny?",
+          "respuesta": "Llaurar els camps, construir carreteres i excavar túnels",
+          "opciones": [
+            "Llaurar els camps, construir carreteres i excavar túnels",
+            "Només navegar per internet",
+            "Només dormir",
+            "Només llegir llibres"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 24,
+          "enunciado": "Què són les plaques tectòniques (litosfèriques)?",
+          "respuesta": "Les parts en què està dividida la part externa de la Terra",
+          "opciones": [
+            "Les parts en què està dividida la part externa de la Terra",
+            "Els minerals del granit",
+            "Les capes de l'atmosfera",
+            "Els tipus de volcans"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 25,
+          "enunciado": "Què passa a les zones convergents, on les plaques xoquen?",
+          "respuesta": "Es formen serralades i es poden produir erupcions volcàniques",
+          "opciones": [
+            "Es formen serralades i es poden produir erupcions volcàniques",
+            "Les plaques se separen",
+            "Res, les plaques no es mouen",
+            "Es forma una dorsal oceànica"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 26,
+          "enunciado": "Què passa a les zones divergents, on les plaques se separen?",
+          "respuesta": "Surt magma del mantell i es formen dorsals oceàniques",
+          "opciones": [
+            "Surt magma del mantell i es formen dorsals oceàniques",
+            "Es formen grans serralades per xoc",
+            "Les plaques llisquen lateralment",
+            "No passa res"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 27,
+          "enunciado": "Què passa a les zones transformadores?",
+          "respuesta": "Una placa llisca lateralment contra l'altra i es poden produir terratrèmols",
+          "opciones": [
+            "Una placa llisca lateralment contra l'altra i es poden produir terratrèmols",
+            "Es formen volcans sempre",
+            "Les plaques s'enfonsen una sota l'altra",
+            "Es formen dorsals oceàniques"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 28,
+          "enunciado": "Quines serralades s'han format pel xoc de plaques tectòniques?",
+          "respuesta": "L'Himàlaia, els Andes i els Pirineus",
+          "opciones": [
+            "L'Himàlaia, els Andes i els Pirineus",
+            "Els Alps, el Teide i el Vesuvi",
+            "Les illes Canàries",
+            "Les illes Balears"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 29,
+          "enunciado": "On es localitzen principalment els volcans?",
+          "respuesta": "A les vores de les plaques litosfèriques",
+          "opciones": [
+            "A les vores de les plaques litosfèriques",
+            "Només als oceans",
+            "Només als deserts",
+            "Al centre dels continents"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 30,
+          "enunciado": "Què és un terratrèmol o sisme?",
+          "respuesta": "Una sacsejada brusca de l'escorça terrestre",
+          "opciones": [
+            "Una sacsejada brusca de l'escorça terrestre",
+            "Una erupció de lava",
+            "Un canvi de temperatura",
+            "Un tipus de roca"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 31,
+          "enunciado": "Amb quin aparell es detecten els terratrèmols?",
+          "respuesta": "El sismògraf",
+          "opciones": [
+            "El sismògraf",
+            "El termòmetre",
+            "El baròmetre",
+            "El telescopi"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 32,
+          "enunciado": "Com s'anomena el punt de l'interior de la Terra on es produeix el trencament de les roques en un terratrèmol?",
+          "respuesta": "El focus",
+          "opciones": [
+            "El focus",
+            "L'epicentre",
+            "El cràter",
+            "La dorsal"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 33,
+          "enunciado": "Com s'anomena el punt de la superfície situat just damunt del focus d'un terratrèmol?",
+          "respuesta": "L'epicentre",
+          "opciones": [
+            "L'epicentre",
+            "El focus",
+            "El cràter",
+            "La falla"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 34,
+          "enunciado": "Com es diu el punt on neix un riu, a la muntanya?",
+          "respuesta": "Naixement",
+          "opciones": [
+            "Naixement",
+            "Desembocadura",
+            "Delta",
+            "Curs baix"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 35,
+          "enunciado": "Com es diu el punt on un riu desemboca al mar?",
+          "respuesta": "Desembocadura",
+          "opciones": [
+            "Desembocadura",
+            "Naixement",
+            "Curs alt",
+            "Afluent"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 36,
+          "enunciado": "Com es diuen les corbes que forma un riu al seu curs baix?",
+          "respuesta": "Meandres",
+          "opciones": [
+            "Meandres",
+            "Cascades",
+            "Afluents",
+            "Embassaments"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 37,
+          "enunciado": "Com es diu un riu petit que desemboca en un altre de més gran?",
+          "respuesta": "Afluent",
+          "opciones": [
+            "Afluent",
+            "Naixement",
+            "Delta",
+            "Meandre"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 38,
+          "enunciado": "Com es diu la construcció que reté l'aigua d'un riu i forma un llac artificial?",
+          "respuesta": "Embassament",
+          "opciones": [
+            "Embassament",
+            "Delta",
+            "Dorsal",
+            "Falla"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 39,
+          "enunciado": "Com es diu l'acumulació de sediments que un riu forma a la desembocadura?",
+          "respuesta": "Delta",
+          "opciones": [
+            "Delta",
+            "Meandre",
+            "Embassament",
+            "Cràter"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 40,
+          "enunciado": "En quin tram d'un riu dominen alhora l'erosió, el transport i la sedimentació?",
+          "respuesta": "Curs mitjà",
+          "opciones": [
+            "Curs mitjà",
+            "Curs alt",
+            "Curs baix",
+            "Naixement"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 41,
+          "enunciado": "Com es diuen les roques que el vent erosiona més per la base que per la part superior?",
+          "respuesta": "Roques en forma de bolet",
+          "opciones": [
+            "Roques en forma de bolet",
+            "Roques esfèriques",
+            "Roques planes",
+            "Estalactites"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 42,
+          "enunciado": "De què depèn la intensitat de l'erosió, a més dels agents geològics externs?",
+          "respuesta": "De la duresa dels materials",
+          "opciones": [
+            "De la duresa dels materials",
+            "Del color de les roques",
+            "De la mida dels núvols",
+            "Del nombre d'animals"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 43,
+          "enunciado": "Com s'anomenen els replecs que es formen a les roques quan xoquen les plaques?",
+          "respuesta": "Plecs",
+          "opciones": [
+            "Plecs",
+            "Falles",
+            "Dorsals",
+            "Rifts"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 44,
+          "enunciado": "Com s'anomenen les roques que es trenquen (en lloc de rebregar-se) pel xoc de plaques?",
+          "respuesta": "Falles",
+          "opciones": [
+            "Falles",
+            "Plecs",
+            "Dorsals",
+            "Cràters"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 45,
+          "enunciado": "Com es diu la serralada submarina que es forma quan les plaques se separen sota l'oceà?",
+          "respuesta": "Dorsal oceànica",
+          "opciones": [
+            "Dorsal oceànica",
+            "Falla",
+            "Con volcànic",
+            "Delta"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 46,
+          "enunciado": "Com s'anomenen els volcans que es formen allà on dues plaques convergeixen?",
+          "respuesta": "Arc volcànic",
+          "opciones": [
+            "Arc volcànic",
+            "Dorsal oceànica",
+            "Rift en vall",
+            "Falla"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 47,
+          "enunciado": "Com s'anomena la vall que es forma quan dues plaques divergeixen dins d'un continent?",
+          "respuesta": "Rift en vall",
+          "opciones": [
+            "Rift en vall",
+            "Arc volcànic",
+            "Delta",
+            "Con volcànic"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 48,
+          "enunciado": "Com s'anomena l'orifici de sortida d'un volcà, on s'acumulen la lava i els materials expel·lits?",
+          "respuesta": "Cràter",
+          "opciones": [
+            "Cràter",
+            "Xemeneia volcànica",
+            "Con volcànic",
+            "Magma"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 49,
+          "enunciado": "Com s'anomena el conducte pel qual puja el magma des de l'interior fins al cràter d'un volcà?",
+          "respuesta": "Xemeneia volcànica",
+          "opciones": [
+            "Xemeneia volcànica",
+            "Cràter",
+            "Con volcànic",
+            "Falla"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 50,
+          "enunciado": "Com es diuen les vibracions que es propaguen des del focus d'un terratrèmol en totes direccions?",
+          "respuesta": "Ones sísmiques",
+          "opciones": [
+            "Ones sísmiques",
+            "Dorsals",
+            "Falles",
+            "Plecs"
+          ],
+          "alternativas": null,
+          "activo": true
+        }
+      ]
+    },
+    {
+      "slug": "problemes-6",
+      "nombre": "Problemes (6è)",
+      "formato": "numerica",
+      "preguntas": [
+        {
+          "orden": 1,
+          "enunciado": "María tiene 24 caramelos y quiere repartirlos a partes iguales entre sus 4 amigas. ¿Cuántos caramelos recibe cada una?",
+          "respuesta": "6",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 2,
+          "enunciado": "En un autobús hay 3 filas de 8 asientos y en otro autobús hay 5 filas de 6 asientos. Si ambos van completamente llenos, ¿cuántos pasajeros hay en total?",
+          "respuesta": "54",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 3,
+          "enunciado": "Pedro ahorra 15 euros cada semana. ¿Cuánto habrá ahorrado después de 6 semanas?",
+          "respuesta": "90",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 4,
+          "enunciado": "Una tienda tenía 150 lápices. Vendió 45 el lunes y 38 el martes. ¿Cuántos lápices le quedan?",
+          "respuesta": "67",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 5,
+          "enunciado": "Un equipo de fútbol ha marcado 4 goles en cada uno de los 7 partidos que ha jugado. ¿Cuántos goles ha marcado en total?",
+          "respuesta": "28",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 6,
+          "enunciado": "Laura compra 3 paquetes de galletas con 12 galletas cada uno y las reparte entre sus 6 primos a partes iguales. ¿Cuántas galletas recibe cada primo?",
+          "respuesta": "6",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 7,
+          "enunciado": "Un tren sale de la estación con 120 pasajeros. En la primera parada bajan 35 y suben 20. ¿Cuántos pasajeros hay en el tren después de la parada?",
+          "respuesta": "105",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 8,
+          "enunciado": "Ana tiene 3 cajas con 25 canicas cada una. Si regala 40 canicas a su hermano, ¿cuántas canicas le quedan?",
+          "respuesta": "35",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 9,
+          "enunciado": "Un cine tiene 18 filas con 15 butacas cada una. Si se han vendido 200 entradas, ¿cuántas butacas quedan libres?",
+          "respuesta": "70",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 10,
+          "enunciado": "Carlos reparte 96 cromos entre él y sus 3 hermanos a partes iguales. ¿Cuántos cromos recibe cada uno?",
+          "respuesta": "24",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 11,
+          "enunciado": "En una biblioteca hay 12 estanterías con 30 libros cada una. Si retiran 85 libros para donarlos, ¿cuántos libros quedan?",
+          "respuesta": "275",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 12,
+          "enunciado": "Un panadero hace 8 hornadas de 24 panes cada una. Si vende 150 panes, ¿cuántos panes le quedan?",
+          "respuesta": "42",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 13,
+          "enunciado": "Un jardinero planta 6 filas de 9 rosales cada una. ¿Cuántos rosales ha plantado en total?",
+          "respuesta": "54",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 14,
+          "enunciado": "María tiene 245 cromos y su amiga le regala 78 más. Si después reparte 60 entre sus primos, ¿cuántos cromos le quedan?",
+          "respuesta": "263",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 15,
+          "enunciado": "Un ascensor sube 8 pisos y luego baja 3. Si empezó en la planta baja (piso 0), ¿en qué piso está ahora?",
+          "respuesta": "5",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 16,
+          "enunciado": "Un granjero tiene 7 cajas con 48 huevos cada una. ¿Cuántos huevos tiene en total?",
+          "respuesta": "336",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 17,
+          "enunciado": "En un teatro hay 25 filas con 20 butacas cada una. Si hoy han venido 420 personas, ¿cuántas butacas han quedado vacías?",
+          "respuesta": "80",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 18,
+          "enunciado": "Sara ahorra 8 euros a la semana. ¿Cuántas semanas necesita para ahorrar 96 euros?",
+          "respuesta": "12",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 19,
+          "enunciado": "Un tren recorre 60 kilómetros cada hora. ¿Cuántos kilómetros recorrerá en 5 horas?",
+          "respuesta": "300",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 20,
+          "enunciado": "Un cocinero necesita 3 huevos para cada tarta. Si tiene 84 huevos, ¿cuántas tartas puede hacer?",
+          "respuesta": "28",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 21,
+          "enunciado": "Un equipo de baloncesto ha anotado 82 puntos en el primer partido y 15 puntos menos en el segundo. ¿Cuántos puntos anotó en el segundo partido?",
+          "respuesta": "67",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 22,
+          "enunciado": "Una fábrica produce 144 juguetes al día repartidos en 4 turnos iguales. ¿Cuántos juguetes produce cada turno?",
+          "respuesta": "36",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 23,
+          "enunciado": "Javier tiene 3 álbumes con 60 cromos cada uno. Si le faltan 45 cromos para completarlos todos, ¿cuántos cromos tiene ya pegados?",
+          "respuesta": "135",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 24,
+          "enunciado": "Un supermercado recibe 18 cajas de manzanas con 25 manzanas cada una. Si vende 300 manzanas, ¿cuántas le quedan?",
+          "respuesta": "150",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 25,
+          "enunciado": "Un ciclista recorre 15 kilómetros cada día. ¿Cuántos kilómetros recorrerá en 2 semanas (14 días)?",
+          "respuesta": "210",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 26,
+          "enunciado": "En una clase de 28 alumnos, 16 son chicas. ¿Cuántos chicos hay?",
+          "respuesta": "12",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 27,
+          "enunciado": "Un panadero reparte 360 panecillos entre 8 tiendas a partes iguales. ¿Cuántos panecillos recibe cada tienda?",
+          "respuesta": "45",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 28,
+          "enunciado": "Lucía compra un libro de 12 euros y un cuaderno de 3 euros. Si paga con un billete de 20 euros, ¿cuánto le devuelven?",
+          "respuesta": "5",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 29,
+          "enunciado": "Un estadio tiene 40 filas con 35 asientos cada una. ¿Cuántos asientos tiene en total?",
+          "respuesta": "1400",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 30,
+          "enunciado": "Un camión de reparto lleva 250 paquetes. Si entrega 90 por la mañana y 85 por la tarde, ¿cuántos paquetes le quedan por entregar?",
+          "respuesta": "75",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 31,
+          "enunciado": "Cada caja de rotuladores trae 24 unidades. Si un colegio compra 15 cajas, ¿cuántos rotuladores tiene en total?",
+          "respuesta": "360",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 32,
+          "enunciado": "Un cine reparte 168 entradas gratis entre 7 colegios a partes iguales. ¿Cuántas entradas recibe cada colegio?",
+          "respuesta": "24",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 33,
+          "enunciado": "Marta tiene 9 años más que su hermano. Si su hermano tiene 6 años, ¿cuántos años tiene Marta?",
+          "respuesta": "15",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 34,
+          "enunciado": "Un huerto tiene 12 filas de tomateras con 14 plantas cada fila. ¿Cuántas tomateras hay en total?",
+          "respuesta": "168",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 35,
+          "enunciado": "En una biblioteca prestan 235 libros el lunes y 187 el martes. ¿Cuántos libros han prestado entre los dos días?",
+          "respuesta": "422",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 36,
+          "enunciado": "Un autobús escolar hace 4 viajes al día llevando 42 alumnos cada viaje. ¿Cuántos alumnos transporta en total al día?",
+          "respuesta": "168",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 37,
+          "enunciado": "Pedro tenía 500 euros ahorrados. Se compra una bicicleta de 180 euros y un casco de 45 euros. ¿Cuánto dinero le queda?",
+          "respuesta": "275",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 38,
+          "enunciado": "Un almacén reparte placas de chocolate en cajas de 6 unidades. Si tiene 132 placas, ¿cuántas cajas completa?",
+          "respuesta": "22",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 39,
+          "enunciado": "Una piscina municipal recibe 85 visitantes el sábado y el doble el domingo. ¿Cuántos visitantes recibió el domingo?",
+          "respuesta": "170",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 40,
+          "enunciado": "Un tren lleva 6 vagones con 64 asientos cada uno. Si viajan 350 pasajeros, ¿cuántos asientos quedan libres?",
+          "respuesta": "34",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 41,
+          "enunciado": "Ana reparte 96 globos entre 4 fiestas de cumpleaños a partes iguales. ¿Cuántos globos hay en cada fiesta?",
+          "respuesta": "24",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 42,
+          "enunciado": "Un frutero compra 8 cajas de naranjas con 30 naranjas cada una. Si se estropean 45, ¿cuántas naranjas puede vender?",
+          "respuesta": "195",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 43,
+          "enunciado": "Un equipo de fútbol ha jugado 34 partidos, ha ganado 20 y ha empatado 8. ¿Cuántos partidos ha perdido?",
+          "respuesta": "6",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 44,
+          "enunciado": "Una tienda de deportes tiene 15 estanterías con 24 balones cada una. ¿Cuántos balones tiene en total?",
+          "respuesta": "360",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 45,
+          "enunciado": "Un panadero hace 9 hornadas de 45 magdalenas cada una. Si regala 60, ¿cuántas magdalenas le quedan para vender?",
+          "respuesta": "345",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 46,
+          "enunciado": "En un zoo hay 3 veces más pájaros que leones. Si hay 8 leones, ¿cuántos pájaros hay?",
+          "respuesta": "24",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 47,
+          "enunciado": "Una empresa de autobuses tiene 12 autobuses con 52 plazas cada uno. ¿Cuántas plazas tiene en total la flota?",
+          "respuesta": "624",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 48,
+          "enunciado": "Diego tiene 3 cajas de canicas con 84 canicas cada una. Las reparte entre sus 4 amigos a partes iguales. ¿Cuántas canicas recibe cada amigo?",
+          "respuesta": "63",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 49,
+          "enunciado": "Una granja produce 540 litros de leche al día repartidos en 9 bidones iguales. ¿Cuántos litros lleva cada bidón?",
+          "respuesta": "60",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 50,
+          "enunciado": "Un colegio organiza una excursión con 210 alumnos en autobuses de 35 plazas cada uno. ¿Cuántos autobuses necesitan?",
+          "respuesta": "6",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 51,
+          "enunciado": "Un carpintero corta una tabla de 240 cm en trozos de 15 cm. ¿Cuántos trozos obtiene?",
+          "respuesta": "16",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 52,
+          "enunciado": "Rosa compra 4 camisetas a 12 euros cada una y le hacen un descuento total de 8 euros. ¿Cuánto paga en total?",
+          "respuesta": "40",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 53,
+          "enunciado": "Un estadio de atletismo tiene una pista de 400 metros. Un corredor da 6 vueltas completas. ¿Cuántos metros ha recorrido?",
+          "respuesta": "2400",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 54,
+          "enunciado": "Una cooperativa recoge 1250 kilos de manzanas y los reparte en cajas de 25 kilos. ¿Cuántas cajas necesita?",
+          "respuesta": "50",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 55,
+          "enunciado": "Un cine tiene 3 salas. Cada sala tiene 18 filas de 12 butacas. ¿Cuántas butacas tiene el cine en total?",
+          "respuesta": "648",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 56,
+          "enunciado": "En una granja hay 45 vacas y el doble de ovejas que de vacas. ¿Cuántas ovejas hay?",
+          "respuesta": "90",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 57,
+          "enunciado": "Un tren sale con 480 pasajeros. En la primera estación bajan 125 y suben 60. ¿Cuántos pasajeros hay ahora?",
+          "respuesta": "415",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 58,
+          "enunciado": "Una fábrica de galletas envasa 18 galletas por paquete. Si produce 900 galletas, ¿cuántos paquetes completos puede hacer?",
+          "respuesta": "50",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 59,
+          "enunciado": "Carlos ha leído 45 páginas cada día durante 6 días. Si el libro tiene 300 páginas, ¿cuántas páginas le quedan por leer?",
+          "respuesta": "30",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 60,
+          "enunciado": "Un parque de atracciones vende 3 veces más entradas el sábado que el viernes. Si el viernes vendió 140 entradas, ¿cuántas vendió el sábado?",
+          "respuesta": "420",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 61,
+          "enunciado": "Un agricultor reparte 720 kilos de patatas entre 8 camiones a partes iguales. ¿Cuántos kilos lleva cada camión?",
+          "respuesta": "90",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 62,
+          "enunciado": "Una editorial imprime 25 libros por caja. Si necesita enviar 675 libros, ¿cuántas cajas completas puede llenar?",
+          "respuesta": "27",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        }
+      ]
+    },
+    {
+      "slug": "vocabulari-angles-6",
+      "nombre": "Vocabulari anglès (6è)",
+      "formato": "traduccio",
+      "preguntas": [
+        {
+          "orden": 1,
+          "enunciado": "A",
+          "respuesta": "un/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 2,
+          "enunciado": "A LOT OF/LOTS OF",
+          "respuesta": "molt/a, molts/es",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 3,
+          "enunciado": "AFTER",
+          "respuesta": "després",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 4,
+          "enunciado": "AFTERNOON",
+          "respuesta": "tarda",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 5,
+          "enunciado": "AGAIN",
+          "respuesta": "una altra vegada",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 6,
+          "enunciado": "ALSO, TOO",
+          "respuesta": "també",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 7,
+          "enunciado": "ALWAYS",
+          "respuesta": "sempre",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 8,
+          "enunciado": "BE (TO)",
+          "respuesta": "ser o estar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 9,
+          "enunciado": "BECAUSE",
+          "respuesta": "perquè",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 10,
+          "enunciado": "BEFORE",
+          "respuesta": "abans",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 11,
+          "enunciado": "BEHIND",
+          "respuesta": "darrera",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 12,
+          "enunciado": "BELONG (TO)",
+          "respuesta": "pertànyer a...",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 13,
+          "enunciado": "BETTER",
+          "respuesta": "millor",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 14,
+          "enunciado": "BREAKFAST",
+          "respuesta": "esmorzar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 15,
+          "enunciado": "BUT",
+          "respuesta": "però",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 16,
+          "enunciado": "BUY (TO)",
+          "respuesta": "comprar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 17,
+          "enunciado": "CALL (TO)",
+          "respuesta": "trucar, cridar algú",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 18,
+          "enunciado": "CALLED",
+          "respuesta": "anomenat/da",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 19,
+          "enunciado": "CAN (TO)",
+          "respuesta": "poder",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 20,
+          "enunciado": "CHURCH",
+          "respuesta": "església",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 21,
+          "enunciado": "COME (TO)",
+          "respuesta": "venir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 22,
+          "enunciado": "COST (TO)",
+          "respuesta": "costar, valer",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 23,
+          "enunciado": "DELAYED",
+          "respuesta": "amb retard",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 24,
+          "enunciado": "DINNER",
+          "respuesta": "sopar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 25,
+          "enunciado": "DO (TO)",
+          "respuesta": "fer",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 26,
+          "enunciado": "DOWNSTAIRS",
+          "respuesta": "escales avall",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 27,
+          "enunciado": "DRAW (TO)",
+          "respuesta": "dibuixar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 28,
+          "enunciado": "EARLY",
+          "respuesta": "d'hora",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 29,
+          "enunciado": "EASY",
+          "respuesta": "fàcil",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 30,
+          "enunciado": "EVEN",
+          "respuesta": "inclús, fins i tot",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 31,
+          "enunciado": "EVENING",
+          "respuesta": "vespre",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 32,
+          "enunciado": "EVERY",
+          "respuesta": "cada",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 33,
+          "enunciado": "EVERYBODY",
+          "respuesta": "tothom",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 34,
+          "enunciado": "FEEL (TO)",
+          "respuesta": "sentir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 35,
+          "enunciado": "FIND (TO)",
+          "respuesta": "trobar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 36,
+          "enunciado": "FROM",
+          "respuesta": "des de",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 37,
+          "enunciado": "GET (TO)",
+          "respuesta": "aconseguir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 38,
+          "enunciado": "GET INTO A CAR (TO)",
+          "respuesta": "pujar al cotxe",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 39,
+          "enunciado": "GET OFF A TRAIN (TO)",
+          "respuesta": "baixar d'un tren",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 40,
+          "enunciado": "GET ON A TRAIN (TO)",
+          "respuesta": "pujar al tren",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 41,
+          "enunciado": "GET OUT OF A CAR (TO)",
+          "respuesta": "baixar d'un cotxe",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 42,
+          "enunciado": "GO BY PLANE (TO)",
+          "respuesta": "anar en avió...",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 43,
+          "enunciado": "GO ON FOOT (TO)",
+          "respuesta": "anar caminant",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 44,
+          "enunciado": "GO SHOPPING",
+          "respuesta": "anar de compres",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 45,
+          "enunciado": "HAVE GOT (TO)",
+          "respuesta": "tenir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 46,
+          "enunciado": "HERE",
+          "respuesta": "aquí",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 47,
+          "enunciado": "HIRE (TO)",
+          "respuesta": "llogar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 48,
+          "enunciado": "HOW MANY?",
+          "respuesta": "quants/es?",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 49,
+          "enunciado": "HOW MUCH...?",
+          "respuesta": "quant...?",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 50,
+          "enunciado": "IF",
+          "respuesta": "si...",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 51,
+          "enunciado": "INDOORS",
+          "respuesta": "interior",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 52,
+          "enunciado": "KNOW (TO)",
+          "respuesta": "saber o conèixer",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 53,
+          "enunciado": "LATE",
+          "respuesta": "tard",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 54,
+          "enunciado": "LEAVE (TO)",
+          "respuesta": "anar-se'n",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 55,
+          "enunciado": "LEARN (TO)",
+          "respuesta": "aprendre",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 56,
+          "enunciado": "LET'S GO",
+          "respuesta": "anem!!!",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 57,
+          "enunciado": "LOOK AT (TO)",
+          "respuesta": "mirar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 58,
+          "enunciado": "LOOK FOR (TO)",
+          "respuesta": "buscar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 59,
+          "enunciado": "LUNCH",
+          "respuesta": "dinar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 60,
+          "enunciado": "MAKE (TO)",
+          "respuesta": "fer, fabricar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 61,
+          "enunciado": "MONTH",
+          "respuesta": "mes",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 62,
+          "enunciado": "MAYBE/PERHAPS",
+          "respuesta": "potser",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 63,
+          "enunciado": "MORNING",
+          "respuesta": "matí",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 64,
+          "enunciado": "MOST",
+          "respuesta": "la majoria",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 65,
+          "enunciado": "NEAR",
+          "respuesta": "a prop",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 66,
+          "enunciado": "NEED (TO)",
+          "respuesta": "necessitar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 67,
+          "enunciado": "NEVER",
+          "respuesta": "mai",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 68,
+          "enunciado": "NOBODY",
+          "respuesta": "ningú",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 69,
+          "enunciado": "NOW",
+          "respuesta": "ara",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 70,
+          "enunciado": "OF",
+          "respuesta": "de",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 71,
+          "enunciado": "OF COURSE",
+          "respuesta": "i tant!",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 72,
+          "enunciado": "ONCE",
+          "respuesta": "una vegada",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 73,
+          "enunciado": "ONLY",
+          "respuesta": "només",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 74,
+          "enunciado": "OPEN (TO)",
+          "respuesta": "obrir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 75,
+          "enunciado": "OTHER",
+          "respuesta": "un/a altre/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 76,
+          "enunciado": "OUTDOORS",
+          "respuesta": "exterior",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 77,
+          "enunciado": "OVER BRIDGES",
+          "respuesta": "per sobre dels ponts",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 78,
+          "enunciado": "PARTNER",
+          "respuesta": "company/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 79,
+          "enunciado": "PEOPLE",
+          "respuesta": "gent",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 80,
+          "enunciado": "PERHAPS/MAYBE",
+          "respuesta": "potser",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 81,
+          "enunciado": "PLEASE",
+          "respuesta": "si us plau",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 82,
+          "enunciado": "QUICK",
+          "respuesta": "ràpid",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 83,
+          "enunciado": "READ (TO)",
+          "respuesta": "llegir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 84,
+          "enunciado": "REMEMBER",
+          "respuesta": "recordar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 85,
+          "enunciado": "SAY (TO)",
+          "respuesta": "dir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 86,
+          "enunciado": "SEE (TO)",
+          "respuesta": "veure",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 87,
+          "enunciado": "SHARE (TO)",
+          "respuesta": "compartir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 88,
+          "enunciado": "SIZE",
+          "respuesta": "mida, tamany",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 89,
+          "enunciado": "SO",
+          "respuesta": "per tant",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 90,
+          "enunciado": "SOME",
+          "respuesta": "alguns/es",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 91,
+          "enunciado": "SOMETIMES",
+          "respuesta": "de vegades",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 92,
+          "enunciado": "SOMETHING",
+          "respuesta": "alguna cosa",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 93,
+          "enunciado": "SPEED",
+          "respuesta": "velocitat",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 94,
+          "enunciado": "SQUARE",
+          "respuesta": "plaça",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 95,
+          "enunciado": "STAMP",
+          "respuesta": "segell",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 96,
+          "enunciado": "STREET",
+          "respuesta": "carrer",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 97,
+          "enunciado": "TAKE (TO)",
+          "respuesta": "portar, prendre",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 98,
+          "enunciado": "TALK ABOUT (TO)",
+          "respuesta": "parlar sobre...",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 99,
+          "enunciado": "TEAM",
+          "respuesta": "equip",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 100,
+          "enunciado": "TELL (TO)",
+          "respuesta": "explicar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 101,
+          "enunciado": "THAT",
+          "respuesta": "alló, aquell/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 102,
+          "enunciado": "THEN",
+          "respuesta": "llavors, aleshores",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 103,
+          "enunciado": "THERE",
+          "respuesta": "allà",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 104,
+          "enunciado": "THINK (TO)",
+          "respuesta": "pensar o creure",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 105,
+          "enunciado": "THROUGH TUNNELS",
+          "respuesta": "a través dels túnels",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 106,
+          "enunciado": "TIRED",
+          "respuesta": "cansat",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 107,
+          "enunciado": "TOMORROW",
+          "respuesta": "demà",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 108,
+          "enunciado": "TRAVEL (TO)",
+          "respuesta": "viatjar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 109,
+          "enunciado": "TRY (TO)",
+          "respuesta": "provar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 110,
+          "enunciado": "TWICE",
+          "respuesta": "dues vegades",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 111,
+          "enunciado": "UNDERGROUND",
+          "respuesta": "metro, sotaterra",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 112,
+          "enunciado": "UNDERWATER",
+          "respuesta": "sota l'aigua",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 113,
+          "enunciado": "UNTIL",
+          "respuesta": "fins a...",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 114,
+          "enunciado": "UPSTAIRS",
+          "respuesta": "escales amunt",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 115,
+          "enunciado": "WANT (TO)",
+          "respuesta": "voler",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 116,
+          "enunciado": "WAYS",
+          "respuesta": "maneres, camins",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 117,
+          "enunciado": "WEEK",
+          "respuesta": "setmana",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 118,
+          "enunciado": "WEEKEND",
+          "respuesta": "cap de setmana",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 119,
+          "enunciado": "WHAT?",
+          "respuesta": "què?",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 120,
+          "enunciado": "WHERE?",
+          "respuesta": "on?",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 121,
+          "enunciado": "WHICH?",
+          "respuesta": "quin/a/s/es",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 122,
+          "enunciado": "WHY?",
+          "respuesta": "per què?",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 123,
+          "enunciado": "WORK (TO)",
+          "respuesta": "treballar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 124,
+          "enunciado": "WORLD",
+          "respuesta": "món",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 125,
+          "enunciado": "WRITE (TO)",
+          "respuesta": "escriure",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 126,
+          "enunciado": "ABOUT",
+          "respuesta": "sobre",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 127,
+          "enunciado": "AGO",
+          "respuesta": "fa",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 128,
+          "enunciado": "ANSWER (TO)",
+          "respuesta": "contestar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 129,
+          "enunciado": "BELIEVE (TO)",
+          "respuesta": "creure",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 130,
+          "enunciado": "BORED",
+          "respuesta": "avorrit/da",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 131,
+          "enunciado": "BORING",
+          "respuesta": "avorrit/da",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 132,
+          "enunciado": "BRIGHT",
+          "respuesta": "brillant",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 133,
+          "enunciado": "CLOUDS",
+          "respuesta": "núvols",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 134,
+          "enunciado": "COUNTRYSIDE",
+          "respuesta": "camp",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 135,
+          "enunciado": "DARK",
+          "respuesta": "fosc/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 136,
+          "enunciado": "DEEP",
+          "respuesta": "profund/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 137,
+          "enunciado": "DREAM (TO)",
+          "respuesta": "somniar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 138,
+          "enunciado": "FOLD (TO)",
+          "respuesta": "doblegar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 139,
+          "enunciado": "KEEP (TO)",
+          "respuesta": "mantenir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 140,
+          "enunciado": "LAST",
+          "respuesta": "passat/da, últim/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 141,
+          "enunciado": "LIKE",
+          "respuesta": "agradar/ COM",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 142,
+          "enunciado": "NEXT TO",
+          "respuesta": "al costat",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 143,
+          "enunciado": "NICE",
+          "respuesta": "bo/bona",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 144,
+          "enunciado": "OFTEN",
+          "respuesta": "sovint",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 145,
+          "enunciado": "OPPOSITE",
+          "respuesta": "contrari",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 146,
+          "enunciado": "REACH (TO)",
+          "respuesta": "atançar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 147,
+          "enunciado": "SHAPE",
+          "respuesta": "forma",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 148,
+          "enunciado": "SHOW (TO)",
+          "respuesta": "mostrar",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 149,
+          "enunciado": "SURE",
+          "respuesta": "segur/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 150,
+          "enunciado": "THERE ARE",
+          "respuesta": "hi ha (plural)",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 151,
+          "enunciado": "THERE IS A",
+          "respuesta": "hi ha (singular)",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 152,
+          "enunciado": "THERE WAS A",
+          "respuesta": "hi havia (singular)",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 153,
+          "enunciado": "THERE WERE",
+          "respuesta": "hi havia (plural)",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 154,
+          "enunciado": "UPON",
+          "respuesta": "sobre",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 155,
+          "enunciado": "WIDE",
+          "respuesta": "ample/a",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 156,
+          "enunciado": "WORRIED",
+          "respuesta": "preocupat/da",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 157,
+          "enunciado": "YESTERDAY",
+          "respuesta": "ahir",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        }
+      ]
+    }
+  ]
+}

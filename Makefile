@@ -1,4 +1,4 @@
-.PHONY: help install dev test test-backend test-e2e migrate seed \
+.PHONY: help install dev test test-backend test-e2e migrate seed export-contenido \
         docker-build docker-run docker-stop \
         railway-smoke railway-logs
 
@@ -26,8 +26,11 @@ test-backend: ## Tests de la API contra Supabase, en el esquema "test" (necesita
 migrate: ## Aplicar migraciones pendientes (también se aplican solas al arrancar)
 	cd backend && npm run migrate
 
-seed: ## Cargar el contenido inicial del código en la BD (solo crea lo que falta)
+seed: ## Cargar backend/datos/contenido.json en la BD (solo crea lo que falta, no pisa ediciones)
 	cd backend && npm run seed
+
+export-contenido: ## Copia de seguridad: volcar la BD a backend/datos/contenido.json (para commitear)
+	cd backend && npm run export
 
 test-e2e: ## Tests end-to-end (Playwright)
 	npm run test:e2e

@@ -3,11 +3,11 @@ import { generarVocabulario, generarVocabularioEscrito } from './vocabulario.js'
 import { respuestaCoincide } from './common.js'
 
 const bancoDePrueba = [
-  { id: 1, ingles: 'BREAKFAST', catalan: 'esmorzar' },
-  { id: 2, ingles: 'LUNCH', catalan: 'dinar' },
-  { id: 3, ingles: 'DINNER', catalan: 'sopar' },
-  { id: 4, ingles: 'STREET', catalan: 'carrer' },
-  { id: 5, ingles: 'SQUARE', catalan: 'plaça' },
+  { id: 1, enunciado: 'BREAKFAST', respuesta: 'esmorzar' },
+  { id: 2, enunciado: 'LUNCH', respuesta: 'dinar' },
+  { id: 3, enunciado: 'DINNER', respuesta: 'sopar' },
+  { id: 4, enunciado: 'STREET', respuesta: 'carrer' },
+  { id: 5, enunciado: 'SQUARE', respuesta: 'plaça' },
 ]
 
 describe('generarVocabulario', () => {
@@ -15,9 +15,9 @@ describe('generarVocabulario', () => {
     for (let i = 0; i < 50; i++) {
       const ej = generarVocabulario(bancoDePrueba)
       expect(ej.tipo).toBe('vocabulario')
-      const palabra = bancoDePrueba.find((p) => p.ingles === ej.enunciado)
+      const palabra = bancoDePrueba.find((p) => p.enunciado === ej.enunciado)
       expect(palabra).toBeDefined()
-      expect(ej.respuesta).toBe(palabra.catalan)
+      expect(ej.respuesta).toBe(palabra.respuesta)
       expect(ej.puntos).toBe(10)
     }
   })
@@ -33,8 +33,8 @@ describe('generarVocabulario', () => {
 
   it('no se cuelga si el banco tiene menos de 4 traducciones únicas', () => {
     const bancoPequeno = [
-      { id: 1, ingles: 'A', catalan: 'un/a' },
-      { id: 2, ingles: 'B', catalan: 'dos' },
+      { id: 1, enunciado: 'A', respuesta: 'un/a' },
+      { id: 2, enunciado: 'B', respuesta: 'dos' },
     ]
     const ej = generarVocabulario(bancoPequeno)
     expect(ej.opciones.length).toBeLessThanOrEqual(2)
@@ -51,7 +51,7 @@ describe('generarVocabularioEscrito', () => {
     for (let i = 0; i < 50; i++) {
       const ej = generarVocabularioEscrito(bancoDePrueba)
       expect(ej.tipo).toBe('vocabulario-escrito')
-      const palabra = bancoDePrueba.find((p) => p.ingles === ej.ingles)
+      const palabra = bancoDePrueba.find((p) => p.enunciado === ej.ingles)
       expect(palabra).toBeDefined()
       expect(ej.puntos).toBe(15)
     }
@@ -68,21 +68,21 @@ describe('generarVocabularioEscrito', () => {
   it('cuando la dirección es "ingles", se ve el catalán y hay que escribir el inglés', () => {
     for (let i = 0; i < 50; i++) {
       const ej = generarVocabularioEscrito(bancoDePrueba)
-      const palabra = bancoDePrueba.find((p) => p.ingles === ej.ingles)
+      const palabra = bancoDePrueba.find((p) => p.enunciado === ej.ingles)
       if (ej.direccion === 'ingles') {
-        expect(ej.enunciado).toBe(palabra.catalan)
-        expect(ej.respuesta).toBe(palabra.ingles)
+        expect(ej.enunciado).toBe(palabra.respuesta)
+        expect(ej.respuesta).toBe(palabra.enunciado)
       } else {
-        expect(ej.enunciado).toBe(palabra.ingles)
-        expect(ej.respuesta).toBe(palabra.catalan)
+        expect(ej.enunciado).toBe(palabra.enunciado)
+        expect(ej.respuesta).toBe(palabra.respuesta)
       }
     }
   })
 
   it('si dos palabras inglesas comparten traducción, al escribir el inglés se aceptan las dos', () => {
     const bancoConRepetidas = [
-      { id: 1, ingles: 'ABOUT', catalan: 'sobre' },
-      { id: 2, ingles: 'UPON', catalan: 'sobre' },
+      { id: 1, enunciado: 'ABOUT', respuesta: 'sobre' },
+      { id: 2, enunciado: 'UPON', respuesta: 'sobre' },
     ]
     let vistas = 0
     for (let i = 0; i < 100; i++) {
@@ -98,8 +98,8 @@ describe('generarVocabularioEscrito', () => {
 
   it('excluye del banco las palabras con "/" (abreviaturas de género/plural)', () => {
     const bancoConBarras = [
-      { id: 1, ingles: 'A', catalan: 'un/a' },
-      { id: 2, ingles: 'BREAKFAST', catalan: 'esmorzar' },
+      { id: 1, enunciado: 'A', respuesta: 'un/a' },
+      { id: 2, enunciado: 'BREAKFAST', respuesta: 'esmorzar' },
     ]
     for (let i = 0; i < 30; i++) {
       const ej = generarVocabularioEscrito(bancoConBarras)
