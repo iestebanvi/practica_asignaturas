@@ -57,7 +57,7 @@ API contra Supabase (Vitest), en un esquema `test` que se borra y se recrea en c
 make test-backend
 ```
 
-Flujo completo en el navegador (end-to-end, Playwright):
+Flujo completo en el navegador (end-to-end, Playwright). Arranca su **propio** backend y frontend (puertos 3199/5199, no reutiliza `npm run dev`) contra el esquema `e2e` de la BD, que se recrea en cada ejecución desde `backend/datos/contenido.json`, y con una contraseña de consola de prueba: los tests pueden editar sin tocar los datos reales.
 ```
 npm install
 npx playwright install chromium   # solo la primera vez

@@ -3,6 +3,7 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 import { consolaActivada, contrasenyaCorrecta } from '../auth/contrasenya.js'
 import { crearSesion, obtenerSesion, borrarSesion, DURACION_SESION_MS } from '../auth/sesiones.js'
 import { bloqueoRestante, registrarFallo, registrarAcierto } from '../auth/limitador.js'
+import { obtenerContenidoAdmin, obtenerBancoAdmin } from '../db/admin.js'
 
 export const COOKIE_SESION = 'sessio_professorat'
 
@@ -74,5 +75,23 @@ router.use(
 router.get('/sessio', (req, res) => {
   res.json({ caducaEn: req.sesion.caducaEn })
 })
+
+// Todo el contenido (también lo inactivo): árbol de cursos y resumen de bancos.
+router.get(
+  '/contingut',
+  asyncHandler(async (req, res) => {
+    res.json(await obtenerContenidoAdmin())
+  }),
+)
+
+router.get(
+  '/bancs/:id',
+  asyncHandler(async (req, res) => {
+    const id = Number(req.params.id)
+    const banco = Number.isInteger(id) && id > 0 ? await obtenerBancoAdmin(id) : null
+    if (!banco) return res.status(404).json({ error: 'banc_no_trobat' })
+    res.json(banco)
+  }),
+)
 
 export default router

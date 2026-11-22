@@ -44,3 +44,12 @@ export async function comprobarSesion() {
     throw err
   }
 }
+
+// Todo el contenido para la consola (también lo inactivo).
+export function obtenerContenidoAdmin() {
+  return peticion('/api/admin/contingut')
+}
+
+export function obtenerBancoAdmin(id) {
+  return peticion(`/api/admin/bancs/${encodeURIComponent(id)}`)
+}

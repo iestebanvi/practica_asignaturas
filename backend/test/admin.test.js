@@ -8,7 +8,7 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
   let pool, servidor, base
 
   beforeAll(async () => {
-    ;({ pool, servidor, base } = await prepararEntorno({ conContenido: false }))
+    ;({ pool, servidor, base } = await prepararEntorno())
   })
 
   afterAll(async () => {
@@ -135,5 +135,69 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
         /cursos_slug_no_reservado/,
       )
     }
+  })
+
+  describe('lectura del contenido (solo con sesión)', () => {
+    let cookie
+    const getAdmin = async (ruta, conCookie = true) => {
+      const res = await fetch(base + ruta, { headers: conCookie ? { Cookie: cookie } : {} })
+      return { status: res.status, body: await res.json() }
+    }
+
+    beforeAll(async () => {
+      reiniciarLimitador()
+      cookie = cookieDe(await login(PASSWORD))
+    })
+
+    it('sin sesión no se puede leer nada', async () => {
+      expect((await getAdmin('/api/admin/contingut', false)).status).toBe(401)
+      expect((await getAdmin('/api/admin/bancs/1', false)).status).toBe(401)
+    })
+
+    it('/contingut devuelve el árbol con ids de la BD y el resumen de los bancos', async () => {
+      const { status, body } = await getAdmin('/api/admin/contingut')
+      expect(status).toBe(200)
+      expect(body.cursos.map((c) => c.slug)).toEqual(['1-primaria', '6-primaria'])
+      const angles = body.cursos[1].asignaturas.find((a) => a.slug === 'angles')
+      expect(angles.id).toEqual(expect.any(Number))
+      const vocab = angles.modos.find((m) => m.slug === 'vocabulari')
+      const banco = body.bancos.find((b) => b.id === vocab.bancoId)
+      expect(banco).toMatchObject({ slug: 'vocabulari-angles-6', formato: 'traduccio', preguntas: 157, preguntasActivas: 157 })
+    })
+
+    it('/contingut incluye lo inactivo, marcado (a diferencia de la API pública)', async () => {
+      await pool.query("UPDATE modos SET activo = false WHERE slug = 'potencies'")
+      await pool.query("UPDATE preguntas SET activo = false WHERE orden <= 2 AND banco_id = (SELECT id FROM bancos WHERE slug = 'problemes-6')")
+      try {
+        const { body } = await getAdmin('/api/admin/contingut')
+        const potencies = body.cursos[1].asignaturas[0].modos.find((m) => m.slug === 'potencies')
+        expect(potencies.activo).toBe(false)
+        expect(body.bancos.find((b) => b.slug === 'problemes-6')).toMatchObject({ preguntas: 62, preguntasActivas: 60 })
+      } finally {
+        await pool.query('UPDATE modos SET activo = true')
+        await pool.query('UPDATE preguntas SET activo = true')
+      }
+    })
+
+    it('/bancs/:id devuelve todas las preguntas y los modos que usan el banco', async () => {
+      const { body: contenido } = await getAdmin('/api/admin/contingut')
+      const id = contenido.bancos.find((b) => b.slug === 'vocabulari-angles-6').id
+      await pool.query('UPDATE preguntas SET activo = false WHERE banco_id = $1 AND orden = 1', [id])
+      try {
+        const { status, body } = await getAdmin(`/api/admin/bancs/${id}`)
+        expect(status).toBe(200)
+        expect(body.preguntas).toHaveLength(157)
+        expect(body.preguntas[0]).toMatchObject({ orden: 1, enunciado: 'A', respuesta: 'un/a', activo: false })
+        expect(body.modos.map((m) => m.nombre)).toEqual(['Vocabulari', 'Vocabulari escrit'])
+        expect(body.modos[0]).toMatchObject({ curso: '6è de primària', asignatura: 'Anglès' })
+      } finally {
+        await pool.query('UPDATE preguntas SET activo = true')
+      }
+    })
+
+    it('/bancs/:id da 404 si no existe o el id no es válido', async () => {
+      expect((await getAdmin('/api/admin/bancs/999999')).status).toBe(404)
+      expect((await getAdmin('/api/admin/bancs/abc')).status).toBe(404)
+    })
   })
 })

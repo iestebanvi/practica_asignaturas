@@ -229,3 +229,27 @@ Sin BD todavía: los datos siguen en el código, pero ya con la estructura final
 - **Slugs reservados**: la BD impide cursos llamados `profesorat` o `api`.
 - **Frontend**: `/profesorat` (login) y `/profesorat/consola/*` (esqueleto con "Tanca la sessió"); enlace discreto "Professorat" en el pie de inicio. Ojo con el ranking de rutas: `/profesorat/*` perdía contra `/:curso/:asignatura/:modo`, por eso la consola va en `/profesorat/consola/*`.
 - **Tests**: backend con contraseña de prueba propia (`vitest.config.js`); e2e leen `TEACHER_PASSWD` de `backend/.env` solo en local y se saltan contra producción.
+
+## 16. Fase 5 (editores de la consola), dividida en subfases
+
+Acordado el 2026-11-22. Cada subfase se despliega por separado.
+
+| Subfase | Contenido | Estado |
+|---|---|---|
+| **5a** | e2e en su propio esquema (`e2e`) para que los editores no escriban en la BD real. Consola de solo lectura: árbol lateral curso → asignatura → modo y bancos (incluido lo inactivo), ficha de modo y de banco | ✅ hecha |
+| **5b** | Editar preguntas de un banco (formulario según formato, validaciones), añadir, activar/desactivar, borrar con confirmación | siguiente |
+| **5c** | Importar preguntas pegando texto/CSV con vista previa de errores; exportar banco a CSV y copia completa en JSON | pendiente |
+| **5d** | Cursos y asignaturas: crear/editar (nombre, icono, color, nivel, config), activo, orden | pendiente |
+| **5e** | Modos y bancos: crear/editar modos (tipos de ejercicio, banco), crear bancos | pendiente |
+| **5f** | Vista previa: "Prova aquest mode" aunque esté inactivo | pendiente |
+
+**Decisiones:**
+1. Las preguntas se pueden borrar (con confirmación). Cursos, asignaturas, modos y bancos solo se borran si están vacíos; si no, se desactivan.
+2. El slug (la URL) se fija al crear y no se edita; el nombre visible sí.
+3. Ediciones simultáneas: gana el último que guarda (sin bloqueo de momento).
+4. Los cambios son inmediatos en la web real (dev = prod); lo que se prepara se deja inactivo hasta que esté listo.
+
+### 5a ✅ hecha (2026-11-22)
+- **e2e aislados**: Playwright arranca su propio backend (puerto 3199, `DB_SCHEMA=e2e`, contraseña de prueba) y frontend (5199); antes, `backend/scripts/preparar-e2e.js` recrea el esquema `e2e` desde `contenido.json` (se niega a tocar `public`). Ya no se reutiliza `npm run dev`.
+- **API**: `GET /api/admin/contingut` (árbol con ids de la BD y lo inactivo + resumen de bancos con preguntas activas/total) y `GET /api/admin/bancs/:id` (todas las preguntas y los modos que usan el banco). Ids como entero (`::int`).
+- **Consola**: árbol lateral (inactivo en gris con etiqueta), resumen, ficha de modo (adreça, estat, color, tipus d'exercici con nombre legible, banc) y ficha de banc (tabla de preguntas). En móvil la ficha va antes que el árbol.

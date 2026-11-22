@@ -109,6 +109,11 @@ export function operacionesConocidas(operaciones) {
   return operaciones.filter((op) => op in GENERADORES || op in GENERADORES_DESDE_BANCO)
 }
 
+// Todos los tipos de ejercicio que este código sabe generar.
+export function tiposConocidos() {
+  return [...Object.keys(GENERADORES), ...Object.keys(GENERADORES_DESDE_BANCO)]
+}
+
 export function usaBanco(operaciones) {
   return operaciones.some((op) => op in GENERADORES_DESDE_BANCO)
 }
