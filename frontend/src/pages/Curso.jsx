@@ -14,8 +14,14 @@ export default function Curso() {
     <AmbDades resultado={resultado}>
       {(curso) => (
         <Pagina curso={curso} molles={[{ nom: T.inici, to: '/' }, { nom: curso.nombre }]} className="curs">
-          <h1>{T.triaAssignatura}</h1>
-          <Targetes items={curso.asignaturas} rutaDe={(a) => `/${curso.id}/${a.id}`} />
+          {curso.asignaturas.length === 0 ? (
+            <p className="practica-avis">{T.cursBuit}</p>
+          ) : (
+            <>
+              <h1>{T.triaAssignatura}</h1>
+              <Targetes items={curso.asignaturas} rutaDe={(a) => `/${curso.id}/${a.id}`} />
+            </>
+          )}
           <nav className="accions">
             <Link to={`/${curso.id}/repassar`} className="enllac-secundari">
               {T.perRepassar}

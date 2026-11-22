@@ -255,6 +255,23 @@ test.describe('Practica Assignatures', () => {
     await expect(page.getByRole('link', { name: /6è de primària/ })).toBeVisible()
   })
 
+  test('un curso activo sin asignaturas muestra un aviso en vez de una pantalla vacía', async ({ page }) => {
+    await page.route('**/api/cursos/1-primaria', async (route) => {
+      const curso = await (await route.fetch()).json()
+      await route.fulfill({ json: { ...curso, asignaturas: [] } })
+    })
+    await page.goto('/1-primaria')
+    await expect(page.getByText('Encara no hi ha assignatures en aquest curs. Torna aviat!')).toBeVisible()
+  })
+
+  test('los cursos inactivos (2n-5è) no aparecen en el inicio y su URL da "no trobat"', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByRole('link', { name: /6è de primària/ })).toBeVisible()
+    await expect(page.getByRole('link', { name: /3r de primària/ })).toHaveCount(0)
+    await page.goto('/3-primaria')
+    await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()
+  })
+
   test('un curso que no existe muestra "no trobat"', async ({ page }) => {
     await page.goto('/9-primaria')
     await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()

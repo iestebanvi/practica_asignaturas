@@ -157,8 +157,10 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
     it('/contingut devuelve el árbol con ids de la BD y el resumen de los bancos', async () => {
       const { status, body } = await getAdmin('/api/admin/contingut')
       expect(status).toBe(200)
-      expect(body.cursos.map((c) => c.slug)).toEqual(['1-primaria', '6-primaria'])
-      const angles = body.cursos[1].asignaturas.find((a) => a.slug === 'angles')
+      // La consola ve también los cursos inactivos (2n-5è, todavía sin contenido)
+      expect(body.cursos.map((c) => c.slug)).toEqual(['1-primaria', '2-primaria', '3-primaria', '4-primaria', '5-primaria', '6-primaria'])
+      expect(body.cursos.filter((c) => !c.activo).map((c) => c.slug)).toEqual(['2-primaria', '3-primaria', '4-primaria', '5-primaria'])
+      const angles = body.cursos.find((c) => c.slug === '6-primaria').asignaturas.find((a) => a.slug === 'angles')
       expect(angles.id).toEqual(expect.any(Number))
       const vocab = angles.modos.find((m) => m.slug === 'vocabulari')
       const banco = body.bancos.find((b) => b.id === vocab.bancoId)
@@ -170,7 +172,7 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
       await pool.query("UPDATE preguntas SET activo = false WHERE orden <= 2 AND banco_id = (SELECT id FROM bancos WHERE slug = 'problemes-6')")
       try {
         const { body } = await getAdmin('/api/admin/contingut')
-        const potencies = body.cursos[1].asignaturas[0].modos.find((m) => m.slug === 'potencies')
+        const potencies = body.cursos.find((c) => c.slug === '6-primaria').asignaturas[0].modos.find((m) => m.slug === 'potencies')
         expect(potencies.activo).toBe(false)
         expect(body.bancos.find((b) => b.slug === 'problemes-6')).toMatchObject({ preguntas: 62, preguntasActivas: 60 })
       } finally {

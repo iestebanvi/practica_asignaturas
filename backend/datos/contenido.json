@@ -59,6 +59,62 @@
       ]
     },
     {
+      "id": "2-primaria",
+      "nombre": "2n de primària",
+      "icono": "🐢",
+      "color": "#ffb74d",
+      "sombra": "#ef6c00",
+      "nivel": "facil",
+      "config": {
+        "celebracio": true,
+        "majuscules": false
+      },
+      "activo": false,
+      "asignaturas": []
+    },
+    {
+      "id": "3-primaria",
+      "nombre": "3r de primària",
+      "icono": "🦊",
+      "color": "#81c784",
+      "sombra": "#388e3c",
+      "nivel": "medio",
+      "config": {
+        "celebracio": true,
+        "majuscules": false
+      },
+      "activo": false,
+      "asignaturas": []
+    },
+    {
+      "id": "4-primaria",
+      "nombre": "4t de primària",
+      "icono": "🐬",
+      "color": "#4db6ac",
+      "sombra": "#00796b",
+      "nivel": "medio",
+      "config": {
+        "celebracio": false,
+        "majuscules": false
+      },
+      "activo": false,
+      "asignaturas": []
+    },
+    {
+      "id": "5-primaria",
+      "nombre": "5è de primària",
+      "icono": "🦉",
+      "color": "#9575cd",
+      "sombra": "#512da8",
+      "nivel": "medio",
+      "config": {
+        "celebracio": false,
+        "majuscules": false
+      },
+      "activo": false,
+      "asignaturas": []
+    },
+    {
       "id": "6-primaria",
       "nombre": "6è de primària",
       "icono": "🚀",

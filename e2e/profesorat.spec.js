@@ -65,10 +65,12 @@ test.describe('Consola del professorat', () => {
 
     test('muestra el resumen y el árbol de cursos, asignaturas, modos y bancos', async ({ page }) => {
       await entrar(page)
-      await expect(page.getByText(/2 cursos · 16 modes · 4 bancs · 269 preguntes/)).toBeVisible()
+      await expect(page.getByText(/6 cursos · 16 modes · 4 bancs · 269 preguntes/)).toBeVisible()
       const arbre = page.getByRole('navigation', { name: 'Contingut' })
       await expect(arbre.getByRole('heading', { name: /6è de primària/ })).toBeVisible()
       await expect(arbre.getByRole('heading', { name: /Anglès/ })).toBeVisible()
+      // Los cursos sin contenido todavía están, marcados como inactivos
+      await expect(arbre.getByRole('heading', { name: /3r de primària/ })).toContainText('inactiu')
       await expect(arbre.getByRole('link', { name: /Vocabulari anglès \(6è\)/ })).toContainText('157/157')
     })
 
@@ -98,7 +100,7 @@ test.describe('Consola del professorat', () => {
       // el mismo esquema: desactivar algo de verdad afectaría a otros tests).
       await page.route('**/api/admin/contingut', async (route) => {
         const contenido = await (await route.fetch()).json()
-        contenido.cursos[1].asignaturas[0].modos.find((m) => m.slug === 'potencies').activo = false
+        contenido.cursos.find((c) => c.slug === '6-primaria').asignaturas[0].modos.find((m) => m.slug === 'potencies').activo = false
         await route.fulfill({ json: contenido })
       })
       await entrar(page)

@@ -32,9 +32,10 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
   })
 
   describe('/api/cursos', () => {
-    it('lista los cursos activos en orden', async () => {
+    it('lista solo los cursos activos, en orden (2n-5è están inactivos)', async () => {
       const { body } = await get('/api/cursos')
       expect(body.map((c) => c.id)).toEqual(['1-primaria', '6-primaria'])
+      expect((await get('/api/cursos/3-primaria')).status).toBe(404)
       expect(body[0]).toMatchObject({ nombre: '1r de primària', icono: '🐣', color: '#ff8a65' })
     })
 

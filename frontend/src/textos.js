@@ -12,6 +12,7 @@ export const T = {
   // Pantallas de selección
   triaCurs: 'A quin curs vas?',
   triaAssignatura: 'Quina assignatura vols practicar?',
+  cursBuit: 'Encara no hi ha assignatures en aquest curs. Torna aviat!',
   triaMode: 'Què vols practicar?',
   perRepassar: '📖 Per repassar',
 
