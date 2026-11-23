@@ -8,7 +8,8 @@ test.describe('Rècords', () => {
   test.skip(({ baseURL }) => !/localhost|127\.0\.0\.1/.test(baseURL), 'solo contra el entorno e2e local')
   test.describe.configure({ mode: 'serial' })
 
-  test.beforeAll(async ({ browser }) => {
+  test.beforeAll(async ({ browser, baseURL }) => {
+    if (!/localhost|127\.0\.0\.1/.test(baseURL)) return // (los tests se saltan; no tocar producción)
     const page = await browser.newPage()
     await page.goto('/profesorat')
     await page.getByLabel('Contrasenya').fill(PASSWORD_E2E)
