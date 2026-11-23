@@ -41,6 +41,49 @@ describe('validarModo: bloque propio', () => {
   })
 })
 
+describe('validarModo: niveles 2 y 3', () => {
+  const op = { ...base, operaciones: ['combinada'] }
+
+  it('sin niveles: lista vacía; con niveles, cada uno con sus tipos, su dificultad y si está abierto', () => {
+    expect(validarModo(op, { creando: true }).valores.nivells).toEqual([])
+    const { valores } = validarModo(
+      {
+        ...op,
+        nivells: [
+          { operaciones: ['combinada-parentesi'], params: { 'combinada-parentesi': { operacions: 2 } }, obert: true },
+          { operaciones: ['combinada', 'combinada-parentesi'], params: {}, obert: false },
+        ],
+      },
+      { creando: true },
+    )
+    expect(valores.nivells).toEqual([
+      { operaciones: ['combinada-parentesi'], params: { 'combinada-parentesi': { operacions: 2 } }, obert: true },
+      { operaciones: ['combinada', 'combinada-parentesi'], params: {}, obert: false },
+    ])
+  })
+
+  it('máximo 3 niveles (2 extra); cada nivel necesita tipos válidos y una dificultad correcta', () => {
+    const n = { operaciones: ['suma'], obert: true }
+    expect(validarModo({ ...op, nivells: [n, n, n] }, { creando: true }).errores.nivells).toMatch(/màxim 3/)
+    expect(validarModo({ ...op, nivells: [{ operaciones: [] }] }, { creando: true }).errores.nivells).toMatch(/^Nivell 2: tria almenys/)
+    expect(validarModo({ ...op, nivells: [n, { operaciones: ['x'] }] }, { creando: true }).errores.nivells).toMatch(/^Nivell 3: hi ha/)
+    expect(
+      validarModo({ ...op, nivells: [{ operaciones: ['suma'], params: { suma: { max: 1 } } }] }, { creando: true }).errores.nivells,
+    ).toMatch(/^Nivell 2:/)
+    expect(validarModo({ ...op, nivells: [{ ...n, obert: 'sí' }] }, { creando: true }).errores.nivells).toMatch(/obert/)
+  })
+
+  it('todos los niveles comparten el banco del modo: un nivel con problemas obliga a tener banco', () => {
+    const r = validarModo({ ...op, nivells: [{ operaciones: ['problema'] }] }, { creando: true })
+    expect(r.errores.bancoId).toBeTruthy()
+    expect(validarModo({ ...op, bancoId: 2, nivells: [{ operaciones: ['problema'] }] }, { creando: true }).formatoBanco).toBe('numerica')
+    expect(
+      validarModo({ ...base, operaciones: ['problema'], bancoId: 2, nivells: [{ operaciones: ['vocabulario'] }] }, { creando: true })
+        .errores.operaciones,
+    ).toMatch(/barrejar/)
+  })
+})
+
 describe('validarBanco', () => {
   it('al crear: nombre, identificador y formato', () => {
     expect(validarBanco({ nombre: ' Música ', slug: 'musica-1', formato: 'traduccio' }, { creando: true }).valores).toEqual({

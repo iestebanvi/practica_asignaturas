@@ -1762,3 +1762,35 @@ button:active,
   background: #fff3e0;
   color: var(--color-incorrecto);
 }
+
+/* Selector de nivel de un modo (Nivell 1 · 2 · 3) */
+.selector-nivell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.selector-nivell a {
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  border: 2px solid var(--color-primari);
+  color: var(--color-primari);
+  font-weight: 700;
+  text-decoration: none;
+  background: #fff;
+}
+
+.selector-nivell a[aria-current='true'] {
+  background: var(--color-primari);
+  color: #fff;
+}
+
+/* Niveles de un modo en la consola (FormModo) */
+.nivell-mode {
+  border: 2px dashed #b0bec5;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+}

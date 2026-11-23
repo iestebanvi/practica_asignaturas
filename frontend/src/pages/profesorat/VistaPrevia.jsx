@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import Pagina from '../../components/Pagina.jsx'
 import { PracticaModo } from '../Practica.jsx'
 import { obtenerContenidoAdmin, obtenerBancoAdmin } from '../../logic/admin.js'
 import { T } from '../../textos.js'
+import { nivellsDe, triarNivell } from '../../logic/nivells.js'
 
 // "Prova aquest mode": juega un modo tal como lo verá un alumno aunque esté
 // inactivo (él, su asignatura o su curso). Los datos salen de la API de la
@@ -12,6 +13,7 @@ export default function VistaPrevia() {
   const id = Number(useParams().modoId)
   const [estado, setEstado] = useState({ estado: 'carregant' })
   const [inclouInactives, setInclouInactives] = useState(false)
+  const [cerca] = useSearchParams()
 
   useEffect(() => {
     obtenerContenidoAdmin()
@@ -39,6 +41,9 @@ export default function VistaPrevia() {
   const cursoJoc = { ...curso, id: curso.slug }
   const asignaturaJoc = { ...asignatura, id: asignatura.slug }
   const modoJoc = { ...modo, id: modo.slug, banco: modo.bancoId }
+  // En la vista previa se pueden probar todos los niveles, también los cerrados.
+  const nivells = nivellsDe(modo, { tambeTancats: true })
+  const nivell = triarNivell(nivells, cerca.get('nivell'))
   const entorno = {
     rutaTorna: rutaFitxa,
     registrarFallos: false,
@@ -65,10 +70,12 @@ export default function VistaPrevia() {
   return (
     <PracticaModo
       // Al cambiar la casilla, partida nueva con las preguntas que tocan.
-      key={`${modo.id}-${inclouInactives}`}
+      key={`${modo.id}-${nivell}-${inclouInactives}`}
       curso={cursoJoc}
       asignatura={asignaturaJoc}
       modo={modoJoc}
+      nivells={nivells}
+      nivell={nivell}
       entorno={entorno}
       cabecera={cabecera}
       senseAlies

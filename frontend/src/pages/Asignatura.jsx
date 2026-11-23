@@ -10,6 +10,7 @@ import { buscarAsignatura } from '../logic/cursos.js'
 import { T } from '../textos.js'
 import { useAlumne } from '../logic/alumne.js'
 import { obtenerRecordsPropis, claveModo, recordsCursActius } from '../logic/records.js'
+import { nivellsDe, nivellPerDefecte } from '../logic/nivells.js'
 
 export default function Asignatura() {
   const { cursoId, asignaturaId } = useParams()
@@ -43,8 +44,12 @@ export default function Asignatura() {
                 <h1>{T.triaMode}</h1>
                 <Targetes
                   items={asignatura.modos.map((modo) => {
-                    const record = records[claveModo(asignatura.id, modo.id)]
-                    return record ? { ...modo, detall: T.recordTargeta(record) } : modo
+                    // Con niveles: el récord del nivel que se juega por defecto (el más alto abierto).
+                    const nivells = nivellsDe(modo)
+                    const nivell = nivellPerDefecte(nivells)
+                    const record = records[claveModo(asignatura.id, modo.id, nivell)]
+                    const detall = [nivells.length > 1 && T.nivellN(nivell), record && T.recordTargeta(record)].filter(Boolean)
+                    return detall.length ? { ...modo, detall: detall.join(' · ') } : modo
                   })}
                   rutaDe={(modo) => `/${curso.id}/${asignatura.id}/${modo.id}`}
                 />

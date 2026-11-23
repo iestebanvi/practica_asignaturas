@@ -107,10 +107,11 @@ export async function borrarAlumne(id) {
 
 // ---- Bloques ----
 
-// Modo jugable (todo activo) de un curso, con el tamaño de bloque que le toca.
+// Modo jugable (todo activo) de un curso, con el tamaño de bloque que le toca
+// y sus niveles 2 y 3 (nivells).
 export async function modoConBloc(cursoId, asignaturaSlug, modoSlug) {
   const { rows } = await pool.query(
-    `SELECT m.id::int, COALESCE(m.bloc, (c.config->>'bloc')::int, $4)::int AS bloc
+    `SELECT m.id::int, COALESCE(m.bloc, (c.config->>'bloc')::int, $4)::int AS bloc, m.nivells
        FROM modos m JOIN asignaturas a ON a.id = m.asignatura_id JOIN cursos c ON c.id = a.curso_id
       WHERE c.id = $1 AND a.slug = $2 AND m.slug = $3 AND c.activo AND a.activo AND m.activo`,
     [cursoId, asignaturaSlug, modoSlug, BLOC_PER_DEFECTE],
@@ -119,24 +120,21 @@ export async function modoConBloc(cursoId, asignaturaSlug, modoSlug) {
 }
 
 // Guarda un bloque y dice si es nuevo récord (más puntos que cualquier bloque
-// anterior de ese alumno en ese modo; el primero siempre lo es). Devuelve
-// también el mejor bloque.
-export async function guardarBloc(alumneId, modoId, { puntos, aciertos, preguntas }) {
+// anterior de ese alumno en ese modo y nivel; el primero siempre lo es).
+// Devuelve también el mejor bloque.
+export async function guardarBloc(alumneId, modoId, { puntos, aciertos, preguntas, nivell = 1 }) {
   const { rows: antes } = await pool.query(
-    'SELECT max(puntos)::int AS max FROM blocs WHERE alumne_id = $1 AND modo_id = $2',
-    [alumneId, modoId],
+    'SELECT max(puntos)::int AS max FROM blocs WHERE alumne_id = $1 AND modo_id = $2 AND nivell = $3',
+    [alumneId, modoId, nivell],
   )
-  await pool.query('INSERT INTO blocs (alumne_id, modo_id, puntos, aciertos, preguntas) VALUES ($1, $2, $3, $4, $5)', [
-    alumneId,
-    modoId,
-    puntos,
-    aciertos,
-    preguntas,
-  ])
+  await pool.query(
+    'INSERT INTO blocs (alumne_id, modo_id, puntos, aciertos, preguntas, nivell) VALUES ($1, $2, $3, $4, $5, $6)',
+    [alumneId, modoId, puntos, aciertos, preguntas, nivell],
+  )
   const { rows: millor } = await pool.query(
-    `SELECT puntos, aciertos, preguntas FROM blocs WHERE alumne_id = $1 AND modo_id = $2
+    `SELECT puntos, aciertos, preguntas FROM blocs WHERE alumne_id = $1 AND modo_id = $2 AND nivell = $3
       ORDER BY puntos DESC, aciertos DESC, creat_en ASC LIMIT 1`,
-    [alumneId, modoId],
+    [alumneId, modoId, nivell],
   )
   return { nouRecord: antes[0].max === null || puntos > antes[0].max, millor: millor[0] }
 }

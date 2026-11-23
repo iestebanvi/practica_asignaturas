@@ -300,6 +300,59 @@ describe.skipIf(!process.env.DATABASE_URL)('alumnos: /api/alumnes', () => {
     })
   })
 
+  describe('niveles de un modo: árbol público, bloques y récords', () => {
+    // "Successions" de 6è con niveles 2 (abierto) y 3 (cerrado); ningún otro
+    // test guarda bloques en él.
+    const bloc = (cookie, puntos, nivell) =>
+      pedir(
+        'POST',
+        '/api/alumnes/blocs',
+        { curs: '6-primaria', assignatura: 'matematiques', mode: 'successions', puntos, aciertos: 10, preguntas: 30, ...(nivell ? { nivell } : {}) },
+        cookie,
+      )
+    let cookie
+
+    beforeAll(async () => {
+      await pool.query(
+        `UPDATE modos SET nivells = $1 WHERE slug = 'successions'`,
+        [JSON.stringify([
+          { operaciones: ['sucesion'], params: { sucesion: { pasMin: 10, pasMax: 50 } }, obert: true },
+          { operaciones: ['sucesion'], params: {}, obert: false },
+        ])],
+      )
+      cookie = (await pedir('POST', '/api/alumnes/crea', { curs: '6-primaria', alies: 'Nivellista' })).cookie
+    })
+    afterAll(async () => {
+      await pool.query(`UPDATE modos SET nivells = '[]' WHERE slug = 'successions'`)
+    })
+
+    it('el árbol público solo trae los niveles abiertos, numerados y sin "obert"', async () => {
+      const { body } = await pedir('GET', '/api/cursos/6-primaria')
+      const modo = body.asignaturas.find((a) => a.id === 'matematiques').modos.find((m) => m.id === 'successions')
+      expect(modo.nivells).toEqual([{ nivell: 2, operaciones: ['sucesion'], params: { sucesion: { pasMin: 10, pasMax: 50 } } }])
+      const altre = body.asignaturas.find((a) => a.id === 'matematiques').modos.find((m) => m.id === 'aritmetica')
+      expect(altre.nivells).toEqual([])
+    })
+
+    it('bloques: nivel 1 (por defecto) y nivel abierto sí; cerrado o inexistente, 404', async () => {
+      expect((await bloc(cookie, 100)).status).toBe(201)
+      expect((await bloc(cookie, 50, 2)).status).toBe(201)
+      expect((await bloc(cookie, 50, 3)).body.error).toBe('nivell_no_trobat')
+      expect((await bloc(cookie, 50, 4)).status).toBe(404)
+      expect((await bloc(cookie, 50, '2')).status).toBe(404)
+    })
+
+    it('cada nivel tiene su récord: uno de 50 en el nivel 2 es récord aunque en el 1 haya 100', async () => {
+      const r = await bloc(cookie, 60, 2)
+      expect(r.body).toEqual({ nouRecord: true, millor: { puntos: 60, aciertos: 10, preguntas: 30 } })
+      const { body } = await pedir('GET', '/api/alumnes/records?curs=6-primaria', null, cookie)
+      expect(body.records['matematiques/successions']).toEqual({ puntos: 100, aciertos: 10, preguntas: 30 })
+      expect(body.records['matematiques/successions/2']).toEqual({ puntos: 60, aciertos: 10, preguntas: 30 })
+      const curs = await pedir('GET', '/api/alumnes/records-curs?curs=6-primaria')
+      expect(curs.body.records['matematiques/successions/2']).toEqual([{ posicio: 1, alies: 'Nivellista', puntos: 60, aciertos: 10, preguntas: 30 }])
+    })
+  })
+
   describe('Per repassar: /api/alumnes/fallos', () => {
     let cookie
     const llista = async (c = cookie) => (await pedir('GET', '/api/alumnes/fallos?curs=6-primaria', null, c)).body.fallos

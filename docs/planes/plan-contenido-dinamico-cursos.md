@@ -341,3 +341,17 @@ Aprobado el 2026-11-22. Decisiones: àlies **por curso**; bloque por defecto **1
 - **API** (con sesión de alumno): `GET /api/alumnes/fallos?curs=`, `POST /api/alumnes/fallos` (suma 1 vez, atómico), `POST /api/alumnes/fallos/importa` (hasta 500; descarta los no válidos), `DELETE /api/alumnes/fallos?curs=`.
 - **Web**: con àlies, los fallos de opción múltiple y escritos van al servidor (sin esperar, para no frenar el juego; `obtenerFallos` espera a los que aún se están enviando). Mientras la página aún no sabe si hay àlies también se envían (sin sesión, el servidor los rechaza). Sin àlies no se guarda nada y "Per repassar" invita a entrar. Ya no se usa `localStorage`.
 - **Migración de los fallos del navegador**: la primera vez que hay àlies en un curso, los fallos de ese curso guardados en `localStorage` (también los del perfil antiguo: `pequeno` → 1r, `mayor` → 6è) se envían a `importa`. Se borran del navegador **antes** de enviarlos (si la página se cierra a mitad, no se cuentan dos veces) y se devuelven si el servidor da error.
+
+## 18. Niveles dentro de un modo ✅ hecho (2026-11-23)
+
+Para subir el nivel a lo largo del curso sin crear modos nuevos (pedido del usuario tras la M7 de matemáticas).
+
+- **Modelo** (migración `007_nivells.sql`): el **nivel 1 es el propio modo** (sus `operaciones` y `params`) y está siempre abierto; `modos.nivells` (JSONB) guarda los niveles **2 y 3**: `[{ operaciones, params, obert }]`. `blocs.nivell` (1–3, por defecto 1): cada bloque es de un nivel.
+- **Validación** (`backend/src/validacion/modos.js`): máximo 3 niveles; cada nivel con tipos válidos y su dificultad (`validarParams`); todos los niveles comparten el banco del modo (un solo formato entre todos).
+- **API pública**: el árbol del curso trae en cada modo `nivells` = solo los abiertos, numerados (`{ nivell, operaciones, params }`). `POST /api/alumnes/blocs` acepta `nivell` (por defecto 1; 404 `nivell_no_trobat` si está cerrado o no existe).
+- **Récords por nivel**: clave `asignatura/modo` (nivel 1) o `asignatura/modo/2` (`claveModo(a, m, nivell)`); ranking del curso por modo y nivel.
+- **Alumno**: si hay más de un nivel abierto, botones **Nivell 1 · 2 · 3** encima de la partida (`?nivell=` en la URL); por defecto, el más alto abierto. La tarjeta del modo enseña "Nivell N · ⭐ récord" del nivel por defecto; la página de récords, una tabla por nivel (ancla `#asignatura-modo-2`).
+- **Consola** (ficha del modo): sección "Nivells (opcional)" con "+ Afegeix el nivell 2/3" (empieza como el anterior y cerrado), casillas de tipos (solo los grupos que ya usa el modo, con "Mostra tots els tipus"), dificultad y "Obert". La vista previa deja probar todos los niveles, también los cerrados.
+- **Lógica común** del frontend: `frontend/src/logic/nivells.js` (`nivellsDe`, `triarNivell`, `modoDelNivell`).
+- Tests: `backend/test/modos.test.js` (validación), `alumnes.test.js` (árbol, bloques y récords por nivel), `frontend/src/logic/nivells.test.js`, e2e `e2e/nivells.spec.js` (de la consola al récord).
+

@@ -21,7 +21,8 @@ export async function obtenerRecordsCurs(curso) {
   return records
 }
 
-export const claveModo = (asignatura, modo) => `${asignatura}/${modo}`
+// Clave de un modo en los récords: "asignatura/modo" (nivel 1) o "asignatura/modo/2".
+export const claveModo = (asignatura, modo, nivell = 1) => `${asignatura}/${modo}${nivell > 1 ? `/${nivell}` : ''}`
 
 // Los récords del curso se muestran salvo que el curso los desactive.
 export const recordsCursActius = (curso) => curso.config?.recordsCurs !== false

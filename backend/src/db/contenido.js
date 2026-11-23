@@ -23,7 +23,13 @@ export async function obtenerArbolCurso(slug) {
                          SELECT json_agg(json_build_object(
                                   'id', m.slug, 'nombre', m.nombre,
                                   'color', m.color, 'sombra', m.sombra,
-                                  'operaciones', m.operaciones, 'banco', b.slug, 'bloc', m.bloc, 'params', m.params
+                                  'operaciones', m.operaciones, 'banco', b.slug, 'bloc', m.bloc, 'params', m.params,
+                                  'nivells', COALESCE((
+                                    SELECT jsonb_agg(jsonb_build_object('nivell', n.i + 1, 'operaciones', n.v->'operaciones',
+                                                                        'params', n.v->'params') ORDER BY n.i)
+                                      FROM jsonb_array_elements(m.nivells) WITH ORDINALITY AS n(v, i)
+                                     WHERE (n.v->>'obert')::boolean
+                                  ), '[]'::jsonb)
                                 ) ORDER BY m.orden, m.id)
                            FROM modos m LEFT JOIN bancos b ON b.id = m.banco_id
                           WHERE m.asignatura_id = a.id AND m.activo

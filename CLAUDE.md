@@ -14,7 +14,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
   - Web por cursos (1r–6è; 2n–5è inactivos y vacíos), interfaz en catalán, pantalla completa.
   - Todo el contenido en Supabase y editable desde la consola del profesorado (`/profesorat`, contraseña `TEACHER_PASSWD`): preguntas, importar/exportar, cursos, asignaturas, modos, bancos, vista previa.
   - Alumnos con àlies + PIN por curso: bloques de preguntas, récords personales y del curso, "Per repassar" en la BD.
-- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1–M8 hechas** (raíces, dificultad por modo, 6è al nivel del currículum con problemas nuevos y básicos en catalán, decimales, fracciones, operaciones combinadas, porcentajes y proporcionalidad, divisibilidad); **en curso: niveles 1/2/3 dentro de un modo**; después M8b (medida) y M9 (5è). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
+- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1–M8 hechas** (raíces, dificultad por modo, 6è al nivel del currículum con problemas nuevos y básicos en catalán, decimales, fracciones, operaciones combinadas, porcentajes y proporcionalidad, divisibilidad); **niveles 1/2/3 dentro de un modo hechos** (plan general §18); siguiente M8b (medida) y M9 (5è). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
 - **Despliegue**: push a `main` = producción (ver README). Antes, `make test`, `make test-backend` y `make test-e2e`; después, `make test-e2e-prod`.
 
 ## Mapa de temas
@@ -32,6 +32,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Decisiones confirmadas y pendientes | ídem §9 |
 | Puntuación: decisiones (bloques, récords por modo, del curso) | ídem §11 |
 | Fase 7: modelo de datos y subfases 7a–7d | ídem §17 |
+| Niveles 1/2/3 dentro de un modo (modelo, API, récords por nivel, consola) | ídem §18 |
 | Detalle de la fase 1 | ídem §12 |
 | Detalle de la fase 2 (tablas, bancos, seed, API, dev=prod) | ídem §13 |
 | Detalle de la fase 3 (frontend sobre la API, caché, copia del contenido) | ídem §14 |
@@ -76,6 +77,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Àlies de alumnos: API pública, PIN, sesiones por curso | `backend/src/routes/alumnes.js` + `backend/src/db/alumnes.js` + `backend/src/validacion/alies.js`; frontend `frontend/src/logic/alumne.js`, `components/AliesCapcalera.jsx`, `components/DialegAlies.jsx`; consola `pages/profesorat/LlistaAlies.jsx` |
 | Récords: consultas y pantalla | `backend/src/db/records.js`; `GET /api/alumnes/records` y `/records-curs`; `frontend/src/logic/records.js`, `pages/RecordsCurs.jsx` |
 | "Per repassar" (fallos por àlies) y migración desde el navegador | `backend/src/db/fallos.js` + rutas `/api/alumnes/fallos` en `backend/src/routes/alumnes.js`; `frontend/src/logic/fallos.js`, `pages/ParaRepasar.jsx` |
+| Niveles de un modo (frontend) | `frontend/src/logic/nivells.js`; selector en `PracticaModo` (`pages/Practica.jsx`); consola en `pages/profesorat/FormModo.jsx` |
 | Bloques de preguntas (lógica pura) y su guardado | `frontend/src/logic/blocs.js`; `POST /api/alumnes/blocs` en `backend/src/routes/alumnes.js` |
 | Vista previa de un modo (pantalla de práctica reutilizable con "entorno") | `frontend/src/pages/profesorat/VistaPrevia.jsx` + `PracticaModo` en `frontend/src/pages/Practica.jsx` |
 | Modos y bancos: validación y operaciones | `backend/src/validacion/modos.js` + `backend/src/db/modos.js`; `frontend/src/pages/profesorat/FormModo.jsx`, `NouBanc.jsx` |

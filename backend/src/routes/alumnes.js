@@ -133,9 +133,12 @@ router.post(
     if (!c) return
     const alumne = await alumneDeSesion(leerCookie(req, nombreCookie(c.id)), c.id)
     if (!alumne) return res.status(401).json({ error: 'sessio_requerida' })
-    const { assignatura, mode, puntos, aciertos, preguntas } = req.body ?? {}
+    const { assignatura, mode, puntos, aciertos, preguntas, nivell = 1 } = req.body ?? {}
     const modo = typeof assignatura === 'string' && typeof mode === 'string' ? await modoConBloc(c.id, assignatura, mode) : null
     if (!modo) return res.status(404).json({ error: 'mode_no_trobat' })
+    // El nivel 1 (el propio modo) siempre existe; el 2 y el 3, si están abiertos.
+    const nivellObert = nivell === 1 || (Number.isInteger(nivell) && modo.nivells[nivell - 2]?.obert === true)
+    if (!nivellObert) return res.status(404).json({ error: 'nivell_no_trobat' })
     const enteros = [puntos, aciertos, preguntas].every(Number.isInteger)
     if (
       !enteros ||
@@ -148,7 +151,7 @@ router.post(
     ) {
       return res.status(400).json({ error: 'bloc_no_valid' })
     }
-    res.status(201).json(await guardarBloc(alumne.id, modo.id, { puntos, aciertos, preguntas }))
+    res.status(201).json(await guardarBloc(alumne.id, modo.id, { puntos, aciertos, preguntas, nivell }))
   }),
 )
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import {
   generarEjercicioParaPerfil,
   comprobarRespuesta,
@@ -15,6 +15,7 @@ import { formatDecimal } from '../logic/common.js'
 import { tamanoBloc, estadoInicial, registrarRespuesta } from '../logic/blocs.js'
 import { useAlumne, enviarBloc } from '../logic/alumne.js'
 import { obtenerRecordsPropis, claveModo, recordsCursActius } from '../logic/records.js'
+import { nivellsDe, triarNivell, modoDelNivell } from '../logic/nivells.js'
 import { T } from '../textos.js'
 import Pagina from '../components/Pagina.jsx'
 import Resumen from './Resumen.jsx'
@@ -138,10 +139,12 @@ function elegirCelebracion() {
   return CELEBRACIONES[Math.floor(Math.random() * CELEBRACIONES.length)]
 }
 
-// Resuelve curso/asignatura/modo desde la URL y alterna entre la partida y su
-// resumen. "Torna a jugar" cambia la "key" de la partida para empezar de cero.
+// Resuelve curso/asignatura/modo (y el nivel, "?nivell=2") desde la URL y
+// alterna entre la partida y su resumen. "Torna a jugar" cambia la "key" de la
+// partida para empezar de cero.
 export default function Practica() {
   const { cursoId, asignaturaId, modoId } = useParams()
+  const [cerca] = useSearchParams()
   const resultado = useApi(() => obtenerCurso(cursoId), cursoId)
 
   return (
@@ -150,12 +153,16 @@ export default function Practica() {
         const asignatura = buscarAsignatura(curso, asignaturaId)
         const modo = buscarModo(asignatura, modoId)
         if (!modo) return <NoTrobat />
+        const nivells = nivellsDe(modo)
+        const nivell = triarNivell(nivells, cerca.get('nivell'))
         return (
           <PracticaModo
-            key={`${asignatura.id}/${modo.id}`}
+            key={`${asignatura.id}/${modo.id}/${nivell}`}
             curso={curso}
             asignatura={asignatura}
             modo={modo}
+            nivells={nivells}
+            nivell={nivell}
             entorno={entornoAlumnes(curso, asignatura)}
           />
         )
@@ -179,9 +186,22 @@ function entornoAlumnes(curso, asignatura) {
   }
 }
 
-// Partida + resumen de un modo. "cabecera" se pinta encima (lo usa la vista
-// previa para su aviso).
-export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesPropias, cabecera = null, senseAlies = false }) {
+// Partida + resumen de un modo en un nivel ("nivells": los que se pueden
+// elegir; si hay más de uno, se enseña el selector). "cabecera" se pinta
+// encima (lo usa la vista previa para su aviso).
+export function PracticaModo({
+  curso,
+  asignatura,
+  modo,
+  nivells = nivellsDe(modo),
+  nivell = 1,
+  entorno,
+  molles: mollesPropias,
+  cabecera = null,
+  senseAlies = false,
+}) {
+  const modoJoc = modoDelNivell(modo, nivells, nivell)
+  const clau = claveModo(asignatura.id, modo.id, nivell)
   const [resumen, setResumen] = useState(null)
   const [partida, setPartida] = useState(0)
   // Con àlies (y si el entorno lo permite), los bloques se guardan.
@@ -191,14 +211,14 @@ export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesP
   useEffect(() => {
     if (!entorno.guardarBlocs || !alumne) return setRecord(undefined)
     obtenerRecordsPropis(curso.id)
-      .then((rs) => setRecord(rs[claveModo(asignatura.id, modo.id)] ?? null))
+      .then((rs) => setRecord(rs[clau] ?? null))
       .catch(() => setRecord(undefined))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alumne, curso.id, asignatura.id, modo.id])
+  }, [alumne, curso.id, clau])
   const guardarBloc =
     entorno.guardarBlocs && alumne
       ? async (bloc) => {
-          const resultado = await enviarBloc(curso.id, asignatura.id, modo.id, bloc)
+          const resultado = await enviarBloc(curso.id, asignatura.id, modo.id, { ...bloc, nivell })
           setRecord(resultado.millor)
           return resultado
         }
@@ -238,14 +258,33 @@ export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesP
           rutaAltre={entorno.rutaTorna}
           rutaRepassar={entorno.registrarFallos ? `/${curso.id}/repassar` : null}
           rutaRecords={
-            entorno.guardarBlocs && recordsCursActius(curso) ? `/${curso.id}/records#${asignatura.id}-${modo.id}` : null
+            entorno.guardarBlocs && recordsCursActius(curso)
+              ? `/${curso.id}/records#${asignatura.id}-${modo.id}${nivell > 1 ? `-${nivell}` : ''}`
+              : null
           }
           onTornarAJugar={tornarAJugar}
         />
       ) : (
-        <Partida key={partida} curso={curso} modo={modo} entorno={entornoPartida} onFinalizar={setResumen} />
+        <>
+          {nivells.length > 1 && <SelectorNivell nivells={nivells} actual={nivell} />}
+          <Partida key={partida} curso={curso} modo={modoJoc} entorno={entornoPartida} onFinalizar={setResumen} />
+        </>
       )}
     </Pagina>
+  )
+}
+
+// Botones "Nivell 1 · Nivell 2 · Nivell 3": cambian "?nivell=" en la URL (la
+// partida empieza de nuevo en ese nivel).
+function SelectorNivell({ nivells, actual }) {
+  return (
+    <nav className="selector-nivell" aria-label={T.triaNivell}>
+      {nivells.map(({ nivell }) => (
+        <Link key={nivell} to={`?nivell=${nivell}`} aria-current={nivell === actual ? 'true' : undefined}>
+          {T.nivellN(nivell)}
+        </Link>
+      ))}
+    </nav>
   )
 }
 

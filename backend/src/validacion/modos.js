@@ -4,6 +4,39 @@ import { validarParams } from '../catalogo/parametres.js'
 
 export const FORMATOS = ['numerica', 'traduccio', 'opcio_multiple']
 
+// Niveles 2 y 3 (el 1 es el propio modo).
+export const MAX_NIVELLS = 3
+
+// Tipos de un modo o de un nivel: { operaciones } | { error }.
+function validarOperaciones(operaciones) {
+  if (!Array.isArray(operaciones) || operaciones.length === 0) return { error: "Tria almenys un tipus d'exercici." }
+  if (operaciones.some((op) => typeof op !== 'string' || !(op in TIPOS_EJERCICIO))) {
+    return { error: "Hi ha algun tipus d'exercici que no existeix." }
+  }
+  return { operaciones: [...new Set(operaciones)] }
+}
+
+// Formatos de banco que piden unos tipos (sin repetir).
+const formatosDe = (operaciones) => [...new Set(operaciones.map((op) => TIPOS_EJERCICIO[op]).filter(Boolean))]
+
+// Niveles 2 y 3: { nivells } | { error }. Cada uno con sus tipos, su
+// dificultad y si está abierto a los alumnos.
+function validarNivells(nivells) {
+  if (nivells === undefined || nivells === null) return { nivells: [] }
+  if (!Array.isArray(nivells) || nivells.length > MAX_NIVELLS - 1) return { error: `Com a màxim ${MAX_NIVELLS} nivells.` }
+  const resultat = []
+  for (const [i, nivell] of nivells.entries()) {
+    const nom = `Nivell ${i + 2}`
+    const { operaciones, error } = validarOperaciones(nivell?.operaciones)
+    if (error) return { error: `${nom}: ${error.charAt(0).toLowerCase()}${error.slice(1)}` }
+    const p = validarParams(operaciones, nivell.params)
+    if (p.error) return { error: `${nom}: ${p.error}` }
+    if (typeof (nivell.obert ?? true) !== 'boolean') return { error: `${nom}: obert ha de ser sí o no.` }
+    resultat.push({ operaciones, params: p.params, obert: nivell.obert ?? true })
+  }
+  return { nivells: resultat }
+}
+
 // Modo completo (al crear, o lo guardado + los cambios al editar). Nombre,
 // slug, color y activo se validan como en cursos/asignaturas; además los tipos
 // de ejercicio. Devuelve { valores, formatoBanco } (formatoBanco: el formato
@@ -13,19 +46,20 @@ export function validarModo(datos, { creando = false } = {}) {
   const errores = { ...(base.errores ?? {}) }
   const valores = { ...(base.valores ?? {}) }
 
-  const operaciones = datos.operaciones
   let formatoBanco = null
-  if (!Array.isArray(operaciones) || operaciones.length === 0) {
-    errores.operaciones = "Tria almenys un tipus d'exercici."
-  } else if (operaciones.some((op) => typeof op !== 'string' || !(op in TIPOS_EJERCICIO))) {
-    errores.operaciones = "Hi ha algun tipus d'exercici que no existeix."
-  } else {
-    const formatos = [...new Set(operaciones.map((op) => TIPOS_EJERCICIO[op]).filter(Boolean))]
+  const ops = validarOperaciones(datos.operaciones)
+  const niv = validarNivells(datos.nivells)
+  if (ops.error) errores.operaciones = ops.error
+  if (niv.error) errores.nivells = niv.error
+  if (!ops.error && !niv.error) {
+    // Todos los niveles comparten el banco del modo: un solo formato.
+    const formatos = formatosDe([...ops.operaciones, ...niv.nivells.flatMap((n) => n.operaciones)])
     if (formatos.length > 1) {
       errores.operaciones =
-        "No es poden barrejar tipus que fan servir bancs de formats diferents (cada mode té un sol banc)."
+        "No es poden barrejar tipus que fan servir bancs de formats diferents (cada mode té un sol banc, també entre nivells)."
     } else {
-      valores.operaciones = [...new Set(operaciones)]
+      valores.operaciones = ops.operaciones
+      valores.nivells = niv.nivells
       formatoBanco = formatos[0] ?? null
     }
   }
