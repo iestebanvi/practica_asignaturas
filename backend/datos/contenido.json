@@ -343,6 +343,58 @@
               "bloc": null,
               "params": {},
               "activo": true
+            },
+            {
+              "id": "decimals",
+              "nombre": "Decimals",
+              "color": "#ffb74d",
+              "sombra": "#b38036",
+              "operaciones": [
+                "decimal-posicio",
+                "decimal-comparar",
+                "decimal-extrem",
+                "decimal-arrodonir",
+                "decimal-suma",
+                "decimal-resta",
+                "decimal-potencia10",
+                "decimal-per-natural"
+              ],
+              "banco": null,
+              "bloc": null,
+              "params": {
+                "decimal-suma": {
+                  "decimals": 3,
+                  "xifresEnteres": 2
+                },
+                "decimal-resta": {
+                  "decimals": 3,
+                  "xifresEnteres": 2
+                },
+                "decimal-extrem": {
+                  "xifresEnteres": 2
+                },
+                "decimal-posicio": {
+                  "decimals": 3,
+                  "xifresEnteres": 2
+                },
+                "decimal-comparar": {
+                  "decimals": 3,
+                  "xifresEnteres": 2
+                },
+                "decimal-arrodonir": {
+                  "decimals": 3,
+                  "xifresEnteres": 2
+                },
+                "decimal-potencia10": {
+                  "decimals": 3,
+                  "xifresEnteres": 2
+                },
+                "decimal-per-natural": {
+                  "decimals": 3,
+                  "xifresEnteres": 2
+                }
+              },
+              "activo": true
             }
           ]
         },
