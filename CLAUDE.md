@@ -39,6 +39,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Fase 5: subfases 5a–5f y decisiones (borrar, slugs, ediciones simultáneas) | ídem §16 |
 | Diseño técnico antiguo de BD + PIN (referencia, sustituido) | `docs/planes/plan-base-datos-usuarios.md` |
 | Matemáticas: currículum oficial (XTEC) vs. ejercicios de la web | `docs/matematiques/comparativa-curriculum.md` |
+| Plan de matemáticas de 5è y 6è (reparto de bloques, parámetros por modo, fases M1–M8) | `docs/planes/plan-matematiques-5e-6e.md` (borrador) |
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |
 | Contenido fuente: temario Medi "Canvis en el relleu" | `docs/medi/canvis-en-el-relleu-temari.txt` |
 | Cómo arrancar, testear y desplegar | `README.md` y `Makefile` (`make help`; `make test-e2e-prod` = e2e contra producción) |
