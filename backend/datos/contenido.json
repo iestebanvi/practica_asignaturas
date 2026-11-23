@@ -155,7 +155,7 @@
               "id": "aritmetica",
               "nombre": "Aritmètica",
               "color": "#ab47bc",
-              "sombra": "#7b1fa2",
+              "sombra": "#783284",
               "operaciones": [
                 "suma",
                 "resta",
@@ -164,35 +164,66 @@
               ],
               "banco": null,
               "bloc": null,
-              "params": {},
+              "params": {
+                "suma": {
+                  "max": 99999
+                },
+                "resta": {
+                  "max": 99999
+                },
+                "division": {
+                  "xifresDivisor": 2,
+                  "xifresQuocient": 2
+                },
+                "multiplicacion": {
+                  "xifresA": 3,
+                  "xifresB": 2
+                }
+              },
               "activo": true
             },
             {
               "id": "sumes-restes",
               "nombre": "Sumes i restes",
               "color": "#00acc1",
-              "sombra": "#00838f",
+              "sombra": "#007887",
               "operaciones": [
                 "suma",
                 "resta"
               ],
               "banco": null,
               "bloc": null,
-              "params": {},
+              "params": {
+                "suma": {
+                  "max": 99999
+                },
+                "resta": {
+                  "max": 99999
+                }
+              },
               "activo": true
             },
             {
               "id": "multiplicacions-divisions",
               "nombre": "Multiplicacions i divisions",
               "color": "#5e35b1",
-              "sombra": "#311b92",
+              "sombra": "#42257c",
               "operaciones": [
                 "multiplicacion",
                 "division"
               ],
               "banco": null,
               "bloc": null,
-              "params": {},
+              "params": {
+                "division": {
+                  "xifresDivisor": 2,
+                  "xifresQuocient": 2
+                },
+                "multiplicacion": {
+                  "xifresA": 3,
+                  "xifresB": 2
+                }
+              },
               "activo": true
             },
             {
@@ -212,26 +243,37 @@
               "id": "successions",
               "nombre": "Successions",
               "color": "#ef6c00",
-              "sombra": "#bf360c",
+              "sombra": "#a74c00",
               "operaciones": [
                 "sucesion"
               ],
               "banco": null,
               "bloc": null,
-              "params": {},
+              "params": {
+                "sucesion": {
+                  "pasMax": 50,
+                  "pasMin": 5,
+                  "inicialMax": 200
+                }
+              },
               "activo": true
             },
             {
               "id": "estimacions",
               "nombre": "Estimacions",
               "color": "#6d4c41",
-              "sombra": "#3e2723",
+              "sombra": "#4c352e",
               "operaciones": [
                 "estimacion"
               ],
               "banco": null,
               "bloc": null,
-              "params": {},
+              "params": {
+                "estimacion": {
+                  "xifres": 3,
+                  "arrodonir": 100
+                }
+              },
               "activo": true
             },
             {
@@ -288,6 +330,19 @@
               "bloc": null,
               "params": {},
               "activo": true
+            },
+            {
+              "id": "problemes-nous",
+              "nombre": "Problemes 6è (nous)",
+              "color": "#00897b",
+              "sombra": "#006056",
+              "operaciones": [
+                "problema"
+              ],
+              "banco": "problemes-6e",
+              "bloc": null,
+              "params": {},
+              "activo": false
             }
           ]
         },
@@ -1045,7 +1100,7 @@
     },
     {
       "slug": "problemes-6",
-      "nombre": "Problemes (6è)",
+      "nombre": "Problemes bàsics",
       "formato": "numerica",
       "preguntas": [
         {
@@ -1543,6 +1598,501 @@
           "opciones": null,
           "alternativas": null,
           "activo": true
+        }
+      ]
+    },
+    {
+      "slug": "problemes-6e",
+      "nombre": "Problemes 6è",
+      "formato": "numerica",
+      "preguntas": [
+        {
+          "orden": 1,
+          "enunciado": "Una entrada de cinema costa 8 euros i unes crispetes 4 euros. Quant paguen 5 amics si cadascun compra una entrada i unes crispetes?",
+          "respuesta": "60",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 2,
+          "enunciado": "La Júlia té 50 euros. Es compra 3 llibres de 12 euros cadascun. Quants euros li queden?",
+          "respuesta": "14",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 3,
+          "enunciado": "En Marc cobra 15 euros per cada hora de classes de repàs. Si en fa 3 hores cada setmana, quant cobra en 8 setmanes?",
+          "respuesta": "360",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 4,
+          "enunciado": "Tres amics compren una pizza de 18 euros i dues begudes de 3 euros cadascuna, i paguen a parts iguals. Quant paga cadascun?",
+          "respuesta": "8",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 5,
+          "enunciado": "Les colònies costen 145 euros per alumne. Si hi van 24 alumnes, quant costen en total?",
+          "respuesta": "3480",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 6,
+          "enunciado": "Una botiga compra 40 pilotes a 9 euros cadascuna i les ven a 15 euros. Quant guanya si les ven totes?",
+          "respuesta": "240",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 7,
+          "enunciado": "La Clara rep 6 euros de paga cada setmana. Vol comprar un llibre de 45 euros i ja té 9 euros estalviats. Quantes setmanes ha d'estalviar encara?",
+          "respuesta": "6",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 8,
+          "enunciado": "Una família paga 1.200 euros de lloguer cada mes. Quant paga en un any?",
+          "respuesta": "14400",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 9,
+          "enunciado": "Si 6 entrades del museu costen 54 euros, quant costen 10 entrades?",
+          "respuesta": "90",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 10,
+          "enunciado": "Una pastisseria fa 15 pastissos al dia i ven cada pastís a 18 euros. Quant ingressa en una setmana en què obre 6 dies?",
+          "respuesta": "1620",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 11,
+          "enunciado": "Una samarreta costa 20 euros i té un descompte del 25 %. Quant costa amb el descompte?",
+          "respuesta": "15",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 12,
+          "enunciado": "Una bicicleta costa 240 euros. Si en fan un descompte del 10 %, quants euros es paga?",
+          "respuesta": "216",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 13,
+          "enunciado": "Un abric costa 80 euros i el rebaixen un 50 %. Quant costa ara?",
+          "respuesta": "40",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 14,
+          "enunciado": "Un joc de taula valia 36 euros i ara costa un 25 % menys. Quants euros s'estalvia qui el compra ara?",
+          "respuesta": "9",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 15,
+          "enunciado": "Una motxilla valia 70 euros i ha pujat un 10 %. Quant costa ara?",
+          "respuesta": "77",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 16,
+          "enunciado": "El 20 % dels 150 alumnes d'una escola hi van en bicicleta. Quants alumnes hi van en bicicleta?",
+          "respuesta": "30",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 17,
+          "enunciado": "En una classe de 25 alumnes, el 40 % juguen a bàsquet. Quants alumnes juguen a bàsquet?",
+          "respuesta": "10",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 18,
+          "enunciado": "Un club té 180 socis. El 30 % són menors de 12 anys. Quants socis tenen 12 anys o més?",
+          "respuesta": "126",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 19,
+          "enunciado": "Si 3 quilos de pomes costen 6 euros, quant costen 8 quilos?",
+          "respuesta": "16",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 20,
+          "enunciado": "Una màquina fa 120 galetes en 4 minuts. Quantes galetes fa en 15 minuts?",
+          "respuesta": "450",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 21,
+          "enunciado": "Per fer un pastís per a 4 persones calen 200 grams de farina. Quants grams calen per fer-ne un per a 10 persones?",
+          "respuesta": "500",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 22,
+          "enunciado": "Un cotxe gasta 6 litres de benzina cada 100 quilòmetres. Quants litres gasta en 450 quilòmetres?",
+          "respuesta": "27",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 23,
+          "enunciado": "Una aixeta omple 30 litres en 5 minuts. Quants minuts tarda a omplir una banyera de 180 litres?",
+          "respuesta": "30",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 24,
+          "enunciado": "Un ciclista fa 18 quilòmetres en una hora. Quants quilòmetres fa en tres hores i mitja?",
+          "respuesta": "63",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 25,
+          "enunciado": "Una impressora fa 25 pàgines per minut. Quants minuts necessita per imprimir 30 còpies d'un document de 15 pàgines?",
+          "respuesta": "18",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 26,
+          "enunciado": "En un mapa, 1 cm correspon a 5 km de la realitat. Si dos pobles són a 12 cm al mapa, quants quilòmetres els separen?",
+          "respuesta": "60",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 27,
+          "enunciado": "En un plànol, 1 cm correspon a 2 metres. Una habitació fa 8 metres de llarg. Quants centímetres fa al plànol?",
+          "respuesta": "4",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 28,
+          "enunciado": "En un mapa, 1 cm correspon a 25 km. Una carretera fa 175 km. Quants centímetres fa al mapa?",
+          "respuesta": "7",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 29,
+          "enunciado": "Una corda fa 3 metres. Quants trossos de 25 centímetres se'n poden tallar?",
+          "respuesta": "12",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 30,
+          "enunciado": "Una ampolla té 1,5 litres d'aigua. Quants gots de 250 mil·lilitres es poden omplir?",
+          "respuesta": "6",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 31,
+          "enunciado": "Una caixa pesa dos quilos i mig. Quants grams pesa?",
+          "respuesta": "2500",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 32,
+          "enunciado": "Un camió porta 4 tones de sorra en sacs de 50 quilos. Quants sacs porta?",
+          "respuesta": "80",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 33,
+          "enunciado": "Una pel·lícula dura 2 hores i 15 minuts. Quants minuts dura?",
+          "respuesta": "135",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 34,
+          "enunciado": "Un tren surt a les 9:40 i arriba a les 11:10. Quants minuts dura el viatge?",
+          "respuesta": "90",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 35,
+          "enunciado": "Una piscina fa 25 metres de llarg. En Pau neda 1 quilòmetre. Quants llargs fa?",
+          "respuesta": "40",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 36,
+          "enunciado": "Un rellotge s'avança 3 minuts cada dia. Quants minuts s'haurà avançat en 4 setmanes?",
+          "respuesta": "84",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 37,
+          "enunciado": "Un camp rectangular fa 60 metres de llarg i 40 d'ample. Quants metres de tanca calen per envoltar-lo?",
+          "respuesta": "200",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 38,
+          "enunciado": "Un jardí rectangular fa 12 metres per 8. Si cada metre quadrat de gespa costa 4 euros, quant costa cobrir-lo tot?",
+          "respuesta": "384",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 39,
+          "enunciado": "Una caixa en forma de cub fa 4 cm d'aresta. Quants cubets d'1 cm d'aresta hi caben?",
+          "respuesta": "64",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 40,
+          "enunciado": "Una paret fa 6 metres de llarg i 3 d'alt. Si un pot de pintura serveix per a 9 metres quadrats, quants pots calen per pintar-la?",
+          "respuesta": "2",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 41,
+          "enunciado": "Un hort rectangular fa 15 metres per 8. Es planta una tomaquera cada 2 metres quadrats. Quantes tomaqueres hi caben?",
+          "respuesta": "60",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 42,
+          "enunciado": "Un quadrat té un perímetre de 36 cm. Quants centímetres quadrats fa la seva àrea?",
+          "respuesta": "81",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 43,
+          "enunciado": "En Joan ha tret un 7, un 8 i un 9 en tres exàmens. Quina és la seva nota mitjana?",
+          "respuesta": "8",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 44,
+          "enunciado": "Un equip ha marcat 3, 5, 2 i 6 gols en quatre partits. Quants gols ha marcat de mitjana per partit?",
+          "respuesta": "4",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 45,
+          "enunciado": "Les temperatures màximes de tres dies han estat 18, 21 i 24 graus. Quina és la temperatura mitjana?",
+          "respuesta": "21",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 46,
+          "enunciado": "En una botiga han venut 120, 150, 90, 140 i 100 entrepans en cinc dies. Quants entrepans han venut de mitjana cada dia?",
+          "respuesta": "120",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 47,
+          "enunciado": "Un llibre té 240 pàgines. En Hugo n'ha llegit la quarta part. Quantes pàgines li queden per llegir?",
+          "respuesta": "180",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 48,
+          "enunciado": "Una classe té 30 alumnes. Dos terços han anat a la biblioteca. Quants alumnes hi han anat?",
+          "respuesta": "20",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 49,
+          "enunciado": "Un teatre té 24 files de 30 butaques. Si s'han venut les tres quartes parts de les entrades, quantes butaques queden lliures?",
+          "respuesta": "180",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 50,
+          "enunciado": "En un concurs reparteixen 1.500 euros entre 3 guanyadors: el primer en rep la meitat i els altres dos es reparteixen la resta a parts iguals. Quant rep el segon?",
+          "respuesta": "375",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 51,
+          "enunciado": "Un autobús surt amb 52 passatgers. A la primera parada en baixa la quarta part i en pugen 9. Quants passatgers hi ha ara?",
+          "respuesta": "48",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 52,
+          "enunciado": "Una escola té 6 classes de 25 alumnes i van d'excursió en autobusos de 55 places. Quants autobusos necessiten com a mínim?",
+          "respuesta": "3",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 53,
+          "enunciado": "Es volen posar 500 ous en capses de 12. Quantes capses es poden omplir del tot?",
+          "respuesta": "41",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 54,
+          "enunciado": "Es volen posar 500 ous en capses de 12. Quants ous sobren després d'omplir totes les capses que es pugui?",
+          "respuesta": "8",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 55,
+          "enunciado": "Una granja té 36 gallines que ponen 5 ous a la setmana cadascuna. Quants ous ponen en 4 setmanes?",
+          "respuesta": "720",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 56,
+          "enunciado": "La Núria té el triple d'anys que el seu germà, que en té 4. Quants anys tindrà la Núria d'aquí a 5 anys?",
+          "respuesta": "17",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 57,
+          "enunciado": "Un dipòsit té 1.000 litres d'aigua. Cada dia se'n gasten 85. Quants litres quedaran al cap d'una setmana?",
+          "respuesta": "405",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 58,
+          "enunciado": "En una botiga hi ha 3 prestatges amb 48 llibres i 2 prestatges amb 36 llibres. Quants llibres hi ha en total?",
+          "respuesta": "216",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 59,
+          "enunciado": "Una família recorre 1.240 quilòmetres en 4 dies, la mateixa distància cada dia. Quants quilòmetres fa cada dia?",
+          "respuesta": "310",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 60,
+          "enunciado": "Si multipliquem un nombre per 7 i hi sumem 15, obtenim 106. Quin és el nombre?",
+          "respuesta": "13",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
+        },
+        {
+          "orden": 61,
+          "enunciado": "A una excursió hi van 4 mestres i 92 alumnes. Si es fan grups de 12 persones, quants grups surten?",
+          "respuesta": "8",
+          "opciones": null,
+          "alternativas": null,
+          "activo": false
         }
       ]
     },

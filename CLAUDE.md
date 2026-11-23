@@ -14,7 +14,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
   - Web por cursos (1r–6è; 2n–5è inactivos y vacíos), interfaz en catalán, pantalla completa.
   - Todo el contenido en Supabase y editable desde la consola del profesorado (`/profesorat`, contraseña `TEACHER_PASSWD`): preguntas, importar/exportar, cursos, asignaturas, modos, bancos, vista previa.
   - Alumnos con àlies + PIN por curso: bloques de preguntas, récords personales y del curso, "Per repassar" en la BD.
-- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1 (raíces cuadradas) y M2 (dificultad por modo) hechas**; siguiente M3 (nivel de cálculo de 6è y problemas). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
+- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1 (raíces cuadradas) y M2 (dificultad por modo) hechas**; **M3 en curso** (dificultad de 6è aplicada; problemas nuevos importados inactivos y traducción de los básicos pendientes de revisión: `docs/matematiques/problemes-revisio.md`). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
 - **Despliegue**: push a `main` = producción (ver README). Antes, `make test`, `make test-backend` y `make test-e2e`; después, `make test-e2e-prod`.
 
 ## Mapa de temas
@@ -39,6 +39,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Fase 5: subfases 5a–5f y decisiones (borrar, slugs, ediciones simultáneas) | ídem §16 |
 | Diseño técnico antiguo de BD + PIN (referencia, sustituido) | `docs/planes/plan-base-datos-usuarios.md` |
 | Matemáticas: currículum oficial (XTEC) vs. ejercicios de la web | `docs/matematiques/comparativa-curriculum.md` |
+| Problemas de 6è (nuevos) y traducción de los básicos: fuentes y tabla de revisión | `docs/matematiques/problemes-6e.json`, `problemes-basics-ca.json`, `problemes-revisio.md` |
 | Plan de matemáticas de 5è y 6è (reparto de bloques, parámetros por modo, fases M1–M9) | `docs/planes/plan-matematiques-5e-6e.md` (vigente; M1 raíces hecha) |
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |
 | Contenido fuente: temario Medi "Canvis en el relleu" | `docs/medi/canvis-en-el-relleu-temari.txt` |
