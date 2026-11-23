@@ -117,4 +117,26 @@ test.describe('Àlies dels alumnes', () => {
     await alumne.reload()
     await expect(alumne.getByRole('button', { name: /Entra amb el teu àlies/i })).toBeVisible()
   })
+
+  test('los fallos que guardaba el navegador pasan al àlies al entrar (también los del perfil antiguo)', async ({ page }) => {
+    await page.goto('/6-primaria')
+    await page.evaluate(() =>
+      localStorage.setItem(
+        'practica-asignaturas:fallos',
+        JSON.stringify({
+          '6-primaria': { vocabulario: { HOUSE: { enunciado: 'HOUSE', respuesta: 'casa', veces: 3 } } },
+          mayor: { gramatica: { G: { enunciado: 'There ___ a cat.', respuesta: 'is', veces: 1 } } },
+          pequeno: { hora: { 'Les 9:15': { enunciado: 'Les 9:15', respuesta: '9:15', veces: 2 } } },
+        }),
+      ),
+    )
+    await crearAlies(page, '6-primaria', 'Heretera')
+    await page.goto('/6-primaria/repassar')
+    await expect(page.locator('.lista-repasar li')).toHaveCount(2)
+    await expect(page.locator('.lista-repasar li').first()).toContainText('HOUSE')
+    await expect(page.locator('.lista-repasar li').first()).toContainText('×3')
+    // Los de 1r (perfil "pequeno") se quedan en el navegador hasta que alguien entre en 1r
+    const local = await page.evaluate(() => JSON.parse(localStorage.getItem('practica-asignaturas:fallos')))
+    expect(Object.keys(local)).toEqual(['pequeno'])
+  })
 })

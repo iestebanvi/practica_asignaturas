@@ -292,6 +292,66 @@ describe.skipIf(!process.env.DATABASE_URL)('alumnos: /api/alumnes', () => {
     })
   })
 
+  describe('Per repassar: /api/alumnes/fallos', () => {
+    let cookie
+    const llista = async (c = cookie) => (await pedir('GET', '/api/alumnes/fallos?curs=6-primaria', null, c)).body.fallos
+    const apunta = (datos, c = cookie) => pedir('POST', '/api/alumnes/fallos', { curs: '6-primaria', ...datos }, c)
+
+    beforeAll(async () => {
+      cookie = (await pedir('POST', '/api/alumnes/crea', { curs: '6-primaria', alies: 'Repassador' })).cookie
+    })
+
+    it('sin àlies: 401 al leer, apuntar o vaciar', async () => {
+      expect((await pedir('GET', '/api/alumnes/fallos?curs=6-primaria')).status).toBe(401)
+      expect((await apunta({ tipo: 'vocabulario', enunciado: 'A', respuesta: 'b' }, null)).status).toBe(401)
+      expect((await pedir('DELETE', '/api/alumnes/fallos?curs=6-primaria')).status).toBe(401)
+    })
+
+    it('apuntar el mismo fallo suma veces; la lista va de más a menos veces', async () => {
+      expect((await apunta({ tipo: 'vocabulario', enunciado: 'HOUSE', respuesta: 'casa' })).status).toBe(204)
+      await apunta({ tipo: 'vocabulario', enunciado: 'TREE', respuesta: 'arbre' })
+      await apunta({ tipo: 'vocabulario', enunciado: 'TREE', respuesta: 'arbre' })
+      await apunta({ tipo: 'hora', enunciado: 'Les 9:15', respuesta: '9:15' })
+      expect(await llista()).toEqual([
+        { tipo: 'vocabulario', enunciado: 'TREE', respuesta: 'arbre', veces: 2 },
+        expect.objectContaining({ veces: 1 }),
+        expect.objectContaining({ veces: 1 }),
+      ])
+    })
+
+    it('rechaza fallos no válidos', async () => {
+      for (const datos of [{ tipo: 'Vocabulario!', enunciado: 'A', respuesta: 'b' }, { tipo: 'hora', enunciado: '', respuesta: 'b' }, { tipo: 'hora', enunciado: 'A' }]) {
+        expect((await apunta(datos)).status).toBe(400)
+      }
+    })
+
+    it('importar (los que guardaba el navegador): suma las veces y descarta los no válidos', async () => {
+      const r = await pedir('POST', '/api/alumnes/fallos/importa', {
+        curs: '6-primaria',
+        fallos: [
+          { tipo: 'vocabulario', enunciado: 'HOUSE', respuesta: 'casa', veces: 3 },
+          { tipo: 'gramatica', enunciado: 'There ___ a cat.', respuesta: 'is', veces: 1 },
+          { tipo: 'malament', enunciado: '', respuesta: 'x', veces: 1 },
+        ],
+      }, cookie)
+      expect(r.body).toEqual({ importats: 2 })
+      const fallos = await llista()
+      expect(fallos[0]).toEqual({ tipo: 'vocabulario', enunciado: 'HOUSE', respuesta: 'casa', veces: 4 })
+      expect(fallos.map((f) => f.enunciado)).toContain('There ___ a cat.')
+      const massa = Array.from({ length: 501 }, (_, i) => ({ tipo: 'hora', enunciado: `x${i}`, respuesta: 'y' }))
+      expect((await pedir('POST', '/api/alumnes/fallos/importa', { curs: '6-primaria', fallos: massa }, cookie)).status).toBe(400)
+    })
+
+    it('cada àlies tiene su lista; vaciar solo borra la propia', async () => {
+      const altre = (await pedir('POST', '/api/alumnes/crea', { curs: '6-primaria', alies: 'Altre repassador' })).cookie
+      expect(await llista(altre)).toEqual([])
+      await apunta({ tipo: 'hora', enunciado: 'Les 3:00', respuesta: '3:00' }, altre)
+      expect((await pedir('DELETE', '/api/alumnes/fallos?curs=6-primaria', null, cookie)).status).toBe(204)
+      expect(await llista()).toEqual([])
+      expect(await llista(altre)).toHaveLength(1)
+    })
+  })
+
   describe('consola: àlies del curso (con sesión de profesor)', () => {
     let profe
     beforeAll(async () => {

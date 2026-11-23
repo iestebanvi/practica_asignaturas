@@ -1,6 +1,6 @@
 # Contenido dinámico en BD + cursos + consola del profesorado + pantalla completa
 
-> **Vigente (2026-11-22).** Fases 0 a 5 implementadas; fase 7 en curso (7a, 7b y 7c hechas); la 6 en espera. Las decisiones marcadas con ❓ están pendientes de confirmar.
+> **Vigente (2026-11-22).** Fases 0 a 5 y 7 implementadas; la 6 en espera. Las decisiones marcadas con ❓ están pendientes de confirmar.
 > Sustituye en parte a `docs/plan-base-datos-usuarios.md`: aquel plan identificaba a cada alumno con nombre + PIN; ahora los alumnos **no se identifican**, así que la parte de usuarios/PIN queda descartada. De aquel plan se reutiliza la parte técnica de la BD (Supabase + `pg` + migraciones propias).
 
 ## 1. Objetivo
@@ -335,3 +335,9 @@ Aprobado el 2026-11-22. Decisiones: àlies **por curso**; bloque por defecto **1
 - **API**: `GET /api/alumnes/records?curs=` (del alumno identificado; vacío sin àlies) y `GET /api/alumnes/records-curs?curs=` (top 10 por modo; 404 `records_desactivats` si el curso los desactiva).
 - **Web**: récord propio en cada tarjeta de modo ("⭐ 330") y en el panel del juego ("El teu rècord: 330 punts · 25/30", se actualiza al completar un bloque); pantalla `/:curso/records` ("🏆 Rècords del curs": por asignatura y modo, medallas, el àlies propio resaltado; anclas `#asignatura-modo`), enlazada desde el curso, la asignatura y el resumen de cada partida.
 - **Consola**: casilla "Mostra els rècords del curs" en la ficha de curso (`config.recordsCurs`, activa por defecto). `records` queda reservado como slug de asignatura.
+
+### 7d ✅ hecha (2026-11-23) — fase 7 completa
+- **Migración 005**: `fallos_alumnes` (alumno, tipo, enunciado, respuesta, veces; único por alumno + tipo + enunciado).
+- **API** (con sesión de alumno): `GET /api/alumnes/fallos?curs=`, `POST /api/alumnes/fallos` (suma 1 vez, atómico), `POST /api/alumnes/fallos/importa` (hasta 500; descarta los no válidos), `DELETE /api/alumnes/fallos?curs=`.
+- **Web**: con àlies, los fallos de opción múltiple y escritos van al servidor (sin esperar, para no frenar el juego; `obtenerFallos` espera a los que aún se están enviando). Mientras la página aún no sabe si hay àlies también se envían (sin sesión, el servidor los rechaza). Sin àlies no se guarda nada y "Per repassar" invita a entrar. Ya no se usa `localStorage`.
+- **Migración de los fallos del navegador**: la primera vez que hay àlies en un curso, los fallos de ese curso guardados en `localStorage` (también los del perfil antiguo: `pequeno` → 1r, `mayor` → 6è) se envían a `importa`. Se borran del navegador **antes** de enviarlos (si la página se cierra a mitad, no se cuentan dos veces) y se devuelven si el servidor da error.

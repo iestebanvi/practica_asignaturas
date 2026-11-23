@@ -10,19 +10,12 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 ## Estado del proyecto
 
 - **Plan vigente**: `docs/planes/plan-contenido-dinamico-cursos.md` → apartado 6 (tabla de fases) y apartado 9 (decisiones).
-- Fases 0 y 1 **hechas y desplegadas** (2026-11-22).
-- Fases 2 y 3 **hechas** (2026-11-22): todo el contenido sale de Supabase vía API; la web ya no tiene datos en el código. Copia del contenido en `backend/datos/contenido.json`.
-- Fase 4 **hecha** (2026-11-22): login de la consola (`/profesorat`) con contraseña compartida `TEACHER_PASSWD`, sesión de 7 días.
-- Fase 5 dividida en 5a–5f (plan §16). **5a hecha** (2026-11-22): consola de solo lectura y e2e aislados en el esquema `e2e`.
-- **5b hecha** (2026-11-22): editar preguntas desde la consola. Cursos 2n–5è creados (inactivos, sin contenido).
-- **5c hecha** (2026-11-22): importar preguntas (texto/CSV con vista previa) y exportar (CSV por banco, copia completa JSON).
-- **5d hecha** (2026-11-22): crear/editar/ordenar/borrar cursos y asignaturas desde la consola.
-- **5e hecha** (2026-11-22): crear/editar/ordenar/borrar modos; crear/renombrar/borrar bancos. Ya se puede montar un tema completo desde la consola.
-- **5f hecha** (2026-11-22): vista previa de un modo aunque esté inactivo. **Fase 5 completa.**
-- Fase 7 dividida en 7a–7d (plan §17). **7a hecha** (2026-11-22): àlies + PIN por curso y moderación en la consola.
-- **7b hecha** (2026-11-23): bloques de preguntas (tamaño por curso/modo), guardado con àlies y aviso de récord.
-- **7c hecha** (2026-11-23): récords personales (tarjetas, panel) y pantalla "Rècords del curs" (top 10 por modo), desactivable por curso.
-- Siguiente: **7d** ("Per repassar" en la BD por àlies; fuera el `localStorage`). La fase 6 (configuración fina de generadores por modo) queda en espera hasta que haga falta.
+- **Hechas y desplegadas** (2026-11-22/23): fases 0–5 y 7. Resumen de cada una en el plan (§12–§17).
+  - Web por cursos (1r–6è; 2n–5è inactivos y vacíos), interfaz en catalán, pantalla completa.
+  - Todo el contenido en Supabase y editable desde la consola del profesorado (`/profesorat`, contraseña `TEACHER_PASSWD`): preguntas, importar/exportar, cursos, asignaturas, modos, bancos, vista previa.
+  - Alumnos con àlies + PIN por curso: bloques de preguntas, récords personales y del curso, "Per repassar" en la BD.
+- **Pendiente**: nada planificado. La fase 6 (configuración fina de generadores por modo) está en espera hasta que haga falta.
+- **Despliegue**: push a `main` = producción (ver README). Antes, `make test`, `make test-backend` y `make test-e2e`; después, `make test-e2e-prod`.
 
 ## Mapa de temas
 
@@ -72,6 +65,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Catálogo de tipos para validar en el servidor (¡sincronizado con el frontend por test!) | `backend/src/catalogo/tiposEjercicio.js` |
 | Àlies de alumnos: API pública, PIN, sesiones por curso | `backend/src/routes/alumnes.js` + `backend/src/db/alumnes.js` + `backend/src/validacion/alies.js`; frontend `frontend/src/logic/alumne.js`, `components/AliesCapcalera.jsx`, `components/DialegAlies.jsx`; consola `pages/profesorat/LlistaAlies.jsx` |
 | Récords: consultas y pantalla | `backend/src/db/records.js`; `GET /api/alumnes/records` y `/records-curs`; `frontend/src/logic/records.js`, `pages/RecordsCurs.jsx` |
+| "Per repassar" (fallos por àlies) y migración desde el navegador | `backend/src/db/fallos.js` + rutas `/api/alumnes/fallos` en `backend/src/routes/alumnes.js`; `frontend/src/logic/fallos.js`, `pages/ParaRepasar.jsx` |
 | Bloques de preguntas (lógica pura) y su guardado | `frontend/src/logic/blocs.js`; `POST /api/alumnes/blocs` en `backend/src/routes/alumnes.js` |
 | Vista previa de un modo (pantalla de práctica reutilizable con "entorno") | `frontend/src/pages/profesorat/VistaPrevia.jsx` + `PracticaModo` en `frontend/src/pages/Practica.jsx` |
 | Modos y bancos: validación y operaciones | `backend/src/validacion/modos.js` + `backend/src/db/modos.js`; `frontend/src/pages/profesorat/FormModo.jsx`, `NouBanc.jsx` |

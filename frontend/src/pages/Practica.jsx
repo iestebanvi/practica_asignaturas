@@ -132,7 +132,14 @@ export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesP
           return resultado
         }
       : null
-  const entornoPartida = { ...entorno, guardarBloc, pistaAlies: entorno.guardarBlocs && !alumne, record }
+  // Los fallos van a "Per repassar" solo con àlies (se guardan en el servidor).
+  // Mientras aún no se sabe si hay àlies (alumne === undefined, al cargar la
+  // página) también se envían: sin sesión, el servidor los rechaza y ya está.
+  const apuntarFallo =
+    entorno.registrarFallos && alumne !== null
+      ? (ejercicio) => registrarFallo(curso.id, ejercicio).catch(() => {})
+      : null
+  const entornoPartida = { ...entorno, guardarBloc, apuntarFallo, pistaAlies: entorno.guardarBlocs && !alumne, record }
 
   const molles = mollesPropias ?? [
     { nom: T.inici, to: '/' },
@@ -279,8 +286,8 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
     } else {
       setFallos((f) => f + 1)
       setFeedback('incorrecto')
-      if (entorno.registrarFallos && TIPOS_CON_REGISTRO_FALLOS.includes(ejercicio.tipo)) {
-        registrarFallo(curso.id, ejercicio)
+      if (entorno.apuntarFallo && TIPOS_CON_REGISTRO_FALLOS.includes(ejercicio.tipo)) {
+        entorno.apuntarFallo(ejercicio)
       }
     }
 

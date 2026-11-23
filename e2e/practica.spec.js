@@ -20,6 +20,19 @@ async function irAModo(page, url) {
   await expect(page.locator('.zona-exercici, .practica-avis:not(:has-text("Carregant"))')).toBeVisible()
 }
 
+// "Per repassar" solo guarda fallos con àlies: crea uno nuevo (único) en el
+// curso. Solo en el entorno e2e local: en producción no se crean àlies.
+async function entrarAmbAliesNou(page, curso, baseURL) {
+  test.skip(!/localhost|127\.0\.0\.1/.test(baseURL), 'crea un àlies: solo contra el entorno e2e local')
+  await page.goto(`/${curso}`)
+  await page.getByRole('button', { name: /Entra amb el teu àlies/i }).click()
+  const dialeg = page.getByRole('dialog')
+  await dialeg.getByLabel(/El teu àlies/i).fill(`Repàs ${Math.random().toString(36).slice(2, 8)}`)
+  await dialeg.getByRole('button', { name: /Continua/i }).click()
+  await dialeg.getByRole('button', { name: /Sí, crea/i }).click()
+  await dialeg.getByRole('button', { name: /Ja l’he apuntat/i }).click()
+}
+
 function respuestaCorrecta(enunciado) {
   if (respuestasProblemas.has(enunciado)) {
     return respuestasProblemas.get(enunciado)
@@ -272,6 +285,16 @@ test.describe('Practica Assignatures', () => {
     await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()
   })
 
+  test('sin àlies, "Per repassar" no guarda nada e invita a entrar con un àlies', async ({ page }) => {
+    await entrarEnVocabulario(page)
+    await page.locator('.opciones button').first().click()
+    await page.getByRole('button', { name: 'Finalitza' }).click()
+    await page.getByRole('link', { name: /Per repassar/ }).click()
+    await expect(page.getByText(/Entra amb el teu àlies \(a dalt\) per guardar/)).toBeVisible()
+    await expect(page.locator('.lista-repasar')).toHaveCount(0)
+    expect(await page.evaluate(() => localStorage.getItem('practica-asignaturas:fallos'))).toBeNull()
+  })
+
   test('un curso que no existe muestra "no trobat"', async ({ page }) => {
     await page.goto('/9-primaria')
     await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()
@@ -422,7 +445,8 @@ test.describe('Practica Assignatures', () => {
     await expect(page.getByRole('link', { name: 'Vocabulari', exact: true })).toBeVisible()
   })
 
-  test('un fallo de vocabulario se guarda en "Para repasar"', async ({ page }) => {
+  test('con àlies, un fallo de vocabulario se guarda en "Per repassar"', async ({ page, baseURL }) => {
+    await entrarAmbAliesNou(page, '6-primaria', baseURL)
     await entrarEnVocabulario(page)
 
     const palabra = await page.locator('.enunciado').innerText()
@@ -442,9 +466,11 @@ test.describe('Practica Assignatures', () => {
     await expect(page.locator('.repasar-veces')).toHaveText('×1')
   })
 
-  test('"Para repasar" es accesible desde la pantalla de modo, y "Vaciar lista" borra los fallos', async ({
+  test('"Per repassar" es accesible desde la pantalla de modo, y "Buida la llista" borra los fallos', async ({
     page,
+    baseURL,
   }) => {
+    await entrarAmbAliesNou(page, '6-primaria', baseURL)
     await entrarEnVocabulario(page)
 
     const palabra = await page.locator('.enunciado').innerText()
@@ -572,7 +598,8 @@ test.describe('Practica Assignatures', () => {
     expect(entradas.map((e) => e.enunciado)).toContain(voz[0])
   })
 
-  test('Vocabulario escrito: un fallo también se guarda en "Para repasar"', async ({ page }) => {
+  test('Vocabulario escrito: con àlies, un fallo también se guarda en "Per repassar"', async ({ page, baseURL }) => {
+    await entrarAmbAliesNou(page, '6-primaria', baseURL)
     await entrarEnVocabularioEscrito(page)
 
     await page.locator('input[type="text"]').fill('xxxxxxxx')
@@ -584,9 +611,11 @@ test.describe('Practica Assignatures', () => {
     await expect(page.locator('.lista-repasar li')).toHaveCount(1)
   })
 
-  test('There is / are: un fallo muestra la respuesta correcta y se guarda en "Para repasar"', async ({
+  test('There is / are: un fallo muestra la respuesta correcta y, con àlies, se guarda en "Per repassar"', async ({
     page,
+    baseURL,
   }) => {
+    await entrarAmbAliesNou(page, '6-primaria', baseURL)
     await entrarEnThereBe(page)
     await expect(page.locator('.instruccion')).toBeVisible()
     await expect(page.locator('.enunciado')).toContainText(/\S/)

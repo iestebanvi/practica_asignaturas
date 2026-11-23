@@ -14,6 +14,7 @@ import {
   guardarBloc,
 } from '../db/alumnes.js'
 import { recordsAlumne, recordsCurs, recordsCursActius } from '../db/records.js'
+import { validarFallo, sumarFallos, listarFallos, vaciarFallos, MAX_IMPORTAR } from '../db/fallos.js'
 
 // Máximo de puntos de una pregunta (los problemas, 20): para descartar
 // resultados imposibles.
@@ -148,6 +149,61 @@ router.post(
       return res.status(400).json({ error: 'bloc_no_valid' })
     }
     res.status(201).json(await guardarBloc(alumne.id, modo.id, { puntos, aciertos, preguntas }))
+  }),
+)
+
+// Alumno identificado en el curso de la petición; si no hay, responde 401.
+async function alumneObligatori(req, res) {
+  const c = await curso(req, res)
+  if (!c) return null
+  const alumne = await alumneDeSesion(leerCookie(req, nombreCookie(c.id)), c.id)
+  if (!alumne) res.status(401).json({ error: 'sessio_requerida' })
+  return alumne
+}
+
+// "Per repassar" del alumno identificado: listar, apuntar un fallo, importar
+// los que tenía guardados el navegador (antes de la 7d) y vaciar.
+router.get(
+  '/fallos',
+  asyncHandler(async (req, res) => {
+    const alumne = await alumneObligatori(req, res)
+    if (alumne) res.json({ fallos: await listarFallos(alumne.id) })
+  }),
+)
+
+router.post(
+  '/fallos',
+  asyncHandler(async (req, res) => {
+    const alumne = await alumneObligatori(req, res)
+    if (!alumne) return
+    const fallo = validarFallo({ ...req.body, veces: 1 })
+    if (!fallo) return res.status(400).json({ error: 'fallo_no_valid' })
+    await sumarFallos(alumne.id, [fallo])
+    res.status(204).end()
+  }),
+)
+
+router.post(
+  '/fallos/importa',
+  asyncHandler(async (req, res) => {
+    const alumne = await alumneObligatori(req, res)
+    if (!alumne) return
+    const lista = Array.isArray(req.body?.fallos) ? req.body.fallos : null
+    if (!lista || lista.length > MAX_IMPORTAR) return res.status(400).json({ error: 'fallos_no_valids' })
+    // Los que no son válidos se descartan sin más (vienen de datos antiguos).
+    const validos = lista.map(validarFallo).filter(Boolean)
+    await sumarFallos(alumne.id, validos)
+    res.json({ importats: validos.length })
+  }),
+)
+
+router.delete(
+  '/fallos',
+  asyncHandler(async (req, res) => {
+    const alumne = await alumneObligatori(req, res)
+    if (!alumne) return
+    await vaciarFallos(alumne.id)
+    res.status(204).end()
   }),
 )
 

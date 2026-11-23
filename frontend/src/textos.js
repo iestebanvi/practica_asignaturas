@@ -286,6 +286,7 @@ export const T = {
   // Per repassar
   repassarTitol: 'Per repassar',
   repassarBuit: 'Encara no has fallat res! Continua així 🎉',
+  repassarSenseAlies: 'Entra amb el teu àlies (a dalt) per guardar el que has fallat i poder-ho repassar des de qualsevol dispositiu.',
   repassarIntro: 'Això és el que més et costa:',
   buidaLlista: 'Buida la llista',
 }

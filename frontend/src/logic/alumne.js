@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { migrarFallosLocales } from './fallos.js'
 
 // Àlies del alumno identificado en cada curso (en este dispositivo). La
 // sesión va en una cookie HttpOnly por curso; aquí solo se guarda en memoria
@@ -35,6 +36,8 @@ const oyentes = new Set()
 function fijar(curso, alumne) {
   actuales.set(curso, alumne)
   for (const oyente of oyentes) oyente()
+  // Con àlies: los fallos que guardaba el navegador (antes de la 7d) pasan a él.
+  if (alumne) migrarFallosLocales(curso).catch(() => {})
 }
 
 export async function comprobarAlies(curso, alies) {

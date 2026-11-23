@@ -4,7 +4,7 @@ Web para que alumnos de primaria practiquen por curso, sin identificarse. La int
 - **1r de primària** (`/1-primaria`): Matemàtiques → sumes, restes i hores. Interfaz en mayúsculas y celebración al acertar.
 - **6è de primària** (`/6-primaria`): Matemàtiques (aritmètica, problemes, potències, perímetres i àrees…), Anglès (vocabulari, there is/are…) y Medi.
 
-Al terminar la partida (botón "Finalitza") se muestra un resumen con los puntos. "Per repassar" guarda los fallos en el navegador (`localStorage`), por curso.
+Al terminar la partida (botón "Finalitza") se muestra un resumen con los puntos. Los alumnos pueden entrar con un **àlies + PIN** (por curso, sin datos personales): así se guardan sus récords (por bloques de preguntas) y su lista "Per repassar". Sin àlies se juega igual, pero no se guarda nada.
 
 Todo el contenido (cursos, asignaturas, modos y bancos de preguntas) está en una base de datos **Supabase** (Postgres) y la web lo lee de la API: cambiar algo en la BD se ve al recargar, sin tocar código. `make export-contenido` guarda una copia en `backend/datos/contenido.json` (commitéala de vez en cuando); también se puede descargar desde la consola del profesorado ("Descarrega còpia completa"). El plan para hacerlo todo editable desde una consola del profesorado está en `docs/planes/plan-contenido-dinamico-cursos.md` (índice de la documentación en `CLAUDE.md`).
 
