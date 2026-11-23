@@ -437,6 +437,20 @@
                 }
               },
               "activo": true
+            },
+            {
+              "id": "combinades",
+              "nombre": "Operacions combinades",
+              "color": "#7986cb",
+              "sombra": "#555e8e",
+              "operaciones": [
+                "combinada",
+                "combinada-parentesi"
+              ],
+              "banco": null,
+              "bloc": null,
+              "params": {},
+              "activo": true
             }
           ]
         },
