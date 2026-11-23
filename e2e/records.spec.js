@@ -1,12 +1,27 @@
 import { test, expect } from '@playwright/test'
 import { PASSWORD_E2E } from './entorno.js'
 
-// Récords personales y del curso. Usa "Estimacions" de 6è (bloques de 30),
-// que no usa ningún otro test para guardar bloques; los bloques se envían
-// directamente a la API con la sesión del àlies.
+// Récords personales y del curso. Usa "Estimacions" de 6è, que no usa ningún
+// otro test para guardar bloques, con bloques de 30 (se fijan en el modo al
+// empezar); los bloques se envían directamente a la API con la sesión del àlies.
 test.describe('Rècords', () => {
   test.skip(({ baseURL }) => !/localhost|127\.0\.0\.1/.test(baseURL), 'solo contra el entorno e2e local')
   test.describe.configure({ mode: 'serial' })
+
+  test.beforeAll(async ({ browser }) => {
+    const page = await browser.newPage()
+    await page.goto('/profesorat')
+    await page.getByLabel('Contrasenya').fill(PASSWORD_E2E)
+    await page.getByRole('button', { name: 'Entra' }).click()
+    await expect(page.getByRole('navigation', { name: 'Contingut' })).toBeVisible()
+    const contingut = await (await page.request.get('/api/admin/contingut')).json()
+    const estimacions = contingut.cursos
+      .find((c) => c.slug === '6-primaria')
+      .asignaturas.find((a) => a.slug === 'matematiques')
+      .modos.find((m) => m.slug === 'estimacions')
+    expect((await page.request.patch(`/api/admin/modes/${estimacions.id}`, { data: { bloc: 30 } })).status()).toBe(200)
+    await page.close()
+  })
 
   async function aliesAmbBloc(page, alies, puntos, aciertos) {
     await page.goto('/6-primaria')

@@ -70,9 +70,11 @@ test.describe('Blocs de preguntes', () => {
   })
 
   test('sin ningún bloque completo, el resumen lo explica', async ({ page }) => {
+    // El tamaño es el que tenga 6è en el contenido
+    const bloc = (await (await page.request.get('/api/cursos/6-primaria')).json()).config?.bloc ?? 30
     await page.goto('/6-primaria/matematiques/aritmetica')
-    await expect(page.locator('.marcador-bloc')).toHaveText('Bloc 1 · 0/30')
+    await expect(page.locator('.marcador-bloc')).toHaveText(`Bloc 1 · 0/${bloc}`)
     await page.getByRole('button', { name: 'Finalitza' }).click()
-    await expect(page.getByText('Encara no has completat cap bloc de 30 preguntes')).toBeVisible()
+    await expect(page.getByText(`Encara no has completat cap bloc de ${bloc} preguntes`)).toBeVisible()
   })
 })

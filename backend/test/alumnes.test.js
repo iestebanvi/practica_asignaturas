@@ -33,6 +33,9 @@ describe.skipIf(!process.env.DATABASE_URL)('alumnos: /api/alumnes', () => {
   beforeAll(async () => {
     ;({ pool, servidor, base } = await prepararEntorno())
     ;({ limitadorPin } = await import('../src/routes/alumnes.js'))
+    // Estos tests usan bloques de 30 en 6è: se fija aquí para no depender de
+    // lo que tenga el contenido real en cada momento.
+    await pool.query(`UPDATE cursos SET config = config || '{"bloc": 30}' WHERE slug = '6-primaria'`)
   })
 
   afterAll(async () => {

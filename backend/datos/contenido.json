@@ -89,7 +89,7 @@
       "sombra": "#5a8b5c",
       "nivel": "medio",
       "config": {
-        "bloc": 30,
+        "bloc": 15,
         "celebracio": true,
         "majuscules": false,
         "recordsCurs": true
@@ -105,7 +105,7 @@
       "sombra": "#367f78",
       "nivel": "medio",
       "config": {
-        "bloc": 30,
+        "bloc": 15,
         "celebracio": false,
         "majuscules": false,
         "recordsCurs": true
@@ -121,7 +121,7 @@
       "sombra": "#685290",
       "nivel": "medio",
       "config": {
-        "bloc": 30,
+        "bloc": 15,
         "celebracio": false,
         "majuscules": false,
         "recordsCurs": true
@@ -137,9 +137,10 @@
       "sombra": "#0288d1",
       "nivel": "medio",
       "config": {
-        "bloc": 30,
+        "bloc": 15,
         "celebracio": false,
-        "majuscules": false
+        "majuscules": false,
+        "recordsCurs": true
       },
       "activo": true,
       "asignaturas": [
@@ -446,6 +447,24 @@
               "operaciones": [
                 "combinada",
                 "combinada-parentesi"
+              ],
+              "banco": null,
+              "bloc": null,
+              "params": {},
+              "activo": true
+            },
+            {
+              "id": "percentatges",
+              "nombre": "Percentatges i proporcions",
+              "color": "#4fc3f7",
+              "sombra": "#3789ad",
+              "operaciones": [
+                "percentatge-quantitat",
+                "percentatge-quin",
+                "percentatge-descompte",
+                "percentatge-equivalencia",
+                "proporcio-taula",
+                "proporcio-unitat"
               ],
               "banco": null,
               "bloc": null,
