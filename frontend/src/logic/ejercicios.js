@@ -1,4 +1,4 @@
-import { randomInt, respuestaCoincide } from './common.js'
+import { randomInt, respuestaCoincide, parseNumero, numerosIguals } from './common.js'
 import { generarSuma } from './sumas.js'
 import { generarResta } from './restas.js'
 import { generarMultiplicacion } from './multiplicaciones.js'
@@ -29,6 +29,16 @@ import {
   generarArrelEntera,
   generarArrelImatge,
 } from './arrels.js'
+import {
+  generarDecimalPosicio,
+  generarDecimalComparar,
+  generarDecimalExtrem,
+  generarDecimalArrodonir,
+  generarDecimalSuma,
+  generarDecimalResta,
+  generarDecimalPotencia10,
+  generarDecimalPerNatural,
+} from './decimals.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -57,6 +67,14 @@ const GENERADORES = {
   'quadrat-perfecte': generarQuadratPerfecte,
   'arrel-entera': generarArrelEntera,
   'arrel-imatge': generarArrelImatge,
+  'decimal-posicio': generarDecimalPosicio,
+  'decimal-comparar': generarDecimalComparar,
+  'decimal-extrem': generarDecimalExtrem,
+  'decimal-arrodonir': generarDecimalArrodonir,
+  'decimal-suma': generarDecimalSuma,
+  'decimal-resta': generarDecimalResta,
+  'decimal-potencia10': generarDecimalPotencia10,
+  'decimal-per-natural': generarDecimalPerNatural,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -74,6 +92,8 @@ const TIPOS_RESPUESTA_TEXTO = [
   'potencia-comparar',
   'quadrat-perfecte',
   'arrel-entera',
+  'decimal-comparar',
+  'decimal-extrem',
 ]
 
 // Parámetros de dificultad que entiende cada generador (los que puede poner un
@@ -86,6 +106,14 @@ export const PARAMETRES_ACCEPTATS = {
   division: ['xifresDivisor', 'xifresQuocient'],
   estimacion: ['arrodonir', 'xifres'],
   sucesion: ['pasMin', 'pasMax', 'inicialMax'],
+  'decimal-posicio': ['decimals', 'xifresEnteres'],
+  'decimal-comparar': ['decimals', 'xifresEnteres'],
+  'decimal-extrem': ['xifresEnteres'],
+  'decimal-arrodonir': ['decimals', 'xifresEnteres'],
+  'decimal-suma': ['decimals', 'xifresEnteres'],
+  'decimal-resta': ['decimals', 'xifresEnteres'],
+  'decimal-potencia10': ['decimals', 'xifresEnteres'],
+  'decimal-per-natural': ['decimals', 'xifresEnteres'],
 }
 
 export function generarEjercicio(operacion, nivel = 'facil', params = {}) {
@@ -111,7 +139,8 @@ export function comprobarRespuesta(ejercicio, respuestaUsuario) {
   if (TIPOS_RESPUESTA_TEXTO.includes(ejercicio.tipo)) {
     return respuestaUsuario === ejercicio.respuesta
   }
-  return Number(respuestaUsuario) === ejercicio.respuesta
+  // Respuesta numérica: se acepta coma o punto decimal ("3,5" = "3.50").
+  return numerosIguals(parseNumero(respuestaUsuario), ejercicio.respuesta)
 }
 
 const PUNTOS_PROBLEMA = 20

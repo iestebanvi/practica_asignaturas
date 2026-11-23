@@ -80,7 +80,7 @@ Con la consola (sin código): activar 5è, crear Matemàtiques, crear los modos 
 | **M1** | **Raíces cuadradas** (tipos nuevos, ver §7) y modo "Arrels quadrades" en 6è | Nil practica lo que está dando ahora |
 | **M2** | Parámetros por modo (§4.1) para suma, resta, multiplicación, división, estimación y series; respuestas con decimales | Base para subir el nivel y para 5è |
 | **M3** | Ajustar 6è: parámetros de los modos de cálculo al nivel 5è–6è; **traducir al catalán los 62 problemas**; nuevo banco **"Problemes 6è"** (unos 60, redactados por Claude, importados inactivos para revisarlos) | 6è a la altura del currículum en lo que ya tiene |
-| **M4** | Decimales | |
+| **M4** ✅ | Decimales (§10): respuestas con coma y 8 tipos nuevos | Modo "Decimals" en 6è |
 | **M5** | Fracciones (con dibujo) | |
 | **M6** | Porcentajes y proporcionalidad | |
 | **M7** | Divisibilidad y operaciones combinadas | |
@@ -133,3 +133,22 @@ Modo nuevo **"Arrels quadrades"** en 6è › Matemàtiques, con estos tipos de e
 - ✅ **Traducción al catalán de los 62 problemas básicos** (fuente `docs/matematiques/problemes-basics-ca.json`, revisada por el usuario con `problemes-revisio.md`) aplicada; las respuestas no cambian.
 - ✅ **Reparto final**: 6è "Problemes" → banco "Problemes 6è" (61, activos); nuevo modo "Problemes de repàs" (justo después) con los 62 básicos, que servirán también para 5è. Modo temporal de revisión borrado.
 - Los e2e toman las respuestas del banco que tenga asignado el modo "Problemes" en cada momento.
+
+## 10. M4 ✅ hecha (2026-11-23): decimales
+
+- **Respuestas con coma**: los tipos de cálculo con decimales usan un campo de texto con teclado decimal; se acepta `3,5`, `3.5` o `3,50`. La comparación evita los errores de coma flotante (`numerosIguals`, 6 decimales) y las soluciones se muestran siempre con coma (`formatDecimal`), también en "Anterior" y en "la resposta era…". Helpers en `frontend/src/logic/common.js`.
+- **Tipos nuevos** (`frontend/src/logic/decimals.js`; internamente con enteros de unidades mínimas para que las cuentas sean exactas):
+
+  | Tipo | Ejemplo | Respuesta |
+  |---|---|---|
+  | `decimal-posicio` | En 3,472, quina xifra hi ha a les centèsimes? | 7 |
+  | `decimal-comparar` | 3,45 ☐ 3,5 | `<` `=` `>` (con trampas de longitud y ceros finales) |
+  | `decimal-extrem` | Quin és el nombre més gran/petit? (0,7 · 0,65 · 0,072 · 0,71) | una opción |
+  | `decimal-arrodonir` | Arrodoneix 3,47 a les dècimes | 3,5 |
+  | `decimal-suma`, `decimal-resta` | 12,35 + 4,8 | 17,15 |
+  | `decimal-potencia10` | 3,45 × 100 · 56,2 ÷ 10 | 345 · 5,62 |
+  | `decimal-per-natural` | 2,35 × 4 | 9,4 |
+
+- **Parámetros por modo**: `decimals` (1–3) y `xifresEnteres` (1–3). 6è: hasta milésimas y parte entera de 2 cifras; 5è (M9): hasta centésimas.
+- **Fuera de M4**: dividir entre decimales; problemas con respuesta decimal (se pueden añadir al banco sin código).
+- Tests: unitarios de cada generador y de la lectura con coma; e2e `e2e/decimals.spec.js` (crea el modo y acierta cada tipo escribiendo con coma; un fallo muestra la solución con coma).

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { normalizarTexto, respuestaCoincide } from './common.js'
+import { normalizarTexto, respuestaCoincide, parseNumero, numerosIguals, formatDecimal } from './common.js'
 
 describe('normalizarTexto', () => {
   it('pasa a minúsculas y quita espacios sobrantes', () => {
@@ -39,5 +39,31 @@ describe('respuestaCoincide', () => {
 
   it('rechaza una respuesta que no coincide con ninguna alternativa', () => {
     expect(respuestaCoincide('esmorzar', 'dinar')).toBe(false)
+  })
+})
+
+
+describe('números con decimales', () => {
+  it('parseNumero acepta coma o punto y espacios; lo demás es NaN', () => {
+    expect(parseNumero('3,25')).toBe(3.25)
+    expect(parseNumero(' 3.25 ')).toBe(3.25)
+    expect(parseNumero('3,50')).toBe(3.5)
+    expect(parseNumero('42')).toBe(42)
+    expect(parseNumero('-2,5')).toBe(-2.5)
+    for (const t of ['', '3,2,1', 'tres', '3,', ',5', '3 ,5']) expect(parseNumero(t)).toBeNaN()
+  })
+
+  it('numerosIguals no se deja engañar por la coma flotante', () => {
+    expect(0.1 + 0.2 === 0.3).toBe(false)
+    expect(numerosIguals(0.1 + 0.2, 0.3)).toBe(true)
+    expect(numerosIguals(3.5, 3.51)).toBe(false)
+    expect(numerosIguals(NaN, NaN)).toBe(false)
+  })
+
+  it('formatDecimal: coma decimal, sin ceros finales salvo que se pidan', () => {
+    expect(formatDecimal(3.5)).toBe('3,5')
+    expect(formatDecimal(4)).toBe('4')
+    expect(formatDecimal(0.1 + 0.2)).toBe('0,3')
+    expect(formatDecimal(2.5, 2)).toBe('2,50')
   })
 })

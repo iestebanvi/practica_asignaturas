@@ -11,6 +11,7 @@ import { obtenerCurso, obtenerPreguntas } from '../logic/api.js'
 import { useApi } from '../hooks/useApi.js'
 import AmbDades from '../components/AmbDades.jsx'
 import { registrarFallo } from '../logic/fallos.js'
+import { formatDecimal } from '../logic/common.js'
 import { tamanoBloc, estadoInicial, registrarRespuesta } from '../logic/blocs.js'
 import { useAlumne, enviarBloc } from '../logic/alumne.js'
 import { obtenerRecordsPropis, claveModo, recordsCursActius } from '../logic/records.js'
@@ -25,7 +26,7 @@ import Riu from '../components/Riu.jsx'
 import Figura from '../components/Figura.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
-const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadrat', 'arrel-imatge']
+const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadrat', 'arrel-imatge', 'decimal-posicio', 'decimal-arrodonir']
 const TIPOS_OPCION_MULTIPLE = [
   'hora',
   'vocabulario',
@@ -39,6 +40,8 @@ const TIPOS_OPCION_MULTIPLE = [
   'potencia-comparar',
   'quadrat-perfecte',
   'arrel-entera',
+  'decimal-comparar',
+  'decimal-extrem',
 ]
 const TIPOS_ESCRITOS = ['vocabulario-escrito', 'there-be']
 const TIPOS_ENUNCIADO_TEXTO = [
@@ -55,13 +58,29 @@ const TIPOS_ENUNCIADO_TEXTO = [
   'potencia-comparar',
   'quadrat-perfecte',
   'arrel-entera',
+  'decimal-comparar',
+  'decimal-extrem',
 ]
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
 // "=" (operación exacta).
 const TIPOS_SIMBOLO_APROXIMADO = ['estimacion']
 // Enunciados que ya son una pregunta completa: no llevan "=" al final.
-const TIPOS_SIN_SIMBOLO = ['costat-quadrat', 'arrel-quadrat', 'arrel-imatge']
+const TIPOS_SIN_SIMBOLO = ['costat-quadrat', 'arrel-quadrat', 'arrel-imatge', 'decimal-posicio', 'decimal-arrodonir']
+// Respuestas numéricas con decimales: campo de texto con teclado decimal (el
+// campo "number" del navegador no acepta bien la coma).
+const TIPOS_RESPOSTA_DECIMAL = [
+  'decimal-arrodonir',
+  'decimal-suma',
+  'decimal-resta',
+  'decimal-potencia10',
+  'decimal-per-natural',
+]
+
+// Las soluciones numéricas se enseñan como se escriben en catalán (3,5).
+function mostrar(valor) {
+  return typeof valor === 'number' ? formatDecimal(valor) : valor
+}
 
 function simboloCierre(tipo) {
   if (TIPOS_SIN_SIMBOLO.includes(tipo)) return ''
@@ -267,7 +286,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
     setUltimoIntento({
       tipo: ejercicio.tipo,
       enunciado: ejercicio.enunciado,
-      respuestaCorrecta: ejercicio.respuesta,
+      respuestaCorrecta: mostrar(ejercicio.respuesta),
       respuestaDada,
       esCorrecta,
     })
@@ -359,7 +378,9 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
   // Preguntas cortas en forma de frase: tamaño intermedio y centradas (como
   // los enunciados con figura), ni gigantes como una operación ni pequeñas
   // como un problema.
-  const esPreguntaCurta = Boolean(ejercicio.figura) || ['arrel-quadrat'].includes(ejercicio.tipo)
+  const esPreguntaCurta =
+    Boolean(ejercicio.figura) || ['arrel-quadrat', 'decimal-posicio', 'decimal-arrodonir'].includes(ejercicio.tipo)
+  const esDecimal = TIPOS_RESPOSTA_DECIMAL.includes(ejercicio.tipo)
   const esHora = ejercicio.tipo === 'hora'
   const esMediImagen = ejercicio.tipo === 'medi-imatge'
   const esOpcionMultiple = TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)
@@ -468,8 +489,9 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
             </p>
             <input
               ref={inputRef}
-              type="number"
-              inputMode="numeric"
+              type={esDecimal ? 'text' : 'number'}
+              inputMode={esDecimal ? 'decimal' : 'numeric'}
+              autoComplete="off"
               className={feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''}
               value={respuesta}
               onChange={(e) => setRespuesta(e.target.value)}
@@ -488,7 +510,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
             </p>
           )}
           {feedback === 'correcto' && <p className="feedback correcto">{T.correcte}</p>}
-          {feedback === 'incorrecto' && <p className="feedback incorrecto">{T.gairebe(ejercicio.respuesta)}</p>}
+          {feedback === 'incorrecto' && <p className="feedback incorrecto">{T.gairebe(mostrar(ejercicio.respuesta))}</p>}
         </div>
       </section>
 

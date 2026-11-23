@@ -6,6 +6,11 @@
 //
 // tipus: 'enter' (número entero entre min y max), 'llista' (lista de enteros
 // entre min y max, p. ej. tablas de multiplicar) u 'opcio' (uno de "valors").
+// Decimales: cuántos decimales (hasta milésimas) y cifras de la parte entera.
+const DECIMALS = { tipus: 'enter', etiqueta: 'Decimals (1 = dècimes, 2 = centèsimes, 3 = mil·lèsimes)', min: 1, max: 3 }
+const XIFRES_ENTERES = { tipus: 'enter', etiqueta: 'Xifres de la part entera', min: 1, max: 3 }
+const AMB_DECIMALS = { decimals: DECIMALS, xifresEnteres: XIFRES_ENTERES }
+
 export const PARAMETRES = {
   suma: {
     max: { tipus: 'enter', etiqueta: 'Nombre màxim', min: 5, max: 1000000 },
@@ -31,6 +36,14 @@ export const PARAMETRES = {
     pasMax: { tipus: 'enter', etiqueta: 'Salt màxim', min: 1, max: 1000 },
     inicialMax: { tipus: 'enter', etiqueta: 'Primer terme màxim', min: 10, max: 100000 },
   },
+  'decimal-posicio': AMB_DECIMALS,
+  'decimal-comparar': AMB_DECIMALS,
+  'decimal-extrem': { xifresEnteres: XIFRES_ENTERES },
+  'decimal-arrodonir': AMB_DECIMALS,
+  'decimal-suma': AMB_DECIMALS,
+  'decimal-resta': AMB_DECIMALS,
+  'decimal-potencia10': AMB_DECIMALS,
+  'decimal-per-natural': AMB_DECIMALS,
 }
 
 const NOMS_TIPUS = {
@@ -40,6 +53,14 @@ const NOMS_TIPUS = {
   division: 'Divisions',
   estimacion: 'Estimacions',
   sucesion: 'Successions',
+  'decimal-posicio': 'Decimals (valor posicional)',
+  'decimal-comparar': 'Decimals (comparar)',
+  'decimal-extrem': 'Decimals (el més gran / petit)',
+  'decimal-arrodonir': 'Decimals (arrodonir)',
+  'decimal-suma': 'Decimals (sumes)',
+  'decimal-resta': 'Decimals (restes)',
+  'decimal-potencia10': 'Decimals (× i ÷ per 10, 100, 1000)',
+  'decimal-per-natural': 'Decimals (decimal × natural)',
 }
 
 function valorValid(spec, valor) {
