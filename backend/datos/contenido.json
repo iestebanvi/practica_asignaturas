@@ -170,21 +170,72 @@
               "bloc": null,
               "params": {
                 "suma": {
-                  "max": 99999
+                  "max": 9999
                 },
                 "resta": {
-                  "max": 99999
+                  "max": 9999
                 },
                 "division": {
-                  "xifresDivisor": 2,
+                  "xifresDivisor": 1,
                   "xifresQuocient": 2
                 },
                 "multiplicacion": {
-                  "xifresA": 3,
-                  "xifresB": 2
+                  "xifresA": 2,
+                  "xifresB": 1
                 }
               },
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {
+                    "suma": {
+                      "max": 99999
+                    },
+                    "resta": {
+                      "max": 99999
+                    },
+                    "division": {
+                      "xifresDivisor": 2,
+                      "xifresQuocient": 2
+                    },
+                    "multiplicacion": {
+                      "xifresA": 3,
+                      "xifresB": 2
+                    }
+                  },
+                  "operaciones": [
+                    "suma",
+                    "resta",
+                    "multiplicacion",
+                    "division"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "suma": {
+                      "max": 999999
+                    },
+                    "resta": {
+                      "max": 999999
+                    },
+                    "division": {
+                      "xifresDivisor": 2,
+                      "xifresQuocient": 3
+                    },
+                    "multiplicacion": {
+                      "xifresA": 3,
+                      "xifresB": 3
+                    }
+                  },
+                  "operaciones": [
+                    "suma",
+                    "resta",
+                    "multiplicacion",
+                    "division"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -200,13 +251,44 @@
               "bloc": null,
               "params": {
                 "suma": {
-                  "max": 99999
+                  "max": 9999
                 },
                 "resta": {
-                  "max": 99999
+                  "max": 9999
                 }
               },
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {
+                    "suma": {
+                      "max": 99999
+                    },
+                    "resta": {
+                      "max": 99999
+                    }
+                  },
+                  "operaciones": [
+                    "suma",
+                    "resta"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "suma": {
+                      "max": 999999
+                    },
+                    "resta": {
+                      "max": 999999
+                    }
+                  },
+                  "operaciones": [
+                    "suma",
+                    "resta"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -222,15 +304,50 @@
               "bloc": null,
               "params": {
                 "division": {
-                  "xifresDivisor": 2,
+                  "xifresDivisor": 1,
                   "xifresQuocient": 2
                 },
                 "multiplicacion": {
-                  "xifresA": 3,
-                  "xifresB": 2
+                  "xifresA": 2,
+                  "xifresB": 1
                 }
               },
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {
+                    "division": {
+                      "xifresDivisor": 2,
+                      "xifresQuocient": 2
+                    },
+                    "multiplicacion": {
+                      "xifresA": 3,
+                      "xifresB": 2
+                    }
+                  },
+                  "operaciones": [
+                    "multiplicacion",
+                    "division"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "division": {
+                      "xifresDivisor": 2,
+                      "xifresQuocient": 3
+                    },
+                    "multiplicacion": {
+                      "xifresA": 3,
+                      "xifresB": 3
+                    }
+                  },
+                  "operaciones": [
+                    "multiplicacion",
+                    "division"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -273,12 +390,39 @@
               "bloc": null,
               "params": {
                 "sucesion": {
-                  "pasMax": 50,
-                  "pasMin": 5,
-                  "inicialMax": 200
+                  "pasMax": 10,
+                  "pasMin": 2,
+                  "inicialMax": 100
                 }
               },
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {
+                    "sucesion": {
+                      "pasMax": 50,
+                      "pasMin": 5,
+                      "inicialMax": 200
+                    }
+                  },
+                  "operaciones": [
+                    "sucesion"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "sucesion": {
+                      "pasMax": 250,
+                      "pasMin": 25,
+                      "inicialMax": 2000
+                    }
+                  },
+                  "operaciones": [
+                    "sucesion"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -293,50 +437,95 @@
               "bloc": null,
               "params": {
                 "estimacion": {
-                  "xifres": 3,
-                  "arrodonir": 100
+                  "xifres": 2,
+                  "arrodonir": 10
                 }
               },
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {
+                    "estimacion": {
+                      "xifres": 3,
+                      "arrodonir": 100
+                    }
+                  },
+                  "operaciones": [
+                    "estimacion"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "estimacion": {
+                      "xifres": 4,
+                      "arrodonir": 1000
+                    }
+                  },
+                  "operaciones": [
+                    "estimacion"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
               "id": "perimetres-arees",
               "nombre": "Perímetres i àrees",
               "color": "#43a047",
-              "sombra": "#1b5e20",
+              "sombra": "#2f7032",
               "operaciones": [
                 "perimetre",
-                "area",
-                "perimetre-area",
-                "costat-quadrat"
+                "area"
               ],
               "banco": null,
               "bloc": null,
               "params": {},
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {},
+                  "operaciones": [
+                    "perimetre",
+                    "area",
+                    "perimetre-area",
+                    "costat-quadrat"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
               "id": "potencies",
               "nombre": "Potències",
               "color": "#00838f",
-              "sombra": "#005662",
+              "sombra": "#005c64",
               "operaciones": [
                 "potencia-calcul",
-                "potencia-combinada",
                 "potencia-expressio",
                 "potencia-base10",
-                "potencia-imatge",
-                "potencia-consecutiva",
-                "potencia-serie",
-                "potencia-comparar",
-                "potencia-descomposicio"
+                "potencia-imatge"
               ],
               "banco": null,
               "bloc": null,
               "params": {},
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {},
+                  "operaciones": [
+                    "potencia-calcul",
+                    "potencia-combinada",
+                    "potencia-expressio",
+                    "potencia-base10",
+                    "potencia-imatge",
+                    "potencia-consecutiva",
+                    "potencia-serie",
+                    "potencia-comparar",
+                    "potencia-descomposicio"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -348,14 +537,25 @@
                 "arrel-exacta",
                 "arrel-quadrat",
                 "quadrat-perfecte",
-                "arrel-entera",
-                "arrel-imatge",
-                "costat-quadrat"
+                "arrel-imatge"
               ],
               "banco": null,
               "bloc": null,
               "params": {},
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {},
+                  "operaciones": [
+                    "arrel-exacta",
+                    "arrel-quadrat",
+                    "quadrat-perfecte",
+                    "arrel-entera",
+                    "arrel-imatge",
+                    "costat-quadrat"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -369,46 +569,129 @@
                 "decimal-extrem",
                 "decimal-arrodonir",
                 "decimal-suma",
-                "decimal-resta",
-                "decimal-potencia10",
-                "decimal-per-natural"
+                "decimal-resta"
               ],
               "banco": null,
               "bloc": null,
               "params": {
                 "decimal-suma": {
-                  "decimals": 3,
-                  "xifresEnteres": 2
+                  "decimals": 2,
+                  "xifresEnteres": 1
                 },
                 "decimal-resta": {
-                  "decimals": 3,
-                  "xifresEnteres": 2
+                  "decimals": 2,
+                  "xifresEnteres": 1
                 },
                 "decimal-extrem": {
-                  "xifresEnteres": 2
+                  "xifresEnteres": 1
                 },
                 "decimal-posicio": {
-                  "decimals": 3,
-                  "xifresEnteres": 2
+                  "decimals": 2,
+                  "xifresEnteres": 1
                 },
                 "decimal-comparar": {
-                  "decimals": 3,
-                  "xifresEnteres": 2
+                  "decimals": 2,
+                  "xifresEnteres": 1
                 },
                 "decimal-arrodonir": {
-                  "decimals": 3,
-                  "xifresEnteres": 2
-                },
-                "decimal-potencia10": {
-                  "decimals": 3,
-                  "xifresEnteres": 2
-                },
-                "decimal-per-natural": {
-                  "decimals": 3,
-                  "xifresEnteres": 2
+                  "decimals": 2,
+                  "xifresEnteres": 1
                 }
               },
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {
+                    "decimal-suma": {
+                      "decimals": 3,
+                      "xifresEnteres": 2
+                    },
+                    "decimal-resta": {
+                      "decimals": 3,
+                      "xifresEnteres": 2
+                    },
+                    "decimal-extrem": {
+                      "xifresEnteres": 2
+                    },
+                    "decimal-posicio": {
+                      "decimals": 3,
+                      "xifresEnteres": 2
+                    },
+                    "decimal-comparar": {
+                      "decimals": 3,
+                      "xifresEnteres": 2
+                    },
+                    "decimal-arrodonir": {
+                      "decimals": 3,
+                      "xifresEnteres": 2
+                    },
+                    "decimal-potencia10": {
+                      "decimals": 3,
+                      "xifresEnteres": 2
+                    },
+                    "decimal-per-natural": {
+                      "decimals": 3,
+                      "xifresEnteres": 2
+                    }
+                  },
+                  "operaciones": [
+                    "decimal-posicio",
+                    "decimal-comparar",
+                    "decimal-extrem",
+                    "decimal-arrodonir",
+                    "decimal-suma",
+                    "decimal-resta",
+                    "decimal-potencia10",
+                    "decimal-per-natural"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "decimal-suma": {
+                      "decimals": 3,
+                      "xifresEnteres": 3
+                    },
+                    "decimal-resta": {
+                      "decimals": 3,
+                      "xifresEnteres": 3
+                    },
+                    "decimal-extrem": {
+                      "xifresEnteres": 3
+                    },
+                    "decimal-posicio": {
+                      "decimals": 3,
+                      "xifresEnteres": 3
+                    },
+                    "decimal-comparar": {
+                      "decimals": 3,
+                      "xifresEnteres": 3
+                    },
+                    "decimal-arrodonir": {
+                      "decimals": 3,
+                      "xifresEnteres": 3
+                    },
+                    "decimal-potencia10": {
+                      "decimals": 3,
+                      "xifresEnteres": 3
+                    },
+                    "decimal-per-natural": {
+                      "decimals": 3,
+                      "xifresEnteres": 3
+                    }
+                  },
+                  "operaciones": [
+                    "decimal-posicio",
+                    "decimal-comparar",
+                    "decimal-extrem",
+                    "decimal-arrodonir",
+                    "decimal-suma",
+                    "decimal-resta",
+                    "decimal-potencia10",
+                    "decimal-per-natural"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -419,39 +702,99 @@
               "operaciones": [
                 "fraccio-dibuix",
                 "fraccio-equivalent",
-                "fraccio-simplificar",
                 "fraccio-comparar",
-                "fraccio-quantitat",
-                "fraccio-suma",
-                "fraccio-resta",
-                "fraccio-decimal"
+                "fraccio-quantitat"
               ],
               "banco": null,
               "bloc": null,
               "params": {
-                "fraccio-suma": {
-                  "denominadorMax": 12
-                },
-                "fraccio-resta": {
-                  "denominadorMax": 12
-                },
                 "fraccio-dibuix": {
-                  "denominadorMax": 12
+                  "denominadorMax": 8
                 },
                 "fraccio-comparar": {
-                  "denominadorMax": 12
+                  "denominadorMax": 8
                 },
                 "fraccio-quantitat": {
-                  "denominadorMax": 12
+                  "denominadorMax": 8
                 },
                 "fraccio-equivalent": {
-                  "denominadorMax": 12
-                },
-                "fraccio-simplificar": {
-                  "denominadorMax": 12
+                  "denominadorMax": 8
                 }
               },
-              "nivells": [],
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {
+                    "fraccio-suma": {
+                      "denominadorMax": 12
+                    },
+                    "fraccio-resta": {
+                      "denominadorMax": 12
+                    },
+                    "fraccio-dibuix": {
+                      "denominadorMax": 12
+                    },
+                    "fraccio-comparar": {
+                      "denominadorMax": 12
+                    },
+                    "fraccio-quantitat": {
+                      "denominadorMax": 12
+                    },
+                    "fraccio-equivalent": {
+                      "denominadorMax": 12
+                    },
+                    "fraccio-simplificar": {
+                      "denominadorMax": 12
+                    }
+                  },
+                  "operaciones": [
+                    "fraccio-dibuix",
+                    "fraccio-equivalent",
+                    "fraccio-simplificar",
+                    "fraccio-comparar",
+                    "fraccio-quantitat",
+                    "fraccio-suma",
+                    "fraccio-resta",
+                    "fraccio-decimal"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "fraccio-suma": {
+                      "denominadorMax": 20
+                    },
+                    "fraccio-resta": {
+                      "denominadorMax": 20
+                    },
+                    "fraccio-dibuix": {
+                      "denominadorMax": 20
+                    },
+                    "fraccio-comparar": {
+                      "denominadorMax": 20
+                    },
+                    "fraccio-quantitat": {
+                      "denominadorMax": 20
+                    },
+                    "fraccio-equivalent": {
+                      "denominadorMax": 20
+                    },
+                    "fraccio-simplificar": {
+                      "denominadorMax": 20
+                    }
+                  },
+                  "operaciones": [
+                    "fraccio-dibuix",
+                    "fraccio-equivalent",
+                    "fraccio-simplificar",
+                    "fraccio-comparar",
+                    "fraccio-quantitat",
+                    "fraccio-suma",
+                    "fraccio-resta",
+                    "fraccio-decimal"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -460,13 +803,42 @@
               "color": "#7986cb",
               "sombra": "#555e8e",
               "operaciones": [
-                "combinada",
-                "combinada-parentesi"
+                "combinada"
               ],
               "banco": null,
               "bloc": null,
-              "params": {},
-              "nivells": [],
+              "params": {
+                "combinada": {
+                  "operacions": 2
+                }
+              },
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {},
+                  "operaciones": [
+                    "combinada",
+                    "combinada-parentesi"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "combinada": {
+                      "max": 50,
+                      "operacions": 3
+                    },
+                    "combinada-parentesi": {
+                      "max": 50,
+                      "operacions": 3
+                    }
+                  },
+                  "operaciones": [
+                    "combinada",
+                    "combinada-parentesi"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -476,16 +848,97 @@
               "sombra": "#3789ad",
               "operaciones": [
                 "percentatge-quantitat",
-                "percentatge-quin",
-                "percentatge-descompte",
                 "percentatge-equivalencia",
                 "proporcio-taula",
                 "proporcio-unitat"
               ],
               "banco": null,
               "bloc": null,
-              "params": {},
-              "nivells": [],
+              "params": {
+                "percentatge-quantitat": {
+                  "max": 100,
+                  "percentatges": [
+                    10,
+                    25,
+                    50
+                  ]
+                }
+              },
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {},
+                  "operaciones": [
+                    "percentatge-quantitat",
+                    "percentatge-quin",
+                    "percentatge-descompte",
+                    "percentatge-equivalencia",
+                    "proporcio-taula",
+                    "proporcio-unitat"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "percentatge-quin": {
+                      "max": 500,
+                      "percentatges": [
+                        5,
+                        10,
+                        15,
+                        20,
+                        25,
+                        30,
+                        40,
+                        50,
+                        60,
+                        75,
+                        80
+                      ]
+                    },
+                    "percentatge-descompte": {
+                      "max": 500,
+                      "percentatges": [
+                        5,
+                        10,
+                        15,
+                        20,
+                        25,
+                        30,
+                        40,
+                        50,
+                        60,
+                        75,
+                        80
+                      ]
+                    },
+                    "percentatge-quantitat": {
+                      "max": 500,
+                      "percentatges": [
+                        5,
+                        10,
+                        15,
+                        20,
+                        25,
+                        30,
+                        40,
+                        50,
+                        60,
+                        75,
+                        80
+                      ]
+                    }
+                  },
+                  "operaciones": [
+                    "percentatge-quantitat",
+                    "percentatge-quin",
+                    "percentatge-descompte",
+                    "percentatge-equivalencia",
+                    "proporcio-taula",
+                    "proporcio-unitat"
+                  ]
+                }
+              ],
               "activo": true
             },
             {
@@ -497,14 +950,63 @@
                 "div-multiple",
                 "div-seguent-multiple",
                 "div-divisor",
-                "div-criteris",
-                "div-primer",
-                "div-troba-primer"
+                "div-criteris"
               ],
               "banco": null,
               "bloc": null,
-              "params": {},
-              "nivells": [],
+              "params": {
+                "div-divisor": {
+                  "max": 50
+                },
+                "div-multiple": {
+                  "max": 50
+                },
+                "div-seguent-multiple": {
+                  "max": 50
+                }
+              },
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {},
+                  "operaciones": [
+                    "div-multiple",
+                    "div-seguent-multiple",
+                    "div-divisor",
+                    "div-criteris",
+                    "div-primer",
+                    "div-troba-primer"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "div-primer": {
+                      "max": 200
+                    },
+                    "div-divisor": {
+                      "max": 200
+                    },
+                    "div-multiple": {
+                      "max": 200
+                    },
+                    "div-troba-primer": {
+                      "max": 200
+                    },
+                    "div-seguent-multiple": {
+                      "max": 200
+                    }
+                  },
+                  "operaciones": [
+                    "div-multiple",
+                    "div-seguent-multiple",
+                    "div-divisor",
+                    "div-criteris",
+                    "div-primer",
+                    "div-troba-primer"
+                  ]
+                }
+              ],
               "activo": true
             }
           ]

@@ -2,8 +2,9 @@ import { test, expect } from '@playwright/test'
 import { PASSWORD_E2E } from './entorno.js'
 
 // Récords personales y del curso. Usa "Estimacions" de 6è, que no usa ningún
-// otro test para guardar bloques, con bloques de 30 (se fijan en el modo al
-// empezar); los bloques se envían directamente a la API con la sesión del àlies.
+// otro test para guardar bloques, con bloques de 30 y sin niveles (se fijan en
+// el modo al empezar); los bloques se envían directamente a la API con la
+// sesión del àlies.
 test.describe('Rècords', () => {
   test.skip(({ baseURL }) => !/localhost|127\.0\.0\.1/.test(baseURL), 'solo contra el entorno e2e local')
   test.describe.configure({ mode: 'serial' })
@@ -20,7 +21,7 @@ test.describe('Rècords', () => {
       .find((c) => c.slug === '6-primaria')
       .asignaturas.find((a) => a.slug === 'matematiques')
       .modos.find((m) => m.slug === 'estimacions')
-    expect((await page.request.patch(`/api/admin/modes/${estimacions.id}`, { data: { bloc: 30 } })).status()).toBe(200)
+    expect((await page.request.patch(`/api/admin/modes/${estimacions.id}`, { data: { bloc: 30, nivells: [] } })).status()).toBe(200)
     await page.close()
   })
 
@@ -70,7 +71,7 @@ test.describe('Rècords', () => {
     const mode = page.getByRole('article', { name: 'Estimacions' })
     await expect(mode.locator('tbody tr')).toHaveText([/🥇\s*Primera\s*330\s*25\/30/, /🥈\s*Segona\s*300\s*22\/30/, /🥉\s*Tercera \(tu\)\s*100\s*8\/30/])
     await expect(mode.locator('tr.es-meu')).toContainText('Tercera')
-    await expect(page.getByRole('article', { name: 'Successions' })).toContainText('Encara no hi ha rècords')
+    await expect(page.getByRole('article', { name: 'Problemes de repàs', exact: true })).toContainText('Encara no hi ha rècords')
   })
 
   test('el resumen de una partida enlaza a los récords de ese modo', async ({ page }) => {

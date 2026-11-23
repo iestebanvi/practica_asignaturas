@@ -218,3 +218,27 @@ Nil las estaba dando en clase, así que se separaron de la antigua M7 (divisibil
 - **Parámetro**: `max` (20–1000, por defecto 100), salvo en los criterios.
 - **Fuera de M8**: m.c.m., m.c.d. y factorización (1r d'ESO; se añaden si los dan en clase).
 - Tests: unitarios (`divisibilitat.test.js`) y e2e `e2e/divisibilitat.spec.js`.
+
+## 15. Niveles de los modos de 6è (2026-11-23)
+
+Con los niveles dentro de un modo (plan general §18). Criterio: **nivel 1** = más fácil (inicio de curso), **nivel 2** = la configuración que tenían (la de M3–M8) y **nivel 3** = final de curso / reto. **Abiertos el 1 y el 2** (el niño juega por defecto el 2, como antes, y puede bajar al 1); **el 3, cerrado**: se abre desde la consola (ficha del modo → "Nivells" → Nivell 3 → "Obert"). Los modos de problemas no llevan niveles (dependen del banco).
+
+| Modo | Nivel 1 (abierto) | Nivel 2 (abierto, = antes) | Nivel 3 (cerrado) |
+|---|---|---|---|
+| Aritmètica | +/− hasta 9.999; 2 cifras × 1; ÷ de 1 cifra (cociente de 2) | +/− hasta 99.999; 3 × 2; ÷ de 2 cifras | +/− hasta 999.999; 3 × 3; ÷ de 2 cifras (cociente de 3) |
+| Sumes i restes | hasta 9.999 | hasta 99.999 | hasta 999.999 |
+| Multiplicacions i divisions | 2 × 1; ÷ 1 cifra | 3 × 2; ÷ 2 cifras | 3 × 3; ÷ 2 cifras, cociente de 3 |
+| Successions | saltos 2–10, inicio ≤ 100 | saltos 5–50, inicio ≤ 200 | saltos 25–250, inicio ≤ 2.000 |
+| Estimacions | 2 cifras, a las decenas | 3 cifras, a las centenas | 4 cifras, a los millares |
+| Perímetres i àrees | perímetro y área | + los 4 tipos | — |
+| Potències | cálculo, expresión, base 10, dibujo | los 9 tipos | — |
+| Arrels quadrades | exacta, cuadrado, ¿cuadrado perfecto?, dibujo | + entre qué dos números, lado del cuadrado | — |
+| Decimals | posición, comparar, el más grande, redondear, +, − (centésimas, 1 cifra entera) | los 8 tipos (milésimas, 2 cifras enteras) | los 8 (milésimas, 3 cifras enteras) |
+| Fraccions | dibujo, equivalentes, comparar, de una cantidad (denominador ≤ 8) | los 8 tipos (≤ 12) | los 8 (≤ 20) |
+| Operacions combinades | sin paréntesis, 2 operaciones | con y sin, 2 o 3 | con y sin, 3 operaciones, sumandos ≤ 50 |
+| Percentatges i proporcions | % de una cantidad (10, 25, 50 %; ≤ 100), equivalencias, tabla, unidad | los 6 tipos (10, 20, 25, 50, 75 %) | los 6 (5–80 %, cantidades ≤ 500) |
+| Divisibilitat | múltiplo, siguiente múltiplo, divisores, criterios (≤ 50) | los 6 tipos (≤ 100) | los 6 (≤ 200) |
+
+- Aplicado con un script contra la API de la consola, validando antes todos los modos con `validarModo`; comprobado con una muestra de cada generador en los valores nuevos (así salió el error "a els milers" → "als milers").
+- Tests independientes del contenido: los que usan un modo de 6è fijan sus niveles (o usan un modo sin niveles).
+

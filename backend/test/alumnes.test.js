@@ -311,8 +311,11 @@ describe.skipIf(!process.env.DATABASE_URL)('alumnos: /api/alumnes', () => {
         cookie,
       )
     let cookie
+    let originals
 
     beforeAll(async () => {
+      // Se guardan los niveles que tenga en el contenido para dejarlos igual al acabar
+      originals = (await pool.query(`SELECT nivells FROM modos WHERE slug = 'successions'`)).rows[0].nivells
       await pool.query(
         `UPDATE modos SET nivells = $1 WHERE slug = 'successions'`,
         [JSON.stringify([
@@ -323,14 +326,15 @@ describe.skipIf(!process.env.DATABASE_URL)('alumnos: /api/alumnes', () => {
       cookie = (await pedir('POST', '/api/alumnes/crea', { curs: '6-primaria', alies: 'Nivellista' })).cookie
     })
     afterAll(async () => {
-      await pool.query(`UPDATE modos SET nivells = '[]' WHERE slug = 'successions'`)
+      await pool.query(`UPDATE modos SET nivells = $1 WHERE slug = 'successions'`, [JSON.stringify(originals)])
     })
 
     it('el árbol público solo trae los niveles abiertos, numerados y sin "obert"', async () => {
       const { body } = await pedir('GET', '/api/cursos/6-primaria')
       const modo = body.asignaturas.find((a) => a.id === 'matematiques').modos.find((m) => m.id === 'successions')
       expect(modo.nivells).toEqual([{ nivell: 2, operaciones: ['sucesion'], params: { sucesion: { pasMin: 10, pasMax: 50 } } }])
-      const altre = body.asignaturas.find((a) => a.id === 'matematiques').modos.find((m) => m.id === 'aritmetica')
+      // Un modo sin niveles (los de problemas no tienen) trae la lista vacía
+      const altre = body.asignaturas.find((a) => a.id === 'matematiques').modos.find((m) => m.id === 'problemes')
       expect(altre.nivells).toEqual([])
     })
 
