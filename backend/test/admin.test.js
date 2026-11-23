@@ -434,7 +434,7 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
       expect(status).toBe(201)
       expect(body).toMatchObject({
         slug: 'prova', nombre: 'Prova', icono: '🧪', color: '#ff0000', sombra: '#b30000', nivel: 'facil',
-        config: { majuscules: true, celebracio: false, bloc: 30 }, activo: false,
+        config: { majuscules: true, celebracio: false, bloc: 30, recordsCurs: true }, activo: false,
       })
       expect((await ordenCursos()).at(-1)).toBe('prova')
       expect(await publicos()).not.toContain('prova')

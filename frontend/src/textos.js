@@ -44,6 +44,21 @@ export const T = {
   },
   massaIntentsAlies: (segons) => `Massa intents. Torna-ho a provar d'aquí a ${Math.ceil(segons / 60)} minuts, o demana un PIN nou al professorat.`,
 
+  // Rècords
+  recordsCurs: '🏆 Rècords del curs',
+  recordsCursTitol: 'Rècords del curs',
+  ajudaRecordsCurs: 'El millor bloc de cada àlies en cada mode. Entra amb el teu àlies per aparèixer-hi!',
+  recordTargeta: (r) => `⭐ ${r.puntos}`,
+  elTeuRecordPanell: (r) => `El teu rècord: ${r.puntos} punts · ${r.aciertos}/${r.preguntas}`,
+  encaraCapRecord: 'El teu rècord: encara cap bloc complet.',
+  capRecordMode: 'Encara no hi ha rècords en aquest mode.',
+  posicio: '#',
+  alies: 'Àlies',
+  punts: 'Punts',
+  tu: '(tu)',
+  recordsDesactivats: 'Aquest curs no mostra els rècords del curs.',
+  veureRecordsMode: '🏆 Rècords d’aquest mode',
+
   // Blocs
   bloc: (n, fetes, total) => `Bloc ${n} · ${fetes}/${total}`,
   blocResultat: (b) => `${b.puntos} punts · ${b.aciertos}/${b.preguntas}`,
@@ -176,6 +191,7 @@ export const T = {
   campMajuscules: 'Tot en majúscules (per als més petits)',
   campCelebracio: 'Celebració animada en encertar',
   campActiu: 'Actiu (visible per als alumnes)',
+  campRecordsCurs: 'Mostra els rècords del curs (els 10 millors àlies de cada mode)',
   desat: 'Desat.',
   puja: '↑ Puja',
   baixa: '↓ Baixa',

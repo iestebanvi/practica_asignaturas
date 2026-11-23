@@ -19,7 +19,8 @@ const MAX_ICONO = 8
 // taparía otra pantalla.
 export const SLUGS_RESERVADOS = {
   curso: ['profesorat', 'api', 'assets'],
-  asignatura: ['repassar'],
+  // /:curso/repassar y /:curso/records son pantallas fijas del curso.
+  asignatura: ['repassar', 'records'],
   modo: [],
 }
 
@@ -78,12 +79,17 @@ export function validarEstructura(tipo, datos, { creando = false } = {}) {
     }
     if (creando || datos.config !== undefined) {
       const config = datos.config ?? {}
-      const { majuscules = false, celebracio = false, bloc = BLOC_PER_DEFECTE } = config
-      if (typeof config !== 'object' || typeof majuscules !== 'boolean' || typeof celebracio !== 'boolean') {
+      const { majuscules = false, celebracio = false, bloc = BLOC_PER_DEFECTE, recordsCurs = true } = config
+      if (
+        typeof config !== 'object' ||
+        typeof majuscules !== 'boolean' ||
+        typeof celebracio !== 'boolean' ||
+        typeof recordsCurs !== 'boolean'
+      ) {
         errores.config = 'Configuració no vàlida.'
       } else if (!blocValido(bloc)) {
         errores.bloc = `Les preguntes per bloc han de ser entre ${BLOC_MIN} i ${BLOC_MAX}.`
-      } else valores.config = { majuscules, celebracio, bloc }
+      } else valores.config = { majuscules, celebracio, bloc, recordsCurs }
     }
   }
 

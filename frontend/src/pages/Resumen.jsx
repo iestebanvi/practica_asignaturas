@@ -4,7 +4,7 @@ import { millorBloc } from '../logic/blocs.js'
 
 // rutaAltre: adónde lleva "Tria un altre exercici". rutaRepassar: enlace a
 // "Per repassar" (null en la vista previa, que no apunta fallos).
-export default function Resumen({ resumen, rutaAltre, rutaRepassar, onTornarAJugar }) {
+export default function Resumen({ resumen, rutaAltre, rutaRepassar, rutaRecords, onTornarAJugar }) {
   const { puntos, aciertos, fallos, blocs = [], incompletes = 0, tamano } = resumen
   const millor = millorBloc(blocs)
 
@@ -35,11 +35,18 @@ export default function Resumen({ resumen, rutaAltre, rutaRepassar, onTornarAJug
           {T.altreExercici}
         </Link>
       </div>
-      {rutaRepassar && (
+      {(rutaRepassar || rutaRecords) && (
         <nav className="accions">
-          <Link to={rutaRepassar} className="enllac-secundari">
-            {T.perRepassar}
-          </Link>
+          {rutaRecords && (
+            <Link to={rutaRecords} className="enllac-secundari">
+              {T.veureRecordsMode}
+            </Link>
+          )}
+          {rutaRepassar && (
+            <Link to={rutaRepassar} className="enllac-secundari">
+              {T.perRepassar}
+            </Link>
+          )}
         </nav>
       )}
     </div>

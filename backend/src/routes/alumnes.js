@@ -13,6 +13,7 @@ import {
   modoConBloc,
   guardarBloc,
 } from '../db/alumnes.js'
+import { recordsAlumne, recordsCurs, recordsCursActius } from '../db/records.js'
 
 // Máximo de puntos de una pregunta (los problemas, 20): para descartar
 // resultados imposibles.
@@ -147,6 +148,29 @@ router.post(
       return res.status(400).json({ error: 'bloc_no_valid' })
     }
     res.status(201).json(await guardarBloc(alumne.id, modo.id, { puntos, aciertos, preguntas }))
+  }),
+)
+
+// Récords del alumno identificado en el curso: { records: { "asig/modo": {…} } }
+// (vacío si no hay nadie identificado).
+router.get(
+  '/records',
+  asyncHandler(async (req, res) => {
+    const c = await curso(req, res)
+    if (!c) return
+    const alumne = await alumneDeSesion(leerCookie(req, nombreCookie(c.id)), c.id)
+    res.json({ records: alumne ? await recordsAlumne(c.id, alumne.id) : {} })
+  }),
+)
+
+// Récords del curso (los 10 mejores àlies de cada modo), si el curso los muestra.
+router.get(
+  '/records-curs',
+  asyncHandler(async (req, res) => {
+    const c = await curso(req, res)
+    if (!c) return
+    if (!(await recordsCursActius(c.id))) return res.status(404).json({ error: 'records_desactivats' })
+    res.json({ records: await recordsCurs(c.id) })
   }),
 )
 

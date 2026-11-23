@@ -14,6 +14,7 @@ export default function Targetes({ items, rutaDe }) {
             </span>
           )}
           <span className="targeta-nom">{item.nombre}</span>
+          {item.detall && <span className="targeta-detall">{item.detall}</span>}
         </Link>
       ))}
     </div>

@@ -5,6 +5,7 @@ import Asignatura from './pages/Asignatura.jsx'
 import Practica from './pages/Practica.jsx'
 import ParaRepasar from './pages/ParaRepasar.jsx'
 import NoTrobat from './pages/NoTrobat.jsx'
+import RecordsCurs from './pages/RecordsCurs.jsx'
 import Login from './pages/profesorat/Login.jsx'
 import Consola from './pages/profesorat/Consola.jsx'
 import VistaPrevia from './pages/profesorat/VistaPrevia.jsx'
@@ -25,6 +26,7 @@ export default function App() {
       <Route path="/profesorat/prova/:modoId" element={<VistaPrevia />} />
       <Route path="/:cursoId" element={<Curso />} />
       <Route path="/:cursoId/repassar" element={<ParaRepasar />} />
+      <Route path="/:cursoId/records" element={<RecordsCurs />} />
       <Route path="/:cursoId/:asignaturaId" element={<Asignatura />} />
       <Route path="/:cursoId/:asignaturaId/:modoId" element={<Practica />} />
       <Route path="*" element={<NoTrobat />} />

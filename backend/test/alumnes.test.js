@@ -226,6 +226,72 @@ describe.skipIf(!process.env.DATABASE_URL)('alumnos: /api/alumnes', () => {
     })
   })
 
+  describe('récords: /api/alumnes/records y /records-curs', () => {
+    // Bloques en "Estimacions" de 6è (30 preguntas por bloque), que no usa ningún otro test.
+    const bloc = (cookie, puntos, aciertos) =>
+      pedir('POST', '/api/alumnes/blocs', { curs: '6-primaria', assignatura: 'matematiques', mode: 'estimacions', puntos, aciertos, preguntas: 30 }, cookie)
+    const nou = async (alies) => (await pedir('POST', '/api/alumnes/crea', { curs: '6-primaria', alies })).cookie
+    let ana, biel, carla
+
+    beforeAll(async () => {
+      ana = await nou('Ana')
+      biel = await nou('Biel')
+      carla = await nou('Carla')
+      await bloc(ana, 300, 20)
+      await bloc(ana, 200, 15) // peor: no cuenta
+      await bloc(biel, 300, 22) // empata en puntos con Ana, pero más aciertos
+      await bloc(carla, 150, 10)
+    })
+
+    it('records: el mejor bloque del alumno identificado, por asignatura/modo; sin àlies, vacío', async () => {
+      const { body } = await pedir('GET', '/api/alumnes/records?curs=6-primaria', null, ana)
+      expect(body.records['matematiques/estimacions']).toEqual({ puntos: 300, aciertos: 20, preguntas: 30 })
+      expect((await pedir('GET', '/api/alumnes/records?curs=6-primaria')).body).toEqual({ records: {} })
+    })
+
+    it('records-curs: ordenados por puntos, después aciertos; cada àlies una vez', async () => {
+      const { status, body } = await pedir('GET', '/api/alumnes/records-curs?curs=6-primaria')
+      expect(status).toBe(200)
+      expect(body.records['matematiques/estimacions']).toEqual([
+        { posicio: 1, alies: 'Biel', puntos: 300, aciertos: 22, preguntas: 30 },
+        { posicio: 2, alies: 'Ana', puntos: 300, aciertos: 20, preguntas: 30 },
+        { posicio: 3, alies: 'Carla', puntos: 150, aciertos: 10, preguntas: 30 },
+      ])
+    })
+
+    it('máximo 10 por modo', async () => {
+      for (let i = 0; i < 11; i++) await bloc(await nou(`Massiu ${i}`), 400 + i, 25)
+      const { body } = await pedir('GET', '/api/alumnes/records-curs?curs=6-primaria')
+      const llista = body.records['matematiques/estimacions']
+      expect(llista).toHaveLength(10)
+      expect(llista[0]).toMatchObject({ posicio: 1, alies: 'Massiu 10', puntos: 410 })
+    })
+
+    it('un modo inactivo no sale; un àlies borrado tampoco', async () => {
+      await pool.query("UPDATE modos SET activo = false WHERE slug = 'estimacions'")
+      try {
+        expect((await pedir('GET', '/api/alumnes/records-curs?curs=6-primaria')).body.records['matematiques/estimacions']).toBeUndefined()
+      } finally {
+        await pool.query("UPDATE modos SET activo = true WHERE slug = 'estimacions'")
+      }
+      await pool.query("DELETE FROM alumnes WHERE alies = 'Massiu 10'")
+      const { body } = await pedir('GET', '/api/alumnes/records-curs?curs=6-primaria')
+      expect(body.records['matematiques/estimacions'].map((r) => r.alies)).not.toContain('Massiu 10')
+    })
+
+    it('si el curso desactiva los récords del curso: 404 (los personales siguen)', async () => {
+      await pool.query("UPDATE cursos SET config = config || '{\"recordsCurs\": false}' WHERE slug = '6-primaria'")
+      try {
+        const r = await pedir('GET', '/api/alumnes/records-curs?curs=6-primaria')
+        expect(r.status).toBe(404)
+        expect(r.body.error).toBe('records_desactivats')
+        expect((await pedir('GET', '/api/alumnes/records?curs=6-primaria', null, ana)).body.records['matematiques/estimacions']).toBeTruthy()
+      } finally {
+        await pool.query("UPDATE cursos SET config = config || '{\"recordsCurs\": true}' WHERE slug = '6-primaria'")
+      }
+    })
+  })
+
   describe('consola: àlies del curso (con sesión de profesor)', () => {
     let profe
     beforeAll(async () => {

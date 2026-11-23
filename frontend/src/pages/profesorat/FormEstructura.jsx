@@ -16,6 +16,7 @@ export default function FormEstructura({ tipo, inicial = {}, creando = false, on
   const [majuscules, setMajuscules] = useState(inicial.config?.majuscules ?? false)
   const [celebracio, setCelebracio] = useState(inicial.config?.celebracio ?? false)
   const [bloc, setBloc] = useState(String(inicial.config?.bloc ?? 30))
+  const [recordsCurs, setRecordsCurs] = useState(inicial.config?.recordsCurs ?? true)
   const [activo, setActivo] = useState(inicial.activo ?? false)
   const [errores, setErrores] = useState({})
   const [desant, setDesant] = useState(false)
@@ -33,7 +34,7 @@ export default function FormEstructura({ tipo, inicial = {}, creando = false, on
     setErrores({})
     const datos = { nombre, icono, color, activo }
     if (creando) datos.slug = slug
-    if (esCurso) Object.assign(datos, { nivel, config: { majuscules, celebracio, bloc: Number(bloc) } })
+    if (esCurso) Object.assign(datos, { nivel, config: { majuscules, celebracio, bloc: Number(bloc), recordsCurs } })
     try {
       await onDesa(datos)
       if (!creando) setDesat(true)
@@ -115,6 +116,10 @@ export default function FormEstructura({ tipo, inicial = {}, creando = false, on
           <label className="camp-check">
             <input type="checkbox" checked={celebracio} onChange={(e) => setCelebracio(e.target.checked)} />
             {T.campCelebracio}
+          </label>
+          <label className="camp-check">
+            <input type="checkbox" checked={recordsCurs} onChange={(e) => setRecordsCurs(e.target.checked)} />
+            {T.campRecordsCurs}
           </label>
         </>
       )}

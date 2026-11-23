@@ -13,6 +13,7 @@ import AmbDades from '../components/AmbDades.jsx'
 import { registrarFallo } from '../logic/fallos.js'
 import { tamanoBloc, estadoInicial, registrarRespuesta } from '../logic/blocs.js'
 import { useAlumne, enviarBloc } from '../logic/alumne.js'
+import { obtenerRecordsPropis, claveModo, recordsCursActius } from '../logic/records.js'
 import { T } from '../textos.js'
 import Pagina from '../components/Pagina.jsx'
 import Resumen from './Resumen.jsx'
@@ -114,9 +115,24 @@ export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesP
   const [partida, setPartida] = useState(0)
   // Con àlies (y si el entorno lo permite), los bloques se guardan.
   const alumne = useAlumne(senseAlies ? null : curso.id)
+  // Récord del niño en este modo (undefined: aún no se sabe; null: no tiene).
+  const [record, setRecord] = useState(undefined)
+  useEffect(() => {
+    if (!entorno.guardarBlocs || !alumne) return setRecord(undefined)
+    obtenerRecordsPropis(curso.id)
+      .then((rs) => setRecord(rs[claveModo(asignatura.id, modo.id)] ?? null))
+      .catch(() => setRecord(undefined))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alumne, curso.id, asignatura.id, modo.id])
   const guardarBloc =
-    entorno.guardarBlocs && alumne ? (bloc) => enviarBloc(curso.id, asignatura.id, modo.id, bloc) : null
-  const entornoPartida = { ...entorno, guardarBloc, pistaAlies: entorno.guardarBlocs && !alumne }
+    entorno.guardarBlocs && alumne
+      ? async (bloc) => {
+          const resultado = await enviarBloc(curso.id, asignatura.id, modo.id, bloc)
+          setRecord(resultado.millor)
+          return resultado
+        }
+      : null
+  const entornoPartida = { ...entorno, guardarBloc, pistaAlies: entorno.guardarBlocs && !alumne, record }
 
   const molles = mollesPropias ?? [
     { nom: T.inici, to: '/' },
@@ -143,6 +159,9 @@ export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesP
           resumen={resumen}
           rutaAltre={entorno.rutaTorna}
           rutaRepassar={entorno.registrarFallos ? `/${curso.id}/repassar` : null}
+          rutaRecords={
+            entorno.guardarBlocs && recordsCursActius(curso) ? `/${curso.id}/records#${asignatura.id}-${modo.id}` : null
+          }
           onTornarAJugar={tornarAJugar}
         />
       ) : (
@@ -341,6 +360,9 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
           <span className="puntos">⭐ {puntos}</span>
         </div>
         <p className="marcador-bloc">{T.bloc(blocs.completats.length + 1, blocs.actual.preguntas, tamano)}</p>
+        {entorno.record !== undefined && (
+          <p className="record-panell">{entorno.record ? T.elTeuRecordPanell(entorno.record) : T.encaraCapRecord}</p>
+        )}
         {avisBloc && (
           <p className={`avis-bloc${avisBloc.record ? ' es-record' : ''}`} role="status">
             {avisBloc.text}

@@ -5,6 +5,7 @@ import AmbDades from '../components/AmbDades.jsx'
 import { useApi } from '../hooks/useApi.js'
 import { obtenerCurso } from '../logic/api.js'
 import { T } from '../textos.js'
+import { recordsCursActius } from '../logic/records.js'
 
 export default function Curso() {
   const { cursoId } = useParams()
@@ -23,6 +24,11 @@ export default function Curso() {
             </>
           )}
           <nav className="accions">
+            {recordsCursActius(curso) && curso.asignaturas.length > 0 && (
+              <Link to={`/${curso.id}/records`} className="enllac-secundari">
+                {T.recordsCurs}
+              </Link>
+            )}
             <Link to={`/${curso.id}/repassar`} className="enllac-secundari">
               {T.perRepassar}
             </Link>

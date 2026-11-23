@@ -18,7 +18,7 @@ describe('validarEstructura', () => {
       color: '#4fc3f7',
       sombra: '#3789ad',
       nivel: 'medio',
-      config: { majuscules: false, celebracio: false, bloc: 30 },
+      config: { majuscules: false, celebracio: false, bloc: 30, recordsCurs: true },
       activo: false,
     })
   })
@@ -30,6 +30,7 @@ describe('validarEstructura', () => {
   })
 
   it('slugs reservados: profesorat/api/assets para cursos, repassar para asignaturas', () => {
+    expect(validarEstructura('asignatura', { nombre: 'X', slug: 'records' }, { creando: true }).errores.slug).toMatch(/reservat/)
     for (const slug of ['profesorat', 'api', 'assets']) {
       expect(validarEstructura('curso', { nombre: 'X', slug }, { creando: true }).errores.slug).toMatch(/reservat/)
     }

@@ -1,6 +1,6 @@
 # Contenido dinámico en BD + cursos + consola del profesorado + pantalla completa
 
-> **Vigente (2026-11-22).** Fases 0 a 5 implementadas; fase 7 en curso (7a y 7b hechas); la 6 en espera. Las decisiones marcadas con ❓ están pendientes de confirmar.
+> **Vigente (2026-11-22).** Fases 0 a 5 implementadas; fase 7 en curso (7a, 7b y 7c hechas); la 6 en espera. Las decisiones marcadas con ❓ están pendientes de confirmar.
 > Sustituye en parte a `docs/plan-base-datos-usuarios.md`: aquel plan identificaba a cada alumno con nombre + PIN; ahora los alumnos **no se identifican**, así que la parte de usuarios/PIN queda descartada. De aquel plan se reutiliza la parte técnica de la BD (Supabase + `pg` + migraciones propias).
 
 ## 1. Objetivo
@@ -329,3 +329,9 @@ Aprobado el 2026-11-22. Decisiones: àlies **por curso**; bloque por defecto **1
 - **API** `POST /api/alumnes/blocs` (con sesión de alumno del curso): modo del curso y activo; preguntas = tamaño del bloque; 0 ≤ aciertos ≤ preguntas; 0 ≤ puntos ≤ 20 × preguntas; sin aciertos no hay puntos. Devuelve `{ nouRecord, millor }` (el primer bloque siempre es récord; desempate por aciertos y después por antigüedad).
 - **Consola**: "Preguntes per bloc" en la ficha de curso y, opcional, en la de modo.
 - `make test-e2e-prod` (`playwright.prod.config.js`): e2e contra producción; los que cambian datos se saltan solos.
+
+### 7c ✅ hecha (2026-11-23)
+- **Récord** = mejor bloque de cada àlies en cada modo (más puntos; desempate: más aciertos, después el más antiguo). Solo modos y asignaturas activos; los àlies borrados desaparecen (cascada).
+- **API**: `GET /api/alumnes/records?curs=` (del alumno identificado; vacío sin àlies) y `GET /api/alumnes/records-curs?curs=` (top 10 por modo; 404 `records_desactivats` si el curso los desactiva).
+- **Web**: récord propio en cada tarjeta de modo ("⭐ 330") y en el panel del juego ("El teu rècord: 330 punts · 25/30", se actualiza al completar un bloque); pantalla `/:curso/records` ("🏆 Rècords del curs": por asignatura y modo, medallas, el àlies propio resaltado; anclas `#asignatura-modo`), enlazada desde el curso, la asignatura y el resumen de cada partida.
+- **Consola**: casilla "Mostra els rècords del curs" en la ficha de curso (`config.recordsCurs`, activa por defecto). `records` queda reservado como slug de asignatura.

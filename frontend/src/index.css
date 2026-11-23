@@ -1581,3 +1581,64 @@ button:active,
 .camp-numero {
   max-width: 8rem;
 }
+
+/* Récords */
+.targeta-detall {
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.record-panell {
+  margin: 0;
+  font-weight: 700;
+  color: #e65100;
+}
+
+.records-assignatura {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.records-modes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.records-mode {
+  padding: 1rem;
+  border-radius: var(--radi);
+  background: #ffffff;
+  box-shadow: var(--ombra-panell);
+  border-top: 8px solid var(--fons, var(--color-primari));
+  scroll-margin-top: 5rem;
+}
+
+.records-mode h3 {
+  margin: 0 0 0.5rem;
+}
+
+.records-mode h3 a {
+  color: inherit;
+}
+
+.taula-records {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.taula-records th,
+.taula-records td {
+  padding: 0.3rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.taula-records .es-meu td {
+  background: #fff8e1;
+  font-weight: 800;
+}
