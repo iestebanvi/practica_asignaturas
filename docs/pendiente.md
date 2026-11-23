@@ -28,12 +28,19 @@ Apuntar lo que falle o resulte raro, y decidir con eso los siguientes pasos.
 
 **Ejemplos de lo que permitiría:** "Sumes fins a 10" y "Sumes fins a 20" en el mismo curso; "Taules del 2, 5 i 10"; restas con o sin llevadas; divisiones exactas o con resto; horas solo en punto y medias.
 
-**Cuándo hacerla:** cuando en las pruebas se vea que los números no encajan con lo que se trabaja en clase, o un profesor lo pida.
+**Cuándo hacerla:** cuando en las pruebas se vea que los números no encajan con lo que se trabaja en clase, o un profesor lo pida. La comparación con el currículum oficial (`docs/matematiques/comparativa-curriculum.md`) ya apunta a que hace falta: los modos de cálculo de 6è se quedan muy por debajo (números hasta 20 frente a más de 9999 y decimales), y 1r se queda corto a final de curso (el bloque 1r–2n llega al 199).
 
 **Cómo, en pasos (cada uno desplegable por separado):**
 1. **Nivel por modo** (pequeño): un modo puede usar un nivel distinto del de su curso. Columna `modos.nivel` (null = el del curso), campo en la ficha de modo, y `PracticaModo` pasa ese nivel a los generadores.
 2. **Parámetros de los generadores más usados**: rango de números en sumas y restas, qué tablas en multiplicaciones, tipos de hora. Columna `modos.params` (JSONB), validada en el servidor por tipo; cada generador acepta esos parámetros (con los actuales como valores por defecto, para que nada cambie si no se configura); formulario específico por tipo en la ficha de modo.
 3. **Resto de tipos**, solo si hace falta.
+
+**Referencias oficiales para decidir los rangos de cada curso** (currículum de Catalunya, Decret 175/2022; va por ciclos, pero las orientaciones de matemáticas bajan a cada curso):
+- [Orientacions curriculars de matemàtiques de primària **per cursos**](https://projectes.xtec.cat/nou-curriculum/wp-content/uploads/usu2072/2025/09/Orientacions-curriculars_MAT_PRI_per-cursos.pdf) (XTEC): la más útil para la fase 6.
+- [Orientacions curriculars de matemàtiques de primària per sentits](https://projectes.xtec.cat/nou-curriculum/wp-content/uploads/usu2072/2025/09/Orientacions-curriculars_MAT_PRI_per-sentits.pdf) (XTEC).
+- [Decret 175/2022](https://agora.xtec.cat/iesesteveterradas/wp-content/uploads/usu855/DECRET_175_2022_OrdenacioEnsenyamentsEducacioBasica.pdf) (modificado por el Decret 480/2024: consultar la versión consolidada en el Portal Jurídic de Catalunya) y su [annex 2 de matemàtiques](https://www.sindicat.net/wp-content/uploads/2023/05/decret175_annex_2_Matematiques.pdf).
+- [Currículum de primària](https://documents.espai.educacio.gencat.cat/IPCNormativa/DOIGC/CUR_Primaria.pdf) (espai Educació) y [mapa curricular de primària](https://projectes.xtec.cat/nou-curriculum/wp-content/uploads/usu2072/2024/10/Document_suport_mapa_curricular_EP.pdf) (XTEC), para el resto de áreas.
+- Lo que se hace realmente en clase lo concreta cada escuela (programación y libros del curso): para inglés y Medi, los deberes y los libros dan una pista más concreta que el currículum.
 
 Ojo: el catálogo de tipos está duplicado a propósito (frontend `logic/tiposEjercicio.js` y backend `catalogo/tiposEjercicio.js`, con un test que comprueba que coinciden); los parámetros por tipo tendrían que seguir el mismo patrón.
 
