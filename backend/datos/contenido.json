@@ -67,14 +67,15 @@
       "nombre": "2n de primària",
       "icono": "🐢",
       "color": "#ffb74d",
-      "sombra": "#ef6c00",
+      "sombra": "#b38036",
       "nivel": "facil",
       "config": {
         "bloc": 15,
         "celebracio": true,
-        "majuscules": false
+        "majuscules": false,
+        "recordsCurs": true
       },
-      "activo": false,
+      "activo": true,
       "asignaturas": []
     },
     {
@@ -82,14 +83,15 @@
       "nombre": "3r de primària",
       "icono": "🦊",
       "color": "#81c784",
-      "sombra": "#388e3c",
+      "sombra": "#5a8b5c",
       "nivel": "medio",
       "config": {
         "bloc": 30,
         "celebracio": true,
-        "majuscules": false
+        "majuscules": false,
+        "recordsCurs": true
       },
-      "activo": false,
+      "activo": true,
       "asignaturas": []
     },
     {
@@ -97,14 +99,15 @@
       "nombre": "4t de primària",
       "icono": "🐬",
       "color": "#4db6ac",
-      "sombra": "#00796b",
+      "sombra": "#367f78",
       "nivel": "medio",
       "config": {
         "bloc": 30,
         "celebracio": false,
-        "majuscules": false
+        "majuscules": false,
+        "recordsCurs": true
       },
-      "activo": false,
+      "activo": true,
       "asignaturas": []
     },
     {
@@ -112,14 +115,15 @@
       "nombre": "5è de primària",
       "icono": "🦉",
       "color": "#9575cd",
-      "sombra": "#512da8",
+      "sombra": "#685290",
       "nivel": "medio",
       "config": {
         "bloc": 30,
         "celebracio": false,
-        "majuscules": false
+        "majuscules": false,
+        "recordsCurs": true
       },
-      "activo": false,
+      "activo": true,
       "asignaturas": []
     },
     {
@@ -251,6 +255,23 @@
                 "potencia-serie",
                 "potencia-comparar",
                 "potencia-descomposicio"
+              ],
+              "banco": null,
+              "bloc": null,
+              "activo": true
+            },
+            {
+              "id": "arrels-quadrades",
+              "nombre": "Arrels quadrades",
+              "color": "#c2185b",
+              "sombra": "#881140",
+              "operaciones": [
+                "arrel-exacta",
+                "arrel-quadrat",
+                "quadrat-perfecte",
+                "arrel-entera",
+                "arrel-imatge",
+                "costat-quadrat"
               ],
               "banco": null,
               "bloc": null,
