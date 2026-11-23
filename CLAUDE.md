@@ -14,7 +14,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
   - Web por cursos (1r–6è; 2n–5è inactivos y vacíos), interfaz en catalán, pantalla completa.
   - Todo el contenido en Supabase y editable desde la consola del profesorado (`/profesorat`, contraseña `TEACHER_PASSWD`): preguntas, importar/exportar, cursos, asignaturas, modos, bancos, vista previa.
   - Alumnos con àlies + PIN por curso: bloques de preguntas, récords personales y del curso, "Per repassar" en la BD.
-- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1–M6 hechas** (raíces, dificultad por modo, 6è al nivel del currículum con problemas nuevos y básicos en catalán, decimales, fracciones, operaciones combinadas); siguiente **M7 (porcentajes y proporcionalidad)**. Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
+- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1–M7 hechas** (raíces, dificultad por modo, 6è al nivel del currículum con problemas nuevos y básicos en catalán, decimales, fracciones, operaciones combinadas, porcentajes y proporcionalidad); siguiente **M8 (divisibilidad)**. Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
 - **Despliegue**: push a `main` = producción (ver README). Antes, `make test`, `make test-backend` y `make test-e2e`; después, `make test-e2e-prod`.
 
 ## Mapa de temas
@@ -40,7 +40,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Diseño técnico antiguo de BD + PIN (referencia, sustituido) | `docs/planes/plan-base-datos-usuarios.md` |
 | Matemáticas: currículum oficial (XTEC) vs. ejercicios de la web | `docs/matematiques/comparativa-curriculum.md` |
 | Problemas de 6è (nuevos) y traducción de los básicos: fuentes y tabla de revisión | `docs/matematiques/problemes-6e.json`, `problemes-basics-ca.json`, `problemes-revisio.md` |
-| Plan de matemáticas de 5è y 6è (reparto de bloques, parámetros por modo, fases M1–M9) | `docs/planes/plan-matematiques-5e-6e.md` (vigente; M1–M6 hechas: decimales §10, fracciones §11, combinadas §12) |
+| Plan de matemáticas de 5è y 6è (reparto de bloques, parámetros por modo, fases M1–M9) | `docs/planes/plan-matematiques-5e-6e.md` (vigente; M1–M7 hechas: decimales §10, fracciones §11, combinadas §12, porcentajes §13) |
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |
 | Contenido fuente: temario Medi "Canvis en el relleu" | `docs/medi/canvis-en-el-relleu-temari.txt` |
 | Cómo arrancar, testear y desplegar | `README.md` y `Makefile` (`make help`; `make test-e2e-prod` = e2e contra producción) |
@@ -70,6 +70,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Decimales: tipos, lectura de respuestas con coma y formato | `frontend/src/logic/decimals.js` + `parseNumero`/`numerosIguals`/`formatDecimal` en `frontend/src/logic/common.js`; plan M4 en `docs/planes/plan-matematiques-5e-6e.md` §10 |
 | Fracciones: tipos, comprobación de equivalentes, dibujo y entrada de dos casillas | `frontend/src/logic/fraccions.js`; `components/TextFraccions.jsx`, `FraccioDibuix.jsx`, `EntradaFraccio.jsx`; plan M5 en `docs/planes/plan-matematiques-5e-6e.md` §11 |
 | Operaciones combinadas: plantillas, evaluador con prioridad y la "trampa" | `frontend/src/logic/combinades.js`; plan M6 en `docs/planes/plan-matematiques-5e-6e.md` §12 |
+| Porcentajes y proporcionalidad: tipos, tabla, respuesta en fracción con `formatResposta` | `frontend/src/logic/percentatges.js`, `components/TaulaProporcio.jsx`; plan M7 en `docs/planes/plan-matematiques-5e-6e.md` §13 |
 | Parámetros de dificultad por modo (definición única; consola y validación) | `backend/src/catalogo/parametres.js`; formulario `frontend/src/pages/profesorat/CampsParams.jsx`; generadores en `frontend/src/logic/` (`PARAMETRES_ACCEPTATS`) |
 | Àlies de alumnos: API pública, PIN, sesiones por curso | `backend/src/routes/alumnes.js` + `backend/src/db/alumnes.js` + `backend/src/validacion/alies.js`; frontend `frontend/src/logic/alumne.js`, `components/AliesCapcalera.jsx`, `components/DialegAlies.jsx`; consola `pages/profesorat/LlistaAlies.jsx` |
 | Récords: consultas y pantalla | `backend/src/db/records.js`; `GET /api/alumnes/records` y `/records-curs`; `frontend/src/logic/records.js`, `pages/RecordsCurs.jsx` |

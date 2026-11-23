@@ -27,10 +27,19 @@ import Figura from '../components/Figura.jsx'
 import FraccioDibuix from '../components/FraccioDibuix.jsx'
 import TextFraccions from '../components/TextFraccions.jsx'
 import EntradaFraccio from '../components/EntradaFraccio.jsx'
+import TaulaProporcio from '../components/TaulaProporcio.jsx'
 import { TIPOS_RESPOSTA_FRACCIO } from '../logic/fraccions.js'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
-const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadrat', 'arrel-imatge', 'decimal-posicio', 'decimal-arrodonir', 'fraccio-dibuix']
+const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadrat', 'arrel-imatge', 'decimal-posicio',
+  'decimal-arrodonir',
+  'fraccio-dibuix',
+  'percentatge-quin',
+  'percentatge-descompte',
+  'percentatge-equivalencia',
+  'proporcio-taula',
+  'proporcio-unitat',
+]
 const TIPOS_OPCION_MULTIPLE = [
   'hora',
   'vocabulario',
@@ -81,6 +90,11 @@ const TIPOS_SIN_SIMBOLO = [
   'fraccio-dibuix',
   'fraccio-equivalent',
   'fraccio-simplificar',
+  'percentatge-quin',
+  'percentatge-descompte',
+  'percentatge-equivalencia',
+  'proporcio-taula',
+  'proporcio-unitat',
 ]
 // Respuestas numéricas con decimales: campo de texto con teclado decimal (el
 // campo "number" del navegador no acepta bien la coma).
@@ -91,11 +105,12 @@ const TIPOS_RESPOSTA_DECIMAL = [
   'decimal-potencia10',
   'decimal-per-natural',
   'fraccio-decimal',
+  'percentatge-equivalencia',
 ]
 
 // Enunciados con fracciones "3/4": se dibujan apiladas.
 function Enunciat({ ejercicio }) {
-  return ejercicio.tipo.startsWith('fraccio-') ? <TextFraccions text={ejercicio.enunciado} /> : ejercicio.enunciado
+  return ejercicio.tipo.startsWith('fraccio-') || ejercicio.tipo === 'percentatge-equivalencia' ? <TextFraccions text={ejercicio.enunciado} /> : ejercicio.enunciado
 }
 
 // Las soluciones numéricas se enseñan como se escriben en catalán (3,5).
@@ -396,15 +411,17 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
     )
   }
 
-  const esProblema = ['problema', 'costat-quadrat'].includes(ejercicio.tipo)
+  const esProblema = ['problema', 'costat-quadrat', 'percentatge-descompte', 'proporcio-unitat'].includes(ejercicio.tipo)
   // Preguntas cortas en forma de frase: tamaño intermedio y centradas (como
   // los enunciados con figura), ni gigantes como una operación ni pequeñas
   // como un problema.
   const esPreguntaCurta =
-    Boolean(ejercicio.figura || ejercicio.dibuix) ||
-    ['arrel-quadrat', 'decimal-posicio', 'decimal-arrodonir', 'fraccio-simplificar'].includes(ejercicio.tipo)
+    Boolean(ejercicio.figura || ejercicio.dibuix || ejercicio.taula) ||
+    ['arrel-quadrat', 'decimal-posicio', 'decimal-arrodonir', 'fraccio-simplificar', 'percentatge-quin', 'percentatge-equivalencia'].includes(
+      ejercicio.tipo,
+    )
   const esDecimal = TIPOS_RESPOSTA_DECIMAL.includes(ejercicio.tipo)
-  const esFraccio = TIPOS_RESPOSTA_FRACCIO.includes(ejercicio.tipo)
+  const esFraccio = TIPOS_RESPOSTA_FRACCIO.includes(ejercicio.tipo) || ejercicio.formatResposta === 'fraccio'
   const classeResposta = feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''
   const esHora = ejercicio.tipo === 'hora'
   const esMediImagen = ejercicio.tipo === 'medi-imatge'
@@ -473,6 +490,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
         {esMediImagen && ejercicio.diagrama === 'riu' && <Riu parteDestacada={ejercicio.parteId} />}
         {ejercicio.figura && <Figura figura={ejercicio.figura} />}
         {ejercicio.dibuix && <FraccioDibuix dibuix={ejercicio.dibuix} />}
+        {ejercicio.taula && <TaulaProporcio taula={ejercicio.taula} />}
         {esEnunciadoTexto && (
           <p className="enunciado enunciado-texto" data-enunciat={ejercicio.enunciado}>
             <Enunciat ejercicio={ejercicio} />

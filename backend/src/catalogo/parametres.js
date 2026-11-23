@@ -22,6 +22,13 @@ const COMBINADES = {
   max: { tipus: 'enter', etiqueta: 'Sumands màxims', min: 10, max: 100 },
 }
 
+// Porcentajes: cuáles pueden salir y cantidad máxima (las cantidades se eligen
+// para que el resultado sea exacto).
+const PERCENTATGES = {
+  percentatges: { tipus: 'llista', etiqueta: 'Només aquests percentatges (p. ex. 10, 25, 50)', min: 1, max: 99 },
+  max: { tipus: 'enter', etiqueta: 'Quantitat màxima', min: 20, max: 1000 },
+}
+
 export const PARAMETRES = {
   suma: {
     max: { tipus: 'enter', etiqueta: 'Nombre màxim', min: 5, max: 1000000 },
@@ -64,6 +71,9 @@ export const PARAMETRES = {
   'fraccio-resta': AMB_DENOMINADOR,
   combinada: COMBINADES,
   'combinada-parentesi': COMBINADES,
+  'percentatge-quantitat': PERCENTATGES,
+  'percentatge-quin': PERCENTATGES,
+  'percentatge-descompte': PERCENTATGES,
 }
 
 const NOMS_TIPUS = {
@@ -90,6 +100,9 @@ const NOMS_TIPUS = {
   'fraccio-resta': 'Fraccions (restes)',
   combinada: 'Operacions combinades (sense parèntesis)',
   'combinada-parentesi': 'Operacions combinades (amb parèntesis)',
+  'percentatge-quantitat': 'Percentatges (percentatge d’una quantitat)',
+  'percentatge-quin': 'Percentatges (quin percentatge és)',
+  'percentatge-descompte': 'Percentatges (descomptes)',
 }
 
 function valorValid(spec, valor) {

@@ -1736,3 +1736,29 @@ button:active,
   border-color: var(--color-incorrecto);
   background: #fbe9e7;
 }
+
+/* Tabla de proporcionalidad (TaulaProporcio) */
+.taula-proporcio {
+  margin: 0 auto 1rem;
+  border-collapse: collapse;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.9rem);
+  font-weight: 700;
+}
+
+.taula-proporcio th,
+.taula-proporcio td {
+  border: 3px solid #2b2b2b;
+  padding: 0.4em 0.8em;
+  text-align: center;
+}
+
+.taula-proporcio th {
+  background: #e3f2fd;
+  font-size: 0.75em;
+  text-align: left;
+}
+
+.taula-proporcio td.buida {
+  background: #fff3e0;
+  color: var(--color-incorrecto);
+}

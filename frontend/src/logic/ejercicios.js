@@ -52,6 +52,14 @@ import {
   respostaFraccioCorrecta,
 } from './fraccions.js'
 import { generarCombinada, generarCombinadaParentesi } from './combinades.js'
+import {
+  generarPercentatgeQuantitat,
+  generarPercentatgeQuin,
+  generarPercentatgeDescompte,
+  generarPercentatgeEquivalencia,
+  generarProporcioTaula,
+  generarProporcioUnitat,
+} from './percentatges.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -98,6 +106,12 @@ const GENERADORES = {
   'fraccio-decimal': generarFraccioDecimal,
   combinada: generarCombinada,
   'combinada-parentesi': generarCombinadaParentesi,
+  'percentatge-quantitat': generarPercentatgeQuantitat,
+  'percentatge-quin': generarPercentatgeQuin,
+  'percentatge-descompte': generarPercentatgeDescompte,
+  'percentatge-equivalencia': generarPercentatgeEquivalencia,
+  'proporcio-taula': generarProporcioTaula,
+  'proporcio-unitat': generarProporcioUnitat,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -147,6 +161,9 @@ export const PARAMETRES_ACCEPTATS = {
   'fraccio-resta': ['denominadorMax'],
   combinada: ['operacions', 'max'],
   'combinada-parentesi': ['operacions', 'max'],
+  'percentatge-quantitat': ['percentatges', 'max'],
+  'percentatge-quin': ['percentatges', 'max'],
+  'percentatge-descompte': ['percentatges', 'max'],
 }
 
 export function generarEjercicio(operacion, nivel = 'facil', params = {}) {
@@ -169,7 +186,8 @@ export function comprobarRespuesta(ejercicio, respuestaUsuario) {
   if (ejercicio.tipo === 'there-be') {
     return respuestaThereBeCorrecta(ejercicio, respuestaUsuario)
   }
-  if (TIPOS_RESPOSTA_FRACCIO.includes(ejercicio.tipo)) {
+  // (Algunos ejercicios piden una fracción aunque su tipo no: formatResposta.)
+  if (TIPOS_RESPOSTA_FRACCIO.includes(ejercicio.tipo) || ejercicio.formatResposta === 'fraccio') {
     return respostaFraccioCorrecta(ejercicio, respuestaUsuario)
   }
   if (TIPOS_RESPUESTA_TEXTO.includes(ejercicio.tipo)) {

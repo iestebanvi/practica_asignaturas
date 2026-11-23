@@ -83,7 +83,7 @@ Con la consola (sin código): activar 5è, crear Matemàtiques, crear los modos 
 | **M4** ✅ | Decimales (§10): respuestas con coma y 8 tipos nuevos | Modo "Decimals" en 6è |
 | **M5** ✅ | Fracciones (§11): dibujo, respuesta con dos casillas y 8 tipos | Modo "Fraccions" en 6è |
 | **M6** ✅ | Operaciones combinadas (§12), adelantadas porque las dan en clase (2026-11-23) | Modo "Operacions combinades" en 6è |
-| **M7** | Porcentajes y proporcionalidad | |
+| **M7** ✅ | Porcentajes y proporcionalidad (§13) | Modo "Percentatges i proporcions" en 6è |
 | **M8** | Divisibilidad | |
 | **M8b** | Medida (conversiones) | |
 | **M9** | Montar 5è con todo lo anterior (en la consola) y activarlo | 5è disponible |
@@ -182,3 +182,21 @@ Nil las estaba dando en clase, así que se separaron de la antigua M7 (divisibil
 - **Cómo se generan**: plantillas de 2 o 3 operaciones rellenadas con números hasta que todas las divisiones son exactas, nada es negativo, el resultado no es 0 ni enorme, no se multiplica ni divide por 1 y **hay trampa**: de izquierda a derecha (sin paréntesis) o quitando los paréntesis sale otro resultado. Factores y divisores del 2 al 10.
 - **Parámetros por modo**: `operacions` (2 o 3; vacío = mezcladas) y `max` (sumandos, 10–100; por defecto 20).
 - Tests: unitarios (`combinades.test.js`, con un evaluador propio que respeta prioridad y paréntesis) y e2e `e2e/combinades.spec.js`.
+
+## 13. M7 ✅ hecha (2026-11-23): porcentajes y proporcionalidad
+
+- **Tipos** (`frontend/src/logic/percentatges.js`), todos con resultados exactos:
+
+  | Tipo | Ejemplo | Respuesta |
+  |---|---|---|
+  | `percentatge-quantitat` | 25 % de 80 | 20 |
+  | `percentatge-quin` | Quin percentatge de 50 és 10? | 20 |
+  | `percentatge-descompte` | Una samarreta costa 40 €. Si en fan un 25 % de descompte, quant pagues? / quant t’estalvies? | 30 / 10 |
+  | `percentatge-equivalencia` | 3/4 = ? % · 0,35 = ? % · Escriu 40 % en nombre decimal · Escriu 25 % com a fracció | 75 · 35 · 0,4 · 1/4 |
+  | `proporcio-taula` | tabla de 2 magnitudes y 4 columnas con una casilla "?" (`TaulaProporcio.jsx`) | el número que falta |
+  | `proporcio-unitat` | 3 llibretes costen 6 €. Quant costen 7 llibretes? | 14 |
+
+- La variante "como fracción" usa las dos casillas aunque el tipo no sea de fracciones: el ejercicio lleva `formatResposta: 'fraccio'` (lo miran la comprobación y la pantalla).
+- **Parámetros** (tipos de porcentaje): `percentatges` (lista; por defecto 10, 20, 25, 50, 75) y `max` (cantidad máxima, por defecto 200).
+- **Fuera de M7**: escalas (con la medida, M8b; ya hay problemas de escalas en el banco), aumentos y proporcionalidad inversa.
+- Tests: unitarios (`percentatges.test.js`) y e2e `e2e/percentatges.spec.js`.

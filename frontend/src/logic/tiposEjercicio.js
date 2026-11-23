@@ -48,6 +48,12 @@ export const NOMBRES_TIPOS = {
   'fraccio-decimal': 'Fraccions: passar a decimal',
   combinada: 'Operacions combinades (sense parèntesis)',
   'combinada-parentesi': 'Operacions combinades (amb parèntesis)',
+  'percentatge-quantitat': 'Percentatges: percentatge d’una quantitat',
+  'percentatge-quin': 'Percentatges: quin percentatge és',
+  'percentatge-descompte': 'Percentatges: descomptes',
+  'percentatge-equivalencia': 'Percentatges: fracció, decimal i %',
+  'proporcio-taula': 'Proporcionalitat: completar una taula',
+  'proporcio-unitat': 'Proporcionalitat: reducció a la unitat',
   problema: 'Problemes (del banc)',
   vocabulario: 'Vocabulari, triar (del banc)',
   'vocabulario-escrito': 'Vocabulari, escriure (del banc)',
@@ -109,6 +115,17 @@ export const GRUPOS_TIPOS = [
     ],
   },
   { nombre: 'Operacions combinades', tipos: ['combinada', 'combinada-parentesi'] },
+  {
+    nombre: 'Percentatges i proporcionalitat',
+    tipos: [
+      'percentatge-quantitat',
+      'percentatge-quin',
+      'percentatge-descompte',
+      'percentatge-equivalencia',
+      'proporcio-taula',
+      'proporcio-unitat',
+    ],
+  },
   {
     nombre: 'Fraccions',
     tipos: [
