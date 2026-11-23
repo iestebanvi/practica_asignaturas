@@ -5,6 +5,7 @@ import { T } from '../../textos.js'
 import FormEstructura from './FormEstructura.jsx'
 import AccionsElement from './AccionsElement.jsx'
 import FormModo from './FormModo.jsx'
+import { BLOC_PER_DEFECTE } from '../../logic/blocs.js'
 
 const RUTA = '/profesorat/consola'
 
@@ -93,7 +94,7 @@ export default function FitxaAssignatura({ contenido, onCanvi }) {
           <FormModo
             creando
             bancos={contenido.bancos}
-            blocCurs={curso.config?.bloc ?? 30}
+            blocCurs={curso.config?.bloc ?? BLOC_PER_DEFECTE}
             onDesa={creaMode}
             onCancela={() => setCreantMode(false)}
           />

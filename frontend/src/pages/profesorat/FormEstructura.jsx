@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { proponerSlug } from '../../logic/admin.js'
 import { T } from '../../textos.js'
+import { BLOC_PER_DEFECTE } from '../../logic/blocs.js'
 
 // Formulario de curso o asignatura (tipo: 'curso' | 'asignatura'). Al crear
 // se pide además la adreça (slug), que se propone a partir del nombre hasta
@@ -15,7 +16,7 @@ export default function FormEstructura({ tipo, inicial = {}, creando = false, on
   const [nivel, setNivel] = useState(inicial.nivel ?? 'medio')
   const [majuscules, setMajuscules] = useState(inicial.config?.majuscules ?? false)
   const [celebracio, setCelebracio] = useState(inicial.config?.celebracio ?? false)
-  const [bloc, setBloc] = useState(String(inicial.config?.bloc ?? 30))
+  const [bloc, setBloc] = useState(String(inicial.config?.bloc ?? BLOC_PER_DEFECTE))
   const [recordsCurs, setRecordsCurs] = useState(inicial.config?.recordsCurs ?? true)
   const [activo, setActivo] = useState(inicial.activo ?? false)
   const [errores, setErrores] = useState({})

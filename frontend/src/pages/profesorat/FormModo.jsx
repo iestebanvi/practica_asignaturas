@@ -4,11 +4,12 @@ import { proponerSlug, obtenerParametres } from '../../logic/admin.js'
 import { GRUPOS_TIPOS, NOMBRES_FORMATOS, formatosRequeridos, nombreTipo } from '../../logic/tiposEjercicio.js'
 import { T } from '../../textos.js'
 import CampsParams, { paramsPerDesar } from './CampsParams.jsx'
+import { BLOC_PER_DEFECTE } from '../../logic/blocs.js'
 
 // Formulario de modo: nombre, adreça (solo al crear), color, activo, tipos de
 // ejercicio (casillas agrupadas) y, si algún tipo saca preguntas de un banco,
 // el banco (solo los del formato que hace falta). El servidor valida todo.
-export default function FormModo({ inicial = {}, creando = false, bancos, blocCurs = 30, onDesa, onCancela }) {
+export default function FormModo({ inicial = {}, creando = false, bancos, blocCurs = BLOC_PER_DEFECTE, onDesa, onCancela }) {
   const [nombre, setNombre] = useState(inicial.nombre ?? '')
   const [slug, setSlug] = useState(inicial.slug ?? '')
   const [slugManual, setSlugManual] = useState(false)

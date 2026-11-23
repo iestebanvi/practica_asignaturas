@@ -4,8 +4,8 @@
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/
 const COLOR = /^#[0-9a-f]{6}$/i
 const NIVELES = ['facil', 'medio', 'dificil']
-// Preguntas por bloque (récords): 30 si no se dice otra cosa.
-export const BLOC_PER_DEFECTE = 30
+// Preguntas por bloque (récords): 15 si no se dice otra cosa.
+export const BLOC_PER_DEFECTE = 15
 export const BLOC_MIN = 5
 export const BLOC_MAX = 100
 

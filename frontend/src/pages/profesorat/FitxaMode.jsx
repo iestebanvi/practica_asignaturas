@@ -3,6 +3,7 @@ import { actualizarEstructura, borrarEstructura, moverEstructura } from '../../l
 import { T } from '../../textos.js'
 import FormModo from './FormModo.jsx'
 import AccionsElement from './AccionsElement.jsx'
+import { BLOC_PER_DEFECTE } from '../../logic/blocs.js'
 
 const RUTA = '/profesorat/consola'
 
@@ -80,7 +81,7 @@ export default function FitxaMode({ contenido, onCanvi }) {
       </p>
       <p className="camp-ajuda">{T.ajudaEsborraMode}</p>
 
-      <FormModo key={modo.id} inicial={modo} bancos={contenido.bancos} blocCurs={curso.config?.bloc ?? 30} onDesa={desa} />
+      <FormModo key={modo.id} inicial={modo} bancos={contenido.bancos} blocCurs={curso.config?.bloc ?? BLOC_PER_DEFECTE} onDesa={desa} />
     </article>
   )
 }

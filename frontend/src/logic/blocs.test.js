@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest'
 import { tamanoBloc, estadoInicial, registrarRespuesta, millorBloc } from './blocs.js'
 
 describe('blocs', () => {
-  it('tamaño: el del modo, si no el del curso, si no 30', () => {
+  it('tamaño: el del modo, si no el del curso, si no 15', () => {
     expect(tamanoBloc({ config: { bloc: 10 } }, { bloc: 5 })).toBe(5)
     expect(tamanoBloc({ config: { bloc: 10 } }, { bloc: null })).toBe(10)
-    expect(tamanoBloc({ config: {} }, {})).toBe(30)
+    expect(tamanoBloc({ config: {} }, {})).toBe(15)
   })
 
   it('cuenta puntos y aciertos y cierra el bloque al llegar al tamaño', () => {

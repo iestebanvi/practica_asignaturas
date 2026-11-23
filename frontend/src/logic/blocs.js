@@ -2,7 +2,7 @@
 // bloques de N; cada bloque completo es un resultado (el récord es el mejor).
 // Funciones puras: la partida guarda el estado y llama a registrarRespuesta.
 
-export const BLOC_PER_DEFECTE = 30
+export const BLOC_PER_DEFECTE = 15
 
 // El tamaño del modo si tiene uno propio; si no, el del curso; si no, 30.
 export function tamanoBloc(curso, modo) {

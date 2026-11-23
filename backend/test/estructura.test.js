@@ -18,7 +18,7 @@ describe('validarEstructura', () => {
       color: '#4fc3f7',
       sombra: '#3789ad',
       nivel: 'medio',
-      config: { majuscules: false, celebracio: false, bloc: 30, recordsCurs: true },
+      config: { majuscules: false, celebracio: false, bloc: 15, recordsCurs: true },
       activo: false,
     })
   })
