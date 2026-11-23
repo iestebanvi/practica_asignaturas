@@ -116,3 +116,11 @@ Modo nuevo **"Arrels quadrades"** en 6è › Matemàtiques, con estos tipos de e
 - El modo se crea desde la consola (sin código) una vez desplegados los tipos; también se podrán añadir algunos tipos de raíces al modo "Potències" si se quiere practicar todo junto.
 
 **Implementación (M1):** generadores en `frontend/src/logic/arrels.js` (tipos `arrel-exacta`, `arrel-quadrat`, `quadrat-perfecte`, `arrel-entera`, `arrel-imatge`; la cuadrícula reutiliza `Figura` con forma `quadricula`), registrados en `ejercicios.js`, en el catálogo del backend y con nombre en la consola (grupo "Arrels quadrades"). La raíz entera incluye como distractor el error típico de dividir entre 2 (√50 → "25 i 26"). Modo "Arrels quadrades" creado en 6è › Matemàtiques desde la consola, con los 5 tipos + `costat-quadrat`.
+
+## 8. M2 ✅ hecha (2026-11-23): dificultad por modo
+
+- **Migración 006**: `modos.params` (JSONB, `{}` por defecto = según el nivel del curso, todo igual que antes).
+- **Definición única** de los parámetros en `backend/src/catalogo/parametres.js` (tipo `enter` / `llista` / `opcio`, con etiqueta en catalán y límites): el servidor valida con ella (`validarParams`, también combinaciones: tablas o cifras pero no ambas, salto mínimo ≤ máximo, redondeo coherente con las cifras) y la consola la pide en `GET /api/admin/parametres` para montar el formulario.
+- **Generadores** (`frontend/src/logic/`): suma/resta `{ max }`; multiplicación `{ xifresA, xifresB }` o `{ taules }`; división exacta `{ xifresDivisor, xifresQuocient }`; estimación `{ arrodonir: 10|100|1000, xifres }` (enunciado ya en catalán: "Arrodoneix a les desenes i estima"); series `{ pasMin, pasMax, inicialMax }`. Sin parámetros generan lo mismo que antes. `PARAMETRES_ACCEPTATS` (ejercicios.js) debe coincidir con el catálogo del servidor: lo comprueba `parametres.test.js`.
+- **Consola**: en la ficha de modo, sección "Dificultat (opcional)" con los campos de los tipos marcados (`CampsParams.jsx`). Los formularios de la consola usan `noValidate`: los errores los da siempre el servidor, en catalán y debajo del campo (antes el navegador bloqueaba el envío con su aviso nativo).
+- **Tests**: los cursos 2n–5è ya no se suponen inactivos (el usuario los activó): cada test desactiva el curso que necesita, y el entorno e2e tiene un curso inactivo propio ("Curs inactiu E2E").

@@ -1642,3 +1642,25 @@ button:active,
   background: #fff8e1;
   font-weight: 800;
 }
+
+/* Parámetros de dificultad del modo (consola) */
+.form-pregunta .camps-params {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 0.75rem 1.5rem;
+}
+
+.form-pregunta .camps-params > legend,
+.form-pregunta .camps-params > .camp-ajuda {
+  grid-column: 1 / -1;
+}
+
+.params-tipus {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.params-tipus label {
+  font-weight: 400;
+}

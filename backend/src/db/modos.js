@@ -2,9 +2,9 @@ import { pool } from './cliente.js'
 import { validarModo, validarBanco } from '../validacion/modos.js'
 
 const COLUMNAS_MODO =
-  'id::int, asignatura_id::int AS "asignaturaId", slug, nombre, color, sombra, operaciones, banco_id::int AS "bancoId", bloc, activo'
+  'id::int, asignatura_id::int AS "asignaturaId", slug, nombre, color, sombra, operaciones, banco_id::int AS "bancoId", bloc, params, activo'
 const COLUMNAS_BANCO = 'id::int, slug, nombre, formato'
-const CAMPOS_MODO = ['slug', 'nombre', 'color', 'sombra', 'operaciones', 'banco_id', 'bloc', 'activo']
+const CAMPOS_MODO = ['slug', 'nombre', 'color', 'sombra', 'operaciones', 'banco_id', 'bloc', 'params', 'activo']
 
 const repetido = (err, campo, mensaje) => (err.code === '23505' ? { errores: { [campo]: mensaje } } : null)
 
@@ -19,8 +19,8 @@ async function comprobarBanco(valores, formatoBanco) {
 }
 
 function aColumnas(valores) {
-  const { bancoId, ...resto } = valores
-  return { ...resto, banco_id: bancoId }
+  const { bancoId, params, ...resto } = valores
+  return { ...resto, banco_id: bancoId, ...(params ? { params: JSON.stringify(params) } : {}) }
 }
 
 // Todas devuelven { fila } | { errores } | null (si no existe).
@@ -58,7 +58,7 @@ export async function actualizarModo(id, cambios = {}) {
   if (!rows.length) return null
   const actual = rows[0]
   const permitidos = Object.fromEntries(
-    Object.entries(cambios).filter(([k]) => ['nombre', 'color', 'operaciones', 'bancoId', 'bloc', 'activo'].includes(k)),
+    Object.entries(cambios).filter(([k]) => ['nombre', 'color', 'operaciones', 'bancoId', 'bloc', 'params', 'activo'].includes(k)),
   )
   const { valores, formatoBanco, errores } = validarModo({ ...actual, ...permitidos })
   if (errores) return { errores }

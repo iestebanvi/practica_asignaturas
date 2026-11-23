@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { proponerSlug } from '../../logic/admin.js'
+import { proponerSlug, obtenerParametres } from '../../logic/admin.js'
 import { GRUPOS_TIPOS, NOMBRES_FORMATOS, formatosRequeridos, nombreTipo } from '../../logic/tiposEjercicio.js'
 import { T } from '../../textos.js'
+import CampsParams, { paramsPerDesar } from './CampsParams.jsx'
 
 // Formulario de modo: nombre, adreça (solo al crear), color, activo, tipos de
 // ejercicio (casillas agrupadas) y, si algún tipo saca preguntas de un banco,
@@ -16,6 +17,12 @@ export default function FormModo({ inicial = {}, creando = false, bancos, blocCu
   const [tipos, setTipos] = useState(inicial.operaciones ?? [])
   const [bancoId, setBancoId] = useState(inicial.bancoId ?? null)
   const [bloc, setBloc] = useState(inicial.bloc ? String(inicial.bloc) : '')
+  const [params, setParams] = useState(inicial.params ?? {})
+  // Definición de los parámetros de dificultad (del servidor; se pide una vez).
+  const [specs, setSpecs] = useState(null)
+  useEffect(() => {
+    obtenerParametres().then(setSpecs).catch(() => setSpecs({}))
+  }, [])
   const [errores, setErrores] = useState({})
   const [desant, setDesant] = useState(false)
   const [desat, setDesat] = useState(false)
@@ -34,7 +41,7 @@ export default function FormModo({ inicial = {}, creando = false, bancos, blocCu
     setDesant(true)
     setDesat(false)
     setErrores({})
-    const datos = { nombre, color, activo, operaciones: tipos, bancoId: formato ? bancoId : null, bloc: bloc === '' ? null : Number(bloc) }
+    const datos = { nombre, color, activo, operaciones: tipos, bancoId: formato ? bancoId : null, bloc: bloc === '' ? null : Number(bloc), params: paramsPerDesar(tipos, params, specs ?? {}) }
     if (creando) datos.slug = slug
     try {
       await onDesa(datos)
@@ -54,7 +61,7 @@ export default function FormModo({ inicial = {}, creando = false, bancos, blocCu
     ) : null
 
   return (
-    <form className="form-pregunta form-estructura" onSubmit={enviar} onChange={() => setDesat(false)}>
+    <form noValidate className="form-pregunta form-estructura" onSubmit={enviar} onChange={() => setDesat(false)}>
       <label>
         {T.campNom}
         <input
@@ -108,6 +115,17 @@ export default function FormModo({ inicial = {}, creando = false, bancos, blocCu
       </fieldset>
       {formatos.length > 1 && <p className="camp-avis">{T.avisBarrejaFormats}</p>}
       <Error camp="operaciones" />
+
+      <CampsParams
+        specs={specs}
+        tipos={tipos}
+        valores={params}
+        onCanvi={(p) => {
+          setParams(p)
+          setDesat(false)
+        }}
+      />
+      <Error camp="params" />
 
       {formato && (
         <>

@@ -151,3 +151,14 @@ export function nuevoPinAlumne(id) {
 export function borrarAlumne(id) {
   return peticion(`/api/admin/alumnes/${encodeURIComponent(id)}`, { method: 'DELETE' })
 }
+
+// Parámetros de dificultad de cada tipo de ejercicio (definidos en el
+// servidor). No cambian mientras dura la visita: se piden una sola vez.
+let parametres = null
+export function obtenerParametres() {
+  parametres ??= peticion('/api/admin/parametres').catch((err) => {
+    parametres = null
+    throw err
+  })
+  return parametres
+}

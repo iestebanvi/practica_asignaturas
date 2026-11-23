@@ -32,6 +32,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -44,6 +45,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -56,6 +58,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             }
           ]
@@ -161,6 +164,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -174,6 +178,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -187,6 +192,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -199,6 +205,7 @@
               ],
               "banco": "problemes-6",
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -211,6 +218,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -223,6 +231,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -238,6 +247,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -258,6 +268,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -275,6 +286,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             }
           ]
@@ -297,6 +309,7 @@
               ],
               "banco": "vocabulari-angles-6",
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -309,6 +322,7 @@
               ],
               "banco": "vocabulari-angles-6",
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -321,6 +335,7 @@
               ],
               "banco": "gramatica-angles-6",
               "bloc": null,
+              "params": {},
               "activo": true
             },
             {
@@ -333,6 +348,7 @@
               ],
               "banco": null,
               "bloc": null,
+              "params": {},
               "activo": true
             }
           ]
@@ -355,6 +371,7 @@
               ],
               "banco": "medi-canvis-relleu-6",
               "bloc": null,
+              "params": {},
               "activo": true
             }
           ]

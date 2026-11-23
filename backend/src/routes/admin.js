@@ -12,6 +12,7 @@ import { crearModo, actualizarModo, borrarModo, crearBanco, actualizarBanco, bor
 import { pool } from '../db/cliente.js'
 import { listarAlumnes, renombrarAlumne, nuevoPinAlumne, borrarAlumne } from '../db/alumnes.js'
 import { validarAlies } from '../validacion/alies.js'
+import { PARAMETRES } from '../catalogo/parametres.js'
 
 export const COOKIE_SESION = 'sessio_professorat'
 
@@ -82,6 +83,12 @@ router.use(
 
 router.get('/sessio', (req, res) => {
   res.json({ caducaEn: req.sesion.caducaEn })
+})
+
+// Parámetros de dificultad que acepta cada tipo de ejercicio (para el
+// formulario de modo de la consola).
+router.get('/parametres', (req, res) => {
+  res.json(PARAMETRES)
 })
 
 // Todo el contenido (también lo inactivo): árbol de cursos y resumen de bancos.

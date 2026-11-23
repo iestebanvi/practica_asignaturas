@@ -1,5 +1,6 @@
 import { TIPOS_EJERCICIO } from '../catalogo/tiposEjercicio.js'
 import { validarEstructura, blocValido, BLOC_MIN, BLOC_MAX } from './estructura.js'
+import { validarParams } from '../catalogo/parametres.js'
 
 export const FORMATOS = ['numerica', 'traduccio', 'opcio_multiple']
 
@@ -27,6 +28,13 @@ export function validarModo(datos, { creando = false } = {}) {
       valores.operaciones = [...new Set(operaciones)]
       formatoBanco = formatos[0] ?? null
     }
+  }
+
+  // Parámetros de dificultad por tipo (solo de los tipos marcados).
+  if (valores.operaciones) {
+    const { params, error } = validarParams(valores.operaciones, datos.params)
+    if (error) errores.params = error
+    else valores.params = params
   }
 
   // Tamaño de bloque propio del modo (null = el del curso).

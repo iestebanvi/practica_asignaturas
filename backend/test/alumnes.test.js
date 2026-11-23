@@ -140,8 +140,13 @@ describe.skipIf(!process.env.DATABASE_URL)('alumnos: /api/alumnes', () => {
     expect((await pedir('GET', '/api/alumnes/jo?curs=6-primaria', null, cookie)).body.alumne).toBeNull()
   })
 
-  it('cursos inactivos o inexistentes: 404 (2n está inactivo)', async () => {
-    expect((await pedir('POST', '/api/alumnes/comprova', { curs: '2-primaria', alies: 'Nil' })).status).toBe(404)
+  it('cursos inactivos o inexistentes: 404', async () => {
+    await pool.query("UPDATE cursos SET activo = false WHERE slug = '2-primaria'")
+    try {
+      expect((await pedir('POST', '/api/alumnes/comprova', { curs: '2-primaria', alies: 'Nil' })).status).toBe(404)
+    } finally {
+      await pool.query("UPDATE cursos SET activo = true WHERE slug = '2-primaria'")
+    }
     expect((await pedir('POST', '/api/alumnes/crea', { curs: 'no-existeix', alies: 'Nil' })).status).toBe(404)
     expect((await pedir('GET', '/api/alumnes/jo')).status).toBe(404)
   })

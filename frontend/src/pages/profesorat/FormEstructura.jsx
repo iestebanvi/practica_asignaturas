@@ -53,7 +53,7 @@ export default function FormEstructura({ tipo, inicial = {}, creando = false, on
     ) : null
 
   return (
-    <form className="form-pregunta form-estructura" onSubmit={enviar} onChange={() => setDesat(false)}>
+    <form noValidate className="form-pregunta form-estructura" onSubmit={enviar} onChange={() => setDesat(false)}>
       <label>
         {T.campNom}
         <input value={nombre} onChange={(e) => cambiarNombre(e.target.value)} autoFocus={creando} />

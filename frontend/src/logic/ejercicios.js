@@ -76,12 +76,24 @@ const TIPOS_RESPUESTA_TEXTO = [
   'arrel-entera',
 ]
 
-export function generarEjercicio(operacion, nivel = 'facil') {
+// Parámetros de dificultad que entiende cada generador (los que puede poner un
+// modo en "params"). Tiene que coincidir con backend/src/catalogo/parametres.js
+// (lo comprueba parametres.test.js).
+export const PARAMETRES_ACCEPTATS = {
+  suma: ['max'],
+  resta: ['max'],
+  multiplicacion: ['xifresA', 'xifresB', 'taules'],
+  division: ['xifresDivisor', 'xifresQuocient'],
+  estimacion: ['arrodonir', 'xifres'],
+  sucesion: ['pasMin', 'pasMax', 'inicialMax'],
+}
+
+export function generarEjercicio(operacion, nivel = 'facil', params = {}) {
   const generador = GENERADORES[operacion]
   if (!generador) {
     throw new Error(`Operación desconocida: ${operacion}`)
   }
-  return generador(nivel)
+  return generador(nivel, params)
 }
 
 export function generarEjercicioAleatorio(operaciones, nivel = 'facil') {
@@ -153,11 +165,12 @@ export function generarEjercicioDesdeBanco(bancoProblemas) {
   }
 }
 
+// perfil: { operaciones, nivel, params? } (params: los del modo, por tipo).
 export function generarEjercicioParaPerfil(perfil, banco = []) {
   const tipo = elegirTipoOperacion(perfil.operaciones, banco)
   const generadorDesdeBanco = GENERADORES_DESDE_BANCO[tipo]
   if (generadorDesdeBanco) {
     return generadorDesdeBanco(banco)
   }
-  return generarEjercicio(tipo, perfil.nivel)
+  return generarEjercicio(tipo, perfil.nivel, perfil.params?.[tipo] ?? {})
 }

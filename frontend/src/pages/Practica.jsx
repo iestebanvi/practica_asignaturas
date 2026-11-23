@@ -197,7 +197,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
   const [bancoListo, setBancoListo] = useState(!necesitaBanco)
   const [bancoError, setBancoError] = useState(false)
   const [ejercicio, setEjercicio] = useState(() =>
-    necesitaBanco || !disponible ? null : generarEjercicioParaPerfil({ operaciones, nivel }, []),
+    necesitaBanco || !disponible ? null : generarEjercicioParaPerfil({ operaciones, nivel, params: modo.params }, []),
   )
   const [respuesta, setRespuesta] = useState('')
   const [feedback, setFeedback] = useState(null)
@@ -251,7 +251,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
 
   useEffect(() => {
     if (bancoListo && banco.length > 0 && ejercicio === null) {
-      setEjercicio(generarEjercicioParaPerfil({ operaciones, nivel }, banco))
+      setEjercicio(generarEjercicioParaPerfil({ operaciones, nivel, params: modo.params }, banco))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bancoListo])
@@ -296,7 +296,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
     }
 
     setTimeout(() => {
-      setEjercicio(generarEjercicioParaPerfil({ operaciones, nivel }, banco))
+      setEjercicio(generarEjercicioParaPerfil({ operaciones, nivel, params: modo.params }, banco))
       setRespuesta('')
       setFeedback(null)
       setCelebracion(null)

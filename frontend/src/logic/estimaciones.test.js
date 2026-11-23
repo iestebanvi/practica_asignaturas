@@ -6,7 +6,7 @@ function redondearDecena(n) {
 }
 
 function extraerDatos(enunciado) {
-  const [a, operador, b] = enunciado.replace('Redondea a la decena y estima: ', '').split(' ')
+  const [a, operador, b] = enunciado.replace('Arrodoneix a les desenes i estima: ', '').split(' ')
   return { a: Number(a), operador, b: Number(b) }
 }
 

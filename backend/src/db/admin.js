@@ -17,7 +17,7 @@ export async function obtenerContenidoAdmin() {
                          SELECT json_agg(json_build_object(
                                   'id', m.id::int, 'slug', m.slug, 'nombre', m.nombre,
                                   'color', m.color, 'sombra', m.sombra, 'activo', m.activo,
-                                  'operaciones', m.operaciones, 'bancoId', m.banco_id::int, 'bloc', m.bloc
+                                  'operaciones', m.operaciones, 'bancoId', m.banco_id::int, 'bloc', m.bloc, 'params', m.params
                                 ) ORDER BY m.orden, m.id)
                            FROM modos m WHERE m.asignatura_id = a.id
                        ), '[]'::json)

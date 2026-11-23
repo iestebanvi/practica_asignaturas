@@ -70,8 +70,8 @@ test.describe('Consola del professorat', () => {
       const arbre = page.getByRole('navigation', { name: 'Contingut' })
       await expect(arbre.getByRole('heading', { name: /6è de primària/ })).toBeVisible()
       await expect(arbre.getByRole('heading', { name: /Anglès/ })).toBeVisible()
-      // Los cursos sin contenido todavía están, marcados como inactivos
-      await expect(arbre.getByRole('heading', { name: /3r de primària/ })).toContainText('inactiu')
+      // Los cursos inactivos se ven, marcados (el de prueba del entorno e2e)
+      await expect(arbre.getByRole('heading', { name: /Curs inactiu E2E/ })).toContainText('inactiu')
       await expect(arbre.getByRole('link', { name: /Vocabulari anglès \(6è\)/ })).toContainText('157/157')
     })
 
@@ -427,8 +427,8 @@ test.describe('Consola del professorat', () => {
       const fitxa = await entrar(page)
       await menu(page).getByRole('link', { name: /6è de primària/ }).click()
       await expect(fitxa.getByRole('link', { name: /Matemàtiques/ })).toContainText('Matemàtiques')
-      // 8 modos de partida (el test de arrels añade uno en paralelo)
-      await expect(fitxa.getByText(/^(8|9) modes$/)).toBeVisible()
+      // El número de modos depende del contenido (y otros tests añaden en paralelo)
+      await expect(fitxa.locator('.llista-fills li', { hasText: 'Matemàtiques' })).toContainText(/\d+ modes/)
       await expect(fitxa.getByRole('button', { name: 'Esborra el curs' })).toBeDisabled()
     })
   })

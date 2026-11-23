@@ -32,11 +32,17 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
   })
 
   describe('/api/cursos', () => {
-    it('lista solo los cursos activos, en orden (2n-5è están inactivos)', async () => {
-      const { body } = await get('/api/cursos')
-      expect(body.map((c) => c.id)).toEqual(['1-primaria', '6-primaria'])
-      expect((await get('/api/cursos/3-primaria')).status).toBe(404)
-      expect(body[0]).toMatchObject({ nombre: '1r de primària', icono: '🐣', color: '#ff8a65' })
+    it('lista solo los cursos activos, en orden', async () => {
+      await pool.query("UPDATE cursos SET activo = false WHERE slug = '3-primaria'")
+      try {
+        const { body } = await get('/api/cursos')
+        const esperats = contenido.cursos.filter((c) => c.activo && c.id !== '3-primaria').map((c) => c.id)
+        expect(body.map((c) => c.id)).toEqual(esperats)
+        expect((await get('/api/cursos/3-primaria')).status).toBe(404)
+        expect(body[0]).toMatchObject({ nombre: '1r de primària', icono: '🐣', color: '#ff8a65' })
+      } finally {
+        await pool.query("UPDATE cursos SET activo = true WHERE slug = '3-primaria'")
+      }
     })
 
     it('devuelve el árbol completo de un curso, igual que cursos.js', async () => {
@@ -81,7 +87,8 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
         expect(arbol.asignaturas[0].modos.map((m) => m.id)).not.toContain('potencies')
         const problemes = (await get('/api/bancos/problemes-6/preguntas')).body.preguntas
         expect(problemes.map((p) => p.orden)).not.toContain(1)
-        expect((await get('/api/cursos')).body.map((c) => c.id)).toEqual(['6-primaria'])
+        const actius = contenido.cursos.filter((c) => c.activo && c.id !== '1-primaria').map((c) => c.id)
+        expect((await get('/api/cursos')).body.map((c) => c.id)).toEqual(actius)
         expect((await get('/api/cursos/1-primaria')).status).toBe(404)
       } finally {
         await pool.query('UPDATE modos SET activo = true')

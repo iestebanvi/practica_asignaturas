@@ -77,9 +77,9 @@ export async function sembrar(cliente, { cursos, bancos }) {
           cliente,
           resumen,
           'modos',
-          `INSERT INTO modos (asignatura_id, slug, nombre, color, sombra, operaciones, banco_id, orden, activo, bloc)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) ON CONFLICT (asignatura_id, slug) DO NOTHING RETURNING id`,
-          [asigId, modo.id, modo.nombre, modo.color, modo.sombra, modo.operaciones, bancoId, iModo, modo.activo ?? true, modo.bloc ?? null],
+          `INSERT INTO modos (asignatura_id, slug, nombre, color, sombra, operaciones, banco_id, orden, activo, bloc, params)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) ON CONFLICT (asignatura_id, slug) DO NOTHING RETURNING id`,
+          [asigId, modo.id, modo.nombre, modo.color, modo.sombra, modo.operaciones, bancoId, iModo, modo.activo ?? true, modo.bloc ?? null, JSON.stringify(modo.params ?? {})],
         )
       }
     }

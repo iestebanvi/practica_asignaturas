@@ -7,7 +7,13 @@ const RANGOS = {
 
 const SUMA_MAXIMA_FACIL = 12
 
-export function generarSuma(nivel = 'facil') {
+// params (opcional, desde el modo): { max } → los dos sumandos entre 0 y max.
+export function generarSuma(nivel = 'facil', params = {}) {
+  if (params.max) {
+    const a = randomInt(0, params.max)
+    const b = randomInt(0, params.max)
+    return { tipo: 'suma', enunciado: `${a} + ${b}`, respuesta: a + b, puntos: 10 }
+  }
   if (nivel === 'facil') {
     // Para el peque: números pequeños (suma máxima 12) y el número más
     // grande siempre en primera posición, para facilitar contar hacia adelante.

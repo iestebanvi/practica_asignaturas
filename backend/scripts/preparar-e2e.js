@@ -8,6 +8,22 @@ import { ejecutarMigraciones } from '../src/db/migrar.js'
 import { sembrar } from '../src/db/sembrar.js'
 import { leerContenido } from './contenido.js'
 
+// Un curso inactivo solo para los tests (los cursos reales pueden estar todos
+// activos): sirve para comprobar que lo inactivo no se ve.
+export const CURSOS_E2E = [
+  {
+    id: 'inactiu-e2e',
+    nombre: 'Curs inactiu E2E',
+    icono: '🙈',
+    color: '#9e9e9e',
+    sombra: '#6e6e6e',
+    nivel: 'medio',
+    config: { majuscules: false, celebracio: false, bloc: 30, recordsCurs: true },
+    activo: false,
+    asignaturas: [],
+  },
+]
+
 // Bancos solo para los tests de edición de la consola: no los usa ningún modo,
 // así que crear, cambiar o borrar sus preguntas no afecta a los tests de
 // alumnos, que corren en paralelo.
@@ -53,7 +69,7 @@ try {
   const cliente = await pool.connect()
   try {
     const contenido = leerContenido()
-    await sembrar(cliente, { cursos: contenido.cursos, bancos: [...contenido.bancos, ...BANCOS_E2E] })
+    await sembrar(cliente, { cursos: [...contenido.cursos, ...CURSOS_E2E], bancos: [...contenido.bancos, ...BANCOS_E2E] })
   } finally {
     cliente.release()
   }

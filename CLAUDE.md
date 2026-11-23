@@ -14,7 +14,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
   - Web por cursos (1r–6è; 2n–5è inactivos y vacíos), interfaz en catalán, pantalla completa.
   - Todo el contenido en Supabase y editable desde la consola del profesorado (`/profesorat`, contraseña `TEACHER_PASSWD`): preguntas, importar/exportar, cursos, asignaturas, modos, bancos, vista previa.
   - Alumnos con àlies + PIN por curso: bloques de preguntas, récords personales y del curso, "Per repassar" en la BD.
-- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1 (raíces cuadradas) hecha**; siguiente M2 (parámetros por modo = la antigua fase 6). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
+- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1 (raíces cuadradas) y M2 (dificultad por modo) hechas**; siguiente M3 (nivel de cálculo de 6è y problemas). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
 - **Despliegue**: push a `main` = producción (ver README). Antes, `make test`, `make test-backend` y `make test-e2e`; después, `make test-e2e-prod`.
 
 ## Mapa de temas
@@ -66,6 +66,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Importar/exportar preguntas (formato `;`, CSV) | `backend/src/validacion/importar.js` + `backend/src/db/importar.js`; panel en `frontend/src/pages/profesorat/PanelImportar.jsx` |
 | Nombres legibles de tipos de ejercicio, formatos y grupos del formulario | `frontend/src/logic/tiposEjercicio.js` |
 | Catálogo de tipos para validar en el servidor (¡sincronizado con el frontend por test!) | `backend/src/catalogo/tiposEjercicio.js` |
+| Parámetros de dificultad por modo (definición única; consola y validación) | `backend/src/catalogo/parametres.js`; formulario `frontend/src/pages/profesorat/CampsParams.jsx`; generadores en `frontend/src/logic/` (`PARAMETRES_ACCEPTATS`) |
 | Àlies de alumnos: API pública, PIN, sesiones por curso | `backend/src/routes/alumnes.js` + `backend/src/db/alumnes.js` + `backend/src/validacion/alies.js`; frontend `frontend/src/logic/alumne.js`, `components/AliesCapcalera.jsx`, `components/DialegAlies.jsx`; consola `pages/profesorat/LlistaAlies.jsx` |
 | Récords: consultas y pantalla | `backend/src/db/records.js`; `GET /api/alumnes/records` y `/records-curs`; `frontend/src/logic/records.js`, `pages/RecordsCurs.jsx` |
 | "Per repassar" (fallos por àlies) y migración desde el navegador | `backend/src/db/fallos.js` + rutas `/api/alumnes/fallos` en `backend/src/routes/alumnes.js`; `frontend/src/logic/fallos.js`, `pages/ParaRepasar.jsx` |

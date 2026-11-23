@@ -6,8 +6,9 @@ const RANGOS = {
   dificil: { min: 0, max: 100 },
 }
 
-export function generarResta(nivel = 'facil') {
-  const { min, max } = RANGOS[nivel]
+// params (opcional, desde el modo): { max } → minuendo entre 0 y max.
+export function generarResta(nivel = 'facil', params = {}) {
+  const { min, max } = params.max ? { min: 0, max: params.max } : RANGOS[nivel]
   const a = randomInt(min, max)
   const b = randomInt(min, a) // b <= a: nunca da negativo
   return {

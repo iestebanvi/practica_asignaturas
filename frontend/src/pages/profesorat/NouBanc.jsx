@@ -39,7 +39,7 @@ export default function NouBanc({ onCanvi }) {
   return (
     <article className="fitxa">
       <h2>{T.nouBancTitol}</h2>
-      <form className="form-pregunta form-estructura" onSubmit={enviar}>
+      <form noValidate className="form-pregunta form-estructura" onSubmit={enviar}>
         <label>
           {T.campNom}
           <input

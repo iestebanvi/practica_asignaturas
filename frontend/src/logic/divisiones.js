@@ -1,4 +1,5 @@
 import { randomInt } from './common.js'
+import { ambXifres } from './multiplicaciones.js'
 
 const RANGOS = {
   facil: { min: 1, max: 10 },
@@ -6,10 +7,18 @@ const RANGOS = {
   dificil: { min: 1, max: 20 },
 }
 
-export function generarDivision(nivel = 'facil') {
+// params (opcional, desde el modo): { xifresDivisor, xifresQuocient } (si
+// falta uno, se usa 1 cifra). Siempre exacta.
+function divisorICociente(nivel, params) {
+  if (params.xifresDivisor || params.xifresQuocient) {
+    return [ambXifres(params.xifresDivisor ?? 1), ambXifres(params.xifresQuocient ?? 1)]
+  }
   const { min, max } = RANGOS[nivel]
-  const divisor = randomInt(2, max)
-  const cociente = randomInt(min, max)
+  return [randomInt(2, max), randomInt(min, max)]
+}
+
+export function generarDivision(nivel = 'facil', params = {}) {
+  const [divisor, cociente] = divisorICociente(nivel, params)
   const dividendo = divisor * cociente // siempre exacta, sin resto
   return {
     tipo: 'division',

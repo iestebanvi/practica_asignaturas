@@ -277,11 +277,13 @@ test.describe('Practica Assignatures', () => {
     await expect(page.getByText('Encara no hi ha assignatures en aquest curs. Torna aviat!')).toBeVisible()
   })
 
-  test('los cursos inactivos (2n-5è) no aparecen en el inicio y su URL da "no trobat"', async ({ page }) => {
+  // En el entorno e2e hay un curso inactivo de prueba ("Curs inactiu E2E");
+  // en producción no existe, y el test vale igual.
+  test('un curso inactivo no aparece en el inicio y su URL da "no trobat"', async ({ page }) => {
     await page.goto('/')
     await expect(page.getByRole('link', { name: /6è de primària/ })).toBeVisible()
-    await expect(page.getByRole('link', { name: /3r de primària/ })).toHaveCount(0)
-    await page.goto('/3-primaria')
+    await expect(page.getByRole('link', { name: /Curs inactiu E2E/ })).toHaveCount(0)
+    await page.goto('/inactiu-e2e')
     await expect(page.getByText('No hem trobat aquesta pàgina.')).toBeVisible()
   })
 

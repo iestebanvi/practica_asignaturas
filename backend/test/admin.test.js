@@ -157,9 +157,11 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
     it('/contingut devuelve el árbol con ids de la BD y el resumen de los bancos', async () => {
       const { status, body } = await getAdmin('/api/admin/contingut')
       expect(status).toBe(200)
-      // La consola ve también los cursos inactivos (2n-5è, todavía sin contenido)
-      expect(body.cursos.map((c) => c.slug)).toEqual(['1-primaria', '2-primaria', '3-primaria', '4-primaria', '5-primaria', '6-primaria'])
-      expect(body.cursos.filter((c) => !c.activo).map((c) => c.slug)).toEqual(['2-primaria', '3-primaria', '4-primaria', '5-primaria'])
+      // La consola ve todos los cursos, también los inactivos, en orden
+      const { leerContenido } = await import('../scripts/contenido.js')
+      const original = leerContenido().cursos
+      expect(body.cursos.map((c) => c.slug)).toEqual(original.map((c) => c.id))
+      expect(body.cursos.map((c) => c.activo)).toEqual(original.map((c) => c.activo))
       const angles = body.cursos.find((c) => c.slug === '6-primaria').asignaturas.find((a) => a.slug === 'angles')
       expect(angles.id).toEqual(expect.any(Number))
       const vocab = angles.modos.find((m) => m.slug === 'vocabulari')
@@ -597,6 +599,33 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
       const preguntasDespues = (await pool.query('SELECT count(*)::int AS n FROM preguntas WHERE banco_id = $1', [b.bancoId])).rows[0].n
       expect(preguntasDespues).toBe(preguntasAntes)
       expect((await pedir('DELETE', `/api/admin/modes/${a.id}`)).status).toBe(204)
+    })
+
+    it('parámetros de dificultad: se guardan limpios, llegan al árbol público y se validan', async () => {
+      const ruta = `/api/admin/assignatures/${asignaturaId}/modes`
+      const { status, body } = await pedir('POST', ruta, {
+        nombre: 'Càlcul gran', slug: 'calcul-gran', operaciones: ['suma', 'multiplicacion'], activo: true,
+        params: { suma: { max: 99999 }, multiplicacion: { xifresA: 3, xifresB: 2 } },
+      })
+      expect(status).toBe(201)
+      expect(body.params).toEqual({ suma: { max: 99999 }, multiplicacion: { xifresA: 3, xifresB: 2 } })
+      const arbol = await (await fetch(`${base}/api/cursos/modes`)).json()
+      expect(arbol.asignaturas[0].modos.find((m) => m.id === 'calcul-gran').params).toEqual(body.params)
+
+      // Al quitar un tipo, sus parámetros ya no valen
+      const mal = await pedir('PATCH', `/api/admin/modes/${body.id}`, { operaciones: ['suma'] })
+      expect(mal.status).toBe(400)
+      expect(mal.body.camps.params).toMatch(/no està marcat/)
+      const ok = await pedir('PATCH', `/api/admin/modes/${body.id}`, { operaciones: ['suma'], params: { suma: { max: 500 } } })
+      expect(ok.body.params).toEqual({ suma: { max: 500 } })
+      expect((await pedir('PATCH', `/api/admin/modes/${body.id}`, { params: { suma: { max: 3 } } })).body.camps.params).toMatch(/entre 5/)
+      await pedir('DELETE', `/api/admin/modes/${body.id}`)
+    })
+
+    it('la consola recibe la definición de parámetros', async () => {
+      const { status, body } = await pedir('GET', '/api/admin/parametres')
+      expect(status).toBe(200)
+      expect(body.multiplicacion.taules.tipus).toBe('llista')
     })
 
     it('bancos: crear (vacío), renombrar, y borrar solo si está vacío y sin uso', async () => {

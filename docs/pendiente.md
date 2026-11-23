@@ -59,6 +59,10 @@ Ojo: el catálogo de tipos está duplicado a propósito (frontend `logic/tiposEj
 - **Aviso si dos profesores editan lo mismo a la vez** (hoy gana el último que guarda).
 - **Cuentas individuales de profesorado** (hoy una contraseña compartida, `TEACHER_PASSWD`).
 
+## 5. Fallo intermitente de los e2e sin resolver
+
+Dos veces en unas 30 tandas (2026-11-22 y 2026-11-23) ha fallado un test de `e2e/profesorat.spec.js` marcado con **"(0ms)"**, siempre dentro de un grupo `serial` (importar, editar preguntas) y nunca el primero del grupo. No se ha podido reproducir (10 tandas seguidas limpias después). Un fallo de 0 ms suele indicar que el proceso del navegador o del worker se cayó, no un fallo del propio test. Si reaparece: guardar la salida completa (`npx playwright test --reporter=line > fichero.log`) y mirar el bloque `1) …` con el error real antes de tocar nada.
+
 ## 5. Riesgos aceptados (para recordarlos)
 
 - Los resultados de un bloque los calcula el navegador; el servidor solo descarta los imposibles. Un niño muy hábil podría falsear un récord.

@@ -54,3 +54,38 @@ describe('validarBanco', () => {
     expect(validarBanco({ nombre: 'Nou', formato: 'altre', slug: 'X' })).toEqual({ valores: { nombre: 'Nou' } })
   })
 })
+
+import { validarParams, PARAMETRES } from '../src/catalogo/parametres.js'
+
+describe('validarParams', () => {
+  it('sin parámetros: vacío', () => {
+    expect(validarParams(['suma'], undefined)).toEqual({ params: {} })
+  })
+
+  it('acepta valores dentro de rango y descarta los vacíos', () => {
+    expect(
+      validarParams(['suma', 'estimacion'], { suma: { max: 99999 }, estimacion: { arrodonir: 100, xifres: 3, extra: undefined } }),
+    ).toEqual({ error: 'Estimacions: paràmetre desconegut «extra».' })
+    expect(validarParams(['suma', 'estimacion'], { suma: { max: 99999 }, estimacion: { arrodonir: 100, xifres: 3 } })).toEqual({
+      params: { suma: { max: 99999 }, estimacion: { arrodonir: 100, xifres: 3 } },
+    })
+    expect(validarParams(['suma'], { suma: { max: '' } })).toEqual({ params: {} })
+  })
+
+  it('rechaza fuera de rango, tipos sin parámetros o no marcados, y combinaciones sin sentido', () => {
+    const err = (ops, p) => validarParams(ops, p).error
+    expect(err(['suma'], { suma: { max: 2 } })).toMatch(/entre 5 i 1000000/)
+    expect(err(['suma'], { suma: { max: 1.5 } })).toBeTruthy()
+    expect(err(['hora'], { hora: { max: 10 } })).toMatch(/no té paràmetres/)
+    expect(err(['suma'], { resta: { max: 10 } })).toMatch(/no està marcat/)
+    expect(err(['multiplicacion'], { multiplicacion: { taules: [2], xifresA: 2 } })).toMatch(/o bé les xifres o bé les taules/)
+    expect(err(['multiplicacion'], { multiplicacion: { taules: [2, 2] } })).toMatch(/sense repetir/)
+    expect(err(['sucesion'], { sucesion: { pasMin: 10, pasMax: 5 } })).toMatch(/salt mínim/)
+    expect(err(['estimacion'], { estimacion: { arrodonir: 1000, xifres: 3 } })).toMatch(/més xifres/)
+    expect(err(['estimacion'], { estimacion: { arrodonir: 50 } })).toMatch(/10, 100, 1000/)
+  })
+
+  it('todos los parámetros tienen etiqueta en catalán', () => {
+    for (const specs of Object.values(PARAMETRES)) for (const spec of Object.values(specs)) expect(spec.etiqueta).toBeTruthy()
+  })
+})

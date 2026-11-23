@@ -49,7 +49,7 @@ export default function FormPregunta({ formato, inicial, onDesa, onCancela }) {
     ) : null
 
   return (
-    <form className="form-pregunta" onSubmit={enviar}>
+    <form noValidate className="form-pregunta" onSubmit={enviar}>
       <label>
         {T.campEnunciat[formato]}
         {formato === 'traduccio' ? (
