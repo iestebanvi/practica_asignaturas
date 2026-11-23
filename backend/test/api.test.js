@@ -53,9 +53,10 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
 
       const original = contenido.cursos.find((c) => c.id === '6-primaria')
       expect(original).toBeTruthy()
-      for (const [i, asig] of original.asignaturas.entries()) {
+      // El árbol público solo trae lo activo
+      for (const [i, asig] of original.asignaturas.filter((a) => a.activo).entries()) {
         expect(body.asignaturas[i].modos.map((m) => [m.id, m.nombre, m.operaciones])).toEqual(
-          asig.modos.map((m) => [m.id, m.nombre, m.operaciones]),
+          asig.modos.filter((m) => m.activo).map((m) => [m.id, m.nombre, m.operaciones]),
         )
       }
     })
@@ -77,10 +78,16 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
     })
 
     it('oculta lo inactivo (curso, asignatura, modo y pregunta)', async () => {
-      await pool.query("UPDATE modos SET activo = false WHERE slug = 'potencies'")
-      await pool.query("UPDATE asignaturas SET activo = false WHERE slug = 'medi'")
-      await pool.query("UPDATE preguntas SET activo = false WHERE orden = 1 AND banco_id = (SELECT id FROM bancos WHERE slug = 'problemes-6')")
-      await pool.query("UPDATE cursos SET activo = false WHERE slug = '1-primaria'")
+      // Al acabar se reactiva solo lo que desactiva este test (en el contenido
+      // puede haber cosas inactivas a propósito).
+      const desactivar = async (tabla, where) =>
+        (await pool.query(`UPDATE ${tabla} SET activo = false WHERE activo AND ${where} RETURNING id`)).rows.map((r) => r.id)
+      const tocats = {
+        modos: await desactivar('modos', "slug = 'potencies'"),
+        asignaturas: await desactivar('asignaturas', "slug = 'medi'"),
+        preguntas: await desactivar('preguntas', "orden = 1 AND banco_id = (SELECT id FROM bancos WHERE slug = 'problemes-6')"),
+        cursos: await desactivar('cursos', "slug = '1-primaria'"),
+      }
       try {
         const arbol = (await get('/api/cursos/6-primaria')).body
         expect(arbol.asignaturas.map((a) => a.id)).not.toContain('medi')
@@ -91,10 +98,9 @@ describe.skipIf(!process.env.DATABASE_URL)('API sobre la BD (esquema "test")', (
         expect((await get('/api/cursos')).body.map((c) => c.id)).toEqual(actius)
         expect((await get('/api/cursos/1-primaria')).status).toBe(404)
       } finally {
-        await pool.query('UPDATE modos SET activo = true')
-        await pool.query('UPDATE asignaturas SET activo = true')
-        await pool.query('UPDATE preguntas SET activo = true')
-        await pool.query('UPDATE cursos SET activo = true')
+        for (const [tabla, ids] of Object.entries(tocats)) {
+          await pool.query(`UPDATE ${tabla} SET activo = true WHERE id = ANY($1)`, [ids])
+        }
       }
     })
   })

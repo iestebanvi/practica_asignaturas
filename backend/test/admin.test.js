@@ -170,23 +170,28 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
     })
 
     it('/contingut incluye lo inactivo, marcado (a diferencia de la API pública)', async () => {
-      await pool.query("UPDATE modos SET activo = false WHERE slug = 'potencies'")
-      await pool.query("UPDATE preguntas SET activo = false WHERE orden <= 2 AND banco_id = (SELECT id FROM bancos WHERE slug = 'problemes-6')")
+      // Se reactiva solo lo que desactiva este test.
+      const modos = (await pool.query("UPDATE modos SET activo = false WHERE activo AND slug = 'potencies' RETURNING id")).rows
+      const preguntas = (
+        await pool.query(
+          "UPDATE preguntas SET activo = false WHERE activo AND orden <= 2 AND banco_id = (SELECT id FROM bancos WHERE slug = 'problemes-6') RETURNING id",
+        )
+      ).rows
       try {
         const { body } = await getAdmin('/api/admin/contingut')
         const potencies = body.cursos.find((c) => c.slug === '6-primaria').asignaturas[0].modos.find((m) => m.slug === 'potencies')
         expect(potencies.activo).toBe(false)
         expect(body.bancos.find((b) => b.slug === 'problemes-6')).toMatchObject({ preguntas: 62, preguntasActivas: 60 })
       } finally {
-        await pool.query('UPDATE modos SET activo = true')
-        await pool.query('UPDATE preguntas SET activo = true')
+        await pool.query('UPDATE modos SET activo = true WHERE id = ANY($1)', [modos.map((r) => r.id)])
+        await pool.query('UPDATE preguntas SET activo = true WHERE id = ANY($1)', [preguntas.map((r) => r.id)])
       }
     })
 
     it('/bancs/:id devuelve todas las preguntas y los modos que usan el banco', async () => {
       const { body: contenido } = await getAdmin('/api/admin/contingut')
       const id = contenido.bancos.find((b) => b.slug === 'vocabulari-angles-6').id
-      await pool.query('UPDATE preguntas SET activo = false WHERE banco_id = $1 AND orden = 1', [id])
+      const tocades = (await pool.query('UPDATE preguntas SET activo = false WHERE activo AND banco_id = $1 AND orden = 1 RETURNING id', [id])).rows
       try {
         const { status, body } = await getAdmin(`/api/admin/bancs/${id}`)
         expect(status).toBe(200)
@@ -195,7 +200,7 @@ describe.skipIf(!process.env.DATABASE_URL)('consola del profesorado: /api/admin'
         expect(body.modos.map((m) => m.nombre)).toEqual(['Vocabulari', 'Vocabulari escrit'])
         expect(body.modos[0]).toMatchObject({ curso: '6è de primària', asignatura: 'Anglès' })
       } finally {
-        await pool.query('UPDATE preguntas SET activo = true')
+        await pool.query('UPDATE preguntas SET activo = true WHERE id = ANY($1)', [tocades.map((r) => r.id)])
       }
     })
 
