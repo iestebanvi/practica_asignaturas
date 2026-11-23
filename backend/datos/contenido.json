@@ -470,6 +470,24 @@
               "bloc": null,
               "params": {},
               "activo": true
+            },
+            {
+              "id": "divisibilitat",
+              "nombre": "Divisibilitat",
+              "color": "#81c784",
+              "sombra": "#5a8b5c",
+              "operaciones": [
+                "div-multiple",
+                "div-seguent-multiple",
+                "div-divisor",
+                "div-criteris",
+                "div-primer",
+                "div-troba-primer"
+              ],
+              "banco": null,
+              "bloc": null,
+              "params": {},
+              "activo": true
             }
           ]
         },
