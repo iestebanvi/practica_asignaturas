@@ -1,5 +1,5 @@
 import { TIPOS_EJERCICIO } from '../catalogo/tiposEjercicio.js'
-import { validarEstructura } from './estructura.js'
+import { validarEstructura, blocValido, BLOC_MIN, BLOC_MAX } from './estructura.js'
 
 export const FORMATOS = ['numerica', 'traduccio', 'opcio_multiple']
 
@@ -28,6 +28,11 @@ export function validarModo(datos, { creando = false } = {}) {
       formatoBanco = formatos[0] ?? null
     }
   }
+
+  // Tamaño de bloque propio del modo (null = el del curso).
+  const bloc = datos.bloc ?? null
+  if (bloc !== null && !blocValido(bloc)) errores.bloc = `Entre ${BLOC_MIN} i ${BLOC_MAX}, o buit per fer servir el del curs.`
+  else valores.bloc = bloc
 
   if (formatoBanco) {
     if (!Number.isInteger(datos.bancoId)) errores.bancoId = 'Tria el banc de preguntes.'

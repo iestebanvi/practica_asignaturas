@@ -23,7 +23,7 @@ const TABLAS = {
   modo: {
     tabla: 'modos',
     padre: 'asignatura_id',
-    columnas: 'id::int, asignatura_id::int AS "asignaturaId", slug, nombre, color, sombra, operaciones, banco_id::int AS "bancoId", activo',
+    columnas: 'id::int, asignatura_id::int AS "asignaturaId", slug, nombre, color, sombra, operaciones, banco_id::int AS "bancoId", bloc, activo',
   },
 }
 

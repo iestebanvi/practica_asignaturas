@@ -1,4 +1,4 @@
-.PHONY: help install dev test test-backend test-e2e migrate seed export-contenido \
+.PHONY: help install dev test test-backend test-e2e test-e2e-prod migrate seed export-contenido \
         docker-build docker-run docker-stop \
         railway-smoke railway-logs
 
@@ -32,8 +32,11 @@ seed: ## Cargar backend/datos/contenido.json en la BD (solo crea lo que falta, n
 export-contenido: ## Copia de seguridad: volcar la BD a backend/datos/contenido.json (para commitear)
 	cd backend && npm run export
 
-test-e2e: ## Tests end-to-end (Playwright)
+test-e2e: ## Tests end-to-end (Playwright) en local, contra el esquema e2e
 	npm run test:e2e
+
+test-e2e-prod: ## Tests end-to-end contra producción (solo los que no cambian datos; PROD_URL para otra URL)
+	npx playwright test -c playwright.prod.config.js
 
 ## ── Docker (local) ───────────────────────────────────────────────────────────
 

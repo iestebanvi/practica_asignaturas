@@ -23,7 +23,7 @@ export async function obtenerArbolCurso(slug) {
                          SELECT json_agg(json_build_object(
                                   'id', m.slug, 'nombre', m.nombre,
                                   'color', m.color, 'sombra', m.sombra,
-                                  'operaciones', m.operaciones, 'banco', b.slug
+                                  'operaciones', m.operaciones, 'banco', b.slug, 'bloc', m.bloc
                                 ) ORDER BY m.orden, m.id)
                            FROM modos m LEFT JOIN bancos b ON b.id = m.banco_id
                           WHERE m.asignatura_id = a.id AND m.activo

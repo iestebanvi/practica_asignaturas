@@ -32,6 +32,15 @@ describe('validarModo', () => {
   })
 })
 
+describe('validarModo: bloque propio', () => {
+  it('opcional: null = el del curso; si se pone, entre 5 y 100', () => {
+    const op = { ...base, operaciones: ['suma'] }
+    expect(validarModo(op, { creando: true }).valores.bloc).toBeNull()
+    expect(validarModo({ ...op, bloc: 10 }, { creando: true }).valores.bloc).toBe(10)
+    expect(validarModo({ ...op, bloc: 200 }, { creando: true }).errores.bloc).toMatch(/Entre 5 i 100/)
+  })
+})
+
 describe('validarBanco', () => {
   it('al crear: nombre, identificador y formato', () => {
     expect(validarBanco({ nombre: ' Música ', slug: 'musica-1', formato: 'traduccio' }, { creando: true }).valores).toEqual({

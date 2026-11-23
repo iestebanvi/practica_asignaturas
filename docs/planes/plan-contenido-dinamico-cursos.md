@@ -1,6 +1,6 @@
 # Contenido dinámico en BD + cursos + consola del profesorado + pantalla completa
 
-> **Vigente (2026-11-22).** Fases 0 a 5 implementadas; fase 7 en curso (7a hecha); la 6 en espera. Las decisiones marcadas con ❓ están pendientes de confirmar.
+> **Vigente (2026-11-22).** Fases 0 a 5 implementadas; fase 7 en curso (7a y 7b hechas); la 6 en espera. Las decisiones marcadas con ❓ están pendientes de confirmar.
 > Sustituye en parte a `docs/plan-base-datos-usuarios.md`: aquel plan identificaba a cada alumno con nombre + PIN; ahora los alumnos **no se identifican**, así que la parte de usuarios/PIN queda descartada. De aquel plan se reutiliza la parte técnica de la BD (Supabase + `pg` + migraciones propias).
 
 ## 1. Objetivo
@@ -322,3 +322,10 @@ Aprobado el 2026-11-22. Decisiones: àlies **por curso**; bloque por defecto **1
 - **Consola** (ficha de curso → "Àlies dels alumnes"): lista con fecha de creación y último acceso; canviar el nom (sin repetir en el curso), PIN nou (se muestra una vez; cierra las sesiones abiertas de ese àlies) y esborrar.
 - **Web**: en la cabecera de cada curso, "👤 Entra amb el teu àlies" (diálogo en pasos: àlies → PIN, o "és un àlies nou, el vols crear?" → PIN grande "apunta'l") o "Hola, Nil! · Surt". El diálogo se pinta en `<body>` con un portal (el `backdrop-filter` de la cabecera encerraba el fondo fijo). La vista previa de la consola no muestra el àlies. Sin àlies se juega igual que antes.
 - El limitador de intentos es ahora una fábrica (`crearLimitador`): uno para el login de la consola (por IP) y otro para los PIN (por curso + àlies).
+
+### 7b ✅ hecha (2026-11-23)
+- **Migración 004**: `modos.bloc` (opcional, 5–100) y tabla `blocs` (alumno, modo, puntos, aciertos, preguntas). Tamaño de bloque del curso en `cursos.config.bloc` (por defecto 30): fijado 1r = 10, 2n = 15, resto 30 (en la BD y en `contenido.json`).
+- **Juego**: lógica pura en `frontend/src/logic/blocs.js` (tamaño = modo › curso › 30; cerrar bloque; mejor bloque). Marcador "Bloc N · k/T"; al completar un bloque, aviso de 6 s: con àlies se guarda y dice "Nou rècord! 🏆" o "El teu rècord: X punts"; sin àlies invita a entrar; en la vista previa, "no es guarda". El resumen lista los bloques de la partida (y avisa si el último quedó incompleto).
+- **API** `POST /api/alumnes/blocs` (con sesión de alumno del curso): modo del curso y activo; preguntas = tamaño del bloque; 0 ≤ aciertos ≤ preguntas; 0 ≤ puntos ≤ 20 × preguntas; sin aciertos no hay puntos. Devuelve `{ nouRecord, millor }` (el primer bloque siempre es récord; desempate por aciertos y después por antigüedad).
+- **Consola**: "Preguntes per bloc" en la ficha de curso y, opcional, en la de modo.
+- `make test-e2e-prod` (`playwright.prod.config.js`): e2e contra producción; los que cambian datos se saltan solos.

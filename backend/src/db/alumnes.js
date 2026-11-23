@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto'
 import { pool } from './cliente.js'
 import { normalizarAlies, generarPin, hashPin } from '../validacion/alies.js'
+import { BLOC_PER_DEFECTE } from '../validacion/estructura.js'
 
 export const DURACION_SESION_ALUMNE_MS = 365 * 24 * 60 * 60 * 1000
 
@@ -102,4 +103,40 @@ export async function nuevoPinAlumne(id) {
 export async function borrarAlumne(id) {
   const { rowCount } = await pool.query('DELETE FROM alumnes WHERE id = $1', [id])
   return rowCount ? {} : null
+}
+
+// ---- Bloques ----
+
+// Modo jugable (todo activo) de un curso, con el tamaño de bloque que le toca.
+export async function modoConBloc(cursoId, asignaturaSlug, modoSlug) {
+  const { rows } = await pool.query(
+    `SELECT m.id::int, COALESCE(m.bloc, (c.config->>'bloc')::int, $4)::int AS bloc
+       FROM modos m JOIN asignaturas a ON a.id = m.asignatura_id JOIN cursos c ON c.id = a.curso_id
+      WHERE c.id = $1 AND a.slug = $2 AND m.slug = $3 AND c.activo AND a.activo AND m.activo`,
+    [cursoId, asignaturaSlug, modoSlug, BLOC_PER_DEFECTE],
+  )
+  return rows[0] ?? null
+}
+
+// Guarda un bloque y dice si es nuevo récord (más puntos que cualquier bloque
+// anterior de ese alumno en ese modo; el primero siempre lo es). Devuelve
+// también el mejor bloque.
+export async function guardarBloc(alumneId, modoId, { puntos, aciertos, preguntas }) {
+  const { rows: antes } = await pool.query(
+    'SELECT max(puntos)::int AS max FROM blocs WHERE alumne_id = $1 AND modo_id = $2',
+    [alumneId, modoId],
+  )
+  await pool.query('INSERT INTO blocs (alumne_id, modo_id, puntos, aciertos, preguntas) VALUES ($1, $2, $3, $4, $5)', [
+    alumneId,
+    modoId,
+    puntos,
+    aciertos,
+    preguntas,
+  ])
+  const { rows: millor } = await pool.query(
+    `SELECT puntos, aciertos, preguntas FROM blocs WHERE alumne_id = $1 AND modo_id = $2
+      ORDER BY puntos DESC, aciertos DESC, creat_en ASC LIMIT 1`,
+    [alumneId, modoId],
+  )
+  return { nouRecord: antes[0].max === null || puntos > antes[0].max, millor: millor[0] }
 }

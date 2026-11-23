@@ -52,6 +52,11 @@ cd frontend
 npm test
 ```
 
+Contra producción (solo los e2e que no cambian datos):
+```
+make test-e2e-prod
+```
+
 API contra Supabase (Vitest), en un esquema `test` que se borra y se recrea en cada ejecución, así que nunca toca los datos reales:
 ```
 make test-backend

@@ -10,7 +10,13 @@ import {
   alumneDeSesion,
   borrarSesionAlumne,
   DURACION_SESION_ALUMNE_MS,
+  modoConBloc,
+  guardarBloc,
 } from '../db/alumnes.js'
+
+// Máximo de puntos de una pregunta (los problemas, 20): para descartar
+// resultados imposibles.
+const MAX_PUNTOS_PREGUNTA = 20
 
 // Límite de intentos de PIN por àlies (curso + àlies): 5 fallos → 15 min.
 export const limitadorPin = crearLimitador()
@@ -112,6 +118,35 @@ router.post(
     await borrarSesionAlumne(leerCookie(req, nombreCookie(c.id)))
     res.clearCookie(nombreCookie(c.id), opcionesCookie())
     res.status(204).end()
+  }),
+)
+
+// Bloque completado por el alumno identificado en el curso:
+// { curs, assignatura, mode, puntos, aciertos, preguntas }. El navegador
+// calcula el resultado; aquí se comprueba que sea posible.
+router.post(
+  '/blocs',
+  asyncHandler(async (req, res) => {
+    const c = await curso(req, res)
+    if (!c) return
+    const alumne = await alumneDeSesion(leerCookie(req, nombreCookie(c.id)), c.id)
+    if (!alumne) return res.status(401).json({ error: 'sessio_requerida' })
+    const { assignatura, mode, puntos, aciertos, preguntas } = req.body ?? {}
+    const modo = typeof assignatura === 'string' && typeof mode === 'string' ? await modoConBloc(c.id, assignatura, mode) : null
+    if (!modo) return res.status(404).json({ error: 'mode_no_trobat' })
+    const enteros = [puntos, aciertos, preguntas].every(Number.isInteger)
+    if (
+      !enteros ||
+      preguntas !== modo.bloc ||
+      aciertos < 0 ||
+      aciertos > preguntas ||
+      puntos < 0 ||
+      puntos > preguntas * MAX_PUNTOS_PREGUNTA ||
+      (aciertos === 0 && puntos > 0)
+    ) {
+      return res.status(400).json({ error: 'bloc_no_valid' })
+    }
+    res.status(201).json(await guardarBloc(alumne.id, modo.id, { puntos, aciertos, preguntas }))
   }),
 )
 

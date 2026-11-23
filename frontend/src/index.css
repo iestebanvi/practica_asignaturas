@@ -1536,3 +1536,48 @@ button:active,
   padding-top: 1rem;
   border-top: 1px solid #eeeeee;
 }
+
+/* Bloques de preguntas */
+.marcador-bloc {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text-suau);
+}
+
+.avis-bloc {
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  background: #e3f2fd;
+  color: #0d47a1;
+  font-weight: 700;
+  animation: aparecer 0.2s ease-out;
+}
+
+.avis-bloc.es-record {
+  background: #fff8e1;
+  color: #e65100;
+}
+
+.resum-blocs {
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.resum-blocs h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+}
+
+.resum-blocs ol {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+.resum-blocs .es-millor {
+  font-weight: 700;
+}
+
+.camp-numero {
+  max-width: 8rem;
+}

@@ -18,7 +18,7 @@ describe('validarEstructura', () => {
       color: '#4fc3f7',
       sombra: '#3789ad',
       nivel: 'medio',
-      config: { majuscules: false, celebracio: false },
+      config: { majuscules: false, celebracio: false, bloc: 30 },
       activo: false,
     })
   })
@@ -51,6 +51,12 @@ describe('validarEstructura', () => {
       activo: 'sí',
     })
     expect(Object.keys(errores).sort()).toEqual(['activo', 'color', 'config', 'icono', 'nivel'])
+  })
+
+  it('preguntas por bloque del curso: entre 5 y 100 (30 por defecto)', () => {
+    expect(validarEstructura('curso', { config: { bloc: 10 } }).valores.config.bloc).toBe(10)
+    expect(validarEstructura('curso', { config: { bloc: 4 } }).errores.bloc).toMatch(/entre 5 i 100/)
+    expect(validarEstructura('curso', { config: { bloc: 12.5 } }).errores.bloc).toBeTruthy()
   })
 
   it('las asignaturas no tienen nivel ni config', () => {

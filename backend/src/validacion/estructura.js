@@ -4,6 +4,14 @@
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/
 const COLOR = /^#[0-9a-f]{6}$/i
 const NIVELES = ['facil', 'medio', 'dificil']
+// Preguntas por bloque (récords): 30 si no se dice otra cosa.
+export const BLOC_PER_DEFECTE = 30
+export const BLOC_MIN = 5
+export const BLOC_MAX = 100
+
+export function blocValido(valor) {
+  return Number.isInteger(valor) && valor >= BLOC_MIN && valor <= BLOC_MAX
+}
 const MAX_NOMBRE = 60
 const MAX_ICONO = 8
 
@@ -70,10 +78,12 @@ export function validarEstructura(tipo, datos, { creando = false } = {}) {
     }
     if (creando || datos.config !== undefined) {
       const config = datos.config ?? {}
-      const { majuscules = false, celebracio = false } = config
+      const { majuscules = false, celebracio = false, bloc = BLOC_PER_DEFECTE } = config
       if (typeof config !== 'object' || typeof majuscules !== 'boolean' || typeof celebracio !== 'boolean') {
         errores.config = 'Configuració no vàlida.'
-      } else valores.config = { majuscules, celebracio }
+      } else if (!blocValido(bloc)) {
+        errores.bloc = `Les preguntes per bloc han de ser entre ${BLOC_MIN} i ${BLOC_MAX}.`
+      } else valores.config = { majuscules, celebracio, bloc }
     }
   }
 

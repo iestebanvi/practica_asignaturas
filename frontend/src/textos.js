@@ -44,6 +44,21 @@ export const T = {
   },
   massaIntentsAlies: (segons) => `Massa intents. Torna-ho a provar d'aquí a ${Math.ceil(segons / 60)} minuts, o demana un PIN nou al professorat.`,
 
+  // Blocs
+  bloc: (n, fetes, total) => `Bloc ${n} · ${fetes}/${total}`,
+  blocResultat: (b) => `${b.puntos} punts · ${b.aciertos}/${b.preguntas}`,
+  blocCompletat: 'Bloc completat:',
+  nouRecord: 'Nou rècord! 🏆',
+  elTeuRecord: (b) => `El teu rècord: ${b.puntos} punts`,
+  guardaAmbAlies: 'Entra amb el teu àlies per guardar-ho.',
+  noEsGuardaPrevia: '(vista prèvia: no es guarda)',
+  noSHaGuardat: "(no s'ha pogut guardar)",
+  blocsPartida: 'Blocs d’aquesta partida',
+  blocN: (n) => `Bloc ${n}`,
+  millorBlocPartida: 'el millor',
+  capBloc: (n) => `Encara no has completat cap bloc de ${n} preguntes: els rècords es fan amb blocs complets.`,
+  blocIncomplet: (n) => `Les ${n} últimes preguntes eren d’un bloc incomplet i no compten.`,
+
   // Práctica
   comprova: 'Comprova',
   finalitza: 'Finalitza',
@@ -215,6 +230,10 @@ export const T = {
   siNouPin: 'Sí, genera’l',
   pinNouDe: (alies, pin) => `PIN nou de «${alies}»: ${pin}. Dona-li’l: només es mostra ara.`,
   segurEsborrarAlies: (alies) => `Esborrar «${alies}»? Es perdran els seus rècords.`,
+  campBloc: 'Preguntes per bloc',
+  ajudaBlocCurs: 'Els rècords es fan amb blocs d’aquesta mida (entre 5 i 100). Per als més petits, millor pocs (p. ex. 10).',
+  campBlocMode: 'Preguntes per bloc (opcional)',
+  ajudaBlocMode: (n) => `Deixa-ho buit per fer servir el del curs (${n}). Útil per a modes llargs, com els problemes.`,
   importa: 'Importa',
   tancaImportacio: 'Tanca la importació',
   descarregaCsv: 'Descarrega CSV',

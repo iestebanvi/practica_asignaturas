@@ -152,6 +152,80 @@ describe.skipIf(!process.env.DATABASE_URL)('alumnos: /api/alumnes', () => {
     expect(r.body.missatge).toMatch(/almenys/)
   })
 
+  describe('bloques: POST /api/alumnes/blocs', () => {
+    let cookie
+    const bloc = (datos, c = cookie) =>
+      pedir('POST', '/api/alumnes/blocs', { curs: '6-primaria', assignatura: 'matematiques', mode: 'aritmetica', ...datos }, c)
+
+    beforeAll(async () => {
+      cookie = (await pedir('POST', '/api/alumnes/crea', { curs: '6-primaria', alies: 'Bloquista' })).cookie
+    })
+
+    it('sin àlies no se guarda (401)', async () => {
+      expect((await bloc({ puntos: 300, aciertos: 30, preguntas: 30 }, null)).status).toBe(401)
+    })
+
+    it('el primer bloque es récord; uno peor no; uno mejor sí', async () => {
+      const primero = await bloc({ puntos: 240, aciertos: 20, preguntas: 30 })
+      expect(primero.status).toBe(201)
+      expect(primero.body).toEqual({ nouRecord: true, millor: { puntos: 240, aciertos: 20, preguntas: 30 } })
+      expect((await bloc({ puntos: 200, aciertos: 18, preguntas: 30 })).body).toEqual({
+        nouRecord: false,
+        millor: { puntos: 240, aciertos: 20, preguntas: 30 },
+      })
+      expect((await bloc({ puntos: 240, aciertos: 21, preguntas: 30 })).body.nouRecord).toBe(false)
+      expect((await bloc({ puntos: 330, aciertos: 26, preguntas: 30 })).body.nouRecord).toBe(true)
+    })
+
+    it('el tamaño tiene que ser el del bloque (30 en 6è; el del modo si tiene uno propio)', async () => {
+      expect((await bloc({ puntos: 100, aciertos: 10, preguntas: 10 })).status).toBe(400)
+      await pool.query("UPDATE modos SET bloc = 10 WHERE slug = 'aritmetica'")
+      try {
+        expect((await bloc({ puntos: 100, aciertos: 10, preguntas: 10 })).status).toBe(201)
+      } finally {
+        await pool.query("UPDATE modos SET bloc = NULL WHERE slug = 'aritmetica'")
+      }
+    })
+
+    it('rechaza resultados imposibles', async () => {
+      for (const datos of [
+        { puntos: 100, aciertos: 31, preguntas: 30 },
+        { puntos: 601, aciertos: 30, preguntas: 30 },
+        { puntos: -1, aciertos: 0, preguntas: 30 },
+        { puntos: 50, aciertos: 0, preguntas: 30 },
+        { puntos: '100', aciertos: 10, preguntas: 30 },
+      ]) {
+        expect((await bloc(datos)).status).toBe(400)
+      }
+    })
+
+    it('modo inexistente o inactivo: 404', async () => {
+      expect((await bloc({ mode: 'no-existeix', puntos: 0, aciertos: 0, preguntas: 30 })).status).toBe(404)
+      await pool.query("UPDATE modos SET activo = false WHERE slug = 'aritmetica'")
+      try {
+        expect((await bloc({ puntos: 0, aciertos: 0, preguntas: 30 })).status).toBe(404)
+      } finally {
+        await pool.query("UPDATE modos SET activo = true WHERE slug = 'aritmetica'")
+      }
+    })
+
+    it('los récords son de cada alumno: el de otro no cuenta', async () => {
+      const altre = (await pedir('POST', '/api/alumnes/crea', { curs: '6-primaria', alies: 'Altre bloquista' })).cookie
+      expect((await bloc({ puntos: 10, aciertos: 1, preguntas: 30 }, altre)).body.nouRecord).toBe(true)
+    })
+
+    it('1r usa su propio tamaño de bloque (config del curso)', async () => {
+      const petit = (await pedir('POST', '/api/alumnes/crea', { curs: '1-primaria', alies: 'Petit bloquista' })).cookie
+      const r = await pedir(
+        'POST',
+        '/api/alumnes/blocs',
+        { curs: '1-primaria', assignatura: 'matematiques', mode: 'sumes', puntos: 100, aciertos: 10, preguntas: 10 },
+        petit,
+      )
+      expect(r.status).toBe(201)
+    })
+  })
+
   describe('consola: àlies del curso (con sesión de profesor)', () => {
     let profe
     beforeAll(async () => {

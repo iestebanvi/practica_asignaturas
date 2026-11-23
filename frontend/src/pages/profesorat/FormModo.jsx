@@ -7,7 +7,7 @@ import { T } from '../../textos.js'
 // Formulario de modo: nombre, adreça (solo al crear), color, activo, tipos de
 // ejercicio (casillas agrupadas) y, si algún tipo saca preguntas de un banco,
 // el banco (solo los del formato que hace falta). El servidor valida todo.
-export default function FormModo({ inicial = {}, creando = false, bancos, onDesa, onCancela }) {
+export default function FormModo({ inicial = {}, creando = false, bancos, blocCurs = 30, onDesa, onCancela }) {
   const [nombre, setNombre] = useState(inicial.nombre ?? '')
   const [slug, setSlug] = useState(inicial.slug ?? '')
   const [slugManual, setSlugManual] = useState(false)
@@ -15,6 +15,7 @@ export default function FormModo({ inicial = {}, creando = false, bancos, onDesa
   const [activo, setActivo] = useState(inicial.activo ?? false)
   const [tipos, setTipos] = useState(inicial.operaciones ?? [])
   const [bancoId, setBancoId] = useState(inicial.bancoId ?? null)
+  const [bloc, setBloc] = useState(inicial.bloc ? String(inicial.bloc) : '')
   const [errores, setErrores] = useState({})
   const [desant, setDesant] = useState(false)
   const [desat, setDesat] = useState(false)
@@ -33,7 +34,7 @@ export default function FormModo({ inicial = {}, creando = false, bancos, onDesa
     setDesant(true)
     setDesat(false)
     setErrores({})
-    const datos = { nombre, color, activo, operaciones: tipos, bancoId: formato ? bancoId : null }
+    const datos = { nombre, color, activo, operaciones: tipos, bancoId: formato ? bancoId : null, bloc: bloc === '' ? null : Number(bloc) }
     if (creando) datos.slug = slug
     try {
       await onDesa(datos)
@@ -127,6 +128,21 @@ export default function FormModo({ inicial = {}, creando = false, bancos, onDesa
           <Error camp="bancoId" />
         </>
       )}
+
+      <label>
+        {T.campBlocMode}
+        <input
+          type="number"
+          min={5}
+          max={100}
+          value={bloc}
+          placeholder={String(blocCurs)}
+          onChange={(e) => setBloc(e.target.value)}
+          className="camp-numero"
+        />
+      </label>
+      <p className="camp-ajuda">{T.ajudaBlocMode(blocCurs)}</p>
+      <Error camp="bloc" />
 
       <label className="camp-check">
         <input type="checkbox" checked={activo} onChange={(e) => setActivo(e.target.checked)} />

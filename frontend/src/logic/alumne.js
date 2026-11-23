@@ -69,6 +69,25 @@ async function cargar(curso) {
   }
 }
 
+// Guarda un bloque completado: { nouRecord, millor }. Si la sesión ya no es
+// válida (p.ej. un profesor le ha dado un PIN nuevo), el alumno deja de estar
+// identificado en ese curso.
+export async function enviarBloc(curso, asignatura, modo, bloc) {
+  try {
+    const r = await fetch('/api/alumnes/blocs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ curs: curso, assignatura: asignatura, mode: modo, ...bloc }),
+    })
+    const body = await r.json().catch(() => ({}))
+    if (r.status === 401) fijar(curso, null)
+    if (!r.ok) throw new ErrorAlumne(body.error ?? `http_${r.status}`)
+    return body
+  } catch (err) {
+    throw err instanceof ErrorAlumne ? err : new ErrorAlumne('xarxa')
+  }
+}
+
 // Hook: el àlies identificado en ese curso ({ alies } | null), o undefined
 // mientras se pregunta al servidor la primera vez.
 export function useAlumne(curso) {

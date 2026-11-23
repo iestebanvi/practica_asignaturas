@@ -8,6 +8,7 @@
       "sombra": "#d0530f",
       "nivel": "facil",
       "config": {
+        "bloc": 10,
         "celebracio": true,
         "majuscules": true
       },
@@ -30,6 +31,7 @@
                 "suma"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             },
             {
@@ -41,6 +43,7 @@
                 "resta"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             },
             {
@@ -52,6 +55,7 @@
                 "hora"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             }
           ]
@@ -66,6 +70,7 @@
       "sombra": "#ef6c00",
       "nivel": "facil",
       "config": {
+        "bloc": 15,
         "celebracio": true,
         "majuscules": false
       },
@@ -80,6 +85,7 @@
       "sombra": "#388e3c",
       "nivel": "medio",
       "config": {
+        "bloc": 30,
         "celebracio": true,
         "majuscules": false
       },
@@ -94,6 +100,7 @@
       "sombra": "#00796b",
       "nivel": "medio",
       "config": {
+        "bloc": 30,
         "celebracio": false,
         "majuscules": false
       },
@@ -108,6 +115,7 @@
       "sombra": "#512da8",
       "nivel": "medio",
       "config": {
+        "bloc": 30,
         "celebracio": false,
         "majuscules": false
       },
@@ -122,6 +130,7 @@
       "sombra": "#0288d1",
       "nivel": "medio",
       "config": {
+        "bloc": 30,
         "celebracio": false,
         "majuscules": false
       },
@@ -147,6 +156,7 @@
                 "division"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             },
             {
@@ -159,6 +169,7 @@
                 "resta"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             },
             {
@@ -171,6 +182,7 @@
                 "division"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             },
             {
@@ -182,6 +194,7 @@
                 "problema"
               ],
               "banco": "problemes-6",
+              "bloc": null,
               "activo": true
             },
             {
@@ -193,6 +206,7 @@
                 "sucesion"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             },
             {
@@ -204,6 +218,7 @@
                 "estimacion"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             },
             {
@@ -218,6 +233,7 @@
                 "costat-quadrat"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             },
             {
@@ -237,6 +253,7 @@
                 "potencia-descomposicio"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             }
           ]
@@ -258,6 +275,7 @@
                 "vocabulario"
               ],
               "banco": "vocabulari-angles-6",
+              "bloc": null,
               "activo": true
             },
             {
@@ -269,6 +287,7 @@
                 "vocabulario-escrito"
               ],
               "banco": "vocabulari-angles-6",
+              "bloc": null,
               "activo": true
             },
             {
@@ -280,6 +299,7 @@
                 "gramatica"
               ],
               "banco": "gramatica-angles-6",
+              "bloc": null,
               "activo": true
             },
             {
@@ -291,6 +311,7 @@
                 "there-be"
               ],
               "banco": null,
+              "bloc": null,
               "activo": true
             }
           ]
@@ -312,6 +333,7 @@
                 "medi-pregunta"
               ],
               "banco": "medi-canvis-relleu-6",
+              "bloc": null,
               "activo": true
             }
           ]

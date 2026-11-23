@@ -80,7 +80,7 @@ export default function FitxaMode({ contenido, onCanvi }) {
       </p>
       <p className="camp-ajuda">{T.ajudaEsborraMode}</p>
 
-      <FormModo key={modo.id} inicial={modo} bancos={contenido.bancos} onDesa={desa} />
+      <FormModo key={modo.id} inicial={modo} bancos={contenido.bancos} blocCurs={curso.config?.bloc ?? 30} onDesa={desa} />
     </article>
   )
 }

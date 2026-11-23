@@ -15,6 +15,7 @@ export default function FormEstructura({ tipo, inicial = {}, creando = false, on
   const [nivel, setNivel] = useState(inicial.nivel ?? 'medio')
   const [majuscules, setMajuscules] = useState(inicial.config?.majuscules ?? false)
   const [celebracio, setCelebracio] = useState(inicial.config?.celebracio ?? false)
+  const [bloc, setBloc] = useState(String(inicial.config?.bloc ?? 30))
   const [activo, setActivo] = useState(inicial.activo ?? false)
   const [errores, setErrores] = useState({})
   const [desant, setDesant] = useState(false)
@@ -32,7 +33,7 @@ export default function FormEstructura({ tipo, inicial = {}, creando = false, on
     setErrores({})
     const datos = { nombre, icono, color, activo }
     if (creando) datos.slug = slug
-    if (esCurso) Object.assign(datos, { nivel, config: { majuscules, celebracio } })
+    if (esCurso) Object.assign(datos, { nivel, config: { majuscules, celebracio, bloc: Number(bloc) } })
     try {
       await onDesa(datos)
       if (!creando) setDesat(true)
@@ -101,6 +102,12 @@ export default function FormEstructura({ tipo, inicial = {}, creando = false, on
             ))}
           </fieldset>
           <p className="camp-ajuda">{T.ajudaNivell}</p>
+          <label>
+            {T.campBloc}
+            <input type="number" min={5} max={100} value={bloc} onChange={(e) => setBloc(e.target.value)} className="camp-numero" />
+          </label>
+          <p className="camp-ajuda">{T.ajudaBlocCurs}</p>
+          <Error camp="bloc" />
           <label className="camp-check">
             <input type="checkbox" checked={majuscules} onChange={(e) => setMajuscules(e.target.checked)} />
             {T.campMajuscules}

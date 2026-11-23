@@ -11,6 +11,8 @@ import { obtenerCurso, obtenerPreguntas } from '../logic/api.js'
 import { useApi } from '../hooks/useApi.js'
 import AmbDades from '../components/AmbDades.jsx'
 import { registrarFallo } from '../logic/fallos.js'
+import { tamanoBloc, estadoInicial, registrarRespuesta } from '../logic/blocs.js'
+import { useAlumne, enviarBloc } from '../logic/alumne.js'
 import { T } from '../textos.js'
 import Pagina from '../components/Pagina.jsx'
 import Resumen from './Resumen.jsx'
@@ -95,11 +97,13 @@ export default function Practica() {
 //   rutaTorna: adónde llevan "← Torna" y "Tria un altre exercici"
 //   cargarPreguntas(modo): de dónde salen las preguntas del banco
 //   registrarFallos: si los fallos se apuntan en "Per repassar"
+//   guardarBlocs: si los bloques completados se guardan (con àlies)
 function entornoAlumnes(curso, asignatura) {
   return {
     rutaTorna: `/${curso.id}/${asignatura.id}`,
     cargarPreguntas: (modo) => obtenerPreguntas(modo.banco),
     registrarFallos: true,
+    guardarBlocs: true,
   }
 }
 
@@ -108,6 +112,11 @@ function entornoAlumnes(curso, asignatura) {
 export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesPropias, cabecera = null, senseAlies = false }) {
   const [resumen, setResumen] = useState(null)
   const [partida, setPartida] = useState(0)
+  // Con àlies (y si el entorno lo permite), los bloques se guardan.
+  const alumne = useAlumne(senseAlies ? null : curso.id)
+  const guardarBloc =
+    entorno.guardarBlocs && alumne ? (bloc) => enviarBloc(curso.id, asignatura.id, modo.id, bloc) : null
+  const entornoPartida = { ...entorno, guardarBloc, pistaAlies: entorno.guardarBlocs && !alumne }
 
   const molles = mollesPropias ?? [
     { nom: T.inici, to: '/' },
@@ -137,7 +146,7 @@ export function PracticaModo({ curso, asignatura, modo, entorno, molles: mollesP
           onTornarAJugar={tornarAJugar}
         />
       ) : (
-        <Partida key={partida} curso={curso} modo={modo} entorno={entorno} onFinalizar={setResumen} />
+        <Partida key={partida} curso={curso} modo={modo} entorno={entornoPartida} onFinalizar={setResumen} />
       )}
     </Pagina>
   )
@@ -152,6 +161,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
   // banco y el modo no tiene banco), el modo no puede funcionar.
   const disponible = operaciones.some((op) => necesitaBanco || !usaBanco([op]))
   const { rutaTorna } = entorno
+  const tamano = tamanoBloc(curso, modo)
 
   const [banco, setBanco] = useState([])
   const [bancoListo, setBancoListo] = useState(!necesitaBanco)
@@ -166,7 +176,32 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
   const [puntos, setPuntos] = useState(0)
   const [aciertos, setAciertos] = useState(0)
   const [fallos, setFallos] = useState(0)
+  const [blocs, setBlocs] = useState(estadoInicial)
+  const [avisBloc, setAvisBloc] = useState(null) // { text, record }
   const inputRef = useRef(null)
+
+  // Al completar un bloque: aviso breve (y, con àlies, se guarda).
+  async function blocCompletat(bloc) {
+    const base = `${T.blocCompletat} ${T.blocResultat(bloc)}`
+    if (!entorno.guardarBloc) {
+      const extra = entorno.pistaAlies ? T.guardaAmbAlies : T.noEsGuardaPrevia
+      setAvisBloc({ text: `${base} · ${extra}`, record: false })
+      return
+    }
+    setAvisBloc({ text: base, record: false })
+    try {
+      const { nouRecord, millor } = await entorno.guardarBloc(bloc)
+      setAvisBloc({ text: `${base} · ${nouRecord ? T.nouRecord : T.elTeuRecord(millor)}`, record: nouRecord })
+    } catch {
+      setAvisBloc({ text: `${base} ${T.noSHaGuardat}`, record: false })
+    }
+  }
+
+  useEffect(() => {
+    if (!avisBloc) return
+    const t = setTimeout(() => setAvisBloc(null), 6000)
+    return () => clearTimeout(t)
+  }, [avisBloc])
 
   function cargarBanco() {
     setBancoError(false)
@@ -209,6 +244,14 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
 
     if (ejercicio.ingles) pronunciar(ejercicio.ingles)
 
+    const { estado: blocsDespres, completat } = registrarRespuesta(
+      blocs,
+      { esCorrecta, puntos: ejercicio.puntos },
+      tamano,
+    )
+    setBlocs(blocsDespres)
+    if (completat) blocCompletat(completat)
+
     if (esCorrecta) {
       setPuntos((p) => p + ejercicio.puntos)
       setAciertos((a) => a + 1)
@@ -237,7 +280,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
   }
 
   function finalizar() {
-    onFinalizar({ puntos, aciertos, fallos })
+    onFinalizar({ puntos, aciertos, fallos, blocs: blocs.completats, incompletes: blocs.actual.preguntas, tamano })
   }
 
   const enllacTorna = (
@@ -297,6 +340,12 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
           <span className="marcador-mode">{modo.nombre}</span>
           <span className="puntos">⭐ {puntos}</span>
         </div>
+        <p className="marcador-bloc">{T.bloc(blocs.completats.length + 1, blocs.actual.preguntas, tamano)}</p>
+        {avisBloc && (
+          <p className={`avis-bloc${avisBloc.record ? ' es-record' : ''}`} role="status">
+            {avisBloc.text}
+          </p>
+        )}
         <dl className="comptadors">
           <div>
             <dt>{T.encerts}</dt>

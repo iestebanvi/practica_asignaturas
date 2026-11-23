@@ -20,7 +20,8 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 - **5e hecha** (2026-11-22): crear/editar/ordenar/borrar modos; crear/renombrar/borrar bancos. Ya se puede montar un tema completo desde la consola.
 - **5f hecha** (2026-11-22): vista previa de un modo aunque esté inactivo. **Fase 5 completa.**
 - Fase 7 dividida en 7a–7d (plan §17). **7a hecha** (2026-11-22): àlies + PIN por curso y moderación en la consola.
-- Siguiente: **7b** (bloques de preguntas). La fase 6 (configuración fina de generadores por modo) queda en espera hasta que haga falta.
+- **7b hecha** (2026-11-23): bloques de preguntas (tamaño por curso/modo), guardado con àlies y aviso de récord.
+- Siguiente: **7c** (ver récords personales y del curso). La fase 6 (configuración fina de generadores por modo) queda en espera hasta que haga falta.
 
 ## Mapa de temas
 
@@ -44,7 +45,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Diseño técnico antiguo de BD + PIN (referencia, sustituido) | `docs/planes/plan-base-datos-usuarios.md` |
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |
 | Contenido fuente: temario Medi "Canvis en el relleu" | `docs/medi/canvis-en-el-relleu-temari.txt` |
-| Cómo arrancar, testear y desplegar | `README.md` y `Makefile` (`make help`) |
+| Cómo arrancar, testear y desplegar | `README.md` y `Makefile` (`make help`; `make test-e2e-prod` = e2e contra producción) |
 | Despliegue (push a `main` = producción) | `README.md` § Despliegue en Railway + `railway.json` |
 
 ### En el código
@@ -69,6 +70,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Nombres legibles de tipos de ejercicio, formatos y grupos del formulario | `frontend/src/logic/tiposEjercicio.js` |
 | Catálogo de tipos para validar en el servidor (¡sincronizado con el frontend por test!) | `backend/src/catalogo/tiposEjercicio.js` |
 | Àlies de alumnos: API pública, PIN, sesiones por curso | `backend/src/routes/alumnes.js` + `backend/src/db/alumnes.js` + `backend/src/validacion/alies.js`; frontend `frontend/src/logic/alumne.js`, `components/AliesCapcalera.jsx`, `components/DialegAlies.jsx`; consola `pages/profesorat/LlistaAlies.jsx` |
+| Bloques de preguntas (lógica pura) y su guardado | `frontend/src/logic/blocs.js`; `POST /api/alumnes/blocs` en `backend/src/routes/alumnes.js` |
 | Vista previa de un modo (pantalla de práctica reutilizable con "entorno") | `frontend/src/pages/profesorat/VistaPrevia.jsx` + `PracticaModo` en `frontend/src/pages/Practica.jsx` |
 | Modos y bancos: validación y operaciones | `backend/src/validacion/modos.js` + `backend/src/db/modos.js`; `frontend/src/pages/profesorat/FormModo.jsx`, `NouBanc.jsx` |
 | Entorno de los e2e (esquema `e2e`, puertos 3199/5199, contraseña de prueba) | `e2e/entorno.js` + `playwright.config.js` + `backend/scripts/preparar-e2e.js` |

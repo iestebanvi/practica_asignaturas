@@ -2,9 +2,9 @@ import { pool } from './cliente.js'
 import { validarModo, validarBanco } from '../validacion/modos.js'
 
 const COLUMNAS_MODO =
-  'id::int, asignatura_id::int AS "asignaturaId", slug, nombre, color, sombra, operaciones, banco_id::int AS "bancoId", activo'
+  'id::int, asignatura_id::int AS "asignaturaId", slug, nombre, color, sombra, operaciones, banco_id::int AS "bancoId", bloc, activo'
 const COLUMNAS_BANCO = 'id::int, slug, nombre, formato'
-const CAMPOS_MODO = ['slug', 'nombre', 'color', 'sombra', 'operaciones', 'banco_id', 'activo']
+const CAMPOS_MODO = ['slug', 'nombre', 'color', 'sombra', 'operaciones', 'banco_id', 'bloc', 'activo']
 
 const repetido = (err, campo, mensaje) => (err.code === '23505' ? { errores: { [campo]: mensaje } } : null)
 
@@ -58,7 +58,7 @@ export async function actualizarModo(id, cambios = {}) {
   if (!rows.length) return null
   const actual = rows[0]
   const permitidos = Object.fromEntries(
-    Object.entries(cambios).filter(([k]) => ['nombre', 'color', 'operaciones', 'bancoId', 'activo'].includes(k)),
+    Object.entries(cambios).filter(([k]) => ['nombre', 'color', 'operaciones', 'bancoId', 'bloc', 'activo'].includes(k)),
   )
   const { valores, formatoBanco, errores } = validarModo({ ...actual, ...permitidos })
   if (errores) return { errores }

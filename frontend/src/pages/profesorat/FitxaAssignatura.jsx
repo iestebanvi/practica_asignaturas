@@ -90,7 +90,13 @@ export default function FitxaAssignatura({ contenido, onCanvi }) {
       {creantMode ? (
         <div className="pregunta-nova">
           <h3>{T.nouModeTitol}</h3>
-          <FormModo creando bancos={contenido.bancos} onDesa={creaMode} onCancela={() => setCreantMode(false)} />
+          <FormModo
+            creando
+            bancos={contenido.bancos}
+            blocCurs={curso.config?.bloc ?? 30}
+            onDesa={creaMode}
+            onCancela={() => setCreantMode(false)}
+          />
         </div>
       ) : (
         <button onClick={() => setCreantMode(true)}>{T.nouMode}</button>
