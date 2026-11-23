@@ -84,7 +84,7 @@ Con la consola (sin código): activar 5è, crear Matemàtiques, crear los modos 
 | **M5** ✅ | Fracciones (§11): dibujo, respuesta con dos casillas y 8 tipos | Modo "Fraccions" en 6è |
 | **M6** ✅ | Operaciones combinadas (§12), adelantadas porque las dan en clase (2026-11-23) | Modo "Operacions combinades" en 6è |
 | **M7** ✅ | Porcentajes y proporcionalidad (§13) | Modo "Percentatges i proporcions" en 6è |
-| **M8** | Divisibilidad | |
+| **M8** ✅ | Divisibilidad (§14) | Modo "Divisibilitat" en 6è |
 | **M8b** | Medida (conversiones) | |
 | **M9** | Montar 5è con todo lo anterior (en la consola) y activarlo | 5è disponible |
 
@@ -200,3 +200,21 @@ Nil las estaba dando en clase, así que se separaron de la antigua M7 (divisibil
 - **Parámetros** (tipos de porcentaje): `percentatges` (lista; por defecto 10, 20, 25, 50, 75) y `max` (cantidad máxima, por defecto 200).
 - **Fuera de M7**: escalas (con la medida, M8b; ya hay problemas de escalas en el banco), aumentos y proporcionalidad inversa.
 - Tests: unitarios (`percentatges.test.js`) y e2e `e2e/percentatges.spec.js`.
+
+## 14. M8 ✅ hecha (2026-11-23): divisibilidad
+
+- **Tipos** (`frontend/src/logic/divisibilitat.js`):
+
+  | Tipo | Ejemplo | Respuesta |
+  |---|---|---|
+  | `div-multiple` | És 48 múltiple de 6? | Sí / No (los "no", cerca de un múltiplo) |
+  | `div-seguent-multiple` | Quin és el múltiple de 7 que va després de 42? | 49 |
+  | `div-divisor` | Quin d’aquests (NO) és divisor de 24? | una de 4 opciones (sin el 1 ni el propio número) |
+  | `div-criteris` | És 135 divisible per 3? (2, 3, 5, 9, 10; números de 3 cifras) | Sí / No |
+  | `div-primer` | És primer el 29? | Sí / No (los compuestos, con trampa: impares y sin acabar en 5) |
+  | `div-troba-primer` | Quin d’aquests nombres és primer? | 1 primo entre 3 compuestos con trampa (51, 91…) |
+
+- Cambio respecto a la propuesta: los criterios son sí/no por divisor (con opciones 2 · 3 · 5 · 10 y una sola correcta, el 10 no podría serlo nunca).
+- **Parámetro**: `max` (20–1000, por defecto 100), salvo en los criterios.
+- **Fuera de M8**: m.c.m., m.c.d. y factorización (1r d'ESO; se añaden si los dan en clase).
+- Tests: unitarios (`divisibilitat.test.js`) y e2e `e2e/divisibilitat.spec.js`.

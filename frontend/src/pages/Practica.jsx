@@ -39,6 +39,7 @@ const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadra
   'percentatge-equivalencia',
   'proporcio-taula',
   'proporcio-unitat',
+  'div-seguent-multiple',
 ]
 const TIPOS_OPCION_MULTIPLE = [
   'hora',
@@ -56,6 +57,11 @@ const TIPOS_OPCION_MULTIPLE = [
   'decimal-comparar',
   'decimal-extrem',
   'fraccio-comparar',
+  'div-multiple',
+  'div-divisor',
+  'div-criteris',
+  'div-primer',
+  'div-troba-primer',
 ]
 const TIPOS_ESCRITOS = ['vocabulario-escrito', 'there-be']
 const TIPOS_ENUNCIADO_TEXTO = [
@@ -75,6 +81,11 @@ const TIPOS_ENUNCIADO_TEXTO = [
   'decimal-comparar',
   'decimal-extrem',
   'fraccio-comparar',
+  'div-multiple',
+  'div-divisor',
+  'div-criteris',
+  'div-primer',
+  'div-troba-primer',
 ]
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
@@ -95,6 +106,7 @@ const TIPOS_SIN_SIMBOLO = [
   'percentatge-equivalencia',
   'proporcio-taula',
   'proporcio-unitat',
+  'div-seguent-multiple',
 ]
 // Respuestas numéricas con decimales: campo de texto con teclado decimal (el
 // campo "number" del navegador no acepta bien la coma).
@@ -417,7 +429,15 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
   // como un problema.
   const esPreguntaCurta =
     Boolean(ejercicio.figura || ejercicio.dibuix || ejercicio.taula) ||
-    ['arrel-quadrat', 'decimal-posicio', 'decimal-arrodonir', 'fraccio-simplificar', 'percentatge-quin', 'percentatge-equivalencia'].includes(
+    [
+      'arrel-quadrat',
+      'decimal-posicio',
+      'decimal-arrodonir',
+      'fraccio-simplificar',
+      'percentatge-quin',
+      'percentatge-equivalencia',
+      'div-seguent-multiple',
+    ].includes(
       ejercicio.tipo,
     )
   const esDecimal = TIPOS_RESPOSTA_DECIMAL.includes(ejercicio.tipo)

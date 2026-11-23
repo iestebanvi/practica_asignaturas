@@ -54,6 +54,12 @@ export const NOMBRES_TIPOS = {
   'percentatge-equivalencia': 'Percentatges: fracció, decimal i %',
   'proporcio-taula': 'Proporcionalitat: completar una taula',
   'proporcio-unitat': 'Proporcionalitat: reducció a la unitat',
+  'div-multiple': 'Divisibilitat: és múltiple?',
+  'div-seguent-multiple': 'Divisibilitat: el múltiple següent',
+  'div-divisor': 'Divisibilitat: divisors',
+  'div-criteris': 'Divisibilitat: criteris (2, 3, 5, 9, 10)',
+  'div-primer': 'Divisibilitat: és primer?',
+  'div-troba-primer': 'Divisibilitat: troba el primer',
   problema: 'Problemes (del banc)',
   vocabulario: 'Vocabulari, triar (del banc)',
   'vocabulario-escrito': 'Vocabulari, escriure (del banc)',
@@ -115,6 +121,17 @@ export const GRUPOS_TIPOS = [
     ],
   },
   { nombre: 'Operacions combinades', tipos: ['combinada', 'combinada-parentesi'] },
+  {
+    nombre: 'Divisibilitat',
+    tipos: [
+      'div-multiple',
+      'div-seguent-multiple',
+      'div-divisor',
+      'div-criteris',
+      'div-primer',
+      'div-troba-primer',
+    ],
+  },
   {
     nombre: 'Percentatges i proporcionalitat',
     tipos: [

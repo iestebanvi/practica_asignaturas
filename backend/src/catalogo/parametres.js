@@ -29,6 +29,9 @@ const PERCENTATGES = {
   max: { tipus: 'enter', etiqueta: 'Quantitat màxima', min: 20, max: 1000 },
 }
 
+// Divisibilidad: número más grande que sale (los criterios, siempre de 3 cifras).
+const DIVISIBILITAT = { max: { tipus: 'enter', etiqueta: 'Nombre màxim', min: 20, max: 1000 } }
+
 export const PARAMETRES = {
   suma: {
     max: { tipus: 'enter', etiqueta: 'Nombre màxim', min: 5, max: 1000000 },
@@ -74,6 +77,11 @@ export const PARAMETRES = {
   'percentatge-quantitat': PERCENTATGES,
   'percentatge-quin': PERCENTATGES,
   'percentatge-descompte': PERCENTATGES,
+  'div-multiple': DIVISIBILITAT,
+  'div-seguent-multiple': DIVISIBILITAT,
+  'div-divisor': DIVISIBILITAT,
+  'div-primer': DIVISIBILITAT,
+  'div-troba-primer': DIVISIBILITAT,
 }
 
 const NOMS_TIPUS = {
@@ -103,6 +111,11 @@ const NOMS_TIPUS = {
   'percentatge-quantitat': 'Percentatges (percentatge d’una quantitat)',
   'percentatge-quin': 'Percentatges (quin percentatge és)',
   'percentatge-descompte': 'Percentatges (descomptes)',
+  'div-multiple': 'Divisibilitat (és múltiple?)',
+  'div-seguent-multiple': 'Divisibilitat (el múltiple següent)',
+  'div-divisor': 'Divisibilitat (divisors)',
+  'div-primer': 'Divisibilitat (és primer?)',
+  'div-troba-primer': 'Divisibilitat (troba el primer)',
 }
 
 function valorValid(spec, valor) {

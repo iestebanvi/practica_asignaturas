@@ -60,6 +60,14 @@ import {
   generarProporcioTaula,
   generarProporcioUnitat,
 } from './percentatges.js'
+import {
+  generarDivMultiple,
+  generarDivSeguentMultiple,
+  generarDivDivisor,
+  generarDivCriteris,
+  generarDivPrimer,
+  generarDivTrobaPrimer,
+} from './divisibilitat.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -112,6 +120,12 @@ const GENERADORES = {
   'percentatge-equivalencia': generarPercentatgeEquivalencia,
   'proporcio-taula': generarProporcioTaula,
   'proporcio-unitat': generarProporcioUnitat,
+  'div-multiple': generarDivMultiple,
+  'div-seguent-multiple': generarDivSeguentMultiple,
+  'div-divisor': generarDivDivisor,
+  'div-criteris': generarDivCriteris,
+  'div-primer': generarDivPrimer,
+  'div-troba-primer': generarDivTrobaPrimer,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -132,6 +146,11 @@ const TIPOS_RESPUESTA_TEXTO = [
   'decimal-comparar',
   'decimal-extrem',
   'fraccio-comparar',
+  'div-multiple',
+  'div-divisor',
+  'div-criteris',
+  'div-primer',
+  'div-troba-primer',
 ]
 
 // Parámetros de dificultad que entiende cada generador (los que puede poner un
@@ -164,6 +183,11 @@ export const PARAMETRES_ACCEPTATS = {
   'percentatge-quantitat': ['percentatges', 'max'],
   'percentatge-quin': ['percentatges', 'max'],
   'percentatge-descompte': ['percentatges', 'max'],
+  'div-multiple': ['max'],
+  'div-seguent-multiple': ['max'],
+  'div-divisor': ['max'],
+  'div-primer': ['max'],
+  'div-troba-primer': ['max'],
 }
 
 export function generarEjercicio(operacion, nivel = 'facil', params = {}) {
