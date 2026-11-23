@@ -65,7 +65,10 @@ export function generarDivDivisor(nivel, params) {
   const candidats = Array.from({ length: max - 11 }, (_, i) => i + 12).filter((n) => divisors(n).length >= 5)
   const n = triar(candidats)
   const propis = divisors(n).filter((d) => d > 1 && d < n)
-  const noDivisors = Array.from({ length: n - 2 }, (_, i) => i + 2).filter((d) => n % d !== 0)
+  const totsNoDivisors = Array.from({ length: n - 2 }, (_, i) => i + 2).filter((d) => n % d !== 0)
+  // Si hay bastantes, solo hasta la mitad: que no se vean a simple vista (47 de 84)
+  const petits = totsNoDivisors.filter((d) => d <= n / 2)
+  const noDivisors = petits.length >= 3 ? petits : totsNoDivisors
   const negativa = Math.random() < 0.5
   const [bons, dolents] = negativa
     ? [mezclar(propis).slice(0, 3), mezclar(noDivisors).slice(0, 1)]
