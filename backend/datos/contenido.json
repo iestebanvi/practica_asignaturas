@@ -395,6 +395,48 @@
                 }
               },
               "activo": true
+            },
+            {
+              "id": "fraccions",
+              "nombre": "Fraccions",
+              "color": "#ba68c8",
+              "sombra": "#82498c",
+              "operaciones": [
+                "fraccio-dibuix",
+                "fraccio-equivalent",
+                "fraccio-simplificar",
+                "fraccio-comparar",
+                "fraccio-quantitat",
+                "fraccio-suma",
+                "fraccio-resta",
+                "fraccio-decimal"
+              ],
+              "banco": null,
+              "bloc": null,
+              "params": {
+                "fraccio-suma": {
+                  "denominadorMax": 12
+                },
+                "fraccio-resta": {
+                  "denominadorMax": 12
+                },
+                "fraccio-dibuix": {
+                  "denominadorMax": 12
+                },
+                "fraccio-comparar": {
+                  "denominadorMax": 12
+                },
+                "fraccio-quantitat": {
+                  "denominadorMax": 12
+                },
+                "fraccio-equivalent": {
+                  "denominadorMax": 12
+                },
+                "fraccio-simplificar": {
+                  "denominadorMax": 12
+                }
+              },
+              "activo": true
             }
           ]
         },
