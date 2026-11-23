@@ -47,3 +47,11 @@ describe('generarEstimacion', () => {
     }
   })
 })
+
+describe('estimaciones: enunciado en catalán', () => {
+  it('"a les desenes", "a les centenes" y "als milers" (no "a els")', () => {
+    expect(generarEstimacion('medio', { arrodonir: 10 }).enunciado).toMatch(/^Arrodoneix a les desenes i estima: /)
+    expect(generarEstimacion('medio', { arrodonir: 100, xifres: 3 }).enunciado).toMatch(/^Arrodoneix a les centenes i estima: /)
+    expect(generarEstimacion('medio', { arrodonir: 1000, xifres: 4 }).enunciado).toMatch(/^Arrodoneix als milers i estima: /)
+  })
+})

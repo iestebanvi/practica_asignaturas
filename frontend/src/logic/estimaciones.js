@@ -3,7 +3,8 @@ import { randomInt } from './common.js'
 const RANGO = { min: 10, max: 99 }
 const OPERADORES = ['+', '-']
 const PUNTOS_ESTIMACION = 15
-const UNITATS = { 10: 'les desenes', 100: 'les centenes', 1000: 'els milers' }
+// Con la preposición ya contraída: "a les desenes", pero "als milers".
+const UNITATS = { 10: 'a les desenes', 100: 'a les centenes', 1000: 'als milers' }
 
 function arrodonir(n, unitat) {
   return Math.round(n / unitat) * unitat
@@ -26,7 +27,7 @@ export function generarEstimacion(nivel, params = {}) {
 
   return {
     tipo: 'estimacion',
-    enunciado: `Arrodoneix a ${UNITATS[unitat]} i estima: ${a} ${operador} ${b}`,
+    enunciado: `Arrodoneix ${UNITATS[unitat]} i estima: ${a} ${operador} ${b}`,
     respuesta,
     puntos: PUNTOS_ESTIMACION,
   }
