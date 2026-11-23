@@ -14,13 +14,14 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
   - Web por cursos (1r–6è; 2n–5è inactivos y vacíos), interfaz en catalán, pantalla completa.
   - Todo el contenido en Supabase y editable desde la consola del profesorado (`/profesorat`, contraseña `TEACHER_PASSWD`): preguntas, importar/exportar, cursos, asignaturas, modos, bancos, vista previa.
   - Alumnos con àlies + PIN por curso: bloques de preguntas, récords personales y del curso, "Per repassar" en la BD.
-- **Pendiente**: nada planificado. La fase 6 (configuración fina de generadores por modo) está en espera hasta que haga falta.
+- **Ahora**: probar la aplicación antes de seguir desarrollando. **Todo lo pendiente** (checklist de pruebas, fase 6 en espera con sus pasos, mantenimiento, ideas y riesgos aceptados) está en `docs/pendiente.md`.
 - **Despliegue**: push a `main` = producción (ver README). Antes, `make test`, `make test-backend` y `make test-e2e`; después, `make test-e2e-prod`.
 
 ## Mapa de temas
 
 | Tema | Dónde |
 |---|---|
+| **Qué queda pendiente / próximos pasos** | `docs/pendiente.md` |
 | Visión general, capas (BD / API / frontend) | `docs/planes/plan-contenido-dinamico-cursos.md` §1–2 |
 | ¿Por qué evolucionar y no empezar de cero? | ídem §2 |
 | Contenido de banco vs. contenido generado | ídem §2 ("La clave conceptual") |
