@@ -7,7 +7,10 @@ let traduccionesVocabulario = new Map()
 
 test.beforeAll(async ({ request }) => {
   const preguntas = async (banco) => (await (await request.get(`/api/bancos/${banco}/preguntas`)).json()).preguntas
-  respuestasProblemas = new Map((await preguntas('problemes-6')).map((p) => [p.enunciado, Number(p.respuesta)]))
+  // Las del banco que use el modo "Problemes" de 6è (el que sea en cada momento)
+  const curso6 = await (await request.get('/api/cursos/6-primaria')).json()
+  const bancoProblemes = curso6.asignaturas.find((a) => a.id === 'matematiques').modos.find((m) => m.id === 'problemes').banco
+  respuestasProblemas = new Map((await preguntas(bancoProblemes)).map((p) => [p.enunciado, Number(p.respuesta)]))
   bancoVocabulario = await preguntas('vocabulari-angles-6')
   traduccionesVocabulario = new Map(bancoVocabulario.map((p) => [p.enunciado, p.respuesta]))
 })

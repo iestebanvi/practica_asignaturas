@@ -125,10 +125,11 @@ Modo nuevo **"Arrels quadrades"** en 6è › Matemàtiques, con estos tipos de e
 - **Consola**: en la ficha de modo, sección "Dificultat (opcional)" con los campos de los tipos marcados (`CampsParams.jsx`). Los formularios de la consola usan `noValidate`: los errores los da siempre el servidor, en catalán y debajo del campo (antes el navegador bloqueaba el envío con su aviso nativo).
 - **Tests**: los cursos 2n–5è ya no se suponen inactivos (el usuario los activó): cada test desactiva el curso que necesita, y el entorno e2e tiene un curso inactivo propio ("Curs inactiu E2E").
 
-## 9. M3 (en curso, 2026-11-23)
+## 9. M3 ✅ hecha (2026-11-23)
 
 - ✅ **Dificultad de 6è aplicada** (desde la API de la consola): Aritmètica = sumas/restas hasta 99.999, multiplicar 3 × 2 cifras, dividir entre 2 cifras (cociente de 2); Sumes i restes = hasta 99.999; Multiplicacions i divisions = 3 × 2 y divisor/cociente de 2 cifras; Estimacions = centenas, 3 cifras; Successions = salto 5–50, primer término hasta 200. ("Que saque papel y boli.")
 - ✅ **Banco "Problemes 6è"** (`problemes-6e`, 61 problemas en catalán, 2–3 pasos: dinero, porcentajes, proporcionalidad, escalas, medida, geometría, medias, fracciones de una cantidad). Fuente: `docs/matematiques/problemes-6e.json` (cada problema con su cálculo; las respuestas se comprueban por código) → `problemes-6e.csv` (importado). **Importados inactivos**, con un modo inactivo "Problemes 6è (nous)" para revisarlos con la vista previa.
 - ✅ Banco antiguo renombrado a **"Problemes bàsics"** (el slug sigue siendo `problemes-6`).
-- ⏳ **Traducción al catalán de los 62 problemas básicos**: propuesta en `docs/matematiques/problemes-basics-ca.json`; tabla de revisión (castellano / catalán / respuesta, y los problemas nuevos) en `docs/matematiques/problemes-revisio.md`. Pendiente del visto bueno del usuario para aplicarla.
-- ⏳ **Reparto final** (tras la revisión): 6è "Problemes" → banco "Problemes 6è"; los básicos, en un modo "Problemes de repàs" (y en 5è cuando se monte).
+- ✅ **Traducción al catalán de los 62 problemas básicos** (fuente `docs/matematiques/problemes-basics-ca.json`, revisada por el usuario con `problemes-revisio.md`) aplicada; las respuestas no cambian.
+- ✅ **Reparto final**: 6è "Problemes" → banco "Problemes 6è" (61, activos); nuevo modo "Problemes de repàs" (justo después) con los 62 básicos, que servirán también para 5è. Modo temporal de revisión borrado.
+- Los e2e toman las respuestas del banco que tenga asignado el modo "Problemes" en cada momento.

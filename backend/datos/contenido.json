@@ -230,7 +230,20 @@
               "id": "problemes",
               "nombre": "Problemes",
               "color": "#26a69a",
-              "sombra": "#00796b",
+              "sombra": "#1b746c",
+              "operaciones": [
+                "problema"
+              ],
+              "banco": "problemes-6e",
+              "bloc": null,
+              "params": {},
+              "activo": true
+            },
+            {
+              "id": "problemes-repas",
+              "nombre": "Problemes de repàs",
+              "color": "#4db6ac",
+              "sombra": "#367f78",
               "operaciones": [
                 "problema"
               ],
@@ -330,19 +343,6 @@
               "bloc": null,
               "params": {},
               "activo": true
-            },
-            {
-              "id": "problemes-nous",
-              "nombre": "Problemes 6è (nous)",
-              "color": "#00897b",
-              "sombra": "#006056",
-              "operaciones": [
-                "problema"
-              ],
-              "banco": "problemes-6e",
-              "bloc": null,
-              "params": {},
-              "activo": false
             }
           ]
         },
@@ -1105,7 +1105,7 @@
       "preguntas": [
         {
           "orden": 1,
-          "enunciado": "María tiene 24 caramelos y quiere repartirlos a partes iguales entre sus 4 amigas. ¿Cuántos caramelos recibe cada una?",
+          "enunciado": "La Maria té 24 caramels i els vol repartir a parts iguals entre les seves 4 amigues. Quants caramels rep cadascuna?",
           "respuesta": "6",
           "opciones": null,
           "alternativas": null,
@@ -1113,7 +1113,7 @@
         },
         {
           "orden": 2,
-          "enunciado": "En un autobús hay 3 filas de 8 asientos y en otro autobús hay 5 filas de 6 asientos. Si ambos van completamente llenos, ¿cuántos pasajeros hay en total?",
+          "enunciado": "En un autobús hi ha 3 files de 8 seients i en un altre autobús hi ha 5 files de 6 seients. Si tots dos van plens, quants passatgers hi ha en total?",
           "respuesta": "54",
           "opciones": null,
           "alternativas": null,
@@ -1121,7 +1121,7 @@
         },
         {
           "orden": 3,
-          "enunciado": "Pedro ahorra 15 euros cada semana. ¿Cuánto habrá ahorrado después de 6 semanas?",
+          "enunciado": "En Pere estalvia 15 euros cada setmana. Quant haurà estalviat al cap de 6 setmanes?",
           "respuesta": "90",
           "opciones": null,
           "alternativas": null,
@@ -1129,7 +1129,7 @@
         },
         {
           "orden": 4,
-          "enunciado": "Una tienda tenía 150 lápices. Vendió 45 el lunes y 38 el martes. ¿Cuántos lápices le quedan?",
+          "enunciado": "Una botiga tenia 150 llapis. En va vendre 45 dilluns i 38 dimarts. Quants llapis li queden?",
           "respuesta": "67",
           "opciones": null,
           "alternativas": null,
@@ -1137,7 +1137,7 @@
         },
         {
           "orden": 5,
-          "enunciado": "Un equipo de fútbol ha marcado 4 goles en cada uno de los 7 partidos que ha jugado. ¿Cuántos goles ha marcado en total?",
+          "enunciado": "Un equip de futbol ha marcat 4 gols en cadascun dels 7 partits que ha jugat. Quants gols ha marcat en total?",
           "respuesta": "28",
           "opciones": null,
           "alternativas": null,
@@ -1145,7 +1145,7 @@
         },
         {
           "orden": 6,
-          "enunciado": "Laura compra 3 paquetes de galletas con 12 galletas cada uno y las reparte entre sus 6 primos a partes iguales. ¿Cuántas galletas recibe cada primo?",
+          "enunciado": "La Laura compra 3 paquets de galetes amb 12 galetes cadascun i les reparteix a parts iguals entre els seus 6 cosins. Quantes galetes rep cada cosí?",
           "respuesta": "6",
           "opciones": null,
           "alternativas": null,
@@ -1153,7 +1153,7 @@
         },
         {
           "orden": 7,
-          "enunciado": "Un tren sale de la estación con 120 pasajeros. En la primera parada bajan 35 y suben 20. ¿Cuántos pasajeros hay en el tren después de la parada?",
+          "enunciado": "Un tren surt de l'estació amb 120 passatgers. A la primera parada en baixen 35 i en pugen 20. Quants passatgers hi ha al tren després de la parada?",
           "respuesta": "105",
           "opciones": null,
           "alternativas": null,
@@ -1161,7 +1161,7 @@
         },
         {
           "orden": 8,
-          "enunciado": "Ana tiene 3 cajas con 25 canicas cada una. Si regala 40 canicas a su hermano, ¿cuántas canicas le quedan?",
+          "enunciado": "L'Anna té 3 capses amb 25 bales cadascuna. Si en regala 40 al seu germà, quantes bales li queden?",
           "respuesta": "35",
           "opciones": null,
           "alternativas": null,
@@ -1169,7 +1169,7 @@
         },
         {
           "orden": 9,
-          "enunciado": "Un cine tiene 18 filas con 15 butacas cada una. Si se han vendido 200 entradas, ¿cuántas butacas quedan libres?",
+          "enunciado": "Un cinema té 18 files amb 15 butaques cadascuna. Si s'han venut 200 entrades, quantes butaques queden lliures?",
           "respuesta": "70",
           "opciones": null,
           "alternativas": null,
@@ -1177,7 +1177,7 @@
         },
         {
           "orden": 10,
-          "enunciado": "Carlos reparte 96 cromos entre él y sus 3 hermanos a partes iguales. ¿Cuántos cromos recibe cada uno?",
+          "enunciado": "En Carles reparteix 96 cromos a parts iguals entre ell i els seus 3 germans. Quants cromos rep cadascun?",
           "respuesta": "24",
           "opciones": null,
           "alternativas": null,
@@ -1185,7 +1185,7 @@
         },
         {
           "orden": 11,
-          "enunciado": "En una biblioteca hay 12 estanterías con 30 libros cada una. Si retiran 85 libros para donarlos, ¿cuántos libros quedan?",
+          "enunciado": "En una biblioteca hi ha 12 prestatges amb 30 llibres cadascun. Si en retiren 85 per donar-los, quants llibres queden?",
           "respuesta": "275",
           "opciones": null,
           "alternativas": null,
@@ -1193,7 +1193,7 @@
         },
         {
           "orden": 12,
-          "enunciado": "Un panadero hace 8 hornadas de 24 panes cada una. Si vende 150 panes, ¿cuántos panes le quedan?",
+          "enunciado": "Un forner fa 8 fornades de 24 pans cadascuna. Si en ven 150, quants pans li queden?",
           "respuesta": "42",
           "opciones": null,
           "alternativas": null,
@@ -1201,7 +1201,7 @@
         },
         {
           "orden": 13,
-          "enunciado": "Un jardinero planta 6 filas de 9 rosales cada una. ¿Cuántos rosales ha plantado en total?",
+          "enunciado": "Un jardiner planta 6 files de 9 rosers cadascuna. Quants rosers ha plantat en total?",
           "respuesta": "54",
           "opciones": null,
           "alternativas": null,
@@ -1209,7 +1209,7 @@
         },
         {
           "orden": 14,
-          "enunciado": "María tiene 245 cromos y su amiga le regala 78 más. Si después reparte 60 entre sus primos, ¿cuántos cromos le quedan?",
+          "enunciado": "La Maria té 245 cromos i la seva amiga n'hi regala 78 més. Si després en reparteix 60 entre els seus cosins, quants cromos li queden?",
           "respuesta": "263",
           "opciones": null,
           "alternativas": null,
@@ -1217,7 +1217,7 @@
         },
         {
           "orden": 15,
-          "enunciado": "Un ascensor sube 8 pisos y luego baja 3. Si empezó en la planta baja (piso 0), ¿en qué piso está ahora?",
+          "enunciado": "Un ascensor puja 8 pisos i després en baixa 3. Si ha començat a la planta baixa (pis 0), a quin pis és ara?",
           "respuesta": "5",
           "opciones": null,
           "alternativas": null,
@@ -1225,7 +1225,7 @@
         },
         {
           "orden": 16,
-          "enunciado": "Un granjero tiene 7 cajas con 48 huevos cada una. ¿Cuántos huevos tiene en total?",
+          "enunciado": "Un pagès té 7 capses amb 48 ous cadascuna. Quants ous té en total?",
           "respuesta": "336",
           "opciones": null,
           "alternativas": null,
@@ -1233,7 +1233,7 @@
         },
         {
           "orden": 17,
-          "enunciado": "En un teatro hay 25 filas con 20 butacas cada una. Si hoy han venido 420 personas, ¿cuántas butacas han quedado vacías?",
+          "enunciado": "En un teatre hi ha 25 files amb 20 butaques cadascuna. Si avui hi han vingut 420 persones, quantes butaques han quedat buides?",
           "respuesta": "80",
           "opciones": null,
           "alternativas": null,
@@ -1241,7 +1241,7 @@
         },
         {
           "orden": 18,
-          "enunciado": "Sara ahorra 8 euros a la semana. ¿Cuántas semanas necesita para ahorrar 96 euros?",
+          "enunciado": "La Sara estalvia 8 euros a la setmana. Quantes setmanes necessita per estalviar 96 euros?",
           "respuesta": "12",
           "opciones": null,
           "alternativas": null,
@@ -1249,7 +1249,7 @@
         },
         {
           "orden": 19,
-          "enunciado": "Un tren recorre 60 kilómetros cada hora. ¿Cuántos kilómetros recorrerá en 5 horas?",
+          "enunciado": "Un tren recorre 60 quilòmetres cada hora. Quants quilòmetres recorrerà en 5 hores?",
           "respuesta": "300",
           "opciones": null,
           "alternativas": null,
@@ -1257,7 +1257,7 @@
         },
         {
           "orden": 20,
-          "enunciado": "Un cocinero necesita 3 huevos para cada tarta. Si tiene 84 huevos, ¿cuántas tartas puede hacer?",
+          "enunciado": "Un cuiner necessita 3 ous per a cada pastís. Si té 84 ous, quants pastissos pot fer?",
           "respuesta": "28",
           "opciones": null,
           "alternativas": null,
@@ -1265,7 +1265,7 @@
         },
         {
           "orden": 21,
-          "enunciado": "Un equipo de baloncesto ha anotado 82 puntos en el primer partido y 15 puntos menos en el segundo. ¿Cuántos puntos anotó en el segundo partido?",
+          "enunciado": "Un equip de bàsquet ha fet 82 punts en el primer partit i 15 punts menys en el segon. Quants punts va fer en el segon partit?",
           "respuesta": "67",
           "opciones": null,
           "alternativas": null,
@@ -1273,7 +1273,7 @@
         },
         {
           "orden": 22,
-          "enunciado": "Una fábrica produce 144 juguetes al día repartidos en 4 turnos iguales. ¿Cuántos juguetes produce cada turno?",
+          "enunciado": "Una fàbrica produeix 144 joguines al dia repartides en 4 torns iguals. Quantes joguines produeix cada torn?",
           "respuesta": "36",
           "opciones": null,
           "alternativas": null,
@@ -1281,7 +1281,7 @@
         },
         {
           "orden": 23,
-          "enunciado": "Javier tiene 3 álbumes con 60 cromos cada uno. Si le faltan 45 cromos para completarlos todos, ¿cuántos cromos tiene ya pegados?",
+          "enunciado": "En Xavier té 3 àlbums amb 60 cromos cadascun. Si li falten 45 cromos per completar-los tots, quants cromos té enganxats?",
           "respuesta": "135",
           "opciones": null,
           "alternativas": null,
@@ -1289,7 +1289,7 @@
         },
         {
           "orden": 24,
-          "enunciado": "Un supermercado recibe 18 cajas de manzanas con 25 manzanas cada una. Si vende 300 manzanas, ¿cuántas le quedan?",
+          "enunciado": "Un supermercat rep 18 caixes de pomes amb 25 pomes cadascuna. Si en ven 300, quantes li'n queden?",
           "respuesta": "150",
           "opciones": null,
           "alternativas": null,
@@ -1297,7 +1297,7 @@
         },
         {
           "orden": 25,
-          "enunciado": "Un ciclista recorre 15 kilómetros cada día. ¿Cuántos kilómetros recorrerá en 2 semanas (14 días)?",
+          "enunciado": "Un ciclista recorre 15 quilòmetres cada dia. Quants quilòmetres recorrerà en 2 setmanes (14 dies)?",
           "respuesta": "210",
           "opciones": null,
           "alternativas": null,
@@ -1305,7 +1305,7 @@
         },
         {
           "orden": 26,
-          "enunciado": "En una clase de 28 alumnos, 16 son chicas. ¿Cuántos chicos hay?",
+          "enunciado": "En una classe de 28 alumnes, 16 són noies. Quants nois hi ha?",
           "respuesta": "12",
           "opciones": null,
           "alternativas": null,
@@ -1313,7 +1313,7 @@
         },
         {
           "orden": 27,
-          "enunciado": "Un panadero reparte 360 panecillos entre 8 tiendas a partes iguales. ¿Cuántos panecillos recibe cada tienda?",
+          "enunciado": "Un forner reparteix 360 panets a parts iguals entre 8 botigues. Quants panets rep cada botiga?",
           "respuesta": "45",
           "opciones": null,
           "alternativas": null,
@@ -1321,7 +1321,7 @@
         },
         {
           "orden": 28,
-          "enunciado": "Lucía compra un libro de 12 euros y un cuaderno de 3 euros. Si paga con un billete de 20 euros, ¿cuánto le devuelven?",
+          "enunciado": "La Lucía compra un llibre de 12 euros i una llibreta de 3 euros. Si paga amb un bitllet de 20 euros, quant li tornen?",
           "respuesta": "5",
           "opciones": null,
           "alternativas": null,
@@ -1329,7 +1329,7 @@
         },
         {
           "orden": 29,
-          "enunciado": "Un estadio tiene 40 filas con 35 asientos cada una. ¿Cuántos asientos tiene en total?",
+          "enunciado": "Un estadi té 40 files amb 35 seients cadascuna. Quants seients té en total?",
           "respuesta": "1400",
           "opciones": null,
           "alternativas": null,
@@ -1337,7 +1337,7 @@
         },
         {
           "orden": 30,
-          "enunciado": "Un camión de reparto lleva 250 paquetes. Si entrega 90 por la mañana y 85 por la tarde, ¿cuántos paquetes le quedan por entregar?",
+          "enunciado": "Un camió de repartiment porta 250 paquets. Si en lliura 90 al matí i 85 a la tarda, quants paquets li queden per lliurar?",
           "respuesta": "75",
           "opciones": null,
           "alternativas": null,
@@ -1345,7 +1345,7 @@
         },
         {
           "orden": 31,
-          "enunciado": "Cada caja de rotuladores trae 24 unidades. Si un colegio compra 15 cajas, ¿cuántos rotuladores tiene en total?",
+          "enunciado": "Cada capsa de retoladors porta 24 unitats. Si una escola compra 15 capses, quants retoladors té en total?",
           "respuesta": "360",
           "opciones": null,
           "alternativas": null,
@@ -1353,7 +1353,7 @@
         },
         {
           "orden": 32,
-          "enunciado": "Un cine reparte 168 entradas gratis entre 7 colegios a partes iguales. ¿Cuántas entradas recibe cada colegio?",
+          "enunciado": "Un cinema reparteix 168 entrades gratuïtes a parts iguals entre 7 escoles. Quantes entrades rep cada escola?",
           "respuesta": "24",
           "opciones": null,
           "alternativas": null,
@@ -1361,7 +1361,7 @@
         },
         {
           "orden": 33,
-          "enunciado": "Marta tiene 9 años más que su hermano. Si su hermano tiene 6 años, ¿cuántos años tiene Marta?",
+          "enunciado": "La Marta té 9 anys més que el seu germà. Si el seu germà té 6 anys, quants anys té la Marta?",
           "respuesta": "15",
           "opciones": null,
           "alternativas": null,
@@ -1369,7 +1369,7 @@
         },
         {
           "orden": 34,
-          "enunciado": "Un huerto tiene 12 filas de tomateras con 14 plantas cada fila. ¿Cuántas tomateras hay en total?",
+          "enunciado": "Un hort té 12 files de tomaqueres amb 14 plantes cada fila. Quantes tomaqueres hi ha en total?",
           "respuesta": "168",
           "opciones": null,
           "alternativas": null,
@@ -1377,7 +1377,7 @@
         },
         {
           "orden": 35,
-          "enunciado": "En una biblioteca prestan 235 libros el lunes y 187 el martes. ¿Cuántos libros han prestado entre los dos días?",
+          "enunciado": "En una biblioteca presten 235 llibres dilluns i 187 dimarts. Quants llibres han prestat entre els dos dies?",
           "respuesta": "422",
           "opciones": null,
           "alternativas": null,
@@ -1385,7 +1385,7 @@
         },
         {
           "orden": 36,
-          "enunciado": "Un autobús escolar hace 4 viajes al día llevando 42 alumnos cada viaje. ¿Cuántos alumnos transporta en total al día?",
+          "enunciado": "Un autobús escolar fa 4 viatges al dia i porta 42 alumnes a cada viatge. Quants alumnes transporta en total cada dia?",
           "respuesta": "168",
           "opciones": null,
           "alternativas": null,
@@ -1393,7 +1393,7 @@
         },
         {
           "orden": 37,
-          "enunciado": "Pedro tenía 500 euros ahorrados. Se compra una bicicleta de 180 euros y un casco de 45 euros. ¿Cuánto dinero le queda?",
+          "enunciado": "En Pere tenia 500 euros estalviats. Es compra una bicicleta de 180 euros i un casc de 45 euros. Quants diners li queden?",
           "respuesta": "275",
           "opciones": null,
           "alternativas": null,
@@ -1401,7 +1401,7 @@
         },
         {
           "orden": 38,
-          "enunciado": "Un almacén reparte placas de chocolate en cajas de 6 unidades. Si tiene 132 placas, ¿cuántas cajas completa?",
+          "enunciado": "Un magatzem posa les rajoles de xocolata en caixes de 6 unitats. Si té 132 rajoles, quantes caixes omple?",
           "respuesta": "22",
           "opciones": null,
           "alternativas": null,
@@ -1409,7 +1409,7 @@
         },
         {
           "orden": 39,
-          "enunciado": "Una piscina municipal recibe 85 visitantes el sábado y el doble el domingo. ¿Cuántos visitantes recibió el domingo?",
+          "enunciado": "Una piscina municipal rep 85 visitants el dissabte i el doble el diumenge. Quants visitants va rebre el diumenge?",
           "respuesta": "170",
           "opciones": null,
           "alternativas": null,
@@ -1417,7 +1417,7 @@
         },
         {
           "orden": 40,
-          "enunciado": "Un tren lleva 6 vagones con 64 asientos cada uno. Si viajan 350 pasajeros, ¿cuántos asientos quedan libres?",
+          "enunciado": "Un tren porta 6 vagons amb 64 seients cadascun. Si hi viatgen 350 passatgers, quants seients queden lliures?",
           "respuesta": "34",
           "opciones": null,
           "alternativas": null,
@@ -1425,7 +1425,7 @@
         },
         {
           "orden": 41,
-          "enunciado": "Ana reparte 96 globos entre 4 fiestas de cumpleaños a partes iguales. ¿Cuántos globos hay en cada fiesta?",
+          "enunciado": "L'Anna reparteix 96 globus a parts iguals entre 4 festes d'aniversari. Quants globus hi ha a cada festa?",
           "respuesta": "24",
           "opciones": null,
           "alternativas": null,
@@ -1433,7 +1433,7 @@
         },
         {
           "orden": 42,
-          "enunciado": "Un frutero compra 8 cajas de naranjas con 30 naranjas cada una. Si se estropean 45, ¿cuántas naranjas puede vender?",
+          "enunciado": "Un fruiter compra 8 caixes de taronges amb 30 taronges cadascuna. Si se n'espatllen 45, quantes taronges pot vendre?",
           "respuesta": "195",
           "opciones": null,
           "alternativas": null,
@@ -1441,7 +1441,7 @@
         },
         {
           "orden": 43,
-          "enunciado": "Un equipo de fútbol ha jugado 34 partidos, ha ganado 20 y ha empatado 8. ¿Cuántos partidos ha perdido?",
+          "enunciado": "Un equip de futbol ha jugat 34 partits: n'ha guanyat 20 i n'ha empatat 8. Quants partits ha perdut?",
           "respuesta": "6",
           "opciones": null,
           "alternativas": null,
@@ -1449,7 +1449,7 @@
         },
         {
           "orden": 44,
-          "enunciado": "Una tienda de deportes tiene 15 estanterías con 24 balones cada una. ¿Cuántos balones tiene en total?",
+          "enunciado": "Una botiga d'esports té 15 prestatges amb 24 pilotes cadascun. Quantes pilotes té en total?",
           "respuesta": "360",
           "opciones": null,
           "alternativas": null,
@@ -1457,7 +1457,7 @@
         },
         {
           "orden": 45,
-          "enunciado": "Un panadero hace 9 hornadas de 45 magdalenas cada una. Si regala 60, ¿cuántas magdalenas le quedan para vender?",
+          "enunciado": "Un forner fa 9 fornades de 45 magdalenes cadascuna. Si en regala 60, quantes magdalenes li queden per vendre?",
           "respuesta": "345",
           "opciones": null,
           "alternativas": null,
@@ -1465,7 +1465,7 @@
         },
         {
           "orden": 46,
-          "enunciado": "En un zoo hay 3 veces más pájaros que leones. Si hay 8 leones, ¿cuántos pájaros hay?",
+          "enunciado": "En un zoo hi ha 3 vegades més ocells que lleons. Si hi ha 8 lleons, quants ocells hi ha?",
           "respuesta": "24",
           "opciones": null,
           "alternativas": null,
@@ -1473,7 +1473,7 @@
         },
         {
           "orden": 47,
-          "enunciado": "Una empresa de autobuses tiene 12 autobuses con 52 plazas cada uno. ¿Cuántas plazas tiene en total la flota?",
+          "enunciado": "Una empresa d'autobusos té 12 autobusos amb 52 places cadascun. Quantes places té en total la flota?",
           "respuesta": "624",
           "opciones": null,
           "alternativas": null,
@@ -1481,7 +1481,7 @@
         },
         {
           "orden": 48,
-          "enunciado": "Diego tiene 3 cajas de canicas con 84 canicas cada una. Las reparte entre sus 4 amigos a partes iguales. ¿Cuántas canicas recibe cada amigo?",
+          "enunciado": "En Diego té 3 capses amb 84 bales cadascuna. Les reparteix a parts iguals entre els seus 4 amics. Quantes bales rep cada amic?",
           "respuesta": "63",
           "opciones": null,
           "alternativas": null,
@@ -1489,7 +1489,7 @@
         },
         {
           "orden": 49,
-          "enunciado": "Una granja produce 540 litros de leche al día repartidos en 9 bidones iguales. ¿Cuántos litros lleva cada bidón?",
+          "enunciado": "Una granja produeix 540 litres de llet al dia repartits en 9 bidons iguals. Quants litres porta cada bidó?",
           "respuesta": "60",
           "opciones": null,
           "alternativas": null,
@@ -1497,7 +1497,7 @@
         },
         {
           "orden": 50,
-          "enunciado": "Un colegio organiza una excursión con 210 alumnos en autobuses de 35 plazas cada uno. ¿Cuántos autobuses necesitan?",
+          "enunciado": "Una escola organitza una excursió amb 210 alumnes en autobusos de 35 places cadascun. Quants autobusos necessiten?",
           "respuesta": "6",
           "opciones": null,
           "alternativas": null,
@@ -1505,7 +1505,7 @@
         },
         {
           "orden": 51,
-          "enunciado": "Un carpintero corta una tabla de 240 cm en trozos de 15 cm. ¿Cuántos trozos obtiene?",
+          "enunciado": "Un fuster talla una fusta de 240 cm en trossos de 15 cm. Quants trossos n'obté?",
           "respuesta": "16",
           "opciones": null,
           "alternativas": null,
@@ -1513,7 +1513,7 @@
         },
         {
           "orden": 52,
-          "enunciado": "Rosa compra 4 camisetas a 12 euros cada una y le hacen un descuento total de 8 euros. ¿Cuánto paga en total?",
+          "enunciado": "La Rosa compra 4 samarretes a 12 euros cadascuna i li fan un descompte total de 8 euros. Quant paga en total?",
           "respuesta": "40",
           "opciones": null,
           "alternativas": null,
@@ -1521,7 +1521,7 @@
         },
         {
           "orden": 53,
-          "enunciado": "Un estadio de atletismo tiene una pista de 400 metros. Un corredor da 6 vueltas completas. ¿Cuántos metros ha recorrido?",
+          "enunciado": "Un estadi d'atletisme té una pista de 400 metres. Un corredor fa 6 voltes senceres. Quants metres ha recorregut?",
           "respuesta": "2400",
           "opciones": null,
           "alternativas": null,
@@ -1529,7 +1529,7 @@
         },
         {
           "orden": 54,
-          "enunciado": "Una cooperativa recoge 1250 kilos de manzanas y los reparte en cajas de 25 kilos. ¿Cuántas cajas necesita?",
+          "enunciado": "Una cooperativa recull 1250 quilos de pomes i els reparteix en caixes de 25 quilos. Quantes caixes necessita?",
           "respuesta": "50",
           "opciones": null,
           "alternativas": null,
@@ -1537,7 +1537,7 @@
         },
         {
           "orden": 55,
-          "enunciado": "Un cine tiene 3 salas. Cada sala tiene 18 filas de 12 butacas. ¿Cuántas butacas tiene el cine en total?",
+          "enunciado": "Un cinema té 3 sales. Cada sala té 18 files de 12 butaques. Quantes butaques té el cinema en total?",
           "respuesta": "648",
           "opciones": null,
           "alternativas": null,
@@ -1545,7 +1545,7 @@
         },
         {
           "orden": 56,
-          "enunciado": "En una granja hay 45 vacas y el doble de ovejas que de vacas. ¿Cuántas ovejas hay?",
+          "enunciado": "En una granja hi ha 45 vaques i el doble d'ovelles que de vaques. Quantes ovelles hi ha?",
           "respuesta": "90",
           "opciones": null,
           "alternativas": null,
@@ -1553,7 +1553,7 @@
         },
         {
           "orden": 57,
-          "enunciado": "Un tren sale con 480 pasajeros. En la primera estación bajan 125 y suben 60. ¿Cuántos pasajeros hay ahora?",
+          "enunciado": "Un tren surt amb 480 passatgers. A la primera estació en baixen 125 i en pugen 60. Quants passatgers hi ha ara?",
           "respuesta": "415",
           "opciones": null,
           "alternativas": null,
@@ -1561,7 +1561,7 @@
         },
         {
           "orden": 58,
-          "enunciado": "Una fábrica de galletas envasa 18 galletas por paquete. Si produce 900 galletas, ¿cuántos paquetes completos puede hacer?",
+          "enunciado": "Una fàbrica de galetes envasa 18 galetes per paquet. Si en produeix 900, quants paquets complets pot fer?",
           "respuesta": "50",
           "opciones": null,
           "alternativas": null,
@@ -1569,7 +1569,7 @@
         },
         {
           "orden": 59,
-          "enunciado": "Carlos ha leído 45 páginas cada día durante 6 días. Si el libro tiene 300 páginas, ¿cuántas páginas le quedan por leer?",
+          "enunciado": "En Carles ha llegit 45 pàgines cada dia durant 6 dies. Si el llibre té 300 pàgines, quantes pàgines li queden per llegir?",
           "respuesta": "30",
           "opciones": null,
           "alternativas": null,
@@ -1577,7 +1577,7 @@
         },
         {
           "orden": 60,
-          "enunciado": "Un parque de atracciones vende 3 veces más entradas el sábado que el viernes. Si el viernes vendió 140 entradas, ¿cuántas vendió el sábado?",
+          "enunciado": "Un parc d'atraccions ven 3 vegades més entrades el dissabte que el divendres. Si el divendres en va vendre 140, quantes en va vendre el dissabte?",
           "respuesta": "420",
           "opciones": null,
           "alternativas": null,
@@ -1585,7 +1585,7 @@
         },
         {
           "orden": 61,
-          "enunciado": "Un agricultor reparte 720 kilos de patatas entre 8 camiones a partes iguales. ¿Cuántos kilos lleva cada camión?",
+          "enunciado": "Un pagès reparteix 720 quilos de patates a parts iguals entre 8 camions. Quants quilos porta cada camió?",
           "respuesta": "90",
           "opciones": null,
           "alternativas": null,
@@ -1593,7 +1593,7 @@
         },
         {
           "orden": 62,
-          "enunciado": "Una editorial imprime 25 libros por caja. Si necesita enviar 675 libros, ¿cuántas cajas completas puede llenar?",
+          "enunciado": "Una editorial posa 25 llibres a cada caixa. Si ha d'enviar 675 llibres, quantes caixes completes pot omplir?",
           "respuesta": "27",
           "opciones": null,
           "alternativas": null,
@@ -1612,7 +1612,7 @@
           "respuesta": "60",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 2,
@@ -1620,7 +1620,7 @@
           "respuesta": "14",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 3,
@@ -1628,7 +1628,7 @@
           "respuesta": "360",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 4,
@@ -1636,7 +1636,7 @@
           "respuesta": "8",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 5,
@@ -1644,7 +1644,7 @@
           "respuesta": "3480",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 6,
@@ -1652,7 +1652,7 @@
           "respuesta": "240",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 7,
@@ -1660,7 +1660,7 @@
           "respuesta": "6",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 8,
@@ -1668,7 +1668,7 @@
           "respuesta": "14400",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 9,
@@ -1676,7 +1676,7 @@
           "respuesta": "90",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 10,
@@ -1684,7 +1684,7 @@
           "respuesta": "1620",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 11,
@@ -1692,7 +1692,7 @@
           "respuesta": "15",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 12,
@@ -1700,7 +1700,7 @@
           "respuesta": "216",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 13,
@@ -1708,7 +1708,7 @@
           "respuesta": "40",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 14,
@@ -1716,7 +1716,7 @@
           "respuesta": "9",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 15,
@@ -1724,7 +1724,7 @@
           "respuesta": "77",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 16,
@@ -1732,7 +1732,7 @@
           "respuesta": "30",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 17,
@@ -1740,7 +1740,7 @@
           "respuesta": "10",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 18,
@@ -1748,7 +1748,7 @@
           "respuesta": "126",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 19,
@@ -1756,7 +1756,7 @@
           "respuesta": "16",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 20,
@@ -1764,7 +1764,7 @@
           "respuesta": "450",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 21,
@@ -1772,7 +1772,7 @@
           "respuesta": "500",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 22,
@@ -1780,7 +1780,7 @@
           "respuesta": "27",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 23,
@@ -1788,7 +1788,7 @@
           "respuesta": "30",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 24,
@@ -1796,7 +1796,7 @@
           "respuesta": "63",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 25,
@@ -1804,7 +1804,7 @@
           "respuesta": "18",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 26,
@@ -1812,7 +1812,7 @@
           "respuesta": "60",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 27,
@@ -1820,7 +1820,7 @@
           "respuesta": "4",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 28,
@@ -1828,7 +1828,7 @@
           "respuesta": "7",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 29,
@@ -1836,7 +1836,7 @@
           "respuesta": "12",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 30,
@@ -1844,7 +1844,7 @@
           "respuesta": "6",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 31,
@@ -1852,7 +1852,7 @@
           "respuesta": "2500",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 32,
@@ -1860,7 +1860,7 @@
           "respuesta": "80",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 33,
@@ -1868,7 +1868,7 @@
           "respuesta": "135",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 34,
@@ -1876,7 +1876,7 @@
           "respuesta": "90",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 35,
@@ -1884,7 +1884,7 @@
           "respuesta": "40",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 36,
@@ -1892,7 +1892,7 @@
           "respuesta": "84",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 37,
@@ -1900,7 +1900,7 @@
           "respuesta": "200",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 38,
@@ -1908,7 +1908,7 @@
           "respuesta": "384",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 39,
@@ -1916,7 +1916,7 @@
           "respuesta": "64",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 40,
@@ -1924,7 +1924,7 @@
           "respuesta": "2",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 41,
@@ -1932,7 +1932,7 @@
           "respuesta": "60",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 42,
@@ -1940,7 +1940,7 @@
           "respuesta": "81",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 43,
@@ -1948,7 +1948,7 @@
           "respuesta": "8",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 44,
@@ -1956,7 +1956,7 @@
           "respuesta": "4",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 45,
@@ -1964,7 +1964,7 @@
           "respuesta": "21",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 46,
@@ -1972,7 +1972,7 @@
           "respuesta": "120",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 47,
@@ -1980,7 +1980,7 @@
           "respuesta": "180",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 48,
@@ -1988,7 +1988,7 @@
           "respuesta": "20",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 49,
@@ -1996,7 +1996,7 @@
           "respuesta": "180",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 50,
@@ -2004,7 +2004,7 @@
           "respuesta": "375",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 51,
@@ -2012,7 +2012,7 @@
           "respuesta": "48",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 52,
@@ -2020,7 +2020,7 @@
           "respuesta": "3",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 53,
@@ -2028,7 +2028,7 @@
           "respuesta": "41",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 54,
@@ -2036,7 +2036,7 @@
           "respuesta": "8",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 55,
@@ -2044,7 +2044,7 @@
           "respuesta": "720",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 56,
@@ -2052,7 +2052,7 @@
           "respuesta": "17",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 57,
@@ -2060,7 +2060,7 @@
           "respuesta": "405",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 58,
@@ -2068,7 +2068,7 @@
           "respuesta": "216",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 59,
@@ -2076,7 +2076,7 @@
           "respuesta": "310",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 60,
@@ -2084,7 +2084,7 @@
           "respuesta": "13",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
           "orden": 61,
@@ -2092,7 +2092,7 @@
           "respuesta": "8",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         }
       ]
     },

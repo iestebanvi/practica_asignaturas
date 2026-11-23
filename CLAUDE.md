@@ -14,7 +14,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
   - Web por cursos (1r–6è; 2n–5è inactivos y vacíos), interfaz en catalán, pantalla completa.
   - Todo el contenido en Supabase y editable desde la consola del profesorado (`/profesorat`, contraseña `TEACHER_PASSWD`): preguntas, importar/exportar, cursos, asignaturas, modos, bancos, vista previa.
   - Alumnos con àlies + PIN por curso: bloques de preguntas, récords personales y del curso, "Per repassar" en la BD.
-- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1 (raíces cuadradas) y M2 (dificultad por modo) hechas**; **M3 en curso** (dificultad de 6è aplicada; problemas nuevos importados inactivos y traducción de los básicos pendientes de revisión: `docs/matematiques/problemes-revisio.md`). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
+- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1 (raíces cuadradas) y M2 (dificultad por modo) hechas**; **M1–M3 hechas** (raíces, dificultad por modo, 6è al nivel del currículum con problemas nuevos y básicos en catalán); siguiente **M4 (decimales)**. Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
 - **Despliegue**: push a `main` = producción (ver README). Antes, `make test`, `make test-backend` y `make test-e2e`; después, `make test-e2e-prod`.
 
 ## Mapa de temas
