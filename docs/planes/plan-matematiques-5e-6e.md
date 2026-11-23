@@ -81,7 +81,7 @@ Con la consola (sin código): activar 5è, crear Matemàtiques, crear los modos 
 | **M2** | Parámetros por modo (§4.1) para suma, resta, multiplicación, división, estimación y series; respuestas con decimales | Base para subir el nivel y para 5è |
 | **M3** | Ajustar 6è: parámetros de los modos de cálculo al nivel 5è–6è; **traducir al catalán los 62 problemas**; nuevo banco **"Problemes 6è"** (unos 60, redactados por Claude, importados inactivos para revisarlos) | 6è a la altura del currículum en lo que ya tiene |
 | **M4** ✅ | Decimales (§10): respuestas con coma y 8 tipos nuevos | Modo "Decimals" en 6è |
-| **M5** | Fracciones (con dibujo) | |
+| **M5** ✅ | Fracciones (§11): dibujo, respuesta con dos casillas y 8 tipos | Modo "Fraccions" en 6è |
 | **M6** | Porcentajes y proporcionalidad | |
 | **M7** | Divisibilidad y operaciones combinadas | |
 | **M8** | Medida (conversiones) | |
@@ -152,3 +152,23 @@ Modo nuevo **"Arrels quadrades"** en 6è › Matemàtiques, con estos tipos de e
 - **Parámetros por modo**: `decimals` (1–3) y `xifresEnteres` (1–3). 6è: hasta milésimas y parte entera de 2 cifras; 5è (M9): hasta centésimas.
 - **Fuera de M4**: dividir entre decimales; problemas con respuesta decimal (se pueden añadir al banco sin código).
 - Tests: unitarios de cada generador y de la lectura con coma; e2e `e2e/decimals.spec.js` (crea el modo y acierta cada tipo escribiendo con coma; un fallo muestra la solución con coma).
+
+## 11. M5 ✅ hecha (2026-11-23): fracciones
+
+- **Respuesta con fracciones**: dos casillas apiladas (numerador / denominador, teclado numérico), componente `EntradaFraccio.jsx`; el valor viaja como texto `"n/d"`. Vale cualquier equivalente (6/8 por 3/4, 1 por 4/4) salvo en "Simplifica", donde se exige la irreducible.
+- **Enunciados** con las fracciones apiladas (`TextFraccions.jsx`) y **dibujo** de pastel o barra (`FraccioDibuix.jsx`).
+- **Tipos nuevos** (`frontend/src/logic/fraccions.js`):
+
+  | Tipo | Ejemplo | Respuesta |
+  |---|---|---|
+  | `fraccio-dibuix` | Quina fracció està pintada? (pastel o barra) | 3/8 |
+  | `fraccio-equivalent` | 2/3 = ?/12 | 8 |
+  | `fraccio-simplificar` | Simplifica 12/18 | 2/3 (irreducible) |
+  | `fraccio-comparar` | 3/4 ☐ 5/8 | `<` `=` `>` (mismo y distinto denominador, equivalentes) |
+  | `fraccio-quantitat` | 3/4 de 20 | 15 |
+  | `fraccio-suma`, `fraccio-resta` | 1/2 + 1/4 | 3/4 (denominadores iguales o uno múltiplo del otro; sin m.c.m.) |
+  | `fraccio-decimal` | 3/4 = | 0,75 (denominadores 2, 4, 5, 10, 20, 25, 100) |
+
+- **Parámetro por modo**: `denominadorMax` (4–20; 6è: 12).
+- **Fuera de M5**: porcentajes (M6); multiplicar y dividir fracciones (no es de primaria).
+- Tests: unitarios (`fraccions.test.js`) y e2e `e2e/fraccions.spec.js`.

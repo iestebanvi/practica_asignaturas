@@ -24,9 +24,13 @@ import Reloj from '../components/Reloj.jsx'
 import Volcan from '../components/Volcan.jsx'
 import Riu from '../components/Riu.jsx'
 import Figura from '../components/Figura.jsx'
+import FraccioDibuix from '../components/FraccioDibuix.jsx'
+import TextFraccions from '../components/TextFraccions.jsx'
+import EntradaFraccio from '../components/EntradaFraccio.jsx'
+import { TIPOS_RESPOSTA_FRACCIO } from '../logic/fraccions.js'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
-const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadrat', 'arrel-imatge', 'decimal-posicio', 'decimal-arrodonir']
+const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadrat', 'arrel-imatge', 'decimal-posicio', 'decimal-arrodonir', 'fraccio-dibuix']
 const TIPOS_OPCION_MULTIPLE = [
   'hora',
   'vocabulario',
@@ -42,6 +46,7 @@ const TIPOS_OPCION_MULTIPLE = [
   'arrel-entera',
   'decimal-comparar',
   'decimal-extrem',
+  'fraccio-comparar',
 ]
 const TIPOS_ESCRITOS = ['vocabulario-escrito', 'there-be']
 const TIPOS_ENUNCIADO_TEXTO = [
@@ -60,13 +65,23 @@ const TIPOS_ENUNCIADO_TEXTO = [
   'arrel-entera',
   'decimal-comparar',
   'decimal-extrem',
+  'fraccio-comparar',
 ]
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
 // "=" (operación exacta).
 const TIPOS_SIMBOLO_APROXIMADO = ['estimacion']
 // Enunciados que ya son una pregunta completa: no llevan "=" al final.
-const TIPOS_SIN_SIMBOLO = ['costat-quadrat', 'arrel-quadrat', 'arrel-imatge', 'decimal-posicio', 'decimal-arrodonir']
+const TIPOS_SIN_SIMBOLO = [
+  'costat-quadrat',
+  'arrel-quadrat',
+  'arrel-imatge',
+  'decimal-posicio',
+  'decimal-arrodonir',
+  'fraccio-dibuix',
+  'fraccio-equivalent',
+  'fraccio-simplificar',
+]
 // Respuestas numéricas con decimales: campo de texto con teclado decimal (el
 // campo "number" del navegador no acepta bien la coma).
 const TIPOS_RESPOSTA_DECIMAL = [
@@ -75,7 +90,13 @@ const TIPOS_RESPOSTA_DECIMAL = [
   'decimal-resta',
   'decimal-potencia10',
   'decimal-per-natural',
+  'fraccio-decimal',
 ]
+
+// Enunciados con fracciones "3/4": se dibujan apiladas.
+function Enunciat({ ejercicio }) {
+  return ejercicio.tipo.startsWith('fraccio-') ? <TextFraccions text={ejercicio.enunciado} /> : ejercicio.enunciado
+}
 
 // Las soluciones numéricas se enseñan como se escriben en catalán (3,5).
 function mostrar(valor) {
@@ -324,7 +345,8 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
 
   function comprobar(evento) {
     evento.preventDefault()
-    if (respuesta === '') return
+    // (En las fracciones, sin numerador todavía no hay respuesta.)
+    if (respuesta === '' || respuesta.startsWith('/')) return
     procesarRespuesta(respuesta)
   }
 
@@ -379,8 +401,11 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
   // los enunciados con figura), ni gigantes como una operación ni pequeñas
   // como un problema.
   const esPreguntaCurta =
-    Boolean(ejercicio.figura) || ['arrel-quadrat', 'decimal-posicio', 'decimal-arrodonir'].includes(ejercicio.tipo)
+    Boolean(ejercicio.figura || ejercicio.dibuix) ||
+    ['arrel-quadrat', 'decimal-posicio', 'decimal-arrodonir', 'fraccio-simplificar'].includes(ejercicio.tipo)
   const esDecimal = TIPOS_RESPOSTA_DECIMAL.includes(ejercicio.tipo)
+  const esFraccio = TIPOS_RESPOSTA_FRACCIO.includes(ejercicio.tipo)
+  const classeResposta = feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''
   const esHora = ejercicio.tipo === 'hora'
   const esMediImagen = ejercicio.tipo === 'medi-imatge'
   const esOpcionMultiple = TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)
@@ -447,7 +472,12 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
         )}
         {esMediImagen && ejercicio.diagrama === 'riu' && <Riu parteDestacada={ejercicio.parteId} />}
         {ejercicio.figura && <Figura figura={ejercicio.figura} />}
-        {esEnunciadoTexto && <p className="enunciado enunciado-texto">{ejercicio.enunciado}</p>}
+        {ejercicio.dibuix && <FraccioDibuix dibuix={ejercicio.dibuix} />}
+        {esEnunciadoTexto && (
+          <p className="enunciado enunciado-texto" data-enunciat={ejercicio.enunciado}>
+            <Enunciat ejercicio={ejercicio} />
+          </p>
+        )}
 
         {esEscrito && (
           <p className="instruccion">{ejercicio.instruccion ?? T.escriuParaula(ejercicio.direccion)}</p>
@@ -483,20 +513,31 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
           <form onSubmit={comprobar} className="ejercicio">
             <p
               className={`enunciado${esProblema ? ' enunciado-problema' : ''}${esPreguntaCurta ? ' enunciado-figura' : ''}`}
+              data-enunciat={ejercicio.enunciado}
             >
-              {ejercicio.enunciado}
+              <Enunciat ejercicio={ejercicio} />
               {!esProblema && ` ${simboloCierre(ejercicio.tipo)}`}
             </p>
-            <input
-              ref={inputRef}
-              type={esDecimal ? 'text' : 'number'}
-              inputMode={esDecimal ? 'decimal' : 'numeric'}
-              autoComplete="off"
-              className={feedback === 'correcto' ? 'correcta' : feedback === 'incorrecto' ? 'incorrecta' : ''}
-              value={respuesta}
-              onChange={(e) => setRespuesta(e.target.value)}
-              disabled={feedback !== null}
-            />
+            {esFraccio ? (
+              <EntradaFraccio
+                valor={respuesta}
+                onChange={setRespuesta}
+                inputRef={inputRef}
+                className={classeResposta}
+                disabled={feedback !== null}
+              />
+            ) : (
+              <input
+                ref={inputRef}
+                type={esDecimal ? 'text' : 'number'}
+                inputMode={esDecimal ? 'decimal' : 'numeric'}
+                autoComplete="off"
+                className={classeResposta}
+                value={respuesta}
+                onChange={(e) => setRespuesta(e.target.value)}
+                disabled={feedback !== null}
+              />
+            )}
             <button type="submit" disabled={feedback !== null}>
               {T.comprova}
             </button>

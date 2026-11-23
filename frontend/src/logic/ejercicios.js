@@ -39,6 +39,18 @@ import {
   generarDecimalPotencia10,
   generarDecimalPerNatural,
 } from './decimals.js'
+import {
+  generarFraccioDibuix,
+  generarFraccioEquivalent,
+  generarFraccioSimplificar,
+  generarFraccioComparar,
+  generarFraccioQuantitat,
+  generarFraccioSuma,
+  generarFraccioResta,
+  generarFraccioDecimal,
+  TIPOS_RESPOSTA_FRACCIO,
+  respostaFraccioCorrecta,
+} from './fraccions.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -75,6 +87,14 @@ const GENERADORES = {
   'decimal-resta': generarDecimalResta,
   'decimal-potencia10': generarDecimalPotencia10,
   'decimal-per-natural': generarDecimalPerNatural,
+  'fraccio-dibuix': generarFraccioDibuix,
+  'fraccio-equivalent': generarFraccioEquivalent,
+  'fraccio-simplificar': generarFraccioSimplificar,
+  'fraccio-comparar': generarFraccioComparar,
+  'fraccio-quantitat': generarFraccioQuantitat,
+  'fraccio-suma': generarFraccioSuma,
+  'fraccio-resta': generarFraccioResta,
+  'fraccio-decimal': generarFraccioDecimal,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -94,6 +114,7 @@ const TIPOS_RESPUESTA_TEXTO = [
   'arrel-entera',
   'decimal-comparar',
   'decimal-extrem',
+  'fraccio-comparar',
 ]
 
 // Parámetros de dificultad que entiende cada generador (los que puede poner un
@@ -114,6 +135,13 @@ export const PARAMETRES_ACCEPTATS = {
   'decimal-resta': ['decimals', 'xifresEnteres'],
   'decimal-potencia10': ['decimals', 'xifresEnteres'],
   'decimal-per-natural': ['decimals', 'xifresEnteres'],
+  'fraccio-dibuix': ['denominadorMax'],
+  'fraccio-equivalent': ['denominadorMax'],
+  'fraccio-simplificar': ['denominadorMax'],
+  'fraccio-comparar': ['denominadorMax'],
+  'fraccio-quantitat': ['denominadorMax'],
+  'fraccio-suma': ['denominadorMax'],
+  'fraccio-resta': ['denominadorMax'],
 }
 
 export function generarEjercicio(operacion, nivel = 'facil', params = {}) {
@@ -135,6 +163,9 @@ export function comprobarRespuesta(ejercicio, respuestaUsuario) {
   }
   if (ejercicio.tipo === 'there-be') {
     return respuestaThereBeCorrecta(ejercicio, respuestaUsuario)
+  }
+  if (TIPOS_RESPOSTA_FRACCIO.includes(ejercicio.tipo)) {
+    return respostaFraccioCorrecta(ejercicio, respuestaUsuario)
   }
   if (TIPOS_RESPUESTA_TEXTO.includes(ejercicio.tipo)) {
     return respuestaUsuario === ejercicio.respuesta

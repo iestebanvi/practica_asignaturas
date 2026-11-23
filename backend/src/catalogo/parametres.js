@@ -11,6 +11,9 @@ const DECIMALS = { tipus: 'enter', etiqueta: 'Decimals (1 = dècimes, 2 = centè
 const XIFRES_ENTERES = { tipus: 'enter', etiqueta: 'Xifres de la part entera', min: 1, max: 3 }
 const AMB_DECIMALS = { decimals: DECIMALS, xifresEnteres: XIFRES_ENTERES }
 
+// Fracciones: denominador más grande que puede salir.
+const AMB_DENOMINADOR = { denominadorMax: { tipus: 'enter', etiqueta: 'Denominador màxim', min: 4, max: 20 } }
+
 export const PARAMETRES = {
   suma: {
     max: { tipus: 'enter', etiqueta: 'Nombre màxim', min: 5, max: 1000000 },
@@ -44,6 +47,13 @@ export const PARAMETRES = {
   'decimal-resta': AMB_DECIMALS,
   'decimal-potencia10': AMB_DECIMALS,
   'decimal-per-natural': AMB_DECIMALS,
+  'fraccio-dibuix': AMB_DENOMINADOR,
+  'fraccio-equivalent': AMB_DENOMINADOR,
+  'fraccio-simplificar': AMB_DENOMINADOR,
+  'fraccio-comparar': AMB_DENOMINADOR,
+  'fraccio-quantitat': AMB_DENOMINADOR,
+  'fraccio-suma': AMB_DENOMINADOR,
+  'fraccio-resta': AMB_DENOMINADOR,
 }
 
 const NOMS_TIPUS = {
@@ -61,6 +71,13 @@ const NOMS_TIPUS = {
   'decimal-resta': 'Decimals (restes)',
   'decimal-potencia10': 'Decimals (× i ÷ per 10, 100, 1000)',
   'decimal-per-natural': 'Decimals (decimal × natural)',
+  'fraccio-dibuix': 'Fraccions (llegir un dibuix)',
+  'fraccio-equivalent': 'Fraccions (equivalents)',
+  'fraccio-simplificar': 'Fraccions (simplificar)',
+  'fraccio-comparar': 'Fraccions (comparar (< > =))',
+  'fraccio-quantitat': 'Fraccions (fracció d’una quantitat)',
+  'fraccio-suma': 'Fraccions (sumes)',
+  'fraccio-resta': 'Fraccions (restes)',
 }
 
 function valorValid(spec, valor) {
