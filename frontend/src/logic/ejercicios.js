@@ -22,6 +22,13 @@ import {
   generarPotenciaDescomposicio,
 } from './potencies.js'
 import { generarThereBe, respuestaThereBeCorrecta } from './thereBe.js'
+import {
+  generarArrelExacta,
+  generarArrelQuadrat,
+  generarQuadratPerfecte,
+  generarArrelEntera,
+  generarArrelImatge,
+} from './arrels.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -45,6 +52,11 @@ const GENERADORES = {
   'potencia-serie': generarPotenciaSerie,
   'potencia-comparar': generarPotenciaComparar,
   'potencia-descomposicio': generarPotenciaDescomposicio,
+  'arrel-exacta': generarArrelExacta,
+  'arrel-quadrat': generarArrelQuadrat,
+  'quadrat-perfecte': generarQuadratPerfecte,
+  'arrel-entera': generarArrelEntera,
+  'arrel-imatge': generarArrelImatge,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -60,6 +72,8 @@ const TIPOS_RESPUESTA_TEXTO = [
   'potencia-base10',
   'potencia-imatge',
   'potencia-comparar',
+  'quadrat-perfecte',
+  'arrel-entera',
 ]
 
 export function generarEjercicio(operacion, nivel = 'facil') {

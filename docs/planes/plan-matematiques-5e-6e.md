@@ -98,7 +98,7 @@ El orden de M4–M8 se puede cambiar según el tema que estén dando en clase en
 5. **Traducir al catalán** los 62 problemas actuales. ✅
 6. **Empezar por las raíces cuadradas** (es lo que Nil está empezando en clase). ✅
 
-## 7. Detalle de M1: raíces cuadradas ❓ (pendiente de aprobar)
+## 7. Detalle de M1: raíces cuadradas ✅ hecha (2026-11-23)
 
 Modo nuevo **"Arrels quadrades"** en 6è › Matemàtiques, con estos tipos de ejercicio (generados):
 
@@ -114,3 +114,5 @@ Modo nuevo **"Arrels quadrades"** en 6è › Matemàtiques, con estos tipos de e
 - Cuadrados perfectos de 1² a 20² (hasta 400), con más peso los de hasta 12² al principio.
 - Cada tipo, en el catálogo de tipos (frontend y backend) con su nombre en la consola; tests unitarios de cada generador y un e2e del modo.
 - El modo se crea desde la consola (sin código) una vez desplegados los tipos; también se podrán añadir algunos tipos de raíces al modo "Potències" si se quiere practicar todo junto.
+
+**Implementación (M1):** generadores en `frontend/src/logic/arrels.js` (tipos `arrel-exacta`, `arrel-quadrat`, `quadrat-perfecte`, `arrel-entera`, `arrel-imatge`; la cuadrícula reutiliza `Figura` con forma `quadricula`), registrados en `ejercicios.js`, en el catálogo del backend y con nombre en la consola (grupo "Arrels quadrades"). La raíz entera incluye como distractor el error típico de dividir entre 2 (√50 → "25 i 26"). Modo "Arrels quadrades" creado en 6è › Matemàtiques desde la consola, con los 5 tipos + `costat-quadrat`.

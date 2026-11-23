@@ -25,7 +25,7 @@ import Riu from '../components/Riu.jsx'
 import Figura from '../components/Figura.jsx'
 
 const CELEBRACIONES = ['🎉', '🌟', '🦄', '🐉', '🚀', '🥳', '🌈', '🐬']
-const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat']
+const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadrat', 'arrel-imatge']
 const TIPOS_OPCION_MULTIPLE = [
   'hora',
   'vocabulario',
@@ -37,6 +37,8 @@ const TIPOS_OPCION_MULTIPLE = [
   'potencia-base10',
   'potencia-imatge',
   'potencia-comparar',
+  'quadrat-perfecte',
+  'arrel-entera',
 ]
 const TIPOS_ESCRITOS = ['vocabulario-escrito', 'there-be']
 const TIPOS_ENUNCIADO_TEXTO = [
@@ -51,13 +53,15 @@ const TIPOS_ENUNCIADO_TEXTO = [
   'potencia-base10',
   'potencia-imatge',
   'potencia-comparar',
+  'quadrat-perfecte',
+  'arrel-entera',
 ]
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
 // "=" (operación exacta).
 const TIPOS_SIMBOLO_APROXIMADO = ['estimacion']
 // Enunciados que ya son una pregunta completa: no llevan "=" al final.
-const TIPOS_SIN_SIMBOLO = ['costat-quadrat']
+const TIPOS_SIN_SIMBOLO = ['costat-quadrat', 'arrel-quadrat', 'arrel-imatge']
 
 function simboloCierre(tipo) {
   if (TIPOS_SIN_SIMBOLO.includes(tipo)) return ''
@@ -352,6 +356,10 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
   }
 
   const esProblema = ['problema', 'costat-quadrat'].includes(ejercicio.tipo)
+  // Preguntas cortas en forma de frase: tamaño intermedio y centradas (como
+  // los enunciados con figura), ni gigantes como una operación ni pequeñas
+  // como un problema.
+  const esPreguntaCurta = Boolean(ejercicio.figura) || ['arrel-quadrat'].includes(ejercicio.tipo)
   const esHora = ejercicio.tipo === 'hora'
   const esMediImagen = ejercicio.tipo === 'medi-imatge'
   const esOpcionMultiple = TIPOS_OPCION_MULTIPLE.includes(ejercicio.tipo)
@@ -453,7 +461,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
         ) : (
           <form onSubmit={comprobar} className="ejercicio">
             <p
-              className={`enunciado${esProblema ? ' enunciado-problema' : ''}${ejercicio.figura ? ' enunciado-figura' : ''}`}
+              className={`enunciado${esProblema ? ' enunciado-problema' : ''}${esPreguntaCurta ? ' enunciado-figura' : ''}`}
             >
               {ejercicio.enunciado}
               {!esProblema && ` ${simboloCierre(ejercicio.tipo)}`}
