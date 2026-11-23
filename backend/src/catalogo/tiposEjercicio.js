@@ -46,6 +46,8 @@ export const TIPOS_EJERCICIO = {
   'fraccio-suma': null,
   'fraccio-resta': null,
   'fraccio-decimal': null,
+  combinada: null,
+  'combinada-parentesi': null,
   problema: 'numerica',
   vocabulario: 'traduccio',
   'vocabulario-escrito': 'traduccio',

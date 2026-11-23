@@ -6,6 +6,7 @@
 //
 // tipus: 'enter' (número entero entre min y max), 'llista' (lista de enteros
 // entre min y max, p. ej. tablas de multiplicar) u 'opcio' (uno de "valors").
+
 // Decimales: cuántos decimales (hasta milésimas) y cifras de la parte entera.
 const DECIMALS = { tipus: 'enter', etiqueta: 'Decimals (1 = dècimes, 2 = centèsimes, 3 = mil·lèsimes)', min: 1, max: 3 }
 const XIFRES_ENTERES = { tipus: 'enter', etiqueta: 'Xifres de la part entera', min: 1, max: 3 }
@@ -13,6 +14,13 @@ const AMB_DECIMALS = { decimals: DECIMALS, xifresEnteres: XIFRES_ENTERES }
 
 // Fracciones: denominador más grande que puede salir.
 const AMB_DENOMINADOR = { denominadorMax: { tipus: 'enter', etiqueta: 'Denominador màxim', min: 4, max: 20 } }
+
+// Operaciones combinadas: cuántas operaciones (sin poner nada, 2 o 3 al azar)
+// y sumandos máximos (los factores y divisores van siempre del 2 al 10).
+const COMBINADES = {
+  operacions: { tipus: 'enter', etiqueta: 'Operacions per exercici (2 o 3; buit = barrejades)', min: 2, max: 3 },
+  max: { tipus: 'enter', etiqueta: 'Sumands màxims', min: 10, max: 100 },
+}
 
 export const PARAMETRES = {
   suma: {
@@ -54,6 +62,8 @@ export const PARAMETRES = {
   'fraccio-quantitat': AMB_DENOMINADOR,
   'fraccio-suma': AMB_DENOMINADOR,
   'fraccio-resta': AMB_DENOMINADOR,
+  combinada: COMBINADES,
+  'combinada-parentesi': COMBINADES,
 }
 
 const NOMS_TIPUS = {
@@ -78,6 +88,8 @@ const NOMS_TIPUS = {
   'fraccio-quantitat': 'Fraccions (fracció d’una quantitat)',
   'fraccio-suma': 'Fraccions (sumes)',
   'fraccio-resta': 'Fraccions (restes)',
+  combinada: 'Operacions combinades (sense parèntesis)',
+  'combinada-parentesi': 'Operacions combinades (amb parèntesis)',
 }
 
 function valorValid(spec, valor) {

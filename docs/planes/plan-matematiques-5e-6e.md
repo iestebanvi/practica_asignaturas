@@ -82,12 +82,13 @@ Con la consola (sin código): activar 5è, crear Matemàtiques, crear los modos 
 | **M3** | Ajustar 6è: parámetros de los modos de cálculo al nivel 5è–6è; **traducir al catalán los 62 problemas**; nuevo banco **"Problemes 6è"** (unos 60, redactados por Claude, importados inactivos para revisarlos) | 6è a la altura del currículum en lo que ya tiene |
 | **M4** ✅ | Decimales (§10): respuestas con coma y 8 tipos nuevos | Modo "Decimals" en 6è |
 | **M5** ✅ | Fracciones (§11): dibujo, respuesta con dos casillas y 8 tipos | Modo "Fraccions" en 6è |
-| **M6** | Porcentajes y proporcionalidad | |
-| **M7** | Divisibilidad y operaciones combinadas | |
-| **M8** | Medida (conversiones) | |
+| **M6** ✅ | Operaciones combinadas (§12), adelantadas porque las dan en clase (2026-11-23) | Modo "Operacions combinades" en 6è |
+| **M7** | Porcentajes y proporcionalidad | |
+| **M8** | Divisibilidad | |
+| **M8b** | Medida (conversiones) | |
 | **M9** | Montar 5è con todo lo anterior (en la consola) y activarlo | 5è disponible |
 
-El orden de M4–M8 se puede cambiar según el tema que estén dando en clase en cada momento.
+El orden de M4–M8b se puede cambiar según el tema que estén dando en clase en cada momento.
 
 ## 6. Decisiones (2026-11-23)
 
@@ -172,3 +173,12 @@ Modo nuevo **"Arrels quadrades"** en 6è › Matemàtiques, con estos tipos de e
 - **Parámetro por modo**: `denominadorMax` (4–20; 6è: 12).
 - **Fuera de M5**: porcentajes (M6); multiplicar y dividir fracciones (no es de primaria).
 - Tests: unitarios (`fraccions.test.js`) y e2e `e2e/fraccions.spec.js`.
+
+## 12. M6 ✅ hecha (2026-11-23): operaciones combinadas
+
+Nil las estaba dando en clase, así que se separaron de la antigua M7 (divisibilidad y operaciones combinadas) y se hicieron antes. Porcentajes pasa a M7 y divisibilidad a M8.
+
+- **Tipos** (`frontend/src/logic/combinades.js`): `combinada` (sin paréntesis: `8 + 4 × 3`) y `combinada-parentesi` (`(8 + 4) × 3`, `6 + (15 - 3) ÷ 4`, `(7 + 5) × (6 - 2)`). Respuesta numérica normal.
+- **Cómo se generan**: plantillas de 2 o 3 operaciones rellenadas con números hasta que todas las divisiones son exactas, nada es negativo, el resultado no es 0 ni enorme, no se multiplica ni divide por 1 y **hay trampa**: de izquierda a derecha (sin paréntesis) o quitando los paréntesis sale otro resultado. Factores y divisores del 2 al 10.
+- **Parámetros por modo**: `operacions` (2 o 3; vacío = mezcladas) y `max` (sumandos, 10–100; por defecto 20).
+- Tests: unitarios (`combinades.test.js`, con un evaluador propio que respeta prioridad y paréntesis) y e2e `e2e/combinades.spec.js`.

@@ -51,6 +51,7 @@ import {
   TIPOS_RESPOSTA_FRACCIO,
   respostaFraccioCorrecta,
 } from './fraccions.js'
+import { generarCombinada, generarCombinadaParentesi } from './combinades.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -95,6 +96,8 @@ const GENERADORES = {
   'fraccio-suma': generarFraccioSuma,
   'fraccio-resta': generarFraccioResta,
   'fraccio-decimal': generarFraccioDecimal,
+  combinada: generarCombinada,
+  'combinada-parentesi': generarCombinadaParentesi,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -142,6 +145,8 @@ export const PARAMETRES_ACCEPTATS = {
   'fraccio-quantitat': ['denominadorMax'],
   'fraccio-suma': ['denominadorMax'],
   'fraccio-resta': ['denominadorMax'],
+  combinada: ['operacions', 'max'],
+  'combinada-parentesi': ['operacions', 'max'],
 }
 
 export function generarEjercicio(operacion, nivel = 'facil', params = {}) {
