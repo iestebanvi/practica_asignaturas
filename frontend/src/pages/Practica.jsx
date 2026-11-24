@@ -41,6 +41,13 @@ const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadra
   'proporcio-taula',
   'proporcio-unitat',
   'div-seguent-multiple',
+  'mesura-longitud',
+  'mesura-massa',
+  'mesura-capacitat',
+  'mesura-superficie',
+  'mesura-volum',
+  'mesura-temps',
+  'mesura-escala',
 ]
 const TIPOS_OPCION_MULTIPLE = [
   'hora',
@@ -63,6 +70,7 @@ const TIPOS_OPCION_MULTIPLE = [
   'div-criteris',
   'div-primer',
   'div-troba-primer',
+  'mesura-comparar',
 ]
 const TIPOS_ESCRITOS = ['vocabulario-escrito', 'there-be']
 const TIPOS_ENUNCIADO_TEXTO = [
@@ -87,6 +95,7 @@ const TIPOS_ENUNCIADO_TEXTO = [
   'div-criteris',
   'div-primer',
   'div-troba-primer',
+  'mesura-comparar',
 ]
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de
@@ -108,6 +117,13 @@ const TIPOS_SIN_SIMBOLO = [
   'proporcio-taula',
   'proporcio-unitat',
   'div-seguent-multiple',
+  'mesura-longitud',
+  'mesura-massa',
+  'mesura-capacitat',
+  'mesura-superficie',
+  'mesura-volum',
+  'mesura-temps',
+  'mesura-escala',
 ]
 // Respuestas numéricas con decimales: campo de texto con teclado decimal (el
 // campo "number" del navegador no acepta bien la coma).
@@ -119,6 +135,13 @@ const TIPOS_RESPOSTA_DECIMAL = [
   'decimal-per-natural',
   'fraccio-decimal',
   'percentatge-equivalencia',
+  'mesura-longitud',
+  'mesura-massa',
+  'mesura-capacitat',
+  'mesura-superficie',
+  'mesura-volum',
+  'mesura-temps',
+  'mesura-escala',
 ]
 
 // Enunciados con fracciones "3/4": se dibujan apiladas.
@@ -462,7 +485,7 @@ function Partida({ curso, modo, entorno, onFinalizar }) {
     )
   }
 
-  const esProblema = ['problema', 'costat-quadrat', 'percentatge-descompte', 'proporcio-unitat'].includes(ejercicio.tipo)
+  const esProblema = ['problema', 'costat-quadrat', 'percentatge-descompte', 'proporcio-unitat', 'mesura-escala'].includes(ejercicio.tipo)
   // Preguntas cortas en forma de frase: tamaño intermedio y centradas (como
   // los enunciados con figura), ni gigantes como una operación ni pequeñas
   // como un problema.

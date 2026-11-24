@@ -32,6 +32,14 @@ const PERCENTATGES = {
 // Divisibilidad: número más grande que sale (los criterios, siempre de 3 cifras).
 const DIVISIBILITAT = { max: { tipus: 'enter', etiqueta: 'Nombre màxim', min: 20, max: 1000 } }
 
+// Medida: decimales de los datos y peldaños de unidades que se saltan (de m a
+// cm, 2). En el tiempo, los decimales solo activan las horas con coma (1,5 h).
+const MESURA_DECIMALS = { tipus: 'enter', etiqueta: 'Decimals dels nombres (0 = només enters)', min: 0, max: 2 }
+const MESURA = {
+  decimals: MESURA_DECIMALS,
+  salts: { tipus: 'enter', etiqueta: 'Salts d’unitat com a màxim (de m a cm, 2)', min: 1, max: 3 },
+}
+
 export const PARAMETRES = {
   suma: {
     max: { tipus: 'enter', etiqueta: 'Nombre màxim', min: 5, max: 1000000 },
@@ -82,6 +90,13 @@ export const PARAMETRES = {
   'div-divisor': DIVISIBILITAT,
   'div-primer': DIVISIBILITAT,
   'div-troba-primer': DIVISIBILITAT,
+  'mesura-longitud': MESURA,
+  'mesura-massa': MESURA,
+  'mesura-capacitat': MESURA,
+  'mesura-superficie': MESURA,
+  'mesura-volum': MESURA,
+  'mesura-comparar': MESURA,
+  'mesura-temps': { decimals: MESURA_DECIMALS },
 }
 
 const NOMS_TIPUS = {
@@ -116,6 +131,13 @@ const NOMS_TIPUS = {
   'div-divisor': 'Divisibilitat (divisors)',
   'div-primer': 'Divisibilitat (és primer?)',
   'div-troba-primer': 'Divisibilitat (troba el primer)',
+  'mesura-longitud': 'Mesura (longitud)',
+  'mesura-massa': 'Mesura (massa)',
+  'mesura-capacitat': 'Mesura (capacitat)',
+  'mesura-superficie': 'Mesura (superfície)',
+  'mesura-volum': 'Mesura (volum)',
+  'mesura-temps': 'Mesura (temps)',
+  'mesura-comparar': 'Mesura (comparar)',
 }
 
 function valorValid(spec, valor) {

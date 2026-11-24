@@ -1,4 +1,4 @@
-import { randomInt, respuestaCoincide, parseNumero, numerosIguals } from './common.js'
+import { randomInt, respuestaCoincide, parseNumero, parseNumeroAmbMilers, numerosIguals } from './common.js'
 import { generarSuma } from './sumas.js'
 import { generarResta } from './restas.js'
 import { generarMultiplicacion } from './multiplicaciones.js'
@@ -68,6 +68,16 @@ import {
   generarDivPrimer,
   generarDivTrobaPrimer,
 } from './divisibilitat.js'
+import {
+  generarMesuraLongitud,
+  generarMesuraMassa,
+  generarMesuraCapacitat,
+  generarMesuraSuperficie,
+  generarMesuraVolum,
+  generarMesuraTemps,
+  generarMesuraComparar,
+  generarMesuraEscala,
+} from './mesura.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -126,6 +136,14 @@ const GENERADORES = {
   'div-criteris': generarDivCriteris,
   'div-primer': generarDivPrimer,
   'div-troba-primer': generarDivTrobaPrimer,
+  'mesura-longitud': generarMesuraLongitud,
+  'mesura-massa': generarMesuraMassa,
+  'mesura-capacitat': generarMesuraCapacitat,
+  'mesura-superficie': generarMesuraSuperficie,
+  'mesura-volum': generarMesuraVolum,
+  'mesura-temps': generarMesuraTemps,
+  'mesura-comparar': generarMesuraComparar,
+  'mesura-escala': generarMesuraEscala,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -151,6 +169,7 @@ const TIPOS_RESPUESTA_TEXTO = [
   'div-criteris',
   'div-primer',
   'div-troba-primer',
+  'mesura-comparar',
 ]
 
 // Parámetros de dificultad que entiende cada generador (los que puede poner un
@@ -188,6 +207,13 @@ export const PARAMETRES_ACCEPTATS = {
   'div-divisor': ['max'],
   'div-primer': ['max'],
   'div-troba-primer': ['max'],
+  'mesura-longitud': ['decimals', 'salts'],
+  'mesura-massa': ['decimals', 'salts'],
+  'mesura-capacitat': ['decimals', 'salts'],
+  'mesura-superficie': ['decimals', 'salts'],
+  'mesura-volum': ['decimals', 'salts'],
+  'mesura-comparar': ['decimals', 'salts'],
+  'mesura-temps': ['decimals'],
 }
 
 export function generarEjercicio(operacion, nivel = 'facil', params = {}) {
@@ -217,8 +243,10 @@ export function comprobarRespuesta(ejercicio, respuestaUsuario) {
   if (TIPOS_RESPUESTA_TEXTO.includes(ejercicio.tipo)) {
     return respuestaUsuario === ejercicio.respuesta
   }
-  // Respuesta numérica: se acepta coma o punto decimal ("3,5" = "3.50").
-  return numerosIguals(parseNumero(respuestaUsuario), ejercicio.respuesta)
+  // Respuesta numérica: se acepta coma o punto decimal ("3,5" = "3.50") y,
+  // si la respuesta pasa de 1.000, también el punto de miles ("2.500").
+  if (numerosIguals(parseNumero(respuestaUsuario), ejercicio.respuesta)) return true
+  return ejercicio.respuesta >= 1000 && numerosIguals(parseNumeroAmbMilers(respuestaUsuario), ejercicio.respuesta)
 }
 
 const PUNTOS_PROBLEMA = 20

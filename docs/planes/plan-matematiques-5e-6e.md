@@ -40,7 +40,7 @@ Es una **propuesta**: el currículum no lo divide. Lo más fiable es ajustarla c
 | **Raíces cuadradas** 🆕 | Cuadrados perfectos (reconocerlos) | Raíz exacta, raíz entera (entre qué dos números está), relación con las potencias, lado de un cuadrado a partir del área | Solo "costat d'un quadrat" dentro de Perímetres i àrees |
 | **Estimación** | Redondear a decenas, centenas y millares | Estimar productos, divisiones y decimales | Solo decenas, 2 cifras |
 | **Series** | Las actuales (paso fijo) | Con decimales y multiplicativas | ✅ básicas |
-| **Medida** 🆕 | Conversiones de longitud, masa y capacidad | Superficie (m², cm²), volumen, tiempo sexagesimal | No hay |
+| **Medida** 🆕 | Conversiones de longitud, masa y capacidad | Superficie (m², cm²), volumen, tiempo sexagesimal | ✅ 6è (M8b, §16) |
 | **Geometría** | Perímetros; áreas de cuadrado y rectángulo; ángulos (tipos, complementarios) | Todo el modo actual + circunferencia y π | ✅ 6è |
 | **Problemas** | Banco actual (62) | Banco nuevo (decimales, %, proporcionalidad, dinero) | ✅ 62 en 6è |
 
@@ -85,7 +85,7 @@ Con la consola (sin código): activar 5è, crear Matemàtiques, crear los modos 
 | **M6** ✅ | Operaciones combinadas (§12), adelantadas porque las dan en clase (2026-11-23) | Modo "Operacions combinades" en 6è |
 | **M7** ✅ | Porcentajes y proporcionalidad (§13) | Modo "Percentatges i proporcions" en 6è |
 | **M8** ✅ | Divisibilidad (§14) | Modo "Divisibilitat" en 6è |
-| **M8b** | Medida (conversiones) | |
+| **M8b** ✅ | Medida (§16): conversiones, tiempo, comparar y escalas | Modo "Mesura" en 6è |
 | **M9** | Montar 5è con todo lo anterior (en la consola) y activarlo | 5è disponible |
 
 El orden de M4–M8b se puede cambiar según el tema que estén dando en clase en cada momento.
@@ -238,7 +238,28 @@ Con los niveles dentro de un modo (plan general §18). Criterio: **nivel 1** = m
 | Operacions combinades | sin paréntesis, 2 operaciones | con y sin, 2 o 3 | con y sin, 3 operaciones, sumandos ≤ 50 |
 | Percentatges i proporcions | % de una cantidad (10, 25, 50 %; ≤ 100), equivalencias, tabla, unidad | los 6 tipos (10, 20, 25, 50, 75 %) | los 6 (5–80 %, cantidades ≤ 500) |
 | Divisibilitat | múltiplo, siguiente múltiplo, divisores, criterios (≤ 50) | los 6 tipos (≤ 100) | los 6 (≤ 200) |
+| Mesura (M8b, §16) | longitud, masa, capacidad; sin decimales, 1–2 saltos | + superficie, tiempo, comparar; 2 decimales, horas con coma | los 8 tipos (+ volumen, escalas); hasta 3 saltos |
 
 - Aplicado con un script contra la API de la consola, validando antes todos los modos con `validarModo`; comprobado con una muestra de cada generador en los valores nuevos (así salió el error "a els milers" → "als milers").
 - Tests independientes del contenido: los que usan un modo de 6è fijan sus niveles (o usan un modo sin niveles).
+
+## 16. M8b ✅ hecha (2026-11-24): medida
+
+Modo **"Mesura"** en 6è (`frontend/src/logic/mesura.js`), con niveles 1 y 2 abiertos y el 3 cerrado (tabla de §15).
+
+| Tipo | Ejemplo | Respuesta |
+|---|---|---|
+| `mesura-longitud` | 3,5 km = ? m | número |
+| `mesura-massa` | 2.500 g = ? kg · 1,2 t = ? kg | número |
+| `mesura-capacitat` | 0,75 l = ? ml | número |
+| `mesura-superficie` | 2 m² = ? dm² · 3 ha = ? m² (cada peldaño ×100; "ha" = hm² la mitad de las veces) | número |
+| `mesura-volum` | 1,5 m³ = ? dm³ (cada peldaño ×1.000, como mucho 2) · 2 dm³ = ? l (40 %: volumen ↔ capacidad) | número |
+| `mesura-temps` | 2 h 15 min = ? min · 200 min = 3 h i ? min · 7 dies = ? h · 1,5 h = ? min (solo con decimales) | número |
+| `mesura-comparar` | 1,5 kg ☐ 1.400 g (longitud, masa o capacidad; la otra cantidad es la misma convertida o una muy cercana) | < = > |
+| `mesura-escala` | Mapa 1:50.000, 3 cm → ? km · plano 1:200, 4 cm → ? m · ? cm en el plano · ¿cuál es la escala? | número |
+
+- **Parámetros** (`decimals` 0–2 = decimales de los datos; `salts` 1–3 = peldaños de la escalera de unidades, de m a cm son 2). En el tiempo solo `decimals` (> 0 activa las horas con coma). Por defecto 2 decimales y 3 saltos. Las escalas no tienen parámetros.
+- **Exactitud**: una cantidad es un entero k / 10^d y cada unidad su potencia de 10; la cantidad se elige en la unidad grande, así el resultado nunca tiene más decimales que los datos. Nunca más de un millón de veces (km → mm sí; km² → mm² no).
+- **Punto de miles**: los enunciados escriben 2.500 y 12.345,6. En las respuestas numéricas (de todos los tipos), si la correcta pasa de 1.000 también se acepta "2.500" (`parseNumeroAmbMilers`); "2.5" sigue siendo 2,5.
+- **Fuera**: ángulos (necesitan dibujo; con geometría), unidades agrarias salvo la hectárea, tiempo con segundos y horas a la vez.
 
