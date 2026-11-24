@@ -1208,11 +1208,570 @@
               "activo": true
             }
           ]
+        },
+        {
+          "id": "catala",
+          "nombre": "Català",
+          "icono": "✏️",
+          "color": "#ffa726",
+          "sombra": "#b3751b",
+          "activo": true,
+          "modos": [
+            {
+              "id": "accents",
+              "nombre": "Accents",
+              "color": "#ffa726",
+              "sombra": "#b3751b",
+              "operaciones": [
+                "cat-tonica",
+                "cat-classifica",
+                "cat-sillabes"
+              ],
+              "banco": null,
+              "bloc": null,
+              "params": {},
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {},
+                  "operaciones": [
+                    "cat-tonica",
+                    "cat-classifica",
+                    "cat-sillabes",
+                    "cat-escriptura",
+                    "cat-obert-tancat",
+                    "cat-diftong-hiat"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {},
+                  "operaciones": [
+                    "cat-tonica",
+                    "cat-classifica",
+                    "cat-sillabes",
+                    "cat-escriptura",
+                    "cat-obert-tancat",
+                    "cat-diftong-hiat",
+                    "cat-per-que",
+                    "cat-diftong-tipus",
+                    "cat-dieresi"
+                  ]
+                }
+              ],
+              "activo": true
+            },
+            {
+              "id": "diacritics",
+              "nombre": "Diacrítics",
+              "color": "#ef5350",
+              "sombra": "#a73a38",
+              "operaciones": [
+                "gramatica"
+              ],
+              "banco": "diacritics-6",
+              "bloc": null,
+              "params": {},
+              "nivells": [],
+              "activo": true
+            }
+          ]
         }
       ]
     }
   ],
   "bancos": [
+    {
+      "slug": "diacritics-6",
+      "nombre": "Diacrítics (6è)",
+      "formato": "opcio_multiple",
+      "preguntas": [
+        {
+          "orden": 1,
+          "enunciado": "Avui m'ho he passat molt ___ a la piscina.",
+          "respuesta": "bé",
+          "opciones": [
+            "bé",
+            "be"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 2,
+          "enunciado": "El pastor ha trobat un ___ perdut a la muntanya.",
+          "respuesta": "be",
+          "opciones": [
+            "be",
+            "bé"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 3,
+          "enunciado": "Has fet el dibuix molt ___, t'ha quedat preciós.",
+          "respuesta": "bé",
+          "opciones": [
+            "bé",
+            "be"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 4,
+          "enunciado": "Tinc ___ cromos repetits per canviar.",
+          "respuesta": "deu",
+          "opciones": [
+            "deu",
+            "déu"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 5,
+          "enunciado": "Zeus era el ___ més important dels antics grecs.",
+          "respuesta": "déu",
+          "opciones": [
+            "déu",
+            "deu"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 6,
+          "enunciado": "En Marc em ___ cinc euros del berenar.",
+          "respuesta": "deu",
+          "opciones": [
+            "deu",
+            "déu"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 7,
+          "enunciado": "La meva germana ___ la més alta de la classe.",
+          "respuesta": "és",
+          "opciones": [
+            "és",
+            "es"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 8,
+          "enunciado": "El gat ___ renta les potes després de menjar.",
+          "respuesta": "es",
+          "opciones": [
+            "es",
+            "és"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 9,
+          "enunciado": "Aquest llibre ___ molt divertit.",
+          "respuesta": "és",
+          "opciones": [
+            "és",
+            "es"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 10,
+          "enunciado": "M'he fet mal a la ___ dreta jugant a bàsquet.",
+          "respuesta": "mà",
+          "opciones": [
+            "mà",
+            "ma"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 11,
+          "enunciado": "Aixeca la ___ si saps la resposta.",
+          "respuesta": "mà",
+          "opciones": [
+            "mà",
+            "ma"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 12,
+          "enunciado": "El febrer és el ___ més curt de l'any.",
+          "respuesta": "mes",
+          "opciones": [
+            "mes",
+            "més"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 13,
+          "enunciado": "Vull ___ macarrons, si us plau.",
+          "respuesta": "més",
+          "opciones": [
+            "més",
+            "mes"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 14,
+          "enunciado": "Ens queda un ___ de vacances.",
+          "respuesta": "mes",
+          "opciones": [
+            "mes",
+            "més"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 15,
+          "enunciado": "La Júlia corre ___ que jo.",
+          "respuesta": "més",
+          "opciones": [
+            "més",
+            "mes"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 16,
+          "enunciado": "M'agradaria fer la volta al ___ en vaixell.",
+          "respuesta": "món",
+          "opciones": [
+            "món",
+            "mon"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 17,
+          "enunciado": "Aquest és el millor parc del ___.",
+          "respuesta": "món",
+          "opciones": [
+            "món",
+            "mon"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 18,
+          "enunciado": "Tinc un ___ a la sopa!",
+          "respuesta": "pèl",
+          "opciones": [
+            "pèl",
+            "pel"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 19,
+          "enunciado": "Passarem ___ parc per anar a l'escola.",
+          "respuesta": "pel",
+          "opciones": [
+            "pel",
+            "pèl"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 20,
+          "enunciado": "El gos ha deixat ___ per tot el sofà.",
+          "respuesta": "pèls",
+          "opciones": [
+            "pèls",
+            "pels"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 21,
+          "enunciado": "Gràcies ___ regal, m'ha encantat.",
+          "respuesta": "pel",
+          "opciones": [
+            "pel",
+            "pèl"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 22,
+          "enunciado": "___ vols per berenar?",
+          "respuesta": "Què",
+          "opciones": [
+            "Què",
+            "Que"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 23,
+          "enunciado": "El llibre ___ llegeixo és d'aventures.",
+          "respuesta": "que",
+          "opciones": [
+            "que",
+            "què"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 24,
+          "enunciado": "No sé de ___ parles.",
+          "respuesta": "què",
+          "opciones": [
+            "què",
+            "que"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 25,
+          "enunciado": "Diu ___ vindrà demà.",
+          "respuesta": "que",
+          "opciones": [
+            "que",
+            "què"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 26,
+          "enunciado": "No ___ on he deixat la motxilla.",
+          "respuesta": "sé",
+          "opciones": [
+            "sé",
+            "se"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 27,
+          "enunciado": "En Pau ___ renta les mans abans de dinar.",
+          "respuesta": "se",
+          "opciones": [
+            "se",
+            "sé"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 28,
+          "enunciado": "Ja ___ la taula de multiplicar del 7.",
+          "respuesta": "sé",
+          "opciones": [
+            "sé",
+            "se"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 29,
+          "enunciado": "___ fa sol, anirem a la platja.",
+          "respuesta": "Si",
+          "opciones": [
+            "Si",
+            "Sí"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 30,
+          "enunciado": "Vols venir al cine? ___, i tant!",
+          "respuesta": "Sí",
+          "opciones": [
+            "Sí",
+            "Si"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 31,
+          "enunciado": "No sé ___ podré venir a la festa.",
+          "respuesta": "si",
+          "opciones": [
+            "si",
+            "sí"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 32,
+          "enunciado": "Avui fa molt de ___.",
+          "respuesta": "sol",
+          "opciones": [
+            "sol",
+            "sòl"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 33,
+          "enunciado": "El ___ d'aquest camp és molt fèrtil.",
+          "respuesta": "sòl",
+          "opciones": [
+            "sòl",
+            "sol"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 34,
+          "enunciado": "Ha vingut ___, sense els seus amics.",
+          "respuesta": "sol",
+          "opciones": [
+            "sol",
+            "sòl"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 35,
+          "enunciado": "Els meus cosins ___ de Lleida.",
+          "respuesta": "són",
+          "opciones": [
+            "són",
+            "son"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 36,
+          "enunciado": "Tinc molta ___, me'n vaig a dormir.",
+          "respuesta": "son",
+          "opciones": [
+            "son",
+            "són"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 37,
+          "enunciado": "Aquestes sabates ___ massa petites.",
+          "respuesta": "són",
+          "opciones": [
+            "són",
+            "son"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 38,
+          "enunciado": "La Laia ___ un gos molt juganer.",
+          "respuesta": "té",
+          "opciones": [
+            "té",
+            "te"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 39,
+          "enunciado": "Pren-te el ___ abans que es refredi.",
+          "respuesta": "te",
+          "opciones": [
+            "te",
+            "té"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 40,
+          "enunciado": "En Jan ___ onze anys.",
+          "respuesta": "té",
+          "opciones": [
+            "té",
+            "te"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 41,
+          "enunciado": "___ espero a la porta de l'escola.",
+          "respuesta": "Us",
+          "opciones": [
+            "Us",
+            "Ús"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 42,
+          "enunciado": "Llegiu les instruccions d'___ abans de començar.",
+          "respuesta": "ús",
+          "opciones": [
+            "ús",
+            "us"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 43,
+          "enunciado": "Aquest ordinador és d'___ de tota la classe.",
+          "respuesta": "ús",
+          "opciones": [
+            "ús",
+            "us"
+          ],
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 44,
+          "enunciado": "Senyor, ___ sou molt amable.",
+          "respuesta": "vós",
+          "opciones": [
+            "vós",
+            "vos"
+          ],
+          "alternativas": null,
+          "activo": true
+        }
+      ]
+    },
     {
       "slug": "gramatica-angles-6",
       "nombre": "Gramàtica anglès (6è)",
