@@ -1008,6 +1008,114 @@
                 }
               ],
               "activo": true
+            },
+            {
+              "id": "mesura",
+              "nombre": "Mesura",
+              "color": "#4db6ac",
+              "sombra": "#367f78",
+              "operaciones": [
+                "mesura-longitud",
+                "mesura-massa",
+                "mesura-capacitat"
+              ],
+              "banco": null,
+              "bloc": null,
+              "params": {
+                "mesura-massa": {
+                  "salts": 2,
+                  "decimals": 0
+                },
+                "mesura-longitud": {
+                  "salts": 2,
+                  "decimals": 0
+                },
+                "mesura-capacitat": {
+                  "salts": 2,
+                  "decimals": 0
+                }
+              },
+              "nivells": [
+                {
+                  "obert": true,
+                  "params": {
+                    "mesura-massa": {
+                      "salts": 2,
+                      "decimals": 2
+                    },
+                    "mesura-temps": {
+                      "decimals": 1
+                    },
+                    "mesura-comparar": {
+                      "salts": 2,
+                      "decimals": 2
+                    },
+                    "mesura-longitud": {
+                      "salts": 2,
+                      "decimals": 2
+                    },
+                    "mesura-capacitat": {
+                      "salts": 2,
+                      "decimals": 2
+                    },
+                    "mesura-superficie": {
+                      "salts": 2,
+                      "decimals": 2
+                    }
+                  },
+                  "operaciones": [
+                    "mesura-longitud",
+                    "mesura-massa",
+                    "mesura-capacitat",
+                    "mesura-superficie",
+                    "mesura-temps",
+                    "mesura-comparar"
+                  ]
+                },
+                {
+                  "obert": false,
+                  "params": {
+                    "mesura-massa": {
+                      "salts": 3,
+                      "decimals": 2
+                    },
+                    "mesura-temps": {
+                      "decimals": 1
+                    },
+                    "mesura-volum": {
+                      "salts": 3,
+                      "decimals": 2
+                    },
+                    "mesura-comparar": {
+                      "salts": 3,
+                      "decimals": 2
+                    },
+                    "mesura-longitud": {
+                      "salts": 3,
+                      "decimals": 2
+                    },
+                    "mesura-capacitat": {
+                      "salts": 3,
+                      "decimals": 2
+                    },
+                    "mesura-superficie": {
+                      "salts": 3,
+                      "decimals": 2
+                    }
+                  },
+                  "operaciones": [
+                    "mesura-longitud",
+                    "mesura-massa",
+                    "mesura-capacitat",
+                    "mesura-superficie",
+                    "mesura-volum",
+                    "mesura-temps",
+                    "mesura-comparar",
+                    "mesura-escala"
+                  ]
+                }
+              ],
+              "activo": true
             }
           ]
         },
