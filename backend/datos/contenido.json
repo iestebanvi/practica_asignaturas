@@ -1116,20 +1116,6 @@
                 }
               ],
               "activo": true
-            },
-            {
-              "id": "problemes-situacions",
-              "nombre": "Problemes: situacions",
-              "color": "#ffb74d",
-              "sombra": "#b38036",
-              "operaciones": [
-                "problema"
-              ],
-              "banco": "problemes-6e-situacions",
-              "bloc": null,
-              "params": {},
-              "nivells": [],
-              "activo": false
             }
           ]
         },
@@ -2390,6 +2376,118 @@
           "opciones": null,
           "alternativas": null,
           "activo": true
+        },
+        {
+          "orden": 63,
+          "enunciado": "En una ampolla hi havia 1,5 litres d'aigua. Se n'han begut 0,75 litres. Quants litres queden?",
+          "respuesta": "0.75",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 64,
+          "enunciado": "En Pol s'ha comprat una bicicleta de 245,80 € i encara li queden 154,20 €. Quants diners tenia abans de comprar-la?",
+          "respuesta": "400",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 65,
+          "enunciado": "Aquest any la biblioteca de l'escola ha comprat 1250 llibres i ara en té 8430. Quants llibres tenia abans?",
+          "respuesta": "7180",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 66,
+          "enunciado": "La família Puig ha recorregut 1340 km en 4 dies de vacances. El primer dia van fer 415 km i el segon, 380 km. Quants quilòmetres van fer entre el tercer i el quart dia?",
+          "respuesta": "545",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 67,
+          "enunciado": "La Martina ingressa 375,60 € al seu compte del banc. Ara hi té 1920 €. Quants diners tenia abans de l'ingrés?",
+          "respuesta": "1544.4",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 68,
+          "enunciado": "Un dipòsit tenia 2500 litres d'aigua. Se n'han gastat 875,5 litres per regar. Quants litres queden?",
+          "respuesta": "1624.5",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 69,
+          "enunciado": "L'any passat en Jan pesava 38,6 kg i ara pesa 42,25 kg. Quants quilos ha augmentat?",
+          "respuesta": "3.65",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 70,
+          "enunciado": "Una cursa solidària ha recaptat 6250 €, que es reparteixen a parts iguals entre 5 entitats. Quants diners rep cada entitat?",
+          "respuesta": "1250",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 71,
+          "enunciado": "En Marc va repartir tots els seus cromos a parts iguals entre ell i 3 amics, i cadascun en va rebre 145. Quants cromos tenia en Marc?",
+          "respuesta": "580",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 72,
+          "enunciado": "Un tren surt amb 512 passatgers. A la primera parada en baixen 148 i en pugen 96. Quants passatgers hi ha ara al tren?",
+          "respuesta": "460",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 73,
+          "enunciado": "Una ampolla de suc té 1,25 litres. Quants litres de suc hi ha en una capsa de 6 ampolles?",
+          "respuesta": "7.5",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 74,
+          "enunciado": "Una impremta ha d'imprimir 7500 fullets. Al matí n'ha imprès 2840 i a la tarda, 3175. Quants fullets li falten?",
+          "respuesta": "1485",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 75,
+          "enunciado": "Un corredor ha fet 3,75 km el dilluns, 4,5 km el dimecres i 5,25 km el divendres. Quants quilòmetres ha corregut en total?",
+          "respuesta": "13.5",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
+        },
+        {
+          "orden": 76,
+          "enunciado": "Una botiga ven tauletes a 349 € cadascuna. Quant ingressa si en ven 12?",
+          "respuesta": "4188",
+          "opciones": null,
+          "alternativas": null,
+          "activo": true
         }
       ]
     },
@@ -2885,253 +2983,134 @@
           "opciones": null,
           "alternativas": null,
           "activo": true
-        }
-      ]
-    },
-    {
-      "slug": "problemes-6e-situacions",
-      "nombre": "Problemes 6è: situacions",
-      "formato": "numerica",
-      "preguntas": [
+        },
         {
-          "orden": 1,
+          "orden": 62,
           "enunciado": "Una escola vol comprar ordinadors que costen 4860 €. Ja té 2375 € de la festa de fi de curs i 1290 € d'una rifa. Quants diners li falten?",
           "respuesta": "1195",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 2,
-          "enunciado": "En una ampolla hi havia 1,5 litres d'aigua. Se n'han begut 0,75 litres. Quants litres queden?",
-          "respuesta": "0.75",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 3,
+          "orden": 63,
           "enunciado": "La Laia rep 12,50 € de paga cada setmana. Després de 4 setmanes es gasta 18,75 € en un llibre. Quants diners li queden?",
           "respuesta": "31.25",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 4,
-          "enunciado": "En Pol s'ha comprat una bicicleta de 245,80 € i encara li queden 154,20 €. Quants diners tenia abans de comprar-la?",
-          "respuesta": "400",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 5,
-          "enunciado": "Aquest any la biblioteca de l'escola ha comprat 1250 llibres i ara en té 8430. Quants llibres tenia abans?",
-          "respuesta": "7180",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 6,
+          "orden": 64,
           "enunciado": "Un camió buit pesa 2750 kg. Carrega 3 palets de 485 kg cadascun. Quant pesa el camió carregat?",
           "respuesta": "4205",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 7,
-          "enunciado": "La família Puig ha recorregut 1340 km en 4 dies de vacances. El primer dia van fer 415 km i el segon, 380 km. Quants quilòmetres van fer entre el tercer i el quart dia?",
-          "respuesta": "545",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 8,
+          "orden": 65,
           "enunciado": "Unes sabatilles costen 59,95 € i uns mitjons, 4,30 €. Si pagues amb un bitllet de 100 €, quant et tornen?",
           "respuesta": "35.75",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 9,
-          "enunciado": "La Martina ingressa 375,60 € al seu compte del banc. Ara hi té 1920 €. Quants diners tenia abans de l'ingrés?",
-          "respuesta": "1544.4",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 10,
+          "orden": 66,
           "enunciado": "Durant 6 mesos, l'Àlex ha posat 85 € cada mes a la guardiola. Ara hi té 1310 €. Quants diners hi tenia fa 6 mesos?",
           "respuesta": "800",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 11,
+          "orden": 67,
           "enunciado": "Una botiga ha venut 145 samarretes cada dia durant 5 dies i encara en té 1275. Quantes samarretes tenia al principi?",
           "respuesta": "2000",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 12,
-          "enunciado": "Un dipòsit tenia 2500 litres d'aigua. Se n'han gastat 875,5 litres per regar. Quants litres queden?",
-          "respuesta": "1624.5",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 13,
+          "orden": 68,
           "enunciado": "En una garrafa hi ha 5 litres d'oli. S'omplen 4 ampolles de 0,75 litres cadascuna. Quants litres d'oli queden a la garrafa?",
           "respuesta": "2",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 14,
+          "orden": 69,
           "enunciado": "Un cinema ha venut 1245 entrades el dissabte i 980 el diumenge. Cada entrada costa 7 €. Quants diners ha recaptat el cap de setmana?",
           "respuesta": "15575",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 15,
+          "orden": 70,
           "enunciado": "Un club té 3480 € per comprar equipacions. Cada equipació costa 29 €. Si en compra 95, quants diners li sobren?",
           "respuesta": "725",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 16,
-          "enunciado": "L'any passat en Jan pesava 38,6 kg i ara pesa 42,25 kg. Quants quilos ha augmentat?",
-          "respuesta": "3.65",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 17,
-          "enunciado": "Una cursa solidària ha recaptat 6250 €, que es reparteixen a parts iguals entre 5 entitats. Quants diners rep cada entitat?",
-          "respuesta": "1250",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 18,
-          "enunciado": "En Marc va repartir tots els seus cromos a parts iguals entre ell i 3 amics, i cadascun en va rebre 145. Quants cromos tenia en Marc?",
-          "respuesta": "580",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 19,
+          "orden": 71,
           "enunciado": "Una família cobra 2350 € al mes. Aquest mes paga 685,40 € de lloguer i 124,75 € de llum. Quants diners li queden per a la resta de despeses?",
           "respuesta": "1539.85",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 20,
-          "enunciado": "Un tren surt amb 512 passatgers. A la primera parada en baixen 148 i en pugen 96. Quants passatgers hi ha ara al tren?",
-          "respuesta": "460",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 21,
+          "orden": 72,
           "enunciado": "L'Anna ha gastat 1275 € en un viatge i 349,90 € en roba, i encara li queden 875,10 €. Quants diners tenia al principi?",
           "respuesta": "2500",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 22,
-          "enunciado": "Una ampolla de suc té 1,25 litres. Quants litres de suc hi ha en una capsa de 6 ampolles?",
-          "respuesta": "7.5",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 23,
+          "orden": 73,
           "enunciado": "La Núria compra 2 kg de pomes a 1,85 € el quilo i un meló de 3,40 €. Quant paga en total?",
           "respuesta": "7.1",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 24,
+          "orden": 74,
           "enunciado": "Un parc d'atraccions ha rebut 4372 visitants el dissabte. El diumenge n'hi han anat 1185 més que el dissabte. Quants visitants ha rebut en total el cap de setmana?",
           "respuesta": "9929",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 25,
-          "enunciado": "Una impremta ha d'imprimir 7500 fullets. Al matí n'ha imprès 2840 i a la tarda, 3175. Quants fullets li falten?",
-          "respuesta": "1485",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 26,
+          "orden": 75,
           "enunciado": "En Pau té 1000 € estalviats. Es compra un mòbil de 289,99 € i una funda de 14,50 €. Quants diners li queden?",
           "respuesta": "695.51",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 27,
+          "orden": 76,
           "enunciado": "Una piscina perd 125 litres d'aigua cada dia. Al cap de 8 dies hi queden 48900 litres. Quants litres tenia al principi?",
           "respuesta": "49900",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         },
         {
-          "orden": 28,
-          "enunciado": "Un corredor ha fet 3,75 km el dilluns, 4,5 km el dimecres i 5,25 km el divendres. Quants quilòmetres ha corregut en total?",
-          "respuesta": "13.5",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 29,
-          "enunciado": "Una botiga ven tauletes a 349 € cadascuna. Quant ingressa si en ven 12?",
-          "respuesta": "4188",
-          "opciones": null,
-          "alternativas": null,
-          "activo": false
-        },
-        {
-          "orden": 30,
+          "orden": 77,
           "enunciado": "La Carla ha comprat 3 llibres de 15,90 € cadascun i li han tornat 2,30 €. Amb quin bitllet ha pagat?",
           "respuesta": "50",
           "opciones": null,
           "alternativas": null,
-          "activo": false
+          "activo": true
         }
       ]
     },
