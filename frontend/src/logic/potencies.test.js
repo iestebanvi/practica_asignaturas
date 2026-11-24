@@ -28,8 +28,8 @@ describe('utilidades', () => {
   it('escribe superíndices y números con punto de millares', () => {
     expect(superindex(12)).toBe('¹²')
     expect(potencia(8, 5)).toBe('8⁵')
-    expect(formatar(1331)).toBe('1.331')
-    expect(formatar(14641)).toBe('14.641')
+    expect(formatar(1331)).toBe('1331')
+    expect(formatar(14641)).toBe('14641')
     expect(formatar(512)).toBe('512')
   })
 })

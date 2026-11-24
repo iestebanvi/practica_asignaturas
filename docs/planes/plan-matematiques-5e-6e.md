@@ -260,6 +260,16 @@ Modo **"Mesura"** en 6è (`frontend/src/logic/mesura.js`), con niveles 1 y 2 abi
 
 - **Parámetros** (`decimals` 0–2 = decimales de los datos; `salts` 1–3 = peldaños de la escalera de unidades, de m a cm son 2). En el tiempo solo `decimals` (> 0 activa las horas con coma). Por defecto 2 decimales y 3 saltos. Las escalas no tienen parámetros.
 - **Exactitud**: una cantidad es un entero k / 10^d y cada unidad su potencia de 10; la cantidad se elige en la unidad grande, así el resultado nunca tiene más decimales que los datos. Nunca más de un millón de veces (km → mm sí; km² → mm² no).
-- **Punto de miles**: los enunciados escriben 2.500 y 12.345,6. En las respuestas numéricas (de todos los tipos), si la correcta pasa de 1.000 también se acepta "2.500" (`parseNumeroAmbMilers`); "2.5" sigue siendo 2,5.
+- **Sin punto de miles** (2026-11-24: en clase no se usa): los enunciados escriben 2500 y 12345,6, también en Potències, en Decimals (× 1000) y en los problemas del banco. Si un niño lo escribe a mano en la respuesta y la correcta pasa de 1000, se acepta "2.500" (`parseNumeroAmbMilers`); "2.5" sigue siendo 2,5.
 - **Fuera**: ángulos (necesitan dibujo; con geometría), unidades agrarias salvo la hectárea, tiempo con segundos y horas a la vez.
+
+## 17. Problemas "situacions contextualitzades" (2026-11-24)
+
+Comparación con dos fichas reales de clase («Situacions contextualitzades», 6è, 1/12 y 2/12): **razonamiento más sencillo** que el banco "Problemes 6è" (1–2 pasos, solo +, −, ×), pero con **números más grandes** (miles; en el banco la mediana del número mayor es ~40), **decimales** (euros con céntimos, litros; en el banco, 1 de 61) y **problemas "cap enrere"** (¿cuánto tenía antes?; 2 de 4 en las fichas, casi ninguno en los bancos). Es decir: entre "Problemes de repàs" y un nivel 1 de los problemas de 6è en razonamiento, por encima de los dos bancos en los números.
+
+- **Banco nuevo "Problemes 6è: situacions"** (`problemes-6e-situacions`, 30 problemas en ese estilo: dinero 10, cap enrere 9, medida 7, varios pasos 4). Fuente `docs/matematiques/problemes-6e-situacions.json` (cada uno con su cálculo, comprobado por código) → `problemes-6e-situacions.csv`; tabla para revisar en `problemes-6e-situacions-revisio.md`.
+- **Importados inactivos**, con el modo **inactivo** "Problemes: situacions" para revisarlos en la vista previa (casilla "Inclou les inactives"). Al darlos por buenos: activar las preguntas y el modo (o pasarlas al banco "Problemes 6è").
+- **Respuesta con coma en los problemas**: el campo de respuesta de los problemas pasa a ser de texto con teclado decimal (como los decimales), para poder escribir 1410,10.
+- **Sin punto de miles** en todo lo generado y en los 4 problemas de "Problemes 6è" que lo llevaban (ver §16).
+- ❓ Más fichas del cuadernillo (3/12…12/12) permitirían ajustar los siguientes problemas a lo que viene.
 

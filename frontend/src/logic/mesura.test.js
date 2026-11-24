@@ -44,10 +44,10 @@ function esperat(enunciado) {
 }
 
 describe('medida', () => {
-  it('formatQuantitat: coma decimal y punto de miles', () => {
+  it('formatQuantitat: coma decimal y sin punto de miles', () => {
     expect(formatQuantitat(25, 1)).toBe('2,5')
-    expect(formatQuantitat(2500, 0)).toBe('2.500')
-    expect(formatQuantitat(123456, 1)).toBe('12.345,6')
+    expect(formatQuantitat(2500, 0)).toBe('2500')
+    expect(formatQuantitat(123456, 1)).toBe('12345,6')
     expect(formatQuantitat(999, 0)).toBe('999')
   })
 

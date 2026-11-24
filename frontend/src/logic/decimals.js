@@ -157,7 +157,7 @@ export function generarDecimalPotencia10(nivel, params) {
   const multiplicar = Math.random() < 0.5
   return {
     tipo: 'decimal-potencia10',
-    enunciado: `${n.text} ${multiplicar ? '×' : '÷'} ${formatDecimal(factor).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}`,
+    enunciado: `${n.text} ${multiplicar ? '×' : '÷'} ${factor}`,
     respuesta: arrodonirPrecisio(multiplicar ? n.valor * factor : n.valor / factor),
     puntos: PUNTOS_CALCUL,
   }

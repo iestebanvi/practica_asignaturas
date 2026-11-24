@@ -49,8 +49,9 @@ export function parseNumero(texto) {
 }
 
 // "2.500" o "12.345,5" con punto de miles → 2500 / 12345.5. Lo que no tiene
-// esa forma → NaN. (Se usa solo si la respuesta correcta pasa de 1.000: con
-// "2.500" un niño puede querer decir 2,5 o 2.500.)
+// esa forma → NaN. La web no escribe el punto de miles (en clase no se usa),
+// pero algún niño lo pone a mano. Se usa solo si la respuesta correcta pasa
+// de 1000: con "2.500" un niño puede querer decir 2,5 o 2500.
 export function parseNumeroAmbMilers(texto) {
   const net = String(texto).trim()
   if (!/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(net)) return NaN

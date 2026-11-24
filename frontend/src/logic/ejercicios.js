@@ -244,7 +244,7 @@ export function comprobarRespuesta(ejercicio, respuestaUsuario) {
     return respuestaUsuario === ejercicio.respuesta
   }
   // Respuesta numérica: se acepta coma o punto decimal ("3,5" = "3.50") y,
-  // si la respuesta pasa de 1.000, también el punto de miles ("2.500").
+  // si la respuesta pasa de 1000, también el punto de miles ("2.500").
   if (numerosIguals(parseNumero(respuestaUsuario), ejercicio.respuesta)) return true
   return ejercicio.respuesta >= 1000 && numerosIguals(parseNumeroAmbMilers(respuestaUsuario), ejercicio.respuesta)
 }

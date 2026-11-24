@@ -33,11 +33,10 @@ const MAX_EXP = 6 // no más de un millón de veces (km → mm, km² → m²…)
 const opcions = ({ decimals = 2, salts = 3 } = {}) => ({ decimals, salts })
 const triar = (llista) => llista[randomInt(0, llista.length - 1)]
 
-// Texto de k / 10^d en catalán, con punto de miles (2.500; 12.345,6).
+// Texto de k / 10^d en catalán: coma decimal y sin punto de miles (2500;
+// 12345,6), como se escribe en clase.
 export function formatQuantitat(k, d) {
-  const [enter, part] = formatDecimal(k / 10 ** d).split(',')
-  const ambMilers = enter.length > 3 ? enter.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : enter
-  return part ? `${ambMilers},${part}` : ambMilers
+  return formatDecimal(k / 10 ** d)
 }
 
 const valor = ({ k, d }) => arrodonirPrecisio(k / 10 ** d)
@@ -177,7 +176,7 @@ export function generarMesuraTemps(nivel, params) {
   return ex(`${formatDecimal(quarts / 4)} h = ? min`, quarts * 15)
 }
 
-// "1,5 kg ☐ 1.400 g" → < = >. La segunda cantidad es la primera convertida
+// "1,5 kg ☐ 1400 g" → < = >. La segunda cantidad es la primera convertida
 // (iguales) o la de una cantidad muy cercana: hay que convertir para saberlo.
 const MAGNITUDS_COMPARAR = ['longitud', 'massa', 'capacitat']
 
@@ -218,7 +217,6 @@ export function generarMesuraComparar(nivel, params) {
 // Escalas de mapas (resultado en km) y de planos (en m).
 const ESCALES_MAPA = [10000, 25000, 50000, 100000, 200000, 500000, 1000000]
 const ESCALES_PLANOL = [50, 100, 200, 500]
-const milers = (n) => formatQuantitat(n, 0)
 
 export function generarMesuraEscala() {
   const variant = randomInt(0, 3)
@@ -227,7 +225,7 @@ export function generarMesuraEscala() {
   if (variant === 0) {
     const e = triar(ESCALES_MAPA)
     return ex(
-      `Un mapa té escala 1:${milers(e)}. Dos pobles estan a ${cm} cm en el mapa. Quants quilòmetres hi ha en realitat?`,
+      `Un mapa té escala 1:${e}. Dos pobles estan a ${cm} cm en el mapa. Quants quilòmetres hi ha en realitat?`,
       arrodonirPrecisio((cm * e) / 100000),
     )
   }

@@ -380,8 +380,10 @@ test.describe('Practica Assignatures', () => {
     expect(respuestasProblemas.has(texto)).toBe(true)
     await expect(enunciado).toHaveClass(/enunciado-problema/)
 
-    const input = page.locator('input[type="number"]')
-    await input.fill(String(respuestaCorrecta(texto)))
+    // Los problemas usan un campo de texto con teclado decimal (1410,10)
+    const input = page.locator('.ejercicio input')
+    await expect(input).toHaveAttribute('inputmode', 'decimal')
+    await input.fill(String(respuestaCorrecta(texto)).replace('.', ','))
     await page.getByRole('button', { name: 'Comprova' }).click()
     await expect(page.locator('.feedback.correcto')).toBeVisible()
 
@@ -395,7 +397,7 @@ test.describe('Practica Assignatures', () => {
     const texto = await page.locator('.enunciado').innerText()
     const respuesta = respuestasProblemas.get(texto)
 
-    await page.locator('input[type="number"]').fill('-1')
+    await page.locator('.ejercicio input').fill('-1')
     await page.getByRole('button', { name: 'Comprova' }).click()
     await expect(page.locator('.feedback.incorrecto')).toBeVisible()
 

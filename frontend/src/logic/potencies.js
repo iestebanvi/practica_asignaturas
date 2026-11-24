@@ -24,9 +24,9 @@ function producte(base, vegades) {
   return Array(vegades).fill(base).join(' × ')
 }
 
-// Números grandes con punto de millares, como en las fichas (1.331).
+// Números grandes sin punto de miles (1331), como se escriben en clase.
 export function formatar(numero) {
-  return String(numero).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+  return String(numero)
 }
 
 // Respuesta correcta + tres distractores distintos, mezclados.

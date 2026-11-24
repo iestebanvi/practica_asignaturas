@@ -128,6 +128,7 @@ const TIPOS_SIN_SIMBOLO = [
 // Respuestas numéricas con decimales: campo de texto con teclado decimal (el
 // campo "number" del navegador no acepta bien la coma).
 const TIPOS_RESPOSTA_DECIMAL = [
+  'problema', // con céntimos o litros: 1410,10
   'decimal-arrodonir',
   'decimal-suma',
   'decimal-resta',

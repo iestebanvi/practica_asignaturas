@@ -14,7 +14,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
   - Web por cursos (1r–6è; 2n–5è inactivos y vacíos), interfaz en catalán, pantalla completa.
   - Todo el contenido en Supabase y editable desde la consola del profesorado (`/profesorat`, contraseña `TEACHER_PASSWD`): preguntas, importar/exportar, cursos, asignaturas, modos, bancos, vista previa.
   - Alumnos con àlies + PIN por curso: bloques de preguntas, récords personales y del curso, "Per repassar" en la BD.
-- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1–M8b hechas** (raíces, dificultad por modo, 6è al nivel del currículum con problemas nuevos y básicos en catalán, decimales, fracciones, operaciones combinadas, porcentajes y proporcionalidad, divisibilidad, medida); **niveles 1/2/3 dentro de un modo hechos** (plan general §18) y **configurados en los modos de 6è** (plan de mates §15: abiertos 1 y 2, el 3 cerrado); siguiente M9 (5è). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
+- **En curso**: plan de matemáticas de 5è y 6è (`docs/planes/plan-matematiques-5e-6e.md`, fases M1–M9): **M1–M8b hechas** (raíces, dificultad por modo, 6è al nivel del currículum con problemas nuevos y básicos en catalán, decimales, fracciones, operaciones combinadas, porcentajes y proporcionalidad, divisibilidad, medida); **niveles 1/2/3 dentro de un modo hechos** (plan general §18) y **configurados en los modos de 6è** (plan de mates §15: abiertos 1 y 2, el 3 cerrado); problemas "situacions" (estilo de las fichas de clase, §17) importados inactivos para revisar; siguiente M9 (5è). Lo demás pendiente (checklist de pruebas, mantenimiento, ideas, riesgos) en `docs/pendiente.md`.
 - **Despliegue**: push a `main` = producción (ver README). Antes, `make test`, `make test-backend` y `make test-e2e`; después, `make test-e2e-prod`.
 
 ## Mapa de temas
@@ -41,6 +41,7 @@ Web para que alumnos de primaria practiquen por curso y asignatura. React/Vite (
 | Diseño técnico antiguo de BD + PIN (referencia, sustituido) | `docs/planes/plan-base-datos-usuarios.md` |
 | Matemáticas: currículum oficial (XTEC) vs. ejercicios de la web | `docs/matematiques/comparativa-curriculum.md` |
 | Problemas de 6è (nuevos) y traducción de los básicos: fuentes y tabla de revisión | `docs/matematiques/problemes-6e.json`, `problemes-basics-ca.json`, `problemes-revisio.md` |
+| Problemas "situacions contextualitzades" (estilo de las fichas de clase): comparación y banco nuevo | `docs/planes/plan-matematiques-5e-6e.md` §17; `docs/matematiques/problemes-6e-situacions.json`, `.csv`, `-revisio.md` |
 | Niveles de cada modo de 6è (qué tiene el 1, el 2 y el 3) | `docs/planes/plan-matematiques-5e-6e.md` §15 |
 | Plan de matemáticas de 5è y 6è (reparto de bloques, parámetros por modo, fases M1–M9) | `docs/planes/plan-matematiques-5e-6e.md` (vigente; M1–M8b hechas: decimales §10, fracciones §11, combinadas §12, porcentajes §13, divisibilidad §14, medida §16) |
 | Contenido fuente: vocabulario Unit 3 | `docs/ingles/vocabulario-unit3-palabras-nuevas.txt` |

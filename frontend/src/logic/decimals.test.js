@@ -93,10 +93,10 @@ describe('decimales', () => {
     }
   })
 
-  it('×/÷ por 10, 100, 1000 (con punto de millar en 1.000)', () => {
+  it('×/÷ por 10, 100, 1000 (sin punto de miles: 1000)', () => {
     for (const ej of repetir(() => generarDecimalPotencia10('medio', {}))) {
-      const [, numero, op, factor] = ej.enunciado.match(/^([\d,]+) ([×÷]) ([\d.]+)$/)
-      const f = Number(factor.replace('.', ''))
+      const [, numero, op, factor] = ej.enunciado.match(/^([\d,]+) ([×÷]) (\d+)$/)
+      const f = Number(factor)
       expect([10, 100, 1000]).toContain(f)
       const n = parseNumero(numero)
       expect(numerosIguals(ej.respuesta, op === '×' ? n * f : n / f)).toBe(true)
