@@ -48,6 +48,15 @@ const TIPOS_SIN_ENUNCIADO = ['problema', 'hora', 'costat-quadrat', 'arrel-quadra
   'mesura-volum',
   'mesura-temps',
   'mesura-escala',
+  'cat-tonica',
+  'cat-classifica',
+  'cat-sillabes',
+  'cat-diftong-hiat',
+  'cat-diftong-tipus',
+  'cat-escriptura',
+  'cat-obert-tancat',
+  'cat-per-que',
+  'cat-dieresi',
 ]
 const TIPOS_OPCION_MULTIPLE = [
   'hora',
@@ -71,6 +80,15 @@ const TIPOS_OPCION_MULTIPLE = [
   'div-primer',
   'div-troba-primer',
   'mesura-comparar',
+  'cat-tonica',
+  'cat-classifica',
+  'cat-sillabes',
+  'cat-diftong-hiat',
+  'cat-diftong-tipus',
+  'cat-escriptura',
+  'cat-obert-tancat',
+  'cat-per-que',
+  'cat-dieresi',
 ]
 const TIPOS_ESCRITOS = ['vocabulario-escrito', 'there-be']
 const TIPOS_ENUNCIADO_TEXTO = [
@@ -96,6 +114,15 @@ const TIPOS_ENUNCIADO_TEXTO = [
   'div-primer',
   'div-troba-primer',
   'mesura-comparar',
+  'cat-tonica',
+  'cat-classifica',
+  'cat-sillabes',
+  'cat-diftong-hiat',
+  'cat-diftong-tipus',
+  'cat-escriptura',
+  'cat-obert-tancat',
+  'cat-per-que',
+  'cat-dieresi',
 ]
 const TIPOS_CON_REGISTRO_FALLOS = [...TIPOS_OPCION_MULTIPLE, ...TIPOS_ESCRITOS]
 // Tipos cuyo enunciado se cierra con "≈" (estimación aproximada) en vez de

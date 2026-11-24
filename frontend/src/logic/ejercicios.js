@@ -78,6 +78,17 @@ import {
   generarMesuraComparar,
   generarMesuraEscala,
 } from './mesura.js'
+import {
+  generarCatTonica,
+  generarCatClassifica,
+  generarCatSillabes,
+  generarCatDiftongHiat,
+  generarCatDiftongTipus,
+  generarCatEscriptura,
+  generarCatObertTancat,
+  generarCatPerQue,
+  generarCatDieresi,
+} from './accents.js'
 
 const GENERADORES = {
   suma: generarSuma,
@@ -144,6 +155,15 @@ const GENERADORES = {
   'mesura-temps': generarMesuraTemps,
   'mesura-comparar': generarMesuraComparar,
   'mesura-escala': generarMesuraEscala,
+  'cat-tonica': generarCatTonica,
+  'cat-classifica': generarCatClassifica,
+  'cat-sillabes': generarCatSillabes,
+  'cat-diftong-hiat': generarCatDiftongHiat,
+  'cat-diftong-tipus': generarCatDiftongTipus,
+  'cat-escriptura': generarCatEscriptura,
+  'cat-obert-tancat': generarCatObertTancat,
+  'cat-per-que': generarCatPerQue,
+  'cat-dieresi': generarCatDieresi,
 }
 
 // Tipos cuya respuesta se compara como texto exacto (opción múltiple),
@@ -170,6 +190,15 @@ const TIPOS_RESPUESTA_TEXTO = [
   'div-primer',
   'div-troba-primer',
   'mesura-comparar',
+  'cat-tonica',
+  'cat-classifica',
+  'cat-sillabes',
+  'cat-diftong-hiat',
+  'cat-diftong-tipus',
+  'cat-escriptura',
+  'cat-obert-tancat',
+  'cat-per-que',
+  'cat-dieresi',
 ]
 
 // Parámetros de dificultad que entiende cada generador (los que puede poner un
